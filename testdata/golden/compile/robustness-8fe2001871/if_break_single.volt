@@ -1,0 +1,7 @@
+
+chip esp32
+setup {
+    for i in 0..10 {
+        if i == 8 { break }
+    }
+}

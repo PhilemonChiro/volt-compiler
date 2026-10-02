@@ -1,0 +1,26 @@
+[
+  {
+    "severity": "warning",
+    "category": "HARDWARE WARNING",
+    "message": "GPIO 3 is used by UART0 (USB serial). Using it will break serial monitor and firmware flashing.",
+    "hint": "Use a different pin unless you specifically intend to disable serial output.",
+    "region": [
+      2,
+      9,
+      2,
+      10
+    ]
+  },
+  {
+    "severity": "warning",
+    "category": "HARDWARE NOTE",
+    "message": "GPIO 3: Connected to USB-serial on DevKit. Using this pin breaks serial monitor/flashing.",
+    "hint": null,
+    "region": [
+      2,
+      9,
+      2,
+      10
+    ]
+  }
+]

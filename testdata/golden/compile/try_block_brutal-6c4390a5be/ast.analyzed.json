@@ -1,0 +1,229 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [1, 6, 1, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [2, 16, 2, 19],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [2, 16, 2, 19],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 4
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [24, 7, 24, 9],
+   "name": "_rule0",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [24, 7, 24, 9],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [24, 7, 24, 9],
+      "microseconds": 1000000,
+      "original": "1s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [24, 12, 24, 15],
+        "obj": {
+         "_": "VarRef",
+         "region": [24, 12, 24, 15],
+         "name": "led"
+        },
+        "method": "toggle",
+        "args": []
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "TryBlock",
+    "region": [0, 0, 0, 0],
+    "body": [
+     {
+      "_": "TryBlock",
+      "region": [0, 0, 0, 0],
+      "body": [
+       {
+        "_": "TryBlock",
+        "region": [0, 0, 0, 0],
+        "body": [
+         {
+          "_": "TryBlock",
+          "region": [0, 0, 0, 0],
+          "body": [
+           {
+            "_": "TryBlock",
+            "region": [0, 0, 0, 0],
+            "body": [
+             {
+              "_": "TryBlock",
+              "region": [0, 0, 0, 0],
+              "body": [
+               {
+                "_": "TryBlock",
+                "region": [0, 0, 0, 0],
+                "body": [
+                 {
+                  "_": "TryBlock",
+                  "region": [0, 0, 0, 0],
+                  "body": [
+                   {
+                    "_": "TryBlock",
+                    "region": [0, 0, 0, 0],
+                    "body": [
+                     {
+                      "_": "TryBlock",
+                      "region": [0, 0, 0, 0],
+                      "body": [
+                       {
+                        "_": "ExprStmt",
+                        "region": [0, 0, 0, 0],
+                        "expr": {
+                         "_": "MethodCall",
+                         "region": [13, 3, 13, 7],
+                         "obj": {
+                          "_": "VarRef",
+                          "region": [13, 3, 13, 7],
+                          "name": "wifi"
+                         },
+                         "method": "connect",
+                         "args": [
+                          {
+                           "_": "StringLiteral",
+                           "region": [13, 16, 13, 19],
+                           "value": "a"
+                          },
+                          {
+                           "_": "StringLiteral",
+                           "region": [13, 20, 13, 23],
+                           "value": "b"
+                          }
+                         ]
+                        }
+                       }
+                      ],
+                      "policy": "retry",
+                      "retry_limit": 2,
+                      "terminal": "skip",
+                      "try_id": 0,
+                      "needs_context_lift": false,
+                      "is_yield_point": false
+                     }
+                    ],
+                    "policy": "retry",
+                    "retry_limit": 2,
+                    "terminal": "skip",
+                    "try_id": 0,
+                    "needs_context_lift": false,
+                    "is_yield_point": false
+                   }
+                  ],
+                  "policy": "retry",
+                  "retry_limit": 2,
+                  "terminal": "skip",
+                  "try_id": 0,
+                  "needs_context_lift": false,
+                  "is_yield_point": false
+                 }
+                ],
+                "policy": "retry",
+                "retry_limit": 2,
+                "terminal": "skip",
+                "try_id": 0,
+                "needs_context_lift": false,
+                "is_yield_point": false
+               }
+              ],
+              "policy": "retry",
+              "retry_limit": 2,
+              "terminal": "skip",
+              "try_id": 0,
+              "needs_context_lift": false,
+              "is_yield_point": false
+             }
+            ],
+            "policy": "retry",
+            "retry_limit": 2,
+            "terminal": "skip",
+            "try_id": 0,
+            "needs_context_lift": false,
+            "is_yield_point": false
+           }
+          ],
+          "policy": "retry",
+          "retry_limit": 2,
+          "terminal": "skip",
+          "try_id": 0,
+          "needs_context_lift": false,
+          "is_yield_point": false
+         }
+        ],
+        "policy": "retry",
+        "retry_limit": 2,
+        "terminal": "skip",
+        "try_id": 0,
+        "needs_context_lift": false,
+        "is_yield_point": false
+       }
+      ],
+      "policy": "retry",
+      "retry_limit": 2,
+      "terminal": "skip",
+      "try_id": 0,
+      "needs_context_lift": false,
+      "is_yield_point": false
+     }
+    ],
+    "policy": "retry",
+    "retry_limit": 2,
+    "terminal": "skip",
+    "try_id": 0,
+    "needs_context_lift": false,
+    "is_yield_point": false
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

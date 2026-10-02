@@ -1,0 +1,14 @@
+[
+  {
+    "severity": "warning",
+    "category": "STATE MACHINE WARNING",
+    "message": "State `dead` in machine `Bad` has no outgoing transitions (dead-end state).",
+    "hint": "Add a transition or mark with @terminal if intentional.",
+    "region": [
+      6,
+      11,
+      6,
+      15
+    ]
+  }
+]

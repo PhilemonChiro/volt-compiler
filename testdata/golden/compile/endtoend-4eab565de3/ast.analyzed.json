@@ -1,0 +1,70 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "TimeoutBlock",
+    "region": [3, 13, 3, 21],
+    "duration": {
+     "_": "DurationLiteral",
+     "region": [3, 13, 3, 21],
+     "microseconds": 5000000,
+     "original": "5seconds"
+    },
+    "try_body": [
+     {
+      "_": "ExprStmt",
+      "region": [0, 0, 0, 0],
+      "expr": {
+       "_": "FuncCall",
+       "region": [4, 9, 4, 12],
+       "name": "log",
+       "args": [
+        {
+         "_": "StringLiteral",
+         "region": [4, 13, 4, 17],
+         "value": "ok"
+        }
+       ]
+      }
+     }
+    ],
+    "fallback_body": [
+     {
+      "_": "ExprStmt",
+      "region": [0, 0, 0, 0],
+      "expr": {
+       "_": "FuncCall",
+       "region": [6, 9, 6, 12],
+       "name": "log",
+       "args": [
+        {
+         "_": "StringLiteral",
+         "region": [6, 13, 6, 22],
+         "value": "timeout"
+        }
+       ]
+      }
+     }
+    ]
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

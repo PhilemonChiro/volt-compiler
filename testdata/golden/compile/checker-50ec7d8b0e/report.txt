@@ -1,0 +1,8 @@
+
+[red bold]-- ARGUMENT ERROR -- main.volt:6[/red bold]
+
+`add` expects 2 arguments, got 1.
+
+ [dim]5 |[/dim] setup {
+ [dim]6 |[/dim]     let x = add(1)
+ [dim]  |[/dim] [red]            ^^^[/red]

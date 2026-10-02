@@ -1,0 +1,14 @@
+[
+  {
+    "severity": "error",
+    "category": "HARDWARE ERROR",
+    "message": "GPIO 34 has no internal pull-up resistor (input-only pins 34-39).",
+    "hint": "Use an external pull-up resistor, or use a different pin.",
+    "region": [
+      2,
+      9,
+      2,
+      12
+    ]
+  }
+]

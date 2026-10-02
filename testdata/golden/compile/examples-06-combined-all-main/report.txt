@@ -1,0 +1,26 @@
+
+[yellow bold]-- HARDWARE WARNING -- main.volt:4[/yellow bold]
+
+Strapping pin: GPIO 2 must be LOW during boot for flash programming.
+
+ [dim]3 |[/dim] hardware {
+ [dim]4 |[/dim]     pin led = 2
+ [dim]  |[/dim] [yellow]        ^^^[/yellow]
+
+
+[yellow bold]-- HARDWARE WARNING -- main.volt:5[/yellow bold]
+
+Strapping pin: GPIO 5 controls boot debug output. Usually safe for general use.
+
+ [dim]4 |[/dim]     pin led = 2
+ [dim]5 |[/dim]     pin motor: PWM = 5
+ [dim]  |[/dim] [yellow]        ^^^^^[/yellow]
+
+
+[yellow bold]-- STATE MACHINE WARNING -- main.volt:41[/yellow bold]
+
+State `low_power` in machine `power_manager` is unreachable from initial state `normal`.
+
+ [dim]40 |[/dim] 
+ [dim]41 |[/dim]     state low_power {
+ [dim]   |[/dim] [yellow]          ^^^^^^^^^[/yellow]

@@ -1,0 +1,187 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [4, 9, 4, 18],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [4, 9, 4, 18],
+    "name": "servo_pin",
+    "mode": "PWM",
+    "gpio": 13
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [
+  {
+   "_": "MachineDecl",
+   "region": [7, 9, 7, 12],
+   "name": "arm",
+   "states": [
+    {
+     "_": "StateDecl",
+     "region": [8, 11, 8, 15],
+     "name": "home",
+     "is_initial": true,
+     "enter_body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [10, 13, 10, 22],
+        "obj": {
+         "_": "VarRef",
+         "region": [10, 13, 10, 22],
+         "name": "servo_pin"
+        },
+        "method": "set_pwm",
+        "args": [
+         {
+          "_": "IntLiteral",
+          "region": [10, 31, 10, 32],
+          "value": 0
+         }
+        ]
+       }
+      }
+     ],
+     "exit_body": [],
+     "transitions": [],
+     "timed_transitions": [
+      {
+       "_": "TimedTransition",
+       "region": [12, 15, 12, 17],
+       "duration": {
+        "_": "DurationLiteral",
+        "region": [12, 15, 12, 17],
+        "microseconds": 3000000,
+        "original": "3s"
+       },
+       "target_state": "sweep_right",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "body": []
+    },
+    {
+     "_": "StateDecl",
+     "region": [14, 11, 14, 22],
+     "name": "sweep_right",
+     "is_initial": false,
+     "enter_body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [16, 13, 16, 22],
+        "obj": {
+         "_": "VarRef",
+         "region": [16, 13, 16, 22],
+         "name": "servo_pin"
+        },
+        "method": "set_pwm",
+        "args": [
+         {
+          "_": "IntLiteral",
+          "region": [16, 31, 16, 34],
+          "value": 255
+         }
+        ]
+       }
+      }
+     ],
+     "exit_body": [],
+     "transitions": [],
+     "timed_transitions": [
+      {
+       "_": "TimedTransition",
+       "region": [18, 15, 18, 17],
+       "duration": {
+        "_": "DurationLiteral",
+        "region": [18, 15, 18, 17],
+        "microseconds": 2000000,
+        "original": "2s"
+       },
+       "target_state": "sweep_left",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "body": []
+    },
+    {
+     "_": "StateDecl",
+     "region": [20, 11, 20, 21],
+     "name": "sweep_left",
+     "is_initial": false,
+     "enter_body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [22, 13, 22, 22],
+        "obj": {
+         "_": "VarRef",
+         "region": [22, 13, 22, 22],
+         "name": "servo_pin"
+        },
+        "method": "set_pwm",
+        "args": [
+         {
+          "_": "IntLiteral",
+          "region": [22, 31, 22, 32],
+          "value": 0
+         }
+        ]
+       }
+      }
+     ],
+     "exit_body": [],
+     "transitions": [],
+     "timed_transitions": [
+      {
+       "_": "TimedTransition",
+       "region": [24, 15, 24, 17],
+       "duration": {
+        "_": "DurationLiteral",
+        "region": [24, 15, 24, 17],
+        "microseconds": 2000000,
+        "original": "2s"
+       },
+       "target_state": "home",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "body": []
+    }
+   ],
+   "variables": []
+  }
+ ],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

@@ -1,0 +1,50 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "MethodCall",
+     "region": [3, 5, 3, 12],
+     "obj": {
+      "_": "VarRef",
+      "region": [3, 5, 3, 12],
+      "name": "storage"
+     },
+     "method": "save",
+     "args": [
+      {
+       "_": "StringLiteral",
+       "region": [3, 18, 3, 25],
+       "value": "count"
+      },
+      {
+       "_": "IntLiteral",
+       "region": [3, 27, 3, 29],
+       "value": 42
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

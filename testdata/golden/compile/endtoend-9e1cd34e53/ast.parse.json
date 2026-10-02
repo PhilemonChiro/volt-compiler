@@ -1,0 +1,119 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "VarDecl",
+    "region": [3, 9, 3, 10],
+    "name": "x",
+    "type_name": null,
+    "value": {
+     "_": "IntLiteral",
+     "region": [3, 13, 3, 15],
+     "value": 42
+    },
+    "mutable": false,
+    "shared": false,
+    "needs_lifting": false
+   },
+   {
+    "_": "VarDecl",
+    "region": [4, 9, 4, 11],
+    "name": "pi",
+    "type_name": null,
+    "value": {
+     "_": "FloatLiteral",
+     "region": [4, 14, 4, 18],
+     "value": 3.14
+    },
+    "mutable": false,
+    "shared": false,
+    "needs_lifting": false
+   },
+   {
+    "_": "VarDecl",
+    "region": [5, 9, 5, 13],
+    "name": "name",
+    "type_name": null,
+    "value": {
+     "_": "StringLiteral",
+     "region": [5, 16, 5, 23],
+     "value": "hello"
+    },
+    "mutable": false,
+    "shared": false,
+    "needs_lifting": false
+   },
+   {
+    "_": "VarDecl",
+    "region": [6, 9, 6, 13],
+    "name": "flag",
+    "type_name": null,
+    "value": {
+     "_": "BoolLiteral",
+     "region": [0, 0, 0, 0],
+     "value": true
+    },
+    "mutable": false,
+    "shared": false,
+    "needs_lifting": false
+   },
+   {
+    "_": "VarDecl",
+    "region": [7, 9, 7, 14],
+    "name": "count",
+    "type_name": null,
+    "value": {
+     "_": "IntLiteral",
+     "region": [7, 17, 7, 18],
+     "value": 0
+    },
+    "mutable": true,
+    "shared": false,
+    "needs_lifting": false
+   },
+   {
+    "_": "AssignExpr",
+    "region": [8, 5, 8, 10],
+    "target": {
+     "_": "VarRef",
+     "region": [8, 5, 8, 10],
+     "name": "count"
+    },
+    "value": {
+     "_": "BinaryExpr",
+     "region": [8, 13, 8, 18],
+     "left": {
+      "_": "VarRef",
+      "region": [8, 13, 8, 18],
+      "name": "count"
+     },
+     "op": "+",
+     "right": {
+      "_": "IntLiteral",
+      "region": [8, 21, 8, 22],
+      "value": 1
+     },
+     "result_type": null
+    }
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

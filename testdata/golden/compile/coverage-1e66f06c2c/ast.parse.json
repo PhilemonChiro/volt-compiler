@@ -1,0 +1,105 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [4, 6, 4, 9],
+   "name": "net",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [5, 11, 5, 13],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [5, 11, 5, 13],
+      "microseconds": 5000000,
+      "original": "5s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "IfStmt",
+       "region": [6, 12, 6, 18],
+       "condition": {
+        "_": "BinaryExpr",
+        "region": [6, 12, 6, 18],
+        "left": {
+         "_": "MethodCall",
+         "region": [6, 12, 6, 18],
+         "obj": {
+          "_": "VarRef",
+          "region": [6, 12, 6, 18],
+          "name": "system"
+         },
+         "method": "free_heap",
+         "args": []
+        },
+        "op": ">",
+        "right": {
+         "_": "IntLiteral",
+         "region": [6, 33, 6, 38],
+         "value": 10000
+        },
+        "result_type": null
+       },
+       "then_body": [
+        {
+         "_": "ExprStmt",
+         "region": [0, 0, 0, 0],
+         "expr": {
+          "_": "MethodCall",
+          "region": [7, 13, 7, 17],
+          "obj": {
+           "_": "VarRef",
+           "region": [7, 13, 7, 17],
+           "name": "wifi"
+          },
+          "method": "connect",
+          "args": [
+           {
+            "_": "StringLiteral",
+            "region": [7, 26, 7, 32],
+            "value": "ssid"
+           },
+           {
+            "_": "StringLiteral",
+            "region": [7, 34, 7, 40],
+            "value": "pass"
+           }
+          ]
+         }
+        }
+       ],
+       "else_body": null
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

@@ -1,0 +1,193 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [4, 9, 5, 15],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [4, 9, 4, 12],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   },
+   {
+    "_": "PinDecl",
+    "region": [5, 9, 5, 15],
+    "name": "buzzer",
+    "mode": "PWM",
+    "gpio": 5
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [8, 6, 8, 15],
+   "name": "heartbeat",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [9, 11, 9, 13],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [9, 11, 9, 13],
+      "microseconds": 1000000,
+      "original": "1s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "OrExpr",
+        "region": [10, 9, 10, 12],
+        "expr": {
+         "_": "MethodCall",
+         "region": [10, 9, 10, 12],
+         "obj": {
+          "_": "VarRef",
+          "region": [10, 9, 10, 12],
+          "name": "led"
+         },
+         "method": "toggle",
+         "args": []
+        },
+        "fallback": null,
+        "kind": "skip"
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  },
+  {
+   "_": "TaskDecl",
+   "region": [14, 6, 14, 11],
+   "name": "alert",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [15, 11, 15, 13],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [15, 11, 15, 13],
+      "microseconds": 5000000,
+      "original": "5s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "OrExpr",
+        "region": [16, 9, 16, 15],
+        "expr": {
+         "_": "MethodCall",
+         "region": [16, 9, 16, 15],
+         "obj": {
+          "_": "VarRef",
+          "region": [16, 9, 16, 15],
+          "name": "buzzer"
+         },
+         "method": "set_pwm",
+         "args": [
+          {
+           "_": "IntLiteral",
+           "region": [16, 24, 16, 27],
+           "value": 128
+          }
+         ]
+        },
+        "fallback": {
+         "_": "IntLiteral",
+         "region": [16, 38, 16, 39],
+         "value": 3
+        },
+        "kind": "retry"
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [17, 9, 17, 14],
+        "name": "sleep",
+        "args": [
+         {
+          "_": "DurationLiteral",
+          "region": [17, 15, 17, 20],
+          "microseconds": 200000,
+          "original": "200ms"
+         }
+        ]
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "OrExpr",
+        "region": [18, 9, 18, 15],
+        "expr": {
+         "_": "MethodCall",
+         "region": [18, 9, 18, 15],
+         "obj": {
+          "_": "VarRef",
+          "region": [18, 9, 18, 15],
+          "name": "buzzer"
+         },
+         "method": "set_pwm",
+         "args": [
+          {
+           "_": "IntLiteral",
+           "region": [18, 24, 18, 25],
+           "value": 0
+          }
+         ]
+        },
+        "fallback": null,
+        "kind": "skip"
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

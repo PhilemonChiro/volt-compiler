@@ -1,0 +1,10 @@
+
+[red bold]-- TASK ERROR -- recursive_yield.volt:2[/red bold]
+
+Function `retry` contains a yield (sleep/every/on) and calls itself recursively. Recursive yielding functions cannot be inlined into protothreads.
+
+ [dim]1 |[/dim] 
+ [dim]2 |[/dim] func retry(n: int) {
+ [dim]  |[/dim] [red]     ^^^^^[/red]
+
+[cyan]Hint: Rewrite as a while loop instead of recursion.[/cyan]

@@ -1,0 +1,53 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "VarDecl",
+    "region": [4, 9, 4, 10],
+    "name": "y",
+    "type_name": "int",
+    "value": {
+     "_": "BinaryExpr",
+     "region": [4, 18, 4, 19],
+     "left": {
+      "_": "VarRef",
+      "region": [4, 18, 4, 19],
+      "name": "x"
+     },
+     "op": "+",
+     "right": {
+      "_": "IntLiteral",
+      "region": [4, 22, 4, 23],
+      "value": 1
+     },
+     "result_type": null
+    },
+    "mutable": true,
+    "shared": false,
+    "needs_lifting": false
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

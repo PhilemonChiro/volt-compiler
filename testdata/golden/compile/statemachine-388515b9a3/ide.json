@@ -1,0 +1,126 @@
+{
+ "compile_full": {
+  "diagnostics": [],
+  "pins": [],
+  "devices": [],
+  "buses": [],
+  "tasks": [],
+  "machines": [
+   {
+    "name": "Counter",
+    "states": [
+     "counting"
+    ],
+    "line": 2
+   }
+  ],
+  "channels": [],
+  "enums": [],
+  "chip": ""
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "machine Counter {\n    initial state counting {\n        after 1seconds -> counting\n    }\n}\n",
+ "find_symbols": [
+  {
+   "name": "Counter",
+   "kind": "machine",
+   "def_line": 2,
+   "def_col": 9,
+   "refs": []
+  },
+  {
+   "name": "counting",
+   "kind": "state",
+   "def_line": 6,
+   "def_col": 19,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": [
+   {
+    "name": "Counter",
+    "mermaid": "stateDiagram-v2\n    [*] --> counting\n    counting --> counting : after 1seconds",
+    "states": [
+     {
+      "name": "counting",
+      "line": 6
+     }
+    ]
+   }
+  ]
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_Counter[[\"Counter\"]]\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_Counter machine;",
+  "units": [
+   {
+    "id": "u_Counter",
+    "name": "Counter",
+    "line": 2
+   }
+  ],
+  "loops": [],
+  "edges": [],
+  "nodes": {
+   "u_Counter": {
+    "kind": "machine",
+    "label": "Counter",
+    "line": 2,
+    "detail": "1 state"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_Counter[[\"Counter\"]]\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_Counter machine;",
+  "units": [
+   {
+    "id": "u_Counter",
+    "name": "Counter",
+    "line": 2
+   }
+  ],
+  "loops": [],
+  "edges": [],
+  "nodes": {
+   "u_Counter": {
+    "kind": "machine",
+    "label": "Counter",
+    "line": 2,
+    "detail": "1 state"
+   }
+  }
+ }
+}

@@ -1,0 +1,14 @@
+[
+  {
+    "severity": "error",
+    "category": "SYNTAX ERROR",
+    "message": "Error trying to process rule \"try_block\":",
+    "hint": null,
+    "region": [
+      1,
+      1,
+      1,
+      1
+    ]
+  }
+]

@@ -1,0 +1,103 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [
+  {
+   "_": "MachineDecl",
+   "region": [2, 9, 2, 12],
+   "name": "Bad",
+   "states": [
+    {
+     "_": "StateDecl",
+     "region": [3, 19, 3, 20],
+     "name": "a",
+     "is_initial": true,
+     "enter_body": [],
+     "exit_body": [],
+     "transitions": [
+      {
+       "_": "StateTransition",
+       "region": [4, 12, 4, 13],
+       "event": {
+        "_": "FuncCall",
+        "region": [4, 12, 4, 13],
+        "name": "x",
+        "args": []
+       },
+       "target_state": "b",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "timed_transitions": [],
+     "body": []
+    },
+    {
+     "_": "StateDecl",
+     "region": [6, 11, 6, 12],
+     "name": "b",
+     "is_initial": false,
+     "enter_body": [],
+     "exit_body": [],
+     "transitions": [
+      {
+       "_": "StateTransition",
+       "region": [7, 12, 7, 13],
+       "event": {
+        "_": "FuncCall",
+        "region": [7, 12, 7, 13],
+        "name": "y",
+        "args": []
+       },
+       "target_state": "a",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "timed_transitions": [],
+     "body": []
+    },
+    {
+     "_": "StateDecl",
+     "region": [9, 11, 9, 17],
+     "name": "orphan",
+     "is_initial": false,
+     "enter_body": [],
+     "exit_body": [],
+     "transitions": [
+      {
+       "_": "StateTransition",
+       "region": [10, 12, 10, 13],
+       "event": {
+        "_": "FuncCall",
+        "region": [10, 12, 10, 13],
+        "name": "z",
+        "args": []
+       },
+       "target_state": "a",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "timed_transitions": [],
+     "body": []
+    }
+   ],
+   "variables": []
+  }
+ ],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

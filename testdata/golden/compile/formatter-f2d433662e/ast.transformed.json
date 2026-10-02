@@ -1,0 +1,143 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [3, 14, 3, 17],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [3, 14, 3, 17],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [4, 6, 4, 11],
+   "name": "blink",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [4, 18, 4, 23],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [4, 18, 4, 23],
+      "microseconds": 500000,
+      "original": "500ms"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [4, 24, 4, 27],
+        "obj": {
+         "_": "VarRef",
+         "region": [4, 24, 4, 27],
+         "name": "led"
+        },
+        "method": "toggle",
+        "args": []
+       }
+      }
+     ],
+     "yield_label": 1
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "VarDecl",
+    "region": [5, 11, 5, 12],
+    "name": "x",
+    "type_name": "int",
+    "value": {
+     "_": "IntLiteral",
+     "region": [5, 17, 5, 18],
+     "value": 0
+    },
+    "mutable": true,
+    "shared": false,
+    "needs_lifting": false
+   },
+   {
+    "_": "AssignExpr",
+    "region": [6, 1, 6, 2],
+    "target": {
+     "_": "VarRef",
+     "region": [6, 1, 6, 2],
+     "name": "x"
+    },
+    "value": {
+     "_": "BinaryExpr",
+     "region": [6, 3, 6, 4],
+     "left": {
+      "_": "VarRef",
+      "region": [6, 3, 6, 4],
+      "name": "x"
+     },
+     "op": "+",
+     "right": {
+      "_": "IntLiteral",
+      "region": [6, 5, 6, 6],
+      "value": 1
+     },
+     "result_type": "int"
+    }
+   },
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "FuncCall",
+     "region": [7, 1, 7, 4],
+     "name": "log",
+     "args": [
+      {
+       "_": "StringLiteral",
+       "region": [7, 5, 7, 10],
+       "value": "app"
+      },
+      {
+       "_": "StringLiteral",
+       "region": [7, 11, 7, 17],
+       "value": "done"
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

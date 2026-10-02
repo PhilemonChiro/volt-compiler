@@ -1,0 +1,51 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "WhileStmt",
+    "region": [3, 11, 3, 12],
+    "condition": {
+     "_": "IntLiteral",
+     "region": [3, 11, 3, 12],
+     "value": 1
+    },
+    "body": [
+     {
+      "_": "ExprStmt",
+      "region": [0, 0, 0, 0],
+      "expr": {
+       "_": "FuncCall",
+       "region": [4, 9, 4, 12],
+       "name": "log",
+       "args": [
+        {
+         "_": "StringLiteral",
+         "region": [4, 13, 4, 19],
+         "value": "nope"
+        }
+       ]
+      }
+     }
+    ]
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

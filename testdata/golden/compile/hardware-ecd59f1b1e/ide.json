@@ -1,0 +1,76 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 2,
+    "col": 9,
+    "message": "GPIO 9 is connected to the SPI flash chip. Using it will crash the ESP32.",
+    "severity": "error",
+    "hint": "Available output pins: 2, 4, 5, 12, 13, 14, 15, 16, 17, 18, 19, 21, 22, 23, 25, 26, 27, 32, 33"
+   }
+  ],
+  "pins": [
+   {
+    "name": "x",
+    "mode": "Output",
+    "gpio": 9
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": ""
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ]
+ ],
+ "format_code": "hardware {\n    pin x: Output = 9\n}\n",
+ "find_symbols": [
+  {
+   "name": "x",
+   "kind": "pin",
+   "def_line": 2,
+   "def_col": 9,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;",
+  "units": [],
+  "loops": [],
+  "edges": [],
+  "nodes": {}
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;",
+  "units": [],
+  "loops": [],
+  "edges": [],
+  "nodes": {}
+ }
+}

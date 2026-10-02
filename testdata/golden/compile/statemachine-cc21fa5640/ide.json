@@ -1,0 +1,269 @@
+{
+ "compile_full": {
+  "diagnostics": [],
+  "pins": [],
+  "devices": [],
+  "buses": [],
+  "tasks": [],
+  "machines": [
+   {
+    "name": "A",
+    "states": [
+     "x",
+     "y"
+    ],
+    "line": 2
+   },
+   {
+    "name": "B",
+    "states": [
+     "p",
+     "q"
+    ],
+    "line": 10
+   }
+  ],
+  "channels": [],
+  "enums": [],
+  "chip": ""
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "machine A {\n    initial state x {\n        on go() -> y\n    }\n\n    state y {\n        on back() -> x\n    }\n}\n\nmachine B {\n    initial state p {\n        on go() -> q\n    }\n\n    state q {\n        on back() -> p\n    }\n}\n",
+ "find_symbols": [
+  {
+   "name": "A",
+   "kind": "machine",
+   "def_line": 2,
+   "def_col": 9,
+   "refs": []
+  },
+  {
+   "name": "x",
+   "kind": "state",
+   "def_line": 3,
+   "def_col": 19,
+   "refs": []
+  },
+  {
+   "name": "y",
+   "kind": "state",
+   "def_line": 6,
+   "def_col": 11,
+   "refs": []
+  },
+  {
+   "name": "B",
+   "kind": "machine",
+   "def_line": 10,
+   "def_col": 9,
+   "refs": []
+  },
+  {
+   "name": "p",
+   "kind": "state",
+   "def_line": 11,
+   "def_col": 19,
+   "refs": []
+  },
+  {
+   "name": "q",
+   "kind": "state",
+   "def_line": 14,
+   "def_col": 11,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": [
+   {
+    "name": "A",
+    "mermaid": "stateDiagram-v2\n    [*] --> x\n    x --> y : go\n    y --> x : back",
+    "states": [
+     {
+      "name": "x",
+      "line": 3
+     },
+     {
+      "name": "y",
+      "line": 6
+     }
+    ]
+   },
+   {
+    "name": "B",
+    "mermaid": "stateDiagram-v2\n    [*] --> p\n    p --> q : go\n    q --> p : back",
+    "states": [
+     {
+      "name": "p",
+      "line": 11
+     },
+     {
+      "name": "q",
+      "line": 14
+     }
+    ]
+   }
+  ]
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_A[[\"A\"]]\n    s_go{{\"go\"}}\n    s_back{{\"back\"}}\n    u_B[[\"B\"]]\n    u_A -->|go| s_go\n    u_A -->|back| s_back\n    u_B -->|go| s_go\n    u_B -->|back| s_back\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_A machine;\n    class s_go service;\n    class s_back service;\n    class u_B machine;",
+  "units": [
+   {
+    "id": "u_A",
+    "name": "A",
+    "line": 2
+   },
+   {
+    "id": "u_B",
+    "name": "B",
+    "line": 10
+   }
+  ],
+  "loops": [],
+  "edges": [
+   {
+    "drive": "machine",
+    "src": "u_A",
+    "dst": "s_go"
+   },
+   {
+    "drive": "machine",
+    "src": "u_A",
+    "dst": "s_back"
+   },
+   {
+    "drive": "machine",
+    "src": "u_B",
+    "dst": "s_go"
+   },
+   {
+    "drive": "machine",
+    "src": "u_B",
+    "dst": "s_back"
+   }
+  ],
+  "nodes": {
+   "u_A": {
+    "kind": "machine",
+    "label": "A",
+    "line": 2,
+    "detail": "2 states"
+   },
+   "s_go": {
+    "kind": "service",
+    "label": "go",
+    "line": null,
+    "detail": "go"
+   },
+   "s_back": {
+    "kind": "service",
+    "label": "back",
+    "line": null,
+    "detail": "back"
+   },
+   "u_B": {
+    "kind": "machine",
+    "label": "B",
+    "line": 10,
+    "detail": "2 states"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_A[[\"A\"]]\n    s_go{{\"go\"}}\n    s_back{{\"back\"}}\n    u_B[[\"B\"]]\n    u_A -->|go| s_go\n    u_A -->|back| s_back\n    u_B -->|go| s_go\n    u_B -->|back| s_back\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_A machine;\n    class s_go service;\n    class s_back service;\n    class u_B machine;",
+  "units": [
+   {
+    "id": "u_A",
+    "name": "A",
+    "line": 2
+   },
+   {
+    "id": "u_B",
+    "name": "B",
+    "line": 10
+   }
+  ],
+  "loops": [],
+  "edges": [
+   {
+    "drive": "machine",
+    "src": "u_A",
+    "dst": "s_go"
+   },
+   {
+    "drive": "machine",
+    "src": "u_A",
+    "dst": "s_back"
+   },
+   {
+    "drive": "machine",
+    "src": "u_B",
+    "dst": "s_go"
+   },
+   {
+    "drive": "machine",
+    "src": "u_B",
+    "dst": "s_back"
+   }
+  ],
+  "nodes": {
+   "u_A": {
+    "kind": "machine",
+    "label": "A",
+    "line": 2,
+    "detail": "2 states"
+   },
+   "s_go": {
+    "kind": "service",
+    "label": "go",
+    "line": null,
+    "detail": "go"
+   },
+   "s_back": {
+    "kind": "service",
+    "label": "back",
+    "line": null,
+    "detail": "back"
+   },
+   "u_B": {
+    "kind": "machine",
+    "label": "B",
+    "line": 10,
+    "detail": "2 states"
+   }
+  }
+ }
+}

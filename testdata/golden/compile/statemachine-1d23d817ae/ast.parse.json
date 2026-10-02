@@ -1,0 +1,78 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [
+  {
+   "_": "MachineDecl",
+   "region": [2, 9, 2, 13],
+   "name": "Auto",
+   "states": [
+    {
+     "_": "StateDecl",
+     "region": [3, 11, 3, 16],
+     "name": "first",
+     "is_initial": true,
+     "enter_body": [],
+     "exit_body": [],
+     "transitions": [
+      {
+       "_": "StateTransition",
+       "region": [4, 12, 4, 13],
+       "event": {
+        "_": "FuncCall",
+        "region": [4, 12, 4, 13],
+        "name": "x",
+        "args": []
+       },
+       "target_state": "second",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "timed_transitions": [],
+     "body": []
+    },
+    {
+     "_": "StateDecl",
+     "region": [6, 11, 6, 17],
+     "name": "second",
+     "is_initial": false,
+     "enter_body": [],
+     "exit_body": [],
+     "transitions": [
+      {
+       "_": "StateTransition",
+       "region": [7, 12, 7, 13],
+       "event": {
+        "_": "FuncCall",
+        "region": [7, 12, 7, 13],
+        "name": "y",
+        "args": []
+       },
+       "target_state": "first",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "timed_transitions": [],
+     "body": []
+    }
+   ],
+   "variables": []
+  }
+ ],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

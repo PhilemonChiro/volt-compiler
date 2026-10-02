@@ -1,0 +1,14 @@
+[
+  {
+    "severity": "error",
+    "category": "SYNTAX ERROR",
+    "message": "Unexpected token Token('NAME', 'wifi') at line 3, column 25.",
+    "hint": null,
+    "region": [
+      1,
+      1,
+      1,
+      1
+    ]
+  }
+]

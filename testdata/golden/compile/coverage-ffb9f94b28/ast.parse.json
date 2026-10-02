@@ -1,0 +1,84 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 12],
+  "target": "rp2040"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [3, 16, 3, 21],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [3, 16, 3, 21],
+    "name": "motor",
+    "mode": "PWM",
+    "gpio": 5
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [4, 7, 4, 10],
+   "name": "_rule0",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [4, 7, 4, 10],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [4, 7, 4, 10],
+      "microseconds": 1000,
+      "original": "1ms"
+     },
+     "strict": true,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [5, 5, 5, 10],
+        "obj": {
+         "_": "VarRef",
+         "region": [5, 5, 5, 10],
+         "name": "motor"
+        },
+        "method": "set_pwm",
+        "args": [
+         {
+          "_": "IntLiteral",
+          "region": [5, 19, 5, 20],
+          "value": 0
+         }
+        ]
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "",
+   "crossing_vars": [],
+   "has_strict": false
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

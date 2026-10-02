@@ -1,0 +1,14 @@
+[
+  {
+    "severity": "error",
+    "category": "TYPE MISMATCH",
+    "message": "Variable `x` declared as `float` but assigned `bool`.",
+    "hint": "Change the type to `bool` or convert the value with `float(value)`.",
+    "region": [
+      3,
+      9,
+      3,
+      10
+    ]
+  }
+]

@@ -1,0 +1,21 @@
+
+[yellow bold]-- TASK WARNING -- sensor_in_critical.volt:5[/yellow bold]
+
+Critical task `pid` estimated at ~10000 cycles (~41us at 240MHz), may exceed ISR time budget. Top costs: bme.temperature()(~10000 cycles)
+
+ [dim]4 |[/dim] }
+ [dim]5 |[/dim] task pid {
+ [dim]  |[/dim] [yellow]     ^^^[/yellow]
+
+[cyan]Hint: Keep critical tasks under ~20us. Move heavy work to a Background task.[/cyan]
+
+
+[red bold]-- TASK ERROR -- sensor_in_critical.volt:7[/red bold]
+
+Critical task `pid` calls `bme.temperature()` which is not safe in ISR context (may block on I2C/SPI/UART).
+
+ [dim]6 |[/dim]     every 1ms strict {
+ [dim]7 |[/dim]         bme.temperature()
+ [dim]  |[/dim] [red]        ^^^[/red]
+
+[cyan]Hint: Move this to a Background or Priority task. Share data with the critical task via a volatile variable.[/cyan]

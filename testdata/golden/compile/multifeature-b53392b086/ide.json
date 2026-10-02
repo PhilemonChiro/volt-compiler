@@ -1,0 +1,208 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 2,
+    "col": 6,
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "severity": "warning",
+    "hint": "The chip declaration will move to volt.toml in a future version."
+   }
+  ],
+  "pins": [
+   {
+    "name": "servo_pin",
+    "mode": "PWM",
+    "gpio": 13
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [],
+  "machines": [
+   {
+    "name": "arm",
+    "states": [
+     "home",
+     "sweep_right",
+     "sweep_left"
+    ],
+    "line": 7
+   }
+  ],
+  "channels": [],
+  "enums": [],
+  "chip": "esp32"
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "chip esp32\n\nhardware {\n    pin servo_pin: PWM = 13\n}\n\nmachine arm {\n    initial state home {\n        enter { servo_pin.set_pwm(0) }\n        after 3s -> sweep_right\n    }\n\n    state sweep_right {\n        enter { servo_pin.set_pwm(255) }\n        after 2s -> sweep_left\n    }\n\n    state sweep_left {\n        enter { servo_pin.set_pwm(0) }\n        after 2s -> home\n    }\n}\n",
+ "find_symbols": [
+  {
+   "name": "servo_pin",
+   "kind": "pin",
+   "def_line": 4,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 10,
+     "col": 13
+    },
+    {
+     "line": 16,
+     "col": 13
+    },
+    {
+     "line": 22,
+     "col": 13
+    }
+   ]
+  },
+  {
+   "name": "arm",
+   "kind": "machine",
+   "def_line": 7,
+   "def_col": 9,
+   "refs": []
+  },
+  {
+   "name": "home",
+   "kind": "state",
+   "def_line": 8,
+   "def_col": 11,
+   "refs": []
+  },
+  {
+   "name": "sweep_right",
+   "kind": "state",
+   "def_line": 14,
+   "def_col": 11,
+   "refs": []
+  },
+  {
+   "name": "sweep_left",
+   "kind": "state",
+   "def_line": 20,
+   "def_col": 11,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": [
+   {
+    "name": "arm",
+    "mermaid": "stateDiagram-v2\n    [*] --> home\n    home --> sweep_right : after 3s\n    sweep_right --> sweep_left : after 2s\n    sweep_left --> home : after 2s",
+    "states": [
+     {
+      "name": "home",
+      "line": 8
+     },
+     {
+      "name": "sweep_right",
+      "line": 14
+     },
+     {
+      "name": "sweep_left",
+      "line": 20
+     }
+    ]
+   }
+  ]
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_arm[[\"arm\"]]\n    p_servo_pin([\"servo_pin\"])\n    u_arm -->|set_pwm| p_servo_pin\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_arm machine;\n    class p_servo_pin pin;",
+  "units": [
+   {
+    "id": "u_arm",
+    "name": "arm",
+    "line": 7
+   }
+  ],
+  "loops": [],
+  "edges": [
+   {
+    "drive": "machine",
+    "src": "u_arm",
+    "dst": "p_servo_pin"
+   }
+  ],
+  "nodes": {
+   "u_arm": {
+    "kind": "machine",
+    "label": "arm",
+    "line": 7,
+    "detail": "3 states"
+   },
+   "p_servo_pin": {
+    "kind": "pin",
+    "label": "servo_pin",
+    "line": 4,
+    "detail": "PWM · GPIO 13"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_arm[[\"arm\"]]\n    p_servo_pin([\"servo_pin\"])\n    u_arm -->|set_pwm| p_servo_pin\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_arm machine;\n    class p_servo_pin pin;",
+  "units": [
+   {
+    "id": "u_arm",
+    "name": "arm",
+    "line": 7
+   }
+  ],
+  "loops": [],
+  "edges": [
+   {
+    "drive": "machine",
+    "src": "u_arm",
+    "dst": "p_servo_pin"
+   }
+  ],
+  "nodes": {
+   "u_arm": {
+    "kind": "machine",
+    "label": "arm",
+    "line": 7,
+    "detail": "3 states"
+   },
+   "p_servo_pin": {
+    "kind": "pin",
+    "label": "servo_pin",
+    "line": 4,
+    "detail": "PWM · GPIO 13"
+   }
+  }
+ }
+}

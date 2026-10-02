@@ -1,0 +1,41 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 13],
+  "target": "esp8266"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [4, 9, 4, 10],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [4, 9, 4, 10],
+    "name": "x",
+    "mode": "Output",
+    "gpio": 1
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": []
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

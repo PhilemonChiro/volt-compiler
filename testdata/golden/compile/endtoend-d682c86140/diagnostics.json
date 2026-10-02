@@ -1,0 +1,14 @@
+[
+  {
+    "severity": "error",
+    "category": "TASK ERROR",
+    "message": "Critical task `pid` calls `log()` which is not safe in ISR context (hardware timer interrupt).",
+    "hint": "Remove `log()` from this task, or remove `strict` to make it a Background task.",
+    "region": [
+      4,
+      9,
+      4,
+      12
+    ]
+  }
+]

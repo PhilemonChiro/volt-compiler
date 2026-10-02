@@ -1,0 +1,258 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 3,
+    "col": 9,
+    "message": "GPIO 2: GPIO 2 is a strapping pin. Must be LOW or floating for download mode.",
+    "severity": "warning",
+    "hint": ""
+   }
+  ],
+  "pins": [
+   {
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [],
+  "machines": [
+   {
+    "name": "Blinker",
+    "states": [
+     "off",
+     "on"
+    ],
+    "line": 5
+   }
+  ],
+  "channels": [],
+  "enums": [],
+  "chip": ""
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "hardware {\n    pin led: Output = 2\n}\n\nmachine Blinker {\n    initial state off {\n        enter { led.off() }\n        on activate() -> on\n    }\n\n    state on {\n        enter { led.on() }\n        exit { log(\"leaving on state\") }\n        on deactivate() -> off\n    }\n}\n",
+ "find_symbols": [
+  {
+   "name": "led",
+   "kind": "pin",
+   "def_line": 3,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 8,
+     "col": 13
+    },
+    {
+     "line": 14,
+     "col": 13
+    }
+   ]
+  },
+  {
+   "name": "Blinker",
+   "kind": "machine",
+   "def_line": 5,
+   "def_col": 9,
+   "refs": []
+  },
+  {
+   "name": "off",
+   "kind": "state",
+   "def_line": 6,
+   "def_col": 19,
+   "refs": []
+  },
+  {
+   "name": "on",
+   "kind": "state",
+   "def_line": 12,
+   "def_col": 11,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": [
+   {
+    "name": "Blinker",
+    "mermaid": "stateDiagram-v2\n    [*] --> off\n    off --> on : activate\n    on --> off : deactivate",
+    "states": [
+     {
+      "name": "off",
+      "line": 6
+     },
+     {
+      "name": "on",
+      "line": 12
+     }
+    ]
+   }
+  ]
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_Blinker[[\"Blinker\"]]\n    p_led([\"led\"])\n    s_activate{{\"activate\"}}\n    s_log{{\"log\"}}\n    s_deactivate{{\"deactivate\"}}\n    u_Blinker -->|off, on| p_led\n    u_Blinker -->|activate| s_activate\n    u_Blinker -->|log| s_log\n    u_Blinker -->|deactivate| s_deactivate\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_Blinker machine;\n    class p_led pin;\n    class s_activate service;\n    class s_log service;\n    class s_deactivate service;",
+  "units": [
+   {
+    "id": "u_Blinker",
+    "name": "Blinker",
+    "line": 5
+   }
+  ],
+  "loops": [],
+  "edges": [
+   {
+    "drive": "machine",
+    "src": "u_Blinker",
+    "dst": "p_led"
+   },
+   {
+    "drive": "machine",
+    "src": "u_Blinker",
+    "dst": "s_activate"
+   },
+   {
+    "drive": "machine",
+    "src": "u_Blinker",
+    "dst": "s_log"
+   },
+   {
+    "drive": "machine",
+    "src": "u_Blinker",
+    "dst": "s_deactivate"
+   }
+  ],
+  "nodes": {
+   "u_Blinker": {
+    "kind": "machine",
+    "label": "Blinker",
+    "line": 5,
+    "detail": "2 states"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 3,
+    "detail": "Output · GPIO 2"
+   },
+   "s_activate": {
+    "kind": "service",
+    "label": "activate",
+    "line": null,
+    "detail": "activate"
+   },
+   "s_log": {
+    "kind": "service",
+    "label": "log",
+    "line": null,
+    "detail": "log"
+   },
+   "s_deactivate": {
+    "kind": "service",
+    "label": "deactivate",
+    "line": null,
+    "detail": "deactivate"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_Blinker[[\"Blinker\"]]\n    p_led([\"led\"])\n    s_activate{{\"activate\"}}\n    s_log{{\"log\"}}\n    s_deactivate{{\"deactivate\"}}\n    u_Blinker -->|off, on| p_led\n    u_Blinker -->|activate| s_activate\n    u_Blinker -->|log| s_log\n    u_Blinker -->|deactivate| s_deactivate\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_Blinker machine;\n    class p_led pin;\n    class s_activate service;\n    class s_log service;\n    class s_deactivate service;",
+  "units": [
+   {
+    "id": "u_Blinker",
+    "name": "Blinker",
+    "line": 5
+   }
+  ],
+  "loops": [],
+  "edges": [
+   {
+    "drive": "machine",
+    "src": "u_Blinker",
+    "dst": "p_led"
+   },
+   {
+    "drive": "machine",
+    "src": "u_Blinker",
+    "dst": "s_activate"
+   },
+   {
+    "drive": "machine",
+    "src": "u_Blinker",
+    "dst": "s_log"
+   },
+   {
+    "drive": "machine",
+    "src": "u_Blinker",
+    "dst": "s_deactivate"
+   }
+  ],
+  "nodes": {
+   "u_Blinker": {
+    "kind": "machine",
+    "label": "Blinker",
+    "line": 5,
+    "detail": "2 states"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 3,
+    "detail": "Output · GPIO 2"
+   },
+   "s_activate": {
+    "kind": "service",
+    "label": "activate",
+    "line": null,
+    "detail": "activate"
+   },
+   "s_log": {
+    "kind": "service",
+    "label": "log",
+    "line": null,
+    "detail": "log"
+   },
+   "s_deactivate": {
+    "kind": "service",
+    "label": "deactivate",
+    "line": null,
+    "detail": "deactivate"
+   }
+  }
+ }
+}

@@ -1,0 +1,20 @@
+
+[yellow bold]-- DEPRECATION -- main.volt:1[/yellow bold]
+
+Move `chip esp32` to volt.toml: chip = "esp32"
+
+ [dim]1 |[/dim] chip esp32
+ [dim]  |[/dim] [yellow]     ^^^^^[/yellow]
+
+[cyan]Hint: The chip declaration will move to volt.toml in a future version.[/cyan]
+
+
+[red bold]-- TYPE MISMATCH -- main.volt:9[/red bold]
+
+Type `BME280` has no method `fly_to_the_moon`.
+
+ [dim]8 |[/dim]   led.toggle()
+ [dim]9 |[/dim]   bme.fly_to_the_moon()
+ [dim]  |[/dim] [red]  ^^^[/red]
+
+[cyan]Hint: Available: temperature, humidity, pressure[/cyan]

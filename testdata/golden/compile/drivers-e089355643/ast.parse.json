@@ -1,0 +1,156 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [4, 9, 6, 13],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [4, 9, 4, 13],
+    "name": "pad1",
+    "mode": "Touch",
+    "gpio": 4
+   },
+   {
+    "_": "PinDecl",
+    "region": [5, 9, 5, 13],
+    "name": "pad2",
+    "mode": "Touch",
+    "gpio": 15
+   },
+   {
+    "_": "PinDecl",
+    "region": [6, 9, 6, 13],
+    "name": "pad3",
+    "mode": "Touch",
+    "gpio": 27
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [8, 6, 8, 11],
+   "name": "sense",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [9, 11, 9, 15],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [9, 11, 9, 15],
+      "microseconds": 50000,
+      "original": "50ms"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "IfStmt",
+       "region": [10, 12, 10, 16],
+       "condition": {
+        "_": "MethodCall",
+        "region": [10, 12, 10, 16],
+        "obj": {
+         "_": "VarRef",
+         "region": [10, 12, 10, 16],
+         "name": "pad1"
+        },
+        "method": "is_touched",
+        "args": []
+       },
+       "then_body": [
+        {
+         "_": "ExprStmt",
+         "region": [0, 0, 0, 0],
+         "expr": {
+          "_": "FuncCall",
+          "region": [11, 13, 11, 16],
+          "name": "log",
+          "args": [
+           {
+            "_": "StringLiteral",
+            "region": [11, 17, 11, 24],
+            "value": "touch"
+           },
+           {
+            "_": "StringLiteral",
+            "region": [11, 26, 11, 32],
+            "value": "pad1"
+           }
+          ]
+         }
+        }
+       ],
+       "else_body": null
+      },
+      {
+       "_": "IfStmt",
+       "region": [13, 12, 13, 16],
+       "condition": {
+        "_": "MethodCall",
+        "region": [13, 12, 13, 16],
+        "obj": {
+         "_": "VarRef",
+         "region": [13, 12, 13, 16],
+         "name": "pad2"
+        },
+        "method": "is_touched",
+        "args": []
+       },
+       "then_body": [
+        {
+         "_": "ExprStmt",
+         "region": [0, 0, 0, 0],
+         "expr": {
+          "_": "FuncCall",
+          "region": [14, 13, 14, 16],
+          "name": "log",
+          "args": [
+           {
+            "_": "StringLiteral",
+            "region": [14, 17, 14, 24],
+            "value": "touch"
+           },
+           {
+            "_": "StringLiteral",
+            "region": [14, 26, 14, 32],
+            "value": "pad2"
+           }
+          ]
+         }
+        }
+       ],
+       "else_body": null
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

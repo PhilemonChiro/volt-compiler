@@ -1,0 +1,1273 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [17, 9, 20, 15],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [17, 9, 17, 12],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   },
+   {
+    "_": "PinDecl",
+    "region": [18, 9, 18, 14],
+    "name": "relay",
+    "mode": "Output",
+    "gpio": 4
+   },
+   {
+    "_": "PinDecl",
+    "region": [19, 9, 19, 15],
+    "name": "button",
+    "mode": "PullUpInput",
+    "gpio": 15
+   },
+   {
+    "_": "PinDecl",
+    "region": [20, 9, 20, 15],
+    "name": "buzzer",
+    "mode": "PWM",
+    "gpio": 18
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [
+  {
+   "_": "EnumDecl",
+   "region": [14, 6, 14, 15],
+   "name": "DoorState",
+   "variants": [
+    "locked",
+    "unlocked",
+    "alert"
+   ]
+  }
+ ],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [42, 6, 42, 12],
+   "name": "keypad",
+   "body": [
+    {
+     "_": "VarDecl",
+     "region": [43, 9, 43, 13],
+     "name": "last",
+     "type_name": "int",
+     "value": {
+      "_": "IntLiteral",
+      "region": [43, 21, 43, 22],
+      "value": 1
+     },
+     "mutable": true,
+     "shared": false,
+     "needs_lifting": true
+    },
+    {
+     "_": "VarDecl",
+     "region": [44, 9, 44, 20],
+     "name": "press_count",
+     "type_name": "int",
+     "value": {
+      "_": "IntLiteral",
+      "region": [44, 28, 44, 29],
+      "value": 0
+     },
+     "mutable": true,
+     "shared": false,
+     "needs_lifting": true
+    },
+    {
+     "_": "VarDecl",
+     "region": [45, 9, 45, 24],
+     "name": "last_press_time",
+     "type_name": "int",
+     "value": {
+      "_": "IntLiteral",
+      "region": [45, 32, 45, 33],
+      "value": 0
+     },
+     "mutable": true,
+     "shared": false,
+     "needs_lifting": true
+    },
+    {
+     "_": "EveryBlock",
+     "region": [47, 11, 47, 15],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [47, 11, 47, 15],
+      "microseconds": 30000,
+      "original": "30ms"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "VarDecl",
+       "region": [48, 13, 48, 18],
+       "name": "state",
+       "type_name": "int",
+       "value": {
+        "_": "MethodCall",
+        "region": [48, 26, 48, 32],
+        "obj": {
+         "_": "VarRef",
+         "region": [48, 26, 48, 32],
+         "name": "button"
+        },
+        "method": "read",
+        "args": []
+       },
+       "mutable": false,
+       "shared": false,
+       "needs_lifting": false
+      },
+      {
+       "_": "IfStmt",
+       "region": [49, 12, 49, 17],
+       "condition": {
+        "_": "BinaryExpr",
+        "region": [49, 12, 49, 17],
+        "left": {
+         "_": "VarRef",
+         "region": [49, 12, 49, 17],
+         "name": "state"
+        },
+        "op": "==",
+        "right": {
+         "_": "IntLiteral",
+         "region": [49, 21, 49, 22],
+         "value": 0
+        },
+        "result_type": "bool"
+       },
+       "then_body": [
+        {
+         "_": "IfStmt",
+         "region": [50, 16, 50, 20],
+         "condition": {
+          "_": "BinaryExpr",
+          "region": [50, 16, 50, 20],
+          "left": {
+           "_": "VarRef",
+           "region": [50, 16, 50, 20],
+           "name": "last"
+          },
+          "op": "==",
+          "right": {
+           "_": "IntLiteral",
+           "region": [50, 24, 50, 25],
+           "value": 1
+          },
+          "result_type": "bool"
+         },
+         "then_body": [
+          {
+           "_": "CompoundAssign",
+           "region": [51, 17, 51, 28],
+           "target": {
+            "_": "VarRef",
+            "region": [51, 17, 51, 28],
+            "name": "press_count"
+           },
+           "op": "+=",
+           "value": {
+            "_": "IntLiteral",
+            "region": [51, 32, 51, 33],
+            "value": 1
+           }
+          },
+          {
+           "_": "AssignExpr",
+           "region": [52, 17, 52, 32],
+           "target": {
+            "_": "VarRef",
+            "region": [52, 17, 52, 32],
+            "name": "last_press_time"
+           },
+           "value": {
+            "_": "MethodCall",
+            "region": [52, 35, 52, 41],
+            "obj": {
+             "_": "VarRef",
+             "region": [52, 35, 52, 41],
+             "name": "system"
+            },
+            "method": "uptime",
+            "args": []
+           }
+          },
+          {
+           "_": "ExprStmt",
+           "region": [0, 0, 0, 0],
+           "expr": {
+            "_": "MethodCall",
+            "region": [53, 17, 53, 23],
+            "obj": {
+             "_": "VarRef",
+             "region": [53, 17, 53, 23],
+             "name": "buzzer"
+            },
+            "method": "click",
+            "args": []
+           }
+          },
+          {
+           "_": "IfStmt",
+           "region": [55, 20, 55, 31],
+           "condition": {
+            "_": "BinaryExpr",
+            "region": [55, 20, 55, 31],
+            "left": {
+             "_": "VarRef",
+             "region": [55, 20, 55, 31],
+             "name": "press_count"
+            },
+            "op": ">=",
+            "right": {
+             "_": "IntLiteral",
+             "region": [55, 35, 55, 36],
+             "value": 3
+            },
+            "result_type": "bool"
+           },
+           "then_body": [
+            {
+             "_": "ExprStmt",
+             "region": [0, 0, 0, 0],
+             "expr": {
+              "_": "MethodCall",
+              "region": [56, 21, 56, 34],
+              "obj": {
+               "_": "VarRef",
+               "region": [56, 21, 56, 34],
+               "name": "lock_commands"
+              },
+              "method": "send",
+              "args": [
+               {
+                "_": "IntLiteral",
+                "region": [56, 40, 56, 41],
+                "value": 1
+               }
+              ]
+             }
+            },
+            {
+             "_": "AssignExpr",
+             "region": [57, 21, 57, 32],
+             "target": {
+              "_": "VarRef",
+              "region": [57, 21, 57, 32],
+              "name": "press_count"
+             },
+             "value": {
+              "_": "IntLiteral",
+              "region": [57, 35, 57, 36],
+              "value": 0
+             }
+            }
+           ],
+           "else_body": null
+          }
+         ],
+         "else_body": null
+        }
+       ],
+       "else_body": null
+      },
+      {
+       "_": "AssignExpr",
+       "region": [61, 9, 61, 13],
+       "target": {
+        "_": "VarRef",
+        "region": [61, 9, 61, 13],
+        "name": "last"
+       },
+       "value": {
+        "_": "VarRef",
+        "region": [61, 16, 61, 21],
+        "name": "state"
+       }
+      },
+      {
+       "_": "VarDecl",
+       "region": [63, 13, 63, 16],
+       "name": "now",
+       "type_name": "int",
+       "value": {
+        "_": "MethodCall",
+        "region": [63, 24, 63, 30],
+        "obj": {
+         "_": "VarRef",
+         "region": [63, 24, 63, 30],
+         "name": "system"
+        },
+        "method": "uptime",
+        "args": []
+       },
+       "mutable": false,
+       "shared": false,
+       "needs_lifting": false
+      },
+      {
+       "_": "IfStmt",
+       "region": [64, 12, 64, 15],
+       "condition": {
+        "_": "BinaryExpr",
+        "region": [64, 12, 64, 15],
+        "left": {
+         "_": "BinaryExpr",
+         "region": [64, 12, 64, 15],
+         "left": {
+          "_": "VarRef",
+          "region": [64, 12, 64, 15],
+          "name": "now"
+         },
+         "op": "-",
+         "right": {
+          "_": "VarRef",
+          "region": [64, 18, 64, 33],
+          "name": "last_press_time"
+         },
+         "result_type": "int"
+        },
+        "op": ">",
+        "right": {
+         "_": "IntLiteral",
+         "region": [64, 36, 64, 37],
+         "value": 2
+        },
+        "result_type": "bool"
+       },
+       "then_body": [
+        {
+         "_": "IfStmt",
+         "region": [65, 16, 65, 27],
+         "condition": {
+          "_": "BinaryExpr",
+          "region": [65, 16, 65, 27],
+          "left": {
+           "_": "VarRef",
+           "region": [65, 16, 65, 27],
+           "name": "press_count"
+          },
+          "op": ">",
+          "right": {
+           "_": "IntLiteral",
+           "region": [65, 30, 65, 31],
+           "value": 0
+          },
+          "result_type": "bool"
+         },
+         "then_body": [
+          {
+           "_": "IfStmt",
+           "region": [66, 20, 66, 31],
+           "condition": {
+            "_": "BinaryExpr",
+            "region": [66, 20, 66, 31],
+            "left": {
+             "_": "VarRef",
+             "region": [66, 20, 66, 31],
+             "name": "press_count"
+            },
+            "op": "<",
+            "right": {
+             "_": "IntLiteral",
+             "region": [66, 34, 66, 35],
+             "value": 3
+            },
+            "result_type": "bool"
+           },
+           "then_body": [
+            {
+             "_": "ExprStmt",
+             "region": [0, 0, 0, 0],
+             "expr": {
+              "_": "MethodCall",
+              "region": [67, 21, 67, 34],
+              "obj": {
+               "_": "VarRef",
+               "region": [67, 21, 67, 34],
+               "name": "lock_commands"
+              },
+              "method": "send",
+              "args": [
+               {
+                "_": "IntLiteral",
+                "region": [67, 40, 67, 41],
+                "value": 0
+               }
+              ]
+             }
+            },
+            {
+             "_": "ExprStmt",
+             "region": [0, 0, 0, 0],
+             "expr": {
+              "_": "MethodCall",
+              "region": [68, 21, 68, 27],
+              "obj": {
+               "_": "VarRef",
+               "region": [68, 21, 68, 27],
+               "name": "buzzer"
+              },
+              "method": "beep_error",
+              "args": []
+             }
+            }
+           ],
+           "else_body": null
+          },
+          {
+           "_": "AssignExpr",
+           "region": [70, 17, 70, 28],
+           "target": {
+            "_": "VarRef",
+            "region": [70, 17, 70, 28],
+            "name": "press_count"
+           },
+           "value": {
+            "_": "IntLiteral",
+            "region": [70, 31, 70, 32],
+            "value": 0
+           }
+          }
+         ],
+         "else_body": null
+        }
+       ],
+       "else_body": null
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [
+    "last",
+    "last_press_time",
+    "press_count"
+   ],
+   "has_strict": false,
+   "_annotations": []
+  },
+  {
+   "_": "TaskDecl",
+   "region": [120, 6, 120, 23],
+   "name": "command_processor",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [121, 11, 121, 16],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [121, 11, 121, 16],
+      "microseconds": 100000,
+      "original": "100ms"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "IfStmt",
+       "region": [122, 12, 122, 25],
+       "condition": {
+        "_": "MethodCall",
+        "region": [122, 12, 122, 25],
+        "obj": {
+         "_": "VarRef",
+         "region": [122, 12, 122, 25],
+         "name": "lock_commands"
+        },
+        "method": "has_data",
+        "args": []
+       },
+       "then_body": [
+        {
+         "_": "VarDecl",
+         "region": [123, 17, 123, 20],
+         "name": "cmd",
+         "type_name": "int",
+         "value": {
+          "_": "MethodCall",
+          "region": [123, 28, 123, 41],
+          "obj": {
+           "_": "VarRef",
+           "region": [123, 28, 123, 41],
+           "name": "lock_commands"
+          },
+          "method": "receive",
+          "args": []
+         },
+         "mutable": false,
+         "shared": false,
+         "needs_lifting": false
+        },
+        {
+         "_": "IfStmt",
+         "region": [124, 16, 124, 19],
+         "condition": {
+          "_": "BinaryExpr",
+          "region": [124, 16, 124, 19],
+          "left": {
+           "_": "VarRef",
+           "region": [124, 16, 124, 19],
+           "name": "cmd"
+          },
+          "op": "==",
+          "right": {
+           "_": "IntLiteral",
+           "region": [124, 23, 124, 24],
+           "value": 1
+          },
+          "result_type": "bool"
+         },
+         "then_body": [
+          {
+           "_": "AssignExpr",
+           "region": [125, 17, 125, 30],
+           "target": {
+            "_": "VarRef",
+            "region": [125, 17, 125, 30],
+            "name": "attempt_count"
+           },
+           "value": {
+            "_": "IntLiteral",
+            "region": [125, 33, 125, 34],
+            "value": 0
+           }
+          },
+          {
+           "_": "AssignExpr",
+           "region": [126, 17, 126, 31],
+           "target": {
+            "_": "VarRef",
+            "region": [126, 17, 126, 31],
+            "name": "unlock_request"
+           },
+           "value": {
+            "_": "IntLiteral",
+            "region": [126, 34, 126, 35],
+            "value": 1
+           }
+          }
+         ],
+         "else_body": [
+          {
+           "_": "CompoundAssign",
+           "region": [128, 17, 128, 30],
+           "target": {
+            "_": "VarRef",
+            "region": [128, 17, 128, 30],
+            "name": "attempt_count"
+           },
+           "op": "+=",
+           "value": {
+            "_": "IntLiteral",
+            "region": [128, 34, 128, 35],
+            "value": 1
+           }
+          },
+          {
+           "_": "CompoundAssign",
+           "region": [129, 17, 129, 32],
+           "target": {
+            "_": "VarRef",
+            "region": [129, 17, 129, 32],
+            "name": "failed_attempts"
+           },
+           "op": "+=",
+           "value": {
+            "_": "IntLiteral",
+            "region": [129, 36, 129, 37],
+            "value": 1
+           }
+          },
+          {
+           "_": "ExprStmt",
+           "region": [0, 0, 0, 0],
+           "expr": {
+            "_": "FuncCall",
+            "region": [130, 17, 130, 20],
+            "name": "log",
+            "args": [
+             {
+              "_": "StringLiteral",
+              "region": [130, 21, 130, 31],
+              "value": "security"
+             },
+             {
+              "_": "StringLiteral",
+              "region": [130, 33, 130, 66],
+              "value": "failed attempt #{attempt_count}"
+             }
+            ]
+           }
+          }
+         ]
+        }
+       ],
+       "else_body": null
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  },
+  {
+   "_": "TaskDecl",
+   "region": [142, 11, 142, 14],
+   "name": "_rule0",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [142, 11, 142, 14],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [142, 11, 142, 14],
+      "microseconds": 30000000,
+      "original": "30s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [143, 9, 143, 16],
+        "obj": {
+         "_": "VarRef",
+         "region": [143, 9, 143, 16],
+         "name": "storage"
+        },
+        "method": "save",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [143, 22, 143, 37],
+          "value": "total_unlocks"
+         },
+         {
+          "_": "VarRef",
+          "region": [143, 39, 143, 52],
+          "name": "total_unlocks"
+         }
+        ]
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [144, 9, 144, 16],
+        "obj": {
+         "_": "VarRef",
+         "region": [144, 9, 144, 16],
+         "name": "storage"
+        },
+        "method": "save",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [144, 22, 144, 39],
+          "value": "failed_attempts"
+         },
+         {
+          "_": "VarRef",
+          "region": [144, 41, 144, 56],
+          "name": "failed_attempts"
+         }
+        ]
+       }
+      },
+      {
+       "_": "VarDecl",
+       "region": [145, 13, 145, 17],
+       "name": "heap",
+       "type_name": "int",
+       "value": {
+        "_": "MethodCall",
+        "region": [145, 25, 145, 31],
+        "obj": {
+         "_": "VarRef",
+         "region": [145, 25, 145, 31],
+         "name": "system"
+        },
+        "method": "free_heap",
+        "args": []
+       },
+       "mutable": false,
+       "shared": false,
+       "needs_lifting": false
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [146, 9, 146, 12],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [146, 13, 146, 21],
+          "value": "health"
+         },
+         {
+          "_": "StringLiteral",
+          "region": [146, 23, 146, 60],
+          "value": "heap={heap} unlocks={total_unlocks}"
+         }
+        ]
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "priority",
+   "crossing_vars": [],
+   "has_strict": false
+  }
+ ],
+ "machines": [
+  {
+   "_": "MachineDecl",
+   "region": [77, 9, 77, 18],
+   "name": "door_lock",
+   "states": [
+    {
+     "_": "StateDecl",
+     "region": [80, 11, 80, 17],
+     "name": "locked",
+     "is_initial": true,
+     "enter_body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [82, 13, 82, 18],
+        "obj": {
+         "_": "VarRef",
+         "region": [82, 13, 82, 18],
+         "name": "relay"
+        },
+        "method": "off",
+        "args": []
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [83, 13, 83, 16],
+        "obj": {
+         "_": "VarRef",
+         "region": [83, 13, 83, 16],
+         "name": "led"
+        },
+        "method": "off",
+        "args": []
+       }
+      },
+      {
+       "_": "AssignExpr",
+       "region": [84, 13, 84, 17],
+       "target": {
+        "_": "VarRef",
+        "region": [84, 13, 84, 17],
+        "name": "door"
+       },
+       "value": {
+        "_": "DotAccess",
+        "region": [84, 20, 84, 29],
+        "obj": {
+         "_": "VarRef",
+         "region": [84, 20, 84, 29],
+         "name": "DoorState"
+        },
+        "field_name": "locked"
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [85, 13, 85, 16],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [85, 17, 85, 23],
+          "value": "lock"
+         },
+         {
+          "_": "StringLiteral",
+          "region": [85, 25, 85, 33],
+          "value": "LOCKED"
+         }
+        ]
+       }
+      }
+     ],
+     "exit_body": [],
+     "transitions": [
+      {
+       "_": "StateTransition",
+       "region": [88, 12, 88, 26],
+       "event": {
+        "_": "BinaryExpr",
+        "region": [88, 12, 88, 26],
+        "left": {
+         "_": "VarRef",
+         "region": [88, 12, 88, 26],
+         "name": "unlock_request"
+        },
+        "op": "==",
+        "right": {
+         "_": "IntLiteral",
+         "region": [88, 30, 88, 31],
+         "value": 1
+        },
+        "result_type": null
+       },
+       "target_state": "unlocked",
+       "guard": null,
+       "action": [
+        {
+         "_": "AssignExpr",
+         "region": [88, 46, 88, 60],
+         "target": {
+          "_": "VarRef",
+          "region": [88, 46, 88, 60],
+          "name": "unlock_request"
+         },
+         "value": {
+          "_": "IntLiteral",
+          "region": [88, 63, 88, 64],
+          "value": 0
+         }
+        }
+       ]
+      },
+      {
+       "_": "StateTransition",
+       "region": [89, 12, 89, 25],
+       "event": {
+        "_": "BinaryExpr",
+        "region": [89, 12, 89, 25],
+        "left": {
+         "_": "VarRef",
+         "region": [89, 12, 89, 25],
+         "name": "attempt_count"
+        },
+        "op": ">=",
+        "right": {
+         "_": "IntLiteral",
+         "region": [89, 29, 89, 30],
+         "value": 3
+        },
+        "result_type": null
+       },
+       "target_state": "alert",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "timed_transitions": [],
+     "body": []
+    },
+    {
+     "_": "StateDecl",
+     "region": [92, 11, 92, 19],
+     "name": "unlocked",
+     "is_initial": false,
+     "enter_body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [94, 13, 94, 18],
+        "obj": {
+         "_": "VarRef",
+         "region": [94, 13, 94, 18],
+         "name": "relay"
+        },
+        "method": "on",
+        "args": []
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [95, 13, 95, 16],
+        "obj": {
+         "_": "VarRef",
+         "region": [95, 13, 95, 16],
+         "name": "led"
+        },
+        "method": "on",
+        "args": []
+       }
+      },
+      {
+       "_": "AssignExpr",
+       "region": [96, 13, 96, 17],
+       "target": {
+        "_": "VarRef",
+        "region": [96, 13, 96, 17],
+        "name": "door"
+       },
+       "value": {
+        "_": "DotAccess",
+        "region": [96, 20, 96, 29],
+        "obj": {
+         "_": "VarRef",
+         "region": [96, 20, 96, 29],
+         "name": "DoorState"
+        },
+        "field_name": "unlocked"
+       }
+      },
+      {
+       "_": "CompoundAssign",
+       "region": [97, 13, 97, 26],
+       "target": {
+        "_": "VarRef",
+        "region": [97, 13, 97, 26],
+        "name": "total_unlocks"
+       },
+       "op": "+=",
+       "value": {
+        "_": "IntLiteral",
+        "region": [97, 30, 97, 31],
+        "value": 1
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [98, 13, 98, 16],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [98, 17, 98, 23],
+          "value": "lock"
+         },
+         {
+          "_": "StringLiteral",
+          "region": [98, 25, 98, 35],
+          "value": "UNLOCKED"
+         }
+        ]
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [100, 13, 100, 19],
+        "obj": {
+         "_": "VarRef",
+         "region": [100, 13, 100, 19],
+         "name": "buzzer"
+        },
+        "method": "beep_success",
+        "args": []
+       }
+      }
+     ],
+     "exit_body": [],
+     "transitions": [],
+     "timed_transitions": [
+      {
+       "_": "TimedTransition",
+       "region": [102, 15, 102, 18],
+       "duration": {
+        "_": "DurationLiteral",
+        "region": [102, 15, 102, 18],
+        "microseconds": 10000000,
+        "original": "10s"
+       },
+       "target_state": "locked",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "body": []
+    },
+    {
+     "_": "StateDecl",
+     "region": [105, 11, 105, 16],
+     "name": "alert",
+     "is_initial": false,
+     "enter_body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [107, 13, 107, 19],
+        "obj": {
+         "_": "VarRef",
+         "region": [107, 13, 107, 19],
+         "name": "buzzer"
+        },
+        "method": "beep_alarm",
+        "args": []
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [108, 13, 108, 16],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [108, 17, 108, 23],
+          "value": "lock"
+         },
+         {
+          "_": "StringLiteral",
+          "region": [108, 25, 108, 60],
+          "value": "ALERT — too many failed attempts!"
+         }
+        ]
+       }
+      }
+     ],
+     "exit_body": [
+      {
+       "_": "AssignExpr",
+       "region": [112, 13, 112, 26],
+       "target": {
+        "_": "VarRef",
+        "region": [112, 13, 112, 26],
+        "name": "attempt_count"
+       },
+       "value": {
+        "_": "IntLiteral",
+        "region": [112, 29, 112, 30],
+        "value": 0
+       }
+      }
+     ],
+     "transitions": [],
+     "timed_transitions": [
+      {
+       "_": "TimedTransition",
+       "region": [115, 15, 115, 18],
+       "duration": {
+        "_": "DurationLiteral",
+        "region": [115, 15, 115, 18],
+        "microseconds": 20000000,
+        "original": "20s"
+       },
+       "target_state": "locked",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "body": []
+    }
+   ],
+   "variables": [
+    {
+     "_": "VarDecl",
+     "region": [78, 9, 78, 24],
+     "name": "auto_lock_timer",
+     "type_name": "int",
+     "value": {
+      "_": "IntLiteral",
+      "region": [78, 32, 78, 33],
+      "value": 0
+     },
+     "mutable": true,
+     "shared": false,
+     "needs_lifting": false
+    }
+   ]
+  }
+ ],
+ "storage_vars": [
+  {
+   "_": "StorageDecl",
+   "region": [23, 9, 23, 22],
+   "name": "total_unlocks",
+   "type_name": "int",
+   "default_value": {
+    "_": "IntLiteral",
+    "region": [23, 30, 23, 31],
+    "value": 0
+   }
+  },
+  {
+   "_": "StorageDecl",
+   "region": [24, 9, 24, 24],
+   "name": "failed_attempts",
+   "type_name": "int",
+   "default_value": {
+    "_": "IntLiteral",
+    "region": [24, 32, 24, 33],
+    "value": 0
+   }
+  }
+ ],
+ "global_vars": [
+  {
+   "_": "VarDecl",
+   "region": [26, 5, 26, 9],
+   "name": "door",
+   "type_name": "DoorState",
+   "value": {
+    "_": "DotAccess",
+    "region": [26, 23, 26, 32],
+    "obj": {
+     "_": "VarRef",
+     "region": [26, 23, 26, 32],
+     "name": "DoorState"
+    },
+    "field_name": "locked"
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  },
+  {
+   "_": "VarDecl",
+   "region": [27, 5, 27, 18],
+   "name": "attempt_count",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [27, 26, 27, 27],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  },
+  {
+   "_": "VarDecl",
+   "region": [28, 5, 28, 19],
+   "name": "unlock_request",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [28, 27, 28, 28],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  }
+ ],
+ "channels": [
+  {
+   "_": "ChannelDecl",
+   "region": [30, 9, 30, 22],
+   "name": "lock_commands",
+   "elem_type": "int",
+   "capacity": 4
+  }
+ ],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "FuncCall",
+     "region": [36, 5, 36, 8],
+     "name": "log",
+     "args": [
+      {
+       "_": "StringLiteral",
+       "region": [36, 9, 36, 15],
+       "value": "boot"
+      },
+      {
+       "_": "StringLiteral",
+       "region": [36, 17, 36, 37],
+       "value": "Smart Door Lock v3"
+      }
+     ]
+    }
+   },
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "FuncCall",
+     "region": [37, 5, 37, 8],
+     "name": "log",
+     "args": [
+      {
+       "_": "StringLiteral",
+       "region": [37, 9, 37, 15],
+       "value": "boot"
+      },
+      {
+       "_": "StringLiteral",
+       "region": [37, 17, 37, 54],
+       "value": "press button 3x within 2s to unlock"
+      }
+     ]
+    }
+   },
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "MethodCall",
+     "region": [38, 5, 38, 11],
+     "obj": {
+      "_": "VarRef",
+      "region": [38, 5, 38, 11],
+      "name": "buzzer"
+     },
+     "method": "beep_startup",
+     "args": []
+    }
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

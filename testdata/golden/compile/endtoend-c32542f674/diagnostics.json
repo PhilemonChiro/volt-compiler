@@ -1,0 +1,14 @@
+[
+  {
+    "severity": "error",
+    "category": "TYPE MISMATCH",
+    "message": "Function returns `string` but got `int`.",
+    "hint": null,
+    "region": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+]

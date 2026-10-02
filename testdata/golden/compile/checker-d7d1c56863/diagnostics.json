@@ -1,0 +1,14 @@
+[
+  {
+    "severity": "error",
+    "category": "TYPE MISMATCH",
+    "message": "Storage `count` declared as `int` but default value is `string`.",
+    "hint": null,
+    "region": [
+      2,
+      9,
+      2,
+      14
+    ]
+  }
+]

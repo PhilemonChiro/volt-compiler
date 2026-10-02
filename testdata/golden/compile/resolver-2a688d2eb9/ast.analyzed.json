@@ -1,0 +1,57 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [
+  {
+   "_": "FuncDecl",
+   "region": [2, 6, 2, 13],
+   "name": "process",
+   "params": [
+    {
+     "_": "Param",
+     "region": [2, 14, 2, 18],
+     "name": "data",
+     "type_name": "int"
+    }
+   ],
+   "return_type": "int",
+   "body": [
+    {
+     "_": "ReturnStmt",
+     "region": [0, 0, 0, 0],
+     "value": {
+      "_": "BinaryExpr",
+      "region": [3, 12, 3, 16],
+      "left": {
+       "_": "VarRef",
+       "region": [3, 12, 3, 16],
+       "name": "data"
+      },
+      "op": "+",
+      "right": {
+       "_": "IntLiteral",
+       "region": [3, 19, 3, 20],
+       "value": 1
+      },
+      "result_type": "int"
+     }
+    }
+   ],
+   "contains_yield": false
+  }
+ ],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

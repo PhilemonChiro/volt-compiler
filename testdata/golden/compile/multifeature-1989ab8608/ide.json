@@ -1,0 +1,343 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 2,
+    "col": 6,
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "severity": "warning",
+    "hint": "The chip declaration will move to volt.toml in a future version."
+   },
+   {
+    "line": 4,
+    "col": 9,
+    "message": "Strapping pin: GPIO 2 must be LOW during boot for flash programming.",
+    "severity": "warning",
+    "hint": ""
+   },
+   {
+    "line": 6,
+    "col": 9,
+    "message": "Strapping pin: GPIO 5 controls boot debug output. Usually safe for general use.",
+    "severity": "warning",
+    "hint": ""
+   }
+  ],
+  "pins": [
+   {
+    "name": "red",
+    "mode": "Output",
+    "gpio": 2
+   },
+   {
+    "name": "yellow",
+    "mode": "Output",
+    "gpio": 4
+   },
+   {
+    "name": "green",
+    "mode": "Output",
+    "gpio": 5
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [],
+  "machines": [],
+  "channels": [],
+  "enums": [
+   {
+    "name": "Light",
+    "variants": [
+     "off",
+     "red",
+     "yellow",
+     "green"
+    ]
+   }
+  ],
+  "chip": "esp32"
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "chip esp32\n\nhardware {\n    pin red: Output = 2\n    pin yellow: Output = 4\n    pin green: Output = 5\n}\n\nenum Light { off, red, yellow, green }\n\nfunc all_off() {\n    red.off()\n    yellow.off()\n    green.off()\n}\n\nsetup {\n    var current: Light = Light.red\n    all_off()\n    match(current) {\n        .red -> red.on()\n        .yellow -> yellow.on()\n        .green -> green.on()\n        _ -> all_off()\n    }\n}\n",
+ "find_symbols": [
+  {
+   "name": "red",
+   "kind": "pin",
+   "def_line": 4,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 12,
+     "col": 5
+    }
+   ]
+  },
+  {
+   "name": "yellow",
+   "kind": "pin",
+   "def_line": 5,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 13,
+     "col": 5
+    }
+   ]
+  },
+  {
+   "name": "green",
+   "kind": "pin",
+   "def_line": 6,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 14,
+     "col": 5
+    }
+   ]
+  },
+  {
+   "name": "all_off",
+   "kind": "func",
+   "def_line": 11,
+   "def_col": 6,
+   "refs": [
+    {
+     "line": 19,
+     "col": 5
+    }
+   ]
+  },
+  {
+   "name": "current",
+   "kind": "var",
+   "def_line": 18,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 20,
+     "col": 11
+    }
+   ]
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    f_all_off(\"all_off()\")\n    p_red([\"red\"])\n    p_yellow([\"yellow\"])\n    p_green([\"green\"])\n    u_all_off(\"all_off()\")\n    u_setup -->|call| f_all_off\n    u_setup -->|on| p_red\n    u_setup -->|on| p_yellow\n    u_setup -->|on| p_green\n    u_all_off -->|off| p_red\n    u_all_off -->|off| p_yellow\n    u_all_off -->|off| p_green\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class f_all_off func;\n    class p_red shared;\n    class p_yellow shared;\n    class p_green shared;\n    class u_all_off func;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_all_off",
+    "name": "all_off()",
+    "line": 11
+   }
+  ],
+  "loops": [],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "f_all_off"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "p_red"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "p_yellow"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "p_green"
+   },
+   {
+    "drive": "func",
+    "src": "u_all_off",
+    "dst": "p_red"
+   },
+   {
+    "drive": "func",
+    "src": "u_all_off",
+    "dst": "p_yellow"
+   },
+   {
+    "drive": "func",
+    "src": "u_all_off",
+    "dst": "p_green"
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "f_all_off": {
+    "kind": "func",
+    "label": "all_off()",
+    "line": 11,
+    "detail": "function"
+   },
+   "p_red": {
+    "kind": "pin",
+    "label": "red",
+    "line": 4,
+    "detail": "Output · GPIO 2"
+   },
+   "p_yellow": {
+    "kind": "pin",
+    "label": "yellow",
+    "line": 5,
+    "detail": "Output · GPIO 4"
+   },
+   "p_green": {
+    "kind": "pin",
+    "label": "green",
+    "line": 6,
+    "detail": "Output · GPIO 5"
+   },
+   "u_all_off": {
+    "kind": "func",
+    "label": "all_off()",
+    "line": 11,
+    "detail": "function"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    f_all_off(\"all_off()\")\n    p_red([\"red\"])\n    p_yellow([\"yellow\"])\n    p_green([\"green\"])\n    u_all_off(\"all_off()\")\n    u_setup -->|call| f_all_off\n    u_setup -->|on| p_red\n    u_setup -->|on| p_yellow\n    u_setup -->|on| p_green\n    u_all_off -->|off| p_red\n    u_all_off -->|off| p_yellow\n    u_all_off -->|off| p_green\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class f_all_off func;\n    class p_red shared;\n    class p_yellow shared;\n    class p_green shared;\n    class u_all_off func;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_all_off",
+    "name": "all_off()",
+    "line": 11
+   }
+  ],
+  "loops": [],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "f_all_off"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "p_red"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "p_yellow"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "p_green"
+   },
+   {
+    "drive": "func",
+    "src": "u_all_off",
+    "dst": "p_red"
+   },
+   {
+    "drive": "func",
+    "src": "u_all_off",
+    "dst": "p_yellow"
+   },
+   {
+    "drive": "func",
+    "src": "u_all_off",
+    "dst": "p_green"
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "f_all_off": {
+    "kind": "func",
+    "label": "all_off()",
+    "line": 11,
+    "detail": "function"
+   },
+   "p_red": {
+    "kind": "pin",
+    "label": "red",
+    "line": 4,
+    "detail": "Output · GPIO 2"
+   },
+   "p_yellow": {
+    "kind": "pin",
+    "label": "yellow",
+    "line": 5,
+    "detail": "Output · GPIO 4"
+   },
+   "p_green": {
+    "kind": "pin",
+    "label": "green",
+    "line": 6,
+    "detail": "Output · GPIO 5"
+   },
+   "u_all_off": {
+    "kind": "func",
+    "label": "all_off()",
+    "line": 11,
+    "detail": "function"
+   }
+  }
+ }
+}

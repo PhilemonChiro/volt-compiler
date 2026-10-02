@@ -1,0 +1,133 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 3,
+    "col": 9,
+    "message": "GPIO 2: GPIO 2 is a strapping pin. Must be LOW or floating for download mode.",
+    "severity": "warning",
+    "hint": ""
+   },
+   {
+    "line": 4,
+    "col": 9,
+    "message": "GPIO 0: GPIO 0 is a strapping pin. LOW at boot = download mode. Ensure pull-up (internal or external) for normal boot.",
+    "severity": "warning",
+    "hint": ""
+   },
+   {
+    "line": 5,
+    "col": 9,
+    "message": "GPIO 36 has a hardware errata: interrupts may fire spuriously during WiFi/BT light sleep. Use a different pin for interrupt-driven input.",
+    "severity": "warning",
+    "hint": "GPIO 34, 35 do not have this errata."
+   },
+   {
+    "line": 5,
+    "col": 9,
+    "message": "GPIO 36: Hardware errata: interrupts on GPIO 36 may fire spuriously during WiFi/BT light sleep.",
+    "severity": "warning",
+    "hint": ""
+   }
+  ],
+  "pins": [
+   {
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   },
+   {
+    "name": "button",
+    "mode": "PullUpInput",
+    "gpio": 0
+   },
+   {
+    "name": "battery",
+    "mode": "Analog",
+    "gpio": 36
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": ""
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "hardware {\n    pin led: Output = 2\n    pin button: PullUpInput = 0\n    pin battery: Analog = 36\n}\n",
+ "find_symbols": [
+  {
+   "name": "led",
+   "kind": "pin",
+   "def_line": 3,
+   "def_col": 9,
+   "refs": []
+  },
+  {
+   "name": "button",
+   "kind": "pin",
+   "def_line": 4,
+   "def_col": 9,
+   "refs": []
+  },
+  {
+   "name": "battery",
+   "kind": "pin",
+   "def_line": 5,
+   "def_col": 9,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;",
+  "units": [],
+  "loops": [],
+  "edges": [],
+  "nodes": {}
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;",
+  "units": [],
+  "loops": [],
+  "edges": [],
+  "nodes": {}
+ }
+}

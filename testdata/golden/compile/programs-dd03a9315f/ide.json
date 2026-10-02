@@ -1,0 +1,911 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 1,
+    "col": 6,
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "severity": "warning",
+    "hint": "The chip declaration will move to volt.toml in a future version."
+   },
+   {
+    "line": 4,
+    "col": 9,
+    "message": "Strapping pin: GPIO 2 must be LOW during boot for flash programming.",
+    "severity": "warning",
+    "hint": ""
+   },
+   {
+    "line": 0,
+    "col": 0,
+    "message": "Variable `motor_isr_count` is shared between critical task (motor_control) and task (stats). The compiler will mark it `volatile` in generated C.",
+    "severity": "warning",
+    "hint": "For multi-word values, consider using atomic operations."
+   }
+  ],
+  "pins": [
+   {
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   },
+   {
+    "name": "motor",
+    "mode": "PWM",
+    "gpio": 4
+   },
+   {
+    "name": "battery",
+    "mode": "Analog",
+    "gpio": 36
+   },
+   {
+    "name": "temp",
+    "mode": "Analog",
+    "gpio": 39
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "heartbeat",
+    "tier": "background",
+    "line": 15
+   },
+   {
+    "name": "motor_control",
+    "tier": "critical",
+    "line": 23
+   },
+   {
+    "name": "telemetry",
+    "tier": "priority",
+    "line": 30
+   },
+   {
+    "name": "cloud_report",
+    "tier": "priority",
+    "line": 41
+   },
+   {
+    "name": "stats",
+    "tier": "background",
+    "line": 49
+   }
+  ],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": "esp32"
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n    pin motor: PWM = 4\n    pin battery: Analog = 36\n    pin temp: Analog = 39\n}\n\nvar heartbeat_count: int = 0\n\nvar motor_isr_count: int = 0\n\nvar telemetry_count: int = 0\n\nvar cloud_count: int = 0\n\ntask heartbeat {\n    every 1s {\n        led.toggle()\n        heartbeat_count += 1\n        log(\"heartbeat\", \"#\" + heartbeat_count + \" | heap=\" + system.free_heap())\n    }\n}\n\ntask motor_control {\n    every 1ms strict {\n        motor.set_pwm(0)\n        motor_isr_count += 1\n    }\n}\n\ntask telemetry {\n    every 30s {\n        let bat = battery.read()\n        let t = temp.read()\n        telemetry_count += 1\n        log(\"telemetry\", \"#\" + telemetry_count + \" bat=\" + bat + \" temp=\" + t)\n        mqtt.send_int(\"device/battery\", bat)\n        mqtt.send_int(\"device/temp\", t)\n    }\n}\n\ntask cloud_report {\n    every 60s {\n        cloud_count += 1\n        log(\"cloud\", \"#\" + cloud_count + \" posting to API\")\n        http.post(\"https://api.example.com/data\", \"ok\")\n    }\n}\n\ntask stats {\n    every 10s {\n        log(\"stats\", \"heartbeat=\" + heartbeat_count + \" isr=\" + motor_isr_count + \" telemetry=\" + telemetry_count + \" cloud=\" + cloud_count)\n        log(\"stats\", \"wifi=\" + wifi.is_connected() + \" heap=\" + system.free_heap())\n    }\n}\n\nsetup {\n    wifi.connect(\"TestNetwork\", \"TestPassword\")\n    mqtt.connect(\"mqtt://broker.local\")\n}\n",
+ "find_symbols": [
+  {
+   "name": "led",
+   "kind": "pin",
+   "def_line": 4,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 17,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "motor",
+   "kind": "pin",
+   "def_line": 5,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 25,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "battery",
+   "kind": "pin",
+   "def_line": 6,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 32,
+     "col": 19
+    }
+   ]
+  },
+  {
+   "name": "temp",
+   "kind": "pin",
+   "def_line": 7,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 33,
+     "col": 17
+    }
+   ]
+  },
+  {
+   "name": "heartbeat",
+   "kind": "task",
+   "def_line": 15,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "motor_control",
+   "kind": "task",
+   "def_line": 23,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "telemetry",
+   "kind": "task",
+   "def_line": 30,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "cloud_report",
+   "kind": "task",
+   "def_line": 41,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "stats",
+   "kind": "task",
+   "def_line": 49,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "heartbeat_count",
+   "kind": "var",
+   "def_line": 10,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 18,
+     "col": 9
+    },
+    {
+     "line": 19,
+     "col": 32
+    },
+    {
+     "line": 51,
+     "col": 37
+    }
+   ]
+  },
+  {
+   "name": "motor_isr_count",
+   "kind": "var",
+   "def_line": 11,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 26,
+     "col": 9
+    },
+    {
+     "line": 51,
+     "col": 65
+    }
+   ]
+  },
+  {
+   "name": "telemetry_count",
+   "kind": "var",
+   "def_line": 12,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 34,
+     "col": 9
+    },
+    {
+     "line": 35,
+     "col": 32
+    },
+    {
+     "line": 51,
+     "col": 99
+    }
+   ]
+  },
+  {
+   "name": "cloud_count",
+   "kind": "var",
+   "def_line": 13,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 43,
+     "col": 9
+    },
+    {
+     "line": 44,
+     "col": 28
+    },
+    {
+     "line": 51,
+     "col": 129
+    }
+   ]
+  },
+  {
+   "name": "bat",
+   "kind": "var",
+   "def_line": 32,
+   "def_col": 13,
+   "refs": [
+    {
+     "line": 35,
+     "col": 60
+    },
+    {
+     "line": 36,
+     "col": 41
+    }
+   ]
+  },
+  {
+   "name": "t",
+   "kind": "var",
+   "def_line": 33,
+   "def_col": 13,
+   "refs": [
+    {
+     "line": 35,
+     "col": 77
+    },
+    {
+     "line": 37,
+     "col": 38
+    }
+   ]
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_wifi{{\"wifi\"}}\n    s_mqtt{{\"mqtt\"}}\n    v_heartbeat_count(\"heartbeat_count\")\n    s_log{{\"log\"}}\n    s_system{{\"system\"}}\n    v_motor_isr_count(\"motor_isr_count\")\n    v_telemetry_count(\"telemetry_count\")\n    v_cloud_count(\"cloud_count\")\n    u_heartbeat((\"heartbeat<br>↻ 1s\"))\n    u_motor_control((\"motor_control<br>↻ 1ms\"))\n    u_telemetry((\"telemetry<br>↻ 30s\"))\n    u_cloud_report((\"cloud_report<br>↻ 60s\"))\n    u_stats((\"stats<br>↻ 10s\"))\n    u_setup -->|connect| s_wifi\n    u_setup -->|connect| s_mqtt\n    u_heartbeat -->|write| v_heartbeat_count\n    u_heartbeat -->|log| s_log\n    v_heartbeat_count -.->|read| u_heartbeat\n    u_heartbeat -->|free_heap| s_system\n    u_motor_control -->|write| v_motor_isr_count\n    u_telemetry -->|write| v_telemetry_count\n    u_telemetry -->|log| s_log\n    v_telemetry_count -.->|read| u_telemetry\n    u_telemetry -->|send_int| s_mqtt\n    u_cloud_report -->|write| v_cloud_count\n    u_cloud_report -->|log| s_log\n    v_cloud_count -.->|read| u_cloud_report\n    u_stats -->|log| s_log\n    v_heartbeat_count -.->|read| u_stats\n    v_motor_isr_count -.->|read| u_stats\n    v_telemetry_count -.->|read| u_stats\n    v_cloud_count -.->|read| u_stats\n    s_wifi -.->|is_connected| u_stats\n    u_stats -->|free_heap| s_system\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_wifi service;\n    class s_mqtt service;\n    class u_heartbeat timer;\n    class v_heartbeat_count shared;\n    class s_log service;\n    class s_system service;\n    class u_motor_control timer;\n    class v_motor_isr_count shared;\n    class u_telemetry timer;\n    class v_telemetry_count shared;\n    class u_cloud_report timer;\n    class v_cloud_count shared;\n    class u_stats timer;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_heartbeat",
+    "name": "heartbeat<br>↻ 1s",
+    "line": 15
+   },
+   {
+    "id": "u_motor_control",
+    "name": "motor_control<br>↻ 1ms",
+    "line": 23
+   },
+   {
+    "id": "u_telemetry",
+    "name": "telemetry<br>↻ 30s",
+    "line": 30
+   },
+   {
+    "id": "u_cloud_report",
+    "name": "cloud_report<br>↻ 60s",
+    "line": 41
+   },
+   {
+    "id": "u_stats",
+    "name": "stats<br>↻ 10s",
+    "line": 49
+   }
+  ],
+  "loops": [
+   "u_heartbeat",
+   "u_motor_control",
+   "u_telemetry",
+   "u_cloud_report",
+   "u_stats"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_wifi"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_mqtt"
+   },
+   {
+    "drive": "timer",
+    "src": "u_heartbeat",
+    "dst": "v_heartbeat_count",
+    "rate_ms": 1000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_heartbeat",
+    "dst": "s_log",
+    "rate_ms": 1000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_heartbeat_count",
+    "dst": "u_heartbeat",
+    "rate_ms": 1000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_heartbeat",
+    "dst": "s_system",
+    "rate_ms": 1000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_motor_control",
+    "dst": "v_motor_isr_count",
+    "rate_ms": 1.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_telemetry",
+    "dst": "v_telemetry_count",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_telemetry",
+    "dst": "s_log",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_telemetry_count",
+    "dst": "u_telemetry",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_telemetry",
+    "dst": "s_mqtt",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_cloud_report",
+    "dst": "v_cloud_count",
+    "rate_ms": 60000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_cloud_report",
+    "dst": "s_log",
+    "rate_ms": 60000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_cloud_count",
+    "dst": "u_cloud_report",
+    "rate_ms": 60000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_stats",
+    "dst": "s_log",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_heartbeat_count",
+    "dst": "u_stats",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_motor_isr_count",
+    "dst": "u_stats",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_telemetry_count",
+    "dst": "u_stats",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_cloud_count",
+    "dst": "u_stats",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "s_wifi",
+    "dst": "u_stats",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_stats",
+    "dst": "s_system",
+    "rate_ms": 10000.0
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_wifi": {
+    "kind": "service",
+    "label": "wifi",
+    "line": null,
+    "detail": "connect, is_connected"
+   },
+   "s_mqtt": {
+    "kind": "service",
+    "label": "mqtt",
+    "line": null,
+    "detail": "connect, send_int"
+   },
+   "u_heartbeat": {
+    "kind": "timer",
+    "label": "heartbeat<br>↻ 1s",
+    "line": 15,
+    "detail": "every 1s"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 4,
+    "detail": "Output · GPIO 2"
+   },
+   "v_heartbeat_count": {
+    "kind": "var",
+    "label": "heartbeat_count",
+    "line": 10,
+    "detail": "int"
+   },
+   "s_log": {
+    "kind": "service",
+    "label": "log",
+    "line": null,
+    "detail": "log"
+   },
+   "s_system": {
+    "kind": "service",
+    "label": "system",
+    "line": null,
+    "detail": "free_heap"
+   },
+   "u_motor_control": {
+    "kind": "timer",
+    "label": "motor_control<br>↻ 1ms",
+    "line": 23,
+    "detail": "every 1ms"
+   },
+   "p_motor": {
+    "kind": "pin",
+    "label": "motor",
+    "line": 5,
+    "detail": "PWM · GPIO 4"
+   },
+   "v_motor_isr_count": {
+    "kind": "var",
+    "label": "motor_isr_count",
+    "line": 11,
+    "detail": "int"
+   },
+   "u_telemetry": {
+    "kind": "timer",
+    "label": "telemetry<br>↻ 30s",
+    "line": 30,
+    "detail": "every 30s"
+   },
+   "p_battery": {
+    "kind": "pin",
+    "label": "battery",
+    "line": 6,
+    "detail": "Analog · GPIO 36"
+   },
+   "p_temp": {
+    "kind": "pin",
+    "label": "temp",
+    "line": 7,
+    "detail": "Analog · GPIO 39"
+   },
+   "v_telemetry_count": {
+    "kind": "var",
+    "label": "telemetry_count",
+    "line": 12,
+    "detail": "int"
+   },
+   "u_cloud_report": {
+    "kind": "timer",
+    "label": "cloud_report<br>↻ 60s",
+    "line": 41,
+    "detail": "every 60s"
+   },
+   "v_cloud_count": {
+    "kind": "var",
+    "label": "cloud_count",
+    "line": 13,
+    "detail": "int"
+   },
+   "s_http": {
+    "kind": "service",
+    "label": "http",
+    "line": null,
+    "detail": "post"
+   },
+   "u_stats": {
+    "kind": "timer",
+    "label": "stats<br>↻ 10s",
+    "line": 49,
+    "detail": "every 10s"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_wifi{{\"wifi\"}}\n    s_mqtt{{\"mqtt\"}}\n    p_led([\"led\"])\n    v_heartbeat_count(\"heartbeat_count\")\n    s_log{{\"log\"}}\n    s_system{{\"system\"}}\n    p_motor([\"motor\"])\n    v_motor_isr_count(\"motor_isr_count\")\n    p_battery([\"battery\"])\n    p_temp([\"temp\"])\n    v_telemetry_count(\"telemetry_count\")\n    v_cloud_count(\"cloud_count\")\n    s_http{{\"http\"}}\n    u_heartbeat((\"heartbeat<br>↻ 1s\"))\n    u_motor_control((\"motor_control<br>↻ 1ms\"))\n    u_telemetry((\"telemetry<br>↻ 30s\"))\n    u_cloud_report((\"cloud_report<br>↻ 60s\"))\n    u_stats((\"stats<br>↻ 10s\"))\n    u_setup -->|connect| s_wifi\n    u_setup -->|connect| s_mqtt\n    u_heartbeat -->|toggle| p_led\n    u_heartbeat -->|write| v_heartbeat_count\n    u_heartbeat -->|log| s_log\n    v_heartbeat_count -.->|read| u_heartbeat\n    u_heartbeat -->|free_heap| s_system\n    u_motor_control -->|set_pwm| p_motor\n    u_motor_control -->|write| v_motor_isr_count\n    p_battery -.->|read| u_telemetry\n    p_temp -.->|read| u_telemetry\n    u_telemetry -->|write| v_telemetry_count\n    u_telemetry -->|log| s_log\n    v_telemetry_count -.->|read| u_telemetry\n    u_telemetry -->|send_int| s_mqtt\n    u_cloud_report -->|write| v_cloud_count\n    u_cloud_report -->|log| s_log\n    v_cloud_count -.->|read| u_cloud_report\n    u_cloud_report -->|post| s_http\n    u_stats -->|log| s_log\n    v_heartbeat_count -.->|read| u_stats\n    v_motor_isr_count -.->|read| u_stats\n    v_telemetry_count -.->|read| u_stats\n    v_cloud_count -.->|read| u_stats\n    s_wifi -.->|is_connected| u_stats\n    u_stats -->|free_heap| s_system\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_wifi service;\n    class s_mqtt service;\n    class u_heartbeat timer;\n    class p_led pin;\n    class v_heartbeat_count shared;\n    class s_log service;\n    class s_system service;\n    class u_motor_control timer;\n    class p_motor pin;\n    class v_motor_isr_count shared;\n    class u_telemetry timer;\n    class p_battery pin;\n    class p_temp pin;\n    class v_telemetry_count shared;\n    class u_cloud_report timer;\n    class v_cloud_count shared;\n    class s_http service;\n    class u_stats timer;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_heartbeat",
+    "name": "heartbeat<br>↻ 1s",
+    "line": 15
+   },
+   {
+    "id": "u_motor_control",
+    "name": "motor_control<br>↻ 1ms",
+    "line": 23
+   },
+   {
+    "id": "u_telemetry",
+    "name": "telemetry<br>↻ 30s",
+    "line": 30
+   },
+   {
+    "id": "u_cloud_report",
+    "name": "cloud_report<br>↻ 60s",
+    "line": 41
+   },
+   {
+    "id": "u_stats",
+    "name": "stats<br>↻ 10s",
+    "line": 49
+   }
+  ],
+  "loops": [
+   "u_heartbeat",
+   "u_motor_control",
+   "u_telemetry",
+   "u_cloud_report",
+   "u_stats"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_wifi"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_mqtt"
+   },
+   {
+    "drive": "timer",
+    "src": "u_heartbeat",
+    "dst": "p_led",
+    "rate_ms": 1000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_heartbeat",
+    "dst": "v_heartbeat_count",
+    "rate_ms": 1000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_heartbeat",
+    "dst": "s_log",
+    "rate_ms": 1000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_heartbeat_count",
+    "dst": "u_heartbeat",
+    "rate_ms": 1000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_heartbeat",
+    "dst": "s_system",
+    "rate_ms": 1000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_motor_control",
+    "dst": "p_motor",
+    "rate_ms": 1.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_motor_control",
+    "dst": "v_motor_isr_count",
+    "rate_ms": 1.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_battery",
+    "dst": "u_telemetry",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_temp",
+    "dst": "u_telemetry",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_telemetry",
+    "dst": "v_telemetry_count",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_telemetry",
+    "dst": "s_log",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_telemetry_count",
+    "dst": "u_telemetry",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_telemetry",
+    "dst": "s_mqtt",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_cloud_report",
+    "dst": "v_cloud_count",
+    "rate_ms": 60000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_cloud_report",
+    "dst": "s_log",
+    "rate_ms": 60000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_cloud_count",
+    "dst": "u_cloud_report",
+    "rate_ms": 60000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_cloud_report",
+    "dst": "s_http",
+    "rate_ms": 60000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_stats",
+    "dst": "s_log",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_heartbeat_count",
+    "dst": "u_stats",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_motor_isr_count",
+    "dst": "u_stats",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_telemetry_count",
+    "dst": "u_stats",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_cloud_count",
+    "dst": "u_stats",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "s_wifi",
+    "dst": "u_stats",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_stats",
+    "dst": "s_system",
+    "rate_ms": 10000.0
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_wifi": {
+    "kind": "service",
+    "label": "wifi",
+    "line": null,
+    "detail": "connect, is_connected"
+   },
+   "s_mqtt": {
+    "kind": "service",
+    "label": "mqtt",
+    "line": null,
+    "detail": "connect, send_int"
+   },
+   "u_heartbeat": {
+    "kind": "timer",
+    "label": "heartbeat<br>↻ 1s",
+    "line": 15,
+    "detail": "every 1s"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 4,
+    "detail": "Output · GPIO 2"
+   },
+   "v_heartbeat_count": {
+    "kind": "var",
+    "label": "heartbeat_count",
+    "line": 10,
+    "detail": "int"
+   },
+   "s_log": {
+    "kind": "service",
+    "label": "log",
+    "line": null,
+    "detail": "log"
+   },
+   "s_system": {
+    "kind": "service",
+    "label": "system",
+    "line": null,
+    "detail": "free_heap"
+   },
+   "u_motor_control": {
+    "kind": "timer",
+    "label": "motor_control<br>↻ 1ms",
+    "line": 23,
+    "detail": "every 1ms"
+   },
+   "p_motor": {
+    "kind": "pin",
+    "label": "motor",
+    "line": 5,
+    "detail": "PWM · GPIO 4"
+   },
+   "v_motor_isr_count": {
+    "kind": "var",
+    "label": "motor_isr_count",
+    "line": 11,
+    "detail": "int"
+   },
+   "u_telemetry": {
+    "kind": "timer",
+    "label": "telemetry<br>↻ 30s",
+    "line": 30,
+    "detail": "every 30s"
+   },
+   "p_battery": {
+    "kind": "pin",
+    "label": "battery",
+    "line": 6,
+    "detail": "Analog · GPIO 36"
+   },
+   "p_temp": {
+    "kind": "pin",
+    "label": "temp",
+    "line": 7,
+    "detail": "Analog · GPIO 39"
+   },
+   "v_telemetry_count": {
+    "kind": "var",
+    "label": "telemetry_count",
+    "line": 12,
+    "detail": "int"
+   },
+   "u_cloud_report": {
+    "kind": "timer",
+    "label": "cloud_report<br>↻ 60s",
+    "line": 41,
+    "detail": "every 60s"
+   },
+   "v_cloud_count": {
+    "kind": "var",
+    "label": "cloud_count",
+    "line": 13,
+    "detail": "int"
+   },
+   "s_http": {
+    "kind": "service",
+    "label": "http",
+    "line": null,
+    "detail": "post"
+   },
+   "u_stats": {
+    "kind": "timer",
+    "label": "stats<br>↻ 10s",
+    "line": 49,
+    "detail": "every 10s"
+   }
+  }
+ }
+}

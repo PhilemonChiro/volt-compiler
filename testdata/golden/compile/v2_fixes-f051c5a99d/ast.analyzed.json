@@ -1,0 +1,79 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [1, 6, 1, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [3, 9, 3, 12],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [3, 9, 3, 12],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [5, 6, 5, 11],
+   "name": "blink",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [6, 11, 6, 16],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [6, 11, 6, 16],
+      "microseconds": 500000,
+      "original": "500ms"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [7, 9, 7, 12],
+        "obj": {
+         "_": "VarRef",
+         "region": [7, 9, 7, 12],
+         "name": "led"
+        },
+        "method": "toggle",
+        "args": []
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

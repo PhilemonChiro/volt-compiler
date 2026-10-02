@@ -1,0 +1,28 @@
+
+[yellow bold]-- HARDWARE WARNING -- main.volt:3[/yellow bold]
+
+GPIO 2: GPIO 2 is a strapping pin. Must be LOW or floating for download mode.
+
+ [dim]2 |[/dim] hardware {
+ [dim]3 |[/dim]     pin led: Output = 2
+ [dim]  |[/dim] [yellow]        ^^^[/yellow]
+
+
+[yellow bold]-- HARDWARE WARNING -- main.volt:4[/yellow bold]
+
+GPIO 0: GPIO 0 is a strapping pin. LOW at boot = download mode. Ensure pull-up (internal or external) for normal boot.
+
+ [dim]3 |[/dim]     pin led: Output = 2
+ [dim]4 |[/dim]     pin button: PullUpInput = 0
+ [dim]  |[/dim] [yellow]        ^^^^^^[/yellow]
+
+
+[yellow bold]-- STATE MACHINE WARNING -- main.volt:11[/yellow bold]
+
+State `running` in machine `DeviceState` has no outgoing transitions (dead-end state).
+
+ [dim]10 |[/dim]     }
+ [dim]11 |[/dim]     state running {
+ [dim]   |[/dim] [yellow]          ^^^^^^^[/yellow]
+
+[cyan]Hint: Add a transition or mark with @terminal if intentional.[/cyan]

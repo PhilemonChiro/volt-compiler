@@ -1,0 +1,235 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 2,
+    "col": 6,
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "severity": "warning",
+    "hint": "The chip declaration will move to volt.toml in a future version."
+   }
+  ],
+  "pins": [
+   {
+    "name": "motor",
+    "mode": "PWM",
+    "gpio": 4
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "pid_loop",
+    "tier": "critical",
+    "line": 10
+   }
+  ],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": "esp32"
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "chip esp32\n\nhardware {\n    pin motor: PWM = 4\n}\n\nvar pwm_setpoint = 0\n\ntask pid_loop {\n    every 1ms strict { motor.set_pwm(pwm_setpoint) }\n}\n\nsetup {\n    run(pid_loop)\n}\n",
+ "find_symbols": [
+  {
+   "name": "motor",
+   "kind": "pin",
+   "def_line": 5,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 12,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "pid_loop",
+   "kind": "task",
+   "def_line": 10,
+   "def_col": 6,
+   "refs": [
+    {
+     "line": 17,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "pwm_setpoint",
+   "kind": "var",
+   "def_line": 8,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 12,
+     "col": 23
+    }
+   ]
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_run{{\"run\"}}\n    u_pid_loop((\"pid_loop<br>↻ 1ms\"))\n    u_setup -->|run| s_run\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_run service;\n    class u_pid_loop timer;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_pid_loop",
+    "name": "pid_loop<br>↻ 1ms",
+    "line": 10
+   }
+  ],
+  "loops": [
+   "u_pid_loop"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_run"
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_run": {
+    "kind": "service",
+    "label": "run",
+    "line": null,
+    "detail": "run"
+   },
+   "u_pid_loop": {
+    "kind": "timer",
+    "label": "pid_loop<br>↻ 1ms",
+    "line": 10,
+    "detail": "every 1ms"
+   },
+   "p_motor": {
+    "kind": "pin",
+    "label": "motor",
+    "line": 5,
+    "detail": "PWM · GPIO 4"
+   },
+   "v_pwm_setpoint": {
+    "kind": "var",
+    "label": "pwm_setpoint",
+    "line": 8,
+    "detail": ""
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_run{{\"run\"}}\n    p_motor([\"motor\"])\n    v_pwm_setpoint(\"pwm_setpoint\")\n    u_pid_loop((\"pid_loop<br>↻ 1ms\"))\n    u_setup -->|run| s_run\n    u_pid_loop -->|set_pwm| p_motor\n    v_pwm_setpoint -.->|read| u_pid_loop\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_run service;\n    class u_pid_loop timer;\n    class p_motor pin;\n    class v_pwm_setpoint var;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_pid_loop",
+    "name": "pid_loop<br>↻ 1ms",
+    "line": 10
+   }
+  ],
+  "loops": [
+   "u_pid_loop"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_run"
+   },
+   {
+    "drive": "timer",
+    "src": "u_pid_loop",
+    "dst": "p_motor",
+    "rate_ms": 1.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_pwm_setpoint",
+    "dst": "u_pid_loop",
+    "rate_ms": 1.0
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_run": {
+    "kind": "service",
+    "label": "run",
+    "line": null,
+    "detail": "run"
+   },
+   "u_pid_loop": {
+    "kind": "timer",
+    "label": "pid_loop<br>↻ 1ms",
+    "line": 10,
+    "detail": "every 1ms"
+   },
+   "p_motor": {
+    "kind": "pin",
+    "label": "motor",
+    "line": 5,
+    "detail": "PWM · GPIO 4"
+   },
+   "v_pwm_setpoint": {
+    "kind": "var",
+    "label": "pwm_setpoint",
+    "line": 8,
+    "detail": ""
+   }
+  }
+ }
+}

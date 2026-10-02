@@ -1,0 +1,20 @@
+
+[yellow bold]-- DEPRECATION -- main.volt:1[/yellow bold]
+
+Move `chip esp32` to volt.toml: chip = "esp32"
+
+ [dim]1 |[/dim] chip esp32
+ [dim]  |[/dim] [yellow]     ^^^^^[/yellow]
+
+[cyan]Hint: The chip declaration will move to volt.toml in a future version.[/cyan]
+
+
+[red bold]-- HARDWARE ERROR -- main.volt:4[/red bold]
+
+GPIO 21 is used by bus `i2c0` (sda) but was already declared as pin `led` (line 3).
+
+ [dim]3 |[/dim]     pin led: Output = 21
+ [dim]4 |[/dim]     bus i2c0: I2C(sda: 21, scl: 22)
+ [dim]  |[/dim] [red]        ^^^^[/red]
+
+[cyan]Hint: A pin can only belong to one subsystem. Either remove the `pin` declaration or move the bus signal to a free GPIO.[/cyan]

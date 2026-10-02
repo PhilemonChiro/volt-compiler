@@ -1,0 +1,38 @@
+[
+  {
+    "severity": "warning",
+    "category": "DEPRECATION",
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "hint": "The chip declaration will move to volt.toml in a future version.",
+    "region": [
+      1,
+      6,
+      1,
+      11
+    ]
+  },
+  {
+    "severity": "warning",
+    "category": "HARDWARE WARNING",
+    "message": "Strapping pin: GPIO 2 must be LOW during boot for flash programming.",
+    "hint": null,
+    "region": [
+      3,
+      9,
+      3,
+      13
+    ]
+  },
+  {
+    "severity": "warning",
+    "category": "UNREACHABLE",
+    "message": "Code after `every`/`on` block in task `blinker` will never execute.",
+    "hint": "Move this code before the `every` block, or into a separate task.",
+    "region": [
+      10,
+      11,
+      10,
+      16
+    ]
+  }
+]

@@ -1,0 +1,128 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [4, 9, 6, 12],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [4, 9, 4, 13],
+    "name": "led1",
+    "mode": "Output",
+    "gpio": 2
+   },
+   {
+    "_": "PinDecl",
+    "region": [5, 9, 5, 13],
+    "name": "led2",
+    "mode": "Output",
+    "gpio": 4
+   },
+   {
+    "_": "PinDecl",
+    "region": [6, 9, 6, 12],
+    "name": "btn",
+    "mode": "PullUpInput",
+    "gpio": 0
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [8, 6, 8, 12],
+   "name": "lights",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [9, 11, 9, 13],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [9, 11, 9, 13],
+      "microseconds": 1000000,
+      "original": "1s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [10, 9, 10, 13],
+        "obj": {
+         "_": "VarRef",
+         "region": [10, 9, 10, 13],
+         "name": "led1"
+        },
+        "method": "toggle",
+        "args": []
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [11, 9, 11, 13],
+        "obj": {
+         "_": "VarRef",
+         "region": [11, 9, 11, 13],
+         "name": "led2"
+        },
+        "method": "toggle",
+        "args": []
+       }
+      },
+      {
+       "_": "VarDecl",
+       "region": [12, 13, 12, 18],
+       "name": "state",
+       "type_name": "int",
+       "value": {
+        "_": "MethodCall",
+        "region": [12, 26, 12, 29],
+        "obj": {
+         "_": "VarRef",
+         "region": [12, 26, 12, 29],
+         "name": "btn"
+        },
+        "method": "read",
+        "args": []
+       },
+       "mutable": true,
+       "shared": false,
+       "needs_lifting": false
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

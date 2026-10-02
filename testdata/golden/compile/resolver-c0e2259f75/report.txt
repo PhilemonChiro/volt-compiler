@@ -1,0 +1,10 @@
+
+[red bold]-- MUTABILITY ERROR -- main.volt:5[/red bold]
+
+Cannot assign to `count` — it was declared with `let` (immutable).
+
+ [dim]4 |[/dim]     every 1second {
+ [dim]5 |[/dim]         count = count + 1
+ [dim]  |[/dim] [red]        ^^^^^[/red]
+
+[cyan]Hint: Use `var` instead of `let` to make it mutable.[/cyan]

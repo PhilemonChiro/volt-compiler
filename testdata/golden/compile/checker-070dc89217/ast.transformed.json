@@ -1,0 +1,49 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "VarDecl",
+    "region": [3, 9, 3, 10],
+    "name": "x",
+    "type_name": "float",
+    "value": {
+     "_": "BinaryExpr",
+     "region": [3, 13, 3, 14],
+     "left": {
+      "_": "IntLiteral",
+      "region": [3, 13, 3, 14],
+      "value": 1
+     },
+     "op": "+",
+     "right": {
+      "_": "FloatLiteral",
+      "region": [3, 17, 3, 21],
+      "value": 3.14
+     },
+     "result_type": "float"
+    },
+    "mutable": false,
+    "shared": false,
+    "needs_lifting": false
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

@@ -1,0 +1,131 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [1, 6, 1, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [2, 16, 2, 19],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [2, 16, 2, 19],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [
+  {
+   "_": "FuncDecl",
+   "region": [3, 6, 3, 14],
+   "name": "count_up",
+   "params": [],
+   "return_type": null,
+   "body": [
+    {
+     "_": "VarDecl",
+     "region": [4, 9, 4, 10],
+     "name": "x",
+     "type_name": "int",
+     "value": {
+      "_": "IntLiteral",
+      "region": [4, 18, 4, 19],
+      "value": 0
+     },
+     "mutable": true,
+     "shared": false,
+     "needs_lifting": false
+    },
+    {
+     "_": "CompoundAssign",
+     "region": [5, 5, 5, 6],
+     "target": {
+      "_": "VarRef",
+      "region": [5, 5, 5, 6],
+      "name": "x"
+     },
+     "op": "+=",
+     "value": {
+      "_": "IntLiteral",
+      "region": [5, 10, 5, 11],
+      "value": 1
+     }
+    },
+    {
+     "_": "ExprStmt",
+     "region": [0, 0, 0, 0],
+     "expr": {
+      "_": "FuncCall",
+      "region": [6, 5, 6, 10],
+      "name": "sleep",
+      "args": [
+       {
+        "_": "DurationLiteral",
+        "region": [6, 11, 6, 16],
+        "microseconds": 100000,
+        "original": "100ms"
+       }
+      ]
+     }
+    }
+   ],
+   "contains_yield": true
+  }
+ ],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [8, 6, 8, 12],
+   "name": "worker",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [9, 11, 9, 13],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [9, 11, 9, 13],
+      "microseconds": 1000000,
+      "original": "1s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [9, 16, 9, 24],
+        "name": "count_up",
+        "args": []
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

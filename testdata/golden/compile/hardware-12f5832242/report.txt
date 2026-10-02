@@ -1,0 +1,19 @@
+
+[yellow bold]-- HARDWARE WARNING -- main.volt:2[/yellow bold]
+
+GPIO 3 is used by UART0 (USB serial). Using it will break serial monitor and firmware flashing.
+
+ [dim]1 |[/dim] hardware {
+ [dim]2 |[/dim]     pin x: Input = 3
+ [dim]  |[/dim] [yellow]        ^[/yellow]
+
+[cyan]Hint: Use a different pin unless you specifically intend to disable serial output.[/cyan]
+
+
+[yellow bold]-- HARDWARE NOTE -- main.volt:2[/yellow bold]
+
+GPIO 3: Connected to USB-serial on DevKit. Using this pin breaks serial monitor/flashing.
+
+ [dim]1 |[/dim] hardware {
+ [dim]2 |[/dim]     pin x: Input = 3
+ [dim]  |[/dim] [yellow]        ^[/yellow]

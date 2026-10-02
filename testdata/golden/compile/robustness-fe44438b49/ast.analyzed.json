@@ -1,0 +1,162 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [
+  {
+   "_": "FuncDecl",
+   "region": [3, 6, 3, 11],
+   "name": "clamp",
+   "params": [
+    {
+     "_": "Param",
+     "region": [3, 12, 3, 15],
+     "name": "val",
+     "type_name": "int"
+    },
+    {
+     "_": "Param",
+     "region": [3, 22, 3, 24],
+     "name": "lo",
+     "type_name": "int"
+    },
+    {
+     "_": "Param",
+     "region": [3, 31, 3, 33],
+     "name": "hi",
+     "type_name": "int"
+    }
+   ],
+   "return_type": "int",
+   "body": [
+    {
+     "_": "IfStmt",
+     "region": [4, 8, 4, 11],
+     "condition": {
+      "_": "BinaryExpr",
+      "region": [4, 8, 4, 11],
+      "left": {
+       "_": "VarRef",
+       "region": [4, 8, 4, 11],
+       "name": "val"
+      },
+      "op": "<",
+      "right": {
+       "_": "VarRef",
+       "region": [4, 14, 4, 16],
+       "name": "lo"
+      },
+      "result_type": "bool"
+     },
+     "then_body": [
+      {
+       "_": "ReturnStmt",
+       "region": [0, 0, 0, 0],
+       "value": {
+        "_": "VarRef",
+        "region": [4, 26, 4, 28],
+        "name": "lo"
+       }
+      }
+     ],
+     "else_body": null
+    },
+    {
+     "_": "IfStmt",
+     "region": [5, 8, 5, 11],
+     "condition": {
+      "_": "BinaryExpr",
+      "region": [5, 8, 5, 11],
+      "left": {
+       "_": "VarRef",
+       "region": [5, 8, 5, 11],
+       "name": "val"
+      },
+      "op": ">",
+      "right": {
+       "_": "VarRef",
+       "region": [5, 14, 5, 16],
+       "name": "hi"
+      },
+      "result_type": "bool"
+     },
+     "then_body": [
+      {
+       "_": "ReturnStmt",
+       "region": [0, 0, 0, 0],
+       "value": {
+        "_": "VarRef",
+        "region": [5, 26, 5, 28],
+        "name": "hi"
+       }
+      }
+     ],
+     "else_body": null
+    },
+    {
+     "_": "ReturnStmt",
+     "region": [0, 0, 0, 0],
+     "value": {
+      "_": "VarRef",
+      "region": [6, 12, 6, 15],
+      "name": "val"
+     }
+    }
+   ],
+   "contains_yield": false
+  }
+ ],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "VarDecl",
+    "region": [9, 9, 9, 10],
+    "name": "x",
+    "type_name": "int",
+    "value": {
+     "_": "FuncCall",
+     "region": [9, 18, 9, 23],
+     "name": "clamp",
+     "args": [
+      {
+       "_": "IntLiteral",
+       "region": [9, 24, 9, 27],
+       "value": 150
+      },
+      {
+       "_": "IntLiteral",
+       "region": [9, 29, 9, 30],
+       "value": 0
+      },
+      {
+       "_": "IntLiteral",
+       "region": [9, 32, 9, 35],
+       "value": 100
+      }
+     ]
+    },
+    "mutable": true,
+    "shared": false,
+    "needs_lifting": false
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

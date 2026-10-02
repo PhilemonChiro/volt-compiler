@@ -1,0 +1,584 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 5,
+    "col": 9,
+    "message": "GPIO 2: GPIO 2 is a strapping pin. Must be LOW or floating for download mode.",
+    "severity": "warning",
+    "hint": ""
+   },
+   {
+    "line": 6,
+    "col": 9,
+    "message": "GPIO 25: Also DAC channel 1. When DAC is enabled, outputs ~1.6V by default.",
+    "severity": "warning",
+    "hint": ""
+   }
+  ],
+  "pins": [
+   {
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   },
+   {
+    "name": "buzzer",
+    "mode": "PWM",
+    "gpio": 25
+   }
+  ],
+  "devices": [
+   {
+    "name": "bme",
+    "type": "BME280",
+    "bus": "s",
+    "address": 118
+   }
+  ],
+  "buses": [
+   {
+    "name": "s",
+    "type": "i2c"
+   }
+  ],
+  "tasks": [
+   {
+    "name": "_rule0",
+    "tier": "background",
+    "line": 22
+   },
+   {
+    "name": "_rule1",
+    "tier": "background",
+    "line": 32
+   },
+   {
+    "name": "_rule2",
+    "tier": "background",
+    "line": 39
+   }
+  ],
+  "machines": [],
+  "channels": [
+   {
+    "name": "alerts",
+    "elem_type": "int",
+    "capacity": 8
+   }
+  ],
+  "enums": [
+   {
+    "name": "AlertLevel",
+    "variants": [
+     "normal",
+     "warning",
+     "critical"
+    ]
+   }
+  ],
+  "chip": ""
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "hardware {\n    pin led = 2\n    pin buzzer: PWM = 25\n    bus s: I2C(sda: 21, scl: 22)\n    device bme: BME280 on s at 0x76\n}\n\nenum AlertLevel { normal, warning, critical }\n\nchannel alerts: int[8]\n\nstorage boot_count: int = 0\n\nevery 10s when wifi.is_connected() {\n    system.watchdog_feed()\n    var temp: float = bme.temperature() or skip\n    mqtt.send_float(\"temp\", temp) or retry(3)\n    if temp > 35 {\n        alerts.send(1)\n        buzzer.beep_warning()\n    }\n}\n\nevery 100ms {\n    if alerts.has_data() {\n        var code: int = alerts.receive()\n        led.on()\n    }\n}\n\nevery 1s { led.toggle() }\n\nsetup {\n    boot_count += 1\n    system.watchdog_enable(15000)\n    wifi.connect(\"net\", \"pass\") or retry(10)\n    mqtt.connect(\"mqtt://broker\") or retry(5)\n    buzzer.beep_startup()\n}\n",
+ "find_symbols": [
+  {
+   "name": "led",
+   "kind": "pin",
+   "def_line": 5,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 35,
+     "col": 9
+    },
+    {
+     "line": 39,
+     "col": 12
+    }
+   ]
+  },
+  {
+   "name": "buzzer",
+   "kind": "pin",
+   "def_line": 6,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 28,
+     "col": 9
+    },
+    {
+     "line": 19,
+     "col": 5
+    }
+   ]
+  },
+  {
+   "name": "bme",
+   "kind": "sensor",
+   "def_line": 8,
+   "def_col": 12,
+   "refs": []
+  },
+  {
+   "name": "s",
+   "kind": "bus",
+   "def_line": 7,
+   "def_col": 9,
+   "refs": []
+  },
+  {
+   "name": "_rule0",
+   "kind": "task",
+   "def_line": 22,
+   "def_col": 7,
+   "refs": []
+  },
+  {
+   "name": "_rule1",
+   "kind": "task",
+   "def_line": 32,
+   "def_col": 7,
+   "refs": []
+  },
+  {
+   "name": "_rule2",
+   "kind": "task",
+   "def_line": 39,
+   "def_col": 7,
+   "refs": []
+  },
+  {
+   "name": "boot_count",
+   "kind": "storage",
+   "def_line": 11,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 15,
+     "col": 5
+    }
+   ]
+  },
+  {
+   "name": "temp",
+   "kind": "var",
+   "def_line": 24,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 26,
+     "col": 8
+    }
+   ]
+  },
+  {
+   "name": "code",
+   "kind": "var",
+   "def_line": 34,
+   "def_col": 13,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    v_boot_count(\"boot_count\")\n    s_system{{\"system\"}}\n    s_wifi{{\"wifi\"}}\n    s_mqtt{{\"mqtt\"}}\n    p_buzzer([\"buzzer\"])\n    c_alerts[/\"alerts\"/]\n    p_led([\"led\"])\n    u__rule0((\"↻ 10s\"))\n    u__rule1((\"↻ 100ms\"))\n    u__rule2((\"↻ 1s\"))\n    u_setup -->|write| v_boot_count\n    u_setup -->|watchdog_enable| s_system\n    u_setup -->|connect| s_wifi\n    u_setup -->|connect| s_mqtt\n    u_setup -->|beep_startup| p_buzzer\n    s_wifi -.->|is_connected| u__rule0\n    u__rule0 -->|watchdog_feed| s_system\n    u__rule0 -->|send_float| s_mqtt\n    u__rule0 -->|send| c_alerts\n    u__rule0 -->|beep_warning| p_buzzer\n    c_alerts -.->|has_data, receive| u__rule1\n    u__rule1 -->|on| p_led\n    u__rule2 -->|toggle| p_led\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class v_boot_count var;\n    class s_system service;\n    class s_wifi service;\n    class s_mqtt service;\n    class p_buzzer shared;\n    class u__rule0 timer;\n    class c_alerts shared;\n    class u__rule1 timer;\n    class p_led shared;\n    class u__rule2 timer;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u__rule0",
+    "name": "↻ 10s",
+    "line": 22
+   },
+   {
+    "id": "u__rule1",
+    "name": "↻ 100ms",
+    "line": 32
+   },
+   {
+    "id": "u__rule2",
+    "name": "↻ 1s",
+    "line": 39
+   }
+  ],
+  "loops": [
+   "u__rule0",
+   "u__rule1",
+   "u__rule2"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "v_boot_count"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_system"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_wifi"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_mqtt"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "p_buzzer"
+   },
+   {
+    "drive": "timer",
+    "src": "s_wifi",
+    "dst": "u__rule0",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule0",
+    "dst": "s_system",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule0",
+    "dst": "s_mqtt",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule0",
+    "dst": "c_alerts",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule0",
+    "dst": "p_buzzer",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "c_alerts",
+    "dst": "u__rule1",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule1",
+    "dst": "p_led",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule2",
+    "dst": "p_led",
+    "rate_ms": 1000.0
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "v_boot_count": {
+    "kind": "var",
+    "label": "boot_count",
+    "line": 11,
+    "detail": "int · storage"
+   },
+   "s_system": {
+    "kind": "service",
+    "label": "system",
+    "line": null,
+    "detail": "watchdog_enable, watchdog_feed"
+   },
+   "s_wifi": {
+    "kind": "service",
+    "label": "wifi",
+    "line": null,
+    "detail": "connect, is_connected"
+   },
+   "s_mqtt": {
+    "kind": "service",
+    "label": "mqtt",
+    "line": null,
+    "detail": "connect, send_float"
+   },
+   "p_buzzer": {
+    "kind": "pin",
+    "label": "buzzer",
+    "line": 6,
+    "detail": "PWM · GPIO 25"
+   },
+   "u__rule0": {
+    "kind": "timer",
+    "label": "↻ 10s",
+    "line": 22,
+    "detail": "every 10s"
+   },
+   "s_bme": {
+    "kind": "service",
+    "label": "bme",
+    "line": null,
+    "detail": "temperature"
+   },
+   "c_alerts": {
+    "kind": "channel",
+    "label": "alerts",
+    "line": 12,
+    "detail": "int[8]"
+   },
+   "u__rule1": {
+    "kind": "timer",
+    "label": "↻ 100ms",
+    "line": 32,
+    "detail": "every 100ms"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 5,
+    "detail": "GPIO 2"
+   },
+   "u__rule2": {
+    "kind": "timer",
+    "label": "↻ 1s",
+    "line": 39,
+    "detail": "every 1s"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    v_boot_count(\"boot_count\")\n    s_system{{\"system\"}}\n    s_wifi{{\"wifi\"}}\n    s_mqtt{{\"mqtt\"}}\n    p_buzzer([\"buzzer\"])\n    s_bme{{\"bme\"}}\n    c_alerts[/\"alerts\"/]\n    p_led([\"led\"])\n    u__rule0((\"↻ 10s\"))\n    u__rule1((\"↻ 100ms\"))\n    u__rule2((\"↻ 1s\"))\n    u_setup -->|write| v_boot_count\n    u_setup -->|watchdog_enable| s_system\n    u_setup -->|connect| s_wifi\n    u_setup -->|connect| s_mqtt\n    u_setup -->|beep_startup| p_buzzer\n    s_wifi -.->|is_connected| u__rule0\n    u__rule0 -->|watchdog_feed| s_system\n    u__rule0 -->|temperature| s_bme\n    u__rule0 -->|send_float| s_mqtt\n    u__rule0 -->|send| c_alerts\n    u__rule0 -->|beep_warning| p_buzzer\n    c_alerts -.->|has_data, receive| u__rule1\n    u__rule1 -->|on| p_led\n    u__rule2 -->|toggle| p_led\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class v_boot_count var;\n    class s_system service;\n    class s_wifi service;\n    class s_mqtt service;\n    class p_buzzer shared;\n    class u__rule0 timer;\n    class s_bme service;\n    class c_alerts shared;\n    class u__rule1 timer;\n    class p_led shared;\n    class u__rule2 timer;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u__rule0",
+    "name": "↻ 10s",
+    "line": 22
+   },
+   {
+    "id": "u__rule1",
+    "name": "↻ 100ms",
+    "line": 32
+   },
+   {
+    "id": "u__rule2",
+    "name": "↻ 1s",
+    "line": 39
+   }
+  ],
+  "loops": [
+   "u__rule0",
+   "u__rule1",
+   "u__rule2"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "v_boot_count"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_system"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_wifi"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_mqtt"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "p_buzzer"
+   },
+   {
+    "drive": "timer",
+    "src": "s_wifi",
+    "dst": "u__rule0",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule0",
+    "dst": "s_system",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule0",
+    "dst": "s_bme",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule0",
+    "dst": "s_mqtt",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule0",
+    "dst": "c_alerts",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule0",
+    "dst": "p_buzzer",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "c_alerts",
+    "dst": "u__rule1",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule1",
+    "dst": "p_led",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule2",
+    "dst": "p_led",
+    "rate_ms": 1000.0
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "v_boot_count": {
+    "kind": "var",
+    "label": "boot_count",
+    "line": 11,
+    "detail": "int · storage"
+   },
+   "s_system": {
+    "kind": "service",
+    "label": "system",
+    "line": null,
+    "detail": "watchdog_enable, watchdog_feed"
+   },
+   "s_wifi": {
+    "kind": "service",
+    "label": "wifi",
+    "line": null,
+    "detail": "connect, is_connected"
+   },
+   "s_mqtt": {
+    "kind": "service",
+    "label": "mqtt",
+    "line": null,
+    "detail": "connect, send_float"
+   },
+   "p_buzzer": {
+    "kind": "pin",
+    "label": "buzzer",
+    "line": 6,
+    "detail": "PWM · GPIO 25"
+   },
+   "u__rule0": {
+    "kind": "timer",
+    "label": "↻ 10s",
+    "line": 22,
+    "detail": "every 10s"
+   },
+   "s_bme": {
+    "kind": "service",
+    "label": "bme",
+    "line": null,
+    "detail": "temperature"
+   },
+   "c_alerts": {
+    "kind": "channel",
+    "label": "alerts",
+    "line": 12,
+    "detail": "int[8]"
+   },
+   "u__rule1": {
+    "kind": "timer",
+    "label": "↻ 100ms",
+    "line": 32,
+    "detail": "every 100ms"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 5,
+    "detail": "GPIO 2"
+   },
+   "u__rule2": {
+    "kind": "timer",
+    "label": "↻ 1s",
+    "line": 39,
+    "detail": "every 1s"
+   }
+  }
+ }
+}

@@ -1,0 +1,302 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 1,
+    "col": 6,
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "severity": "warning",
+    "hint": "The chip declaration will move to volt.toml in a future version."
+   },
+   {
+    "line": 0,
+    "col": 0,
+    "message": "Variable `counter` is shared between critical task (isr_task, isr_task, isr_task) and task (slow_task). The compiler will mark it `volatile` in generated C.",
+    "severity": "warning",
+    "hint": "For multi-word values, consider using atomic operations."
+   }
+  ],
+  "pins": [
+   {
+    "name": "led",
+    "mode": "Output",
+    "gpio": 4
+   },
+   {
+    "name": "motor",
+    "mode": "PWM",
+    "gpio": 25
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "isr_task",
+    "tier": "critical",
+    "line": 7
+   },
+   {
+    "name": "slow_task",
+    "tier": "background",
+    "line": 12
+   }
+  ],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": "esp32"
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 4\n    pin motor: PWM = 25\n}\n\nvar counter = 0\n\ntask isr_task {\n    every 1ms strict { counter = counter + 1 }\n}\n\ntask slow_task {\n    every 1s {\n        led.toggle()\n        motor.set_pwm(counter)\n    }\n}\n",
+ "find_symbols": [
+  {
+   "name": "led",
+   "kind": "pin",
+   "def_line": 3,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 14,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "motor",
+   "kind": "pin",
+   "def_line": 4,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 15,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "isr_task",
+   "kind": "task",
+   "def_line": 7,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "slow_task",
+   "kind": "task",
+   "def_line": 12,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "counter",
+   "kind": "var",
+   "def_line": 6,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 9,
+     "col": 9
+    },
+    {
+     "line": 9,
+     "col": 19
+    },
+    {
+     "line": 15,
+     "col": 23
+    }
+   ]
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    v_counter(\"counter\")\n    u_isr_task((\"isr_task<br>↻ 1ms\"))\n    u_slow_task((\"slow_task<br>↻ 1s\"))\n    u_isr_task -->|write| v_counter\n    v_counter -.->|read| u_isr_task\n    v_counter -.->|read| u_slow_task\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_isr_task timer;\n    class v_counter shared;\n    class u_slow_task timer;",
+  "units": [
+   {
+    "id": "u_isr_task",
+    "name": "isr_task<br>↻ 1ms",
+    "line": 7
+   },
+   {
+    "id": "u_slow_task",
+    "name": "slow_task<br>↻ 1s",
+    "line": 12
+   }
+  ],
+  "loops": [
+   "u_isr_task",
+   "u_slow_task"
+  ],
+  "edges": [
+   {
+    "drive": "timer",
+    "src": "u_isr_task",
+    "dst": "v_counter",
+    "rate_ms": 1.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_counter",
+    "dst": "u_isr_task",
+    "rate_ms": 1.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_counter",
+    "dst": "u_slow_task",
+    "rate_ms": 1000.0
+   }
+  ],
+  "nodes": {
+   "u_isr_task": {
+    "kind": "timer",
+    "label": "isr_task<br>↻ 1ms",
+    "line": 7,
+    "detail": "every 1ms"
+   },
+   "v_counter": {
+    "kind": "var",
+    "label": "counter",
+    "line": 6,
+    "detail": ""
+   },
+   "u_slow_task": {
+    "kind": "timer",
+    "label": "slow_task<br>↻ 1s",
+    "line": 12,
+    "detail": "every 1s"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 3,
+    "detail": "Output · GPIO 4"
+   },
+   "p_motor": {
+    "kind": "pin",
+    "label": "motor",
+    "line": 4,
+    "detail": "PWM · GPIO 25"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    v_counter(\"counter\")\n    p_led([\"led\"])\n    p_motor([\"motor\"])\n    u_isr_task((\"isr_task<br>↻ 1ms\"))\n    u_slow_task((\"slow_task<br>↻ 1s\"))\n    u_isr_task -->|write| v_counter\n    v_counter -.->|read| u_isr_task\n    u_slow_task -->|toggle| p_led\n    u_slow_task -->|set_pwm| p_motor\n    v_counter -.->|read| u_slow_task\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_isr_task timer;\n    class v_counter shared;\n    class u_slow_task timer;\n    class p_led pin;\n    class p_motor pin;",
+  "units": [
+   {
+    "id": "u_isr_task",
+    "name": "isr_task<br>↻ 1ms",
+    "line": 7
+   },
+   {
+    "id": "u_slow_task",
+    "name": "slow_task<br>↻ 1s",
+    "line": 12
+   }
+  ],
+  "loops": [
+   "u_isr_task",
+   "u_slow_task"
+  ],
+  "edges": [
+   {
+    "drive": "timer",
+    "src": "u_isr_task",
+    "dst": "v_counter",
+    "rate_ms": 1.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_counter",
+    "dst": "u_isr_task",
+    "rate_ms": 1.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_slow_task",
+    "dst": "p_led",
+    "rate_ms": 1000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_slow_task",
+    "dst": "p_motor",
+    "rate_ms": 1000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_counter",
+    "dst": "u_slow_task",
+    "rate_ms": 1000.0
+   }
+  ],
+  "nodes": {
+   "u_isr_task": {
+    "kind": "timer",
+    "label": "isr_task<br>↻ 1ms",
+    "line": 7,
+    "detail": "every 1ms"
+   },
+   "v_counter": {
+    "kind": "var",
+    "label": "counter",
+    "line": 6,
+    "detail": ""
+   },
+   "u_slow_task": {
+    "kind": "timer",
+    "label": "slow_task<br>↻ 1s",
+    "line": 12,
+    "detail": "every 1s"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 3,
+    "detail": "Output · GPIO 4"
+   },
+   "p_motor": {
+    "kind": "pin",
+    "label": "motor",
+    "line": 4,
+    "detail": "PWM · GPIO 25"
+   }
+  }
+ }
+}

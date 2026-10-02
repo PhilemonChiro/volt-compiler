@@ -1,0 +1,219 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 2,
+    "col": 6,
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "severity": "warning",
+    "hint": "The chip declaration will move to volt.toml in a future version."
+   },
+   {
+    "line": 4,
+    "col": 9,
+    "message": "Strapping pin: GPIO 2 must be LOW during boot for flash programming.",
+    "severity": "warning",
+    "hint": ""
+   }
+  ],
+  "pins": [
+   {
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [],
+  "machines": [
+   {
+    "name": "traffic",
+    "states": [
+     "green",
+     "yellow",
+     "red"
+    ],
+    "line": 6
+   }
+  ],
+  "channels": [],
+  "enums": [],
+  "chip": "esp32"
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n}\n\nmachine traffic {\n    initial state green {\n        enter { led.on() }\n        exit { led.off() }\n        after 5s -> yellow\n    }\n\n    state yellow {\n        enter { led.on() }\n        after 2s -> red\n    }\n\n    state red {\n        enter { led.off() }\n        after 5s -> green\n    }\n}\n",
+ "find_symbols": [
+  {
+   "name": "led",
+   "kind": "pin",
+   "def_line": 4,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 9,
+     "col": 13
+    },
+    {
+     "line": 12,
+     "col": 13
+    },
+    {
+     "line": 18,
+     "col": 13
+    },
+    {
+     "line": 24,
+     "col": 13
+    }
+   ]
+  },
+  {
+   "name": "traffic",
+   "kind": "machine",
+   "def_line": 6,
+   "def_col": 9,
+   "refs": []
+  },
+  {
+   "name": "green",
+   "kind": "state",
+   "def_line": 7,
+   "def_col": 19,
+   "refs": []
+  },
+  {
+   "name": "yellow",
+   "kind": "state",
+   "def_line": 16,
+   "def_col": 11,
+   "refs": []
+  },
+  {
+   "name": "red",
+   "kind": "state",
+   "def_line": 22,
+   "def_col": 11,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": [
+   {
+    "name": "traffic",
+    "mermaid": "stateDiagram-v2\n    [*] --> green\n    green --> yellow : after 5s\n    yellow --> red : after 2s\n    red --> green : after 5s",
+    "states": [
+     {
+      "name": "green",
+      "line": 7
+     },
+     {
+      "name": "yellow",
+      "line": 16
+     },
+     {
+      "name": "red",
+      "line": 22
+     }
+    ]
+   }
+  ]
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_traffic[[\"traffic\"]]\n    p_led([\"led\"])\n    u_traffic -->|off, on| p_led\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_traffic machine;\n    class p_led pin;",
+  "units": [
+   {
+    "id": "u_traffic",
+    "name": "traffic",
+    "line": 6
+   }
+  ],
+  "loops": [],
+  "edges": [
+   {
+    "drive": "machine",
+    "src": "u_traffic",
+    "dst": "p_led"
+   }
+  ],
+  "nodes": {
+   "u_traffic": {
+    "kind": "machine",
+    "label": "traffic",
+    "line": 6,
+    "detail": "3 states"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 4,
+    "detail": "Output · GPIO 2"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_traffic[[\"traffic\"]]\n    p_led([\"led\"])\n    u_traffic -->|off, on| p_led\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_traffic machine;\n    class p_led pin;",
+  "units": [
+   {
+    "id": "u_traffic",
+    "name": "traffic",
+    "line": 6
+   }
+  ],
+  "loops": [],
+  "edges": [
+   {
+    "drive": "machine",
+    "src": "u_traffic",
+    "dst": "p_led"
+   }
+  ],
+  "nodes": {
+   "u_traffic": {
+    "kind": "machine",
+    "label": "traffic",
+    "line": 6,
+    "detail": "3 states"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 4,
+    "detail": "Output · GPIO 2"
+   }
+  }
+ }
+}

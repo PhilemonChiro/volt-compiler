@@ -1,0 +1,7 @@
+
+[yellow bold]-- CONCURRENCY -- multiple_global_vars_mixed.volt:0[/yellow bold]
+
+Variable `shared_flag` is shared between critical task (control, control) and task (monitor). The compiler will mark it `volatile` in generated C.
+
+
+[cyan]Hint: For multi-word values, consider using atomic operations.[/cyan]

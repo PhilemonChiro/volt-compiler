@@ -1,0 +1,21 @@
+
+[yellow bold]-- DEPRECATION -- gpio_16_no_pwm.volt:2[/yellow bold]
+
+Move `chip esp8266` to volt.toml: chip = "esp8266"
+
+ [dim]1 |[/dim] 
+ [dim]2 |[/dim] chip esp8266
+ [dim]  |[/dim] [yellow]     ^^^^^^^[/yellow]
+
+[cyan]Hint: The chip declaration will move to volt.toml in a future version.[/cyan]
+
+
+[red bold]-- HARDWARE ERROR -- gpio_16_no_pwm.volt:4[/red bold]
+
+GPIO 16 does not support PWM (RTC domain, different hardware).
+
+ [dim]3 |[/dim] hardware {
+ [dim]4 |[/dim]     pin motor: PWM = 16
+ [dim]  |[/dim] [red]        ^^^^^[/red]
+
+[cyan]Hint: PWM-capable pins: 4, 5, 12, 13, 14, 16[/cyan]

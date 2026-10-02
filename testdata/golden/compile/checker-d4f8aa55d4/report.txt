@@ -1,0 +1,5 @@
+
+[red bold]-- TYPE MISMATCH -- main.volt:0[/red bold]
+
+Cannot use `+` between `bool` and `bool`.
+

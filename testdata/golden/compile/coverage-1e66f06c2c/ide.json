@@ -1,0 +1,155 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 2,
+    "col": 6,
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "severity": "warning",
+    "hint": "The chip declaration will move to volt.toml in a future version."
+   }
+  ],
+  "pins": [],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "net",
+    "tier": "priority",
+    "line": 4
+   }
+  ],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": "esp32"
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "chip esp32\n\ntask net {\n    every 5s {\n        if system.free_heap() > 10000 {\n            wifi.connect(\"ssid\", \"pass\")\n        }\n    }\n}\n",
+ "find_symbols": [
+  {
+   "name": "net",
+   "kind": "task",
+   "def_line": 4,
+   "def_col": 6,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_net((\"net<br>↻ 5s\"))\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_net timer;",
+  "units": [
+   {
+    "id": "u_net",
+    "name": "net<br>↻ 5s",
+    "line": 4
+   }
+  ],
+  "loops": [
+   "u_net"
+  ],
+  "edges": [],
+  "nodes": {
+   "u_net": {
+    "kind": "timer",
+    "label": "net<br>↻ 5s",
+    "line": 4,
+    "detail": "every 5s"
+   },
+   "s_system": {
+    "kind": "service",
+    "label": "system",
+    "line": null,
+    "detail": "free_heap"
+   },
+   "s_wifi": {
+    "kind": "service",
+    "label": "wifi",
+    "line": null,
+    "detail": "connect"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    s_system{{\"system\"}}\n    s_wifi{{\"wifi\"}}\n    u_net((\"net<br>↻ 5s\"))\n    u_net -->|free_heap| s_system\n    u_net -->|connect| s_wifi\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_net timer;\n    class s_system service;\n    class s_wifi service;",
+  "units": [
+   {
+    "id": "u_net",
+    "name": "net<br>↻ 5s",
+    "line": 4
+   }
+  ],
+  "loops": [
+   "u_net"
+  ],
+  "edges": [
+   {
+    "drive": "timer",
+    "src": "u_net",
+    "dst": "s_system",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_net",
+    "dst": "s_wifi",
+    "rate_ms": 5000.0
+   }
+  ],
+  "nodes": {
+   "u_net": {
+    "kind": "timer",
+    "label": "net<br>↻ 5s",
+    "line": 4,
+    "detail": "every 5s"
+   },
+   "s_system": {
+    "kind": "service",
+    "label": "system",
+    "line": null,
+    "detail": "free_heap"
+   },
+   "s_wifi": {
+    "kind": "service",
+    "label": "wifi",
+    "line": null,
+    "detail": "connect"
+   }
+  }
+ }
+}

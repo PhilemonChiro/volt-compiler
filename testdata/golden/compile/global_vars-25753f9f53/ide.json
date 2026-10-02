@@ -1,0 +1,201 @@
+{
+ "compile_full": {
+  "diagnostics": [],
+  "pins": [],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "ticker",
+    "tier": "background",
+    "line": 3
+   }
+  ],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": ""
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "var ticks: int = 0\n\ntask ticker {\n    every 500ms { ticks = ticks + 1 }\n}\n\nsetup {\n    run(ticker)\n}\n",
+ "find_symbols": [
+  {
+   "name": "ticker",
+   "kind": "task",
+   "def_line": 3,
+   "def_col": 6,
+   "refs": [
+    {
+     "line": 9,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "ticks",
+   "kind": "var",
+   "def_line": 2,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 5,
+     "col": 9
+    },
+    {
+     "line": 5,
+     "col": 17
+    }
+   ]
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_run{{\"run\"}}\n    u_ticker((\"ticker<br>↻ 500ms\"))\n    u_setup -->|run| s_run\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_run service;\n    class u_ticker timer;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_ticker",
+    "name": "ticker<br>↻ 500ms",
+    "line": 3
+   }
+  ],
+  "loops": [
+   "u_ticker"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_run"
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_run": {
+    "kind": "service",
+    "label": "run",
+    "line": null,
+    "detail": "run"
+   },
+   "u_ticker": {
+    "kind": "timer",
+    "label": "ticker<br>↻ 500ms",
+    "line": 3,
+    "detail": "every 500ms"
+   },
+   "v_ticks": {
+    "kind": "var",
+    "label": "ticks",
+    "line": 2,
+    "detail": "int"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_run{{\"run\"}}\n    v_ticks(\"ticks\")\n    u_ticker((\"ticker<br>↻ 500ms\"))\n    u_setup -->|run| s_run\n    u_ticker -->|write| v_ticks\n    v_ticks -.->|read| u_ticker\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_run service;\n    class u_ticker timer;\n    class v_ticks var;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_ticker",
+    "name": "ticker<br>↻ 500ms",
+    "line": 3
+   }
+  ],
+  "loops": [
+   "u_ticker"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_run"
+   },
+   {
+    "drive": "timer",
+    "src": "u_ticker",
+    "dst": "v_ticks",
+    "rate_ms": 500.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_ticks",
+    "dst": "u_ticker",
+    "rate_ms": 500.0
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_run": {
+    "kind": "service",
+    "label": "run",
+    "line": null,
+    "detail": "run"
+   },
+   "u_ticker": {
+    "kind": "timer",
+    "label": "ticker<br>↻ 500ms",
+    "line": 3,
+    "detail": "every 500ms"
+   },
+   "v_ticks": {
+    "kind": "var",
+    "label": "ticks",
+    "line": 2,
+    "detail": "int"
+   }
+  }
+ }
+}

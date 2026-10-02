@@ -1,0 +1,166 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [2, 16, 2, 19],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [2, 16, 2, 19],
+    "name": "led",
+    "mode": "",
+    "gpio": 2
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [3, 7, 3, 12],
+   "name": "_rule0",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [3, 7, 3, 12],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [3, 7, 3, 12],
+      "microseconds": 100000,
+      "original": "100ms"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [3, 15, 3, 18],
+        "obj": {
+         "_": "VarRef",
+         "region": [3, 15, 3, 18],
+         "name": "led"
+        },
+        "method": "toggle",
+        "args": []
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "",
+   "crossing_vars": [],
+   "has_strict": false
+  },
+  {
+   "_": "TaskDecl",
+   "region": [4, 7, 4, 9],
+   "name": "_rule1",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [4, 7, 4, 9],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [4, 7, 4, 9],
+      "microseconds": 5000000,
+      "original": "5s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [4, 12, 4, 15],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [4, 16, 4, 24],
+          "value": "health"
+         },
+         {
+          "_": "StringLiteral",
+          "region": [4, 26, 4, 33],
+          "value": "alive"
+         }
+        ]
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "",
+   "crossing_vars": [],
+   "has_strict": false
+  },
+  {
+   "_": "TaskDecl",
+   "region": [5, 7, 5, 10],
+   "name": "_rule2",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [5, 7, 5, 10],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [5, 7, 5, 10],
+      "microseconds": 30000000,
+      "original": "30s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [5, 13, 5, 16],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [5, 17, 5, 24],
+          "value": "stats"
+         },
+         {
+          "_": "StringLiteral",
+          "region": [5, 26, 5, 30],
+          "value": "ok"
+         }
+        ]
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "",
+   "crossing_vars": [],
+   "has_strict": false
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

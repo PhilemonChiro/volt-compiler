@@ -1,0 +1,174 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [5, 9, 6, 14],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [5, 9, 5, 12],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   },
+   {
+    "_": "PinDecl",
+    "region": [6, 9, 6, 14],
+    "name": "motor",
+    "mode": "PWM",
+    "gpio": 4
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [11, 6, 11, 21],
+   "name": "critical_reader",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [12, 11, 12, 14],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [12, 11, 12, 14],
+      "microseconds": 1000,
+      "original": "1ms"
+     },
+     "strict": true,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [13, 9, 13, 14],
+        "obj": {
+         "_": "VarRef",
+         "region": [13, 9, 13, 14],
+         "name": "motor"
+        },
+        "method": "set_pwm",
+        "args": [
+         {
+          "_": "VarRef",
+          "region": [13, 23, 13, 36],
+          "name": "read_only_cfg"
+         }
+        ]
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "critical",
+   "crossing_vars": [],
+   "has_strict": true,
+   "_annotations": []
+  },
+  {
+   "_": "TaskDecl",
+   "region": [17, 6, 17, 23],
+   "name": "background_reader",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [18, 11, 18, 16],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [18, 11, 18, 16],
+      "microseconds": 500000,
+      "original": "500ms"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [19, 9, 19, 12],
+        "obj": {
+         "_": "VarRef",
+         "region": [19, 9, 19, 12],
+         "name": "led"
+        },
+        "method": "toggle",
+        "args": []
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [
+  {
+   "_": "VarDecl",
+   "region": [9, 5, 9, 18],
+   "name": "read_only_cfg",
+   "type_name": null,
+   "value": {
+    "_": "IntLiteral",
+    "region": [9, 21, 9, 24],
+    "value": 100
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  }
+ ],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "FuncCall",
+     "region": [24, 5, 24, 8],
+     "name": "run",
+     "args": [
+      {
+       "_": "VarRef",
+       "region": [24, 9, 24, 24],
+       "name": "critical_reader"
+      },
+      {
+       "_": "VarRef",
+       "region": [24, 26, 24, 43],
+       "name": "background_reader"
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

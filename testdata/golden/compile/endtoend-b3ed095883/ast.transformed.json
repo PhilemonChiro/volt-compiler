@@ -1,0 +1,61 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [2, 6, 2, 7],
+   "name": "t",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [3, 11, 3, 19],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [3, 11, 3, 19],
+      "microseconds": 5000000,
+      "original": "5seconds"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [4, 9, 4, 12],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [4, 13, 4, 16],
+          "value": "b"
+         }
+        ]
+       }
+      }
+     ],
+     "yield_label": 1
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

@@ -1,0 +1,125 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 4,
+    "col": 9,
+    "message": "Critical task `pid` calls `log()` which is not safe in ISR context (hardware timer interrupt).",
+    "severity": "error",
+    "hint": "Remove `log()` from this task, or remove `strict` to make it a Background task."
+   }
+  ],
+  "pins": [],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "pid",
+    "tier": "critical",
+    "line": 2
+   }
+  ],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": ""
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ]
+ ],
+ "format_code": "task pid {\n    every 1ms strict { log(\"tick\") }\n}\n",
+ "find_symbols": [
+  {
+   "name": "pid",
+   "kind": "task",
+   "def_line": 2,
+   "def_col": 6,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_pid((\"pid<br>↻ 1ms\"))\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_pid timer;",
+  "units": [
+   {
+    "id": "u_pid",
+    "name": "pid<br>↻ 1ms",
+    "line": 2
+   }
+  ],
+  "loops": [
+   "u_pid"
+  ],
+  "edges": [],
+  "nodes": {
+   "u_pid": {
+    "kind": "timer",
+    "label": "pid<br>↻ 1ms",
+    "line": 2,
+    "detail": "every 1ms"
+   },
+   "s_log": {
+    "kind": "service",
+    "label": "log",
+    "line": null,
+    "detail": "log"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    s_log{{\"log\"}}\n    u_pid((\"pid<br>↻ 1ms\"))\n    u_pid -->|log| s_log\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_pid timer;\n    class s_log service;",
+  "units": [
+   {
+    "id": "u_pid",
+    "name": "pid<br>↻ 1ms",
+    "line": 2
+   }
+  ],
+  "loops": [
+   "u_pid"
+  ],
+  "edges": [
+   {
+    "drive": "timer",
+    "src": "u_pid",
+    "dst": "s_log",
+    "rate_ms": 1.0
+   }
+  ],
+  "nodes": {
+   "u_pid": {
+    "kind": "timer",
+    "label": "pid<br>↻ 1ms",
+    "line": 2,
+    "detail": "every 1ms"
+   },
+   "s_log": {
+    "kind": "service",
+    "label": "log",
+    "line": null,
+    "detail": "log"
+   }
+  }
+ }
+}

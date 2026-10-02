@@ -1,0 +1,10 @@
+
+[red bold]-- TYPE MISMATCH -- int_string.volt:2[/red bold]
+
+Variable `x` declared as `int` but assigned `string`.
+
+ [dim]1 |[/dim] setup {
+ [dim]2 |[/dim]     let x: int = "hello"
+ [dim]  |[/dim] [red]        ^[/red]
+
+[cyan]Hint: Change the type to `string` or convert the value with `int(value)`.[/cyan]

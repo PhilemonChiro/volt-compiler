@@ -1,0 +1,135 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [3, 16, 3, 19],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [3, 16, 3, 19],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [5, 6, 5, 9],
+   "name": "inc",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [6, 11, 6, 16],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [6, 11, 6, 16],
+      "microseconds": 100000,
+      "original": "100ms"
+     },
+     "strict": true,
+     "guard": null,
+     "body": [
+      {
+       "_": "CompoundAssign",
+       "region": [7, 9, 7, 16],
+       "target": {
+        "_": "VarRef",
+        "region": [7, 9, 7, 16],
+        "name": "counter"
+       },
+       "op": "+=",
+       "value": {
+        "_": "IntLiteral",
+        "region": [7, 20, 7, 21],
+        "value": 1
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  },
+  {
+   "_": "TaskDecl",
+   "region": [10, 6, 10, 9],
+   "name": "dec",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [11, 11, 11, 16],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [11, 11, 11, 16],
+      "microseconds": 200000,
+      "original": "200ms"
+     },
+     "strict": true,
+     "guard": null,
+     "body": [
+      {
+       "_": "CompoundAssign",
+       "region": [12, 9, 12, 16],
+       "target": {
+        "_": "VarRef",
+        "region": [12, 9, 12, 16],
+        "name": "counter"
+       },
+       "op": "-=",
+       "value": {
+        "_": "IntLiteral",
+        "region": [12, 20, 12, 21],
+        "value": 1
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [
+  {
+   "_": "VarDecl",
+   "region": [4, 12, 4, 19],
+   "name": "counter",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [4, 27, 4, 28],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": true,
+   "needs_lifting": false
+  }
+ ],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

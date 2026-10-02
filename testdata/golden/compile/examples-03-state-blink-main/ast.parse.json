@@ -1,0 +1,124 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [4, 9, 4, 12],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [4, 9, 4, 12],
+    "name": "led",
+    "mode": "",
+    "gpio": 2
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [
+  {
+   "_": "MachineDecl",
+   "region": [7, 9, 7, 16],
+   "name": "blinker",
+   "states": [
+    {
+     "_": "StateDecl",
+     "region": [8, 11, 8, 20],
+     "name": "off_state",
+     "is_initial": true,
+     "enter_body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [10, 13, 10, 16],
+        "obj": {
+         "_": "VarRef",
+         "region": [10, 13, 10, 16],
+         "name": "led"
+        },
+        "method": "off",
+        "args": []
+       }
+      }
+     ],
+     "exit_body": [],
+     "transitions": [],
+     "timed_transitions": [
+      {
+       "_": "TimedTransition",
+       "region": [12, 15, 12, 20],
+       "duration": {
+        "_": "DurationLiteral",
+        "region": [12, 15, 12, 20],
+        "microseconds": 500000,
+        "original": "500ms"
+       },
+       "target_state": "on_state",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "body": []
+    },
+    {
+     "_": "StateDecl",
+     "region": [14, 11, 14, 19],
+     "name": "on_state",
+     "is_initial": false,
+     "enter_body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [16, 13, 16, 16],
+        "obj": {
+         "_": "VarRef",
+         "region": [16, 13, 16, 16],
+         "name": "led"
+        },
+        "method": "on",
+        "args": []
+       }
+      }
+     ],
+     "exit_body": [],
+     "transitions": [],
+     "timed_transitions": [
+      {
+       "_": "TimedTransition",
+       "region": [18, 15, 18, 20],
+       "duration": {
+        "_": "DurationLiteral",
+        "region": [18, 15, 18, 20],
+        "microseconds": 500000,
+        "original": "500ms"
+       },
+       "target_state": "off_state",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "body": []
+    }
+   ],
+   "variables": []
+  }
+ ],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

@@ -1,0 +1,20 @@
+
+[yellow bold]-- DEPRECATION -- main.volt:1[/yellow bold]
+
+Move `chip esp32` to volt.toml: chip = "esp32"
+
+ [dim]1 |[/dim] chip esp32
+ [dim]  |[/dim] [yellow]     ^^^^^[/yellow]
+
+[cyan]Hint: The chip declaration will move to volt.toml in a future version.[/cyan]
+
+
+[yellow bold]-- RETRY SIDE EFFECT -- main.volt:6[/yellow bold]
+
+mutation to `counter` inside retry'd `try` block; side effects will repeat on each retry.
+
+ [dim]5 |[/dim]     try {
+ [dim]6 |[/dim]         counter += 1
+ [dim]  |[/dim] [yellow]        ^^^^^^^[/yellow]
+
+[cyan]Hint: Move the mutation outside the try, or verify the operation is idempotent.[/cyan]

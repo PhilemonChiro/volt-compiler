@@ -1,0 +1,26 @@
+[
+  {
+    "severity": "warning",
+    "category": "DEPRECATION",
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "hint": "The chip declaration will move to volt.toml in a future version.",
+    "region": [
+      2,
+      6,
+      2,
+      11
+    ]
+  },
+  {
+    "severity": "error",
+    "category": "MUTABILITY ERROR",
+    "message": "Cannot assign to `x` \u2014 it was declared with `let` (immutable).",
+    "hint": "Use `var` instead of `let` to make it mutable.",
+    "region": [
+      5,
+      5,
+      5,
+      6
+    ]
+  }
+]

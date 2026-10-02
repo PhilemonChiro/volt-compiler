@@ -1,0 +1,7 @@
+
+[red bold]-- SYNTAX ERROR -- main.volt:1[/red bold]
+
+Unexpected token Token('MINUS', '-') at line 3, column 16.
+
+ [dim]1 |[/dim] chip esp32
+ [dim]  |[/dim] [red]^[/red]

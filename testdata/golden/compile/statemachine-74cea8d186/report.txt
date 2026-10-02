@@ -1,0 +1,8 @@
+
+[red bold]-- STATE MACHINE ERROR -- non-deterministic.volt:3[/red bold]
+
+State `a`: multiple unguarded transitions for event `x`. Add guards [condition] to distinguish them.
+
+ [dim]2 |[/dim] machine Bad {
+ [dim]3 |[/dim]     initial state a {
+ [dim]  |[/dim] [red]                  ^[/red]

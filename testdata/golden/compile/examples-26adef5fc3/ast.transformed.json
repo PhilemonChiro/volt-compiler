@@ -1,0 +1,912 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [2, 9, 5, 20],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [2, 9, 2, 12],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   },
+   {
+    "_": "PinDecl",
+    "region": [3, 9, 3, 13],
+    "name": "soil",
+    "mode": "Analog",
+    "gpio": 32
+   },
+   {
+    "_": "PinDecl",
+    "region": [4, 9, 4, 14],
+    "name": "light",
+    "mode": "Analog",
+    "gpio": 33
+   },
+   {
+    "_": "PinDecl",
+    "region": [5, 9, 5, 20],
+    "name": "temperature",
+    "mode": "Analog",
+    "gpio": 36
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [20, 7, 20, 10],
+   "name": "_rule0",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [20, 7, 20, 10],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [20, 7, 20, 10],
+      "microseconds": 10000000,
+      "original": "10s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "VarDecl",
+       "region": [21, 9, 21, 10],
+       "name": "s",
+       "type_name": "int",
+       "value": {
+        "_": "MethodCall",
+        "region": [21, 18, 21, 22],
+        "obj": {
+         "_": "VarRef",
+         "region": [21, 18, 21, 22],
+         "name": "soil"
+        },
+        "method": "read",
+        "args": []
+       },
+       "mutable": false,
+       "shared": false,
+       "needs_lifting": false
+      },
+      {
+       "_": "VarDecl",
+       "region": [22, 9, 22, 10],
+       "name": "l",
+       "type_name": "int",
+       "value": {
+        "_": "MethodCall",
+        "region": [22, 18, 22, 23],
+        "obj": {
+         "_": "VarRef",
+         "region": [22, 18, 22, 23],
+         "name": "light"
+        },
+        "method": "read",
+        "args": []
+       },
+       "mutable": false,
+       "shared": false,
+       "needs_lifting": false
+      },
+      {
+       "_": "VarDecl",
+       "region": [23, 9, 23, 10],
+       "name": "t",
+       "type_name": "int",
+       "value": {
+        "_": "MethodCall",
+        "region": [23, 18, 23, 29],
+        "obj": {
+         "_": "VarRef",
+         "region": [23, 18, 23, 29],
+         "name": "temperature"
+        },
+        "method": "read",
+        "args": []
+       },
+       "mutable": false,
+       "shared": false,
+       "needs_lifting": false
+      },
+      {
+       "_": "AssignExpr",
+       "region": [24, 5, 24, 13],
+       "target": {
+        "_": "VarRef",
+        "region": [24, 5, 24, 13],
+        "name": "soil_pct"
+       },
+       "value": {
+        "_": "BinaryExpr",
+        "region": [24, 16, 24, 17],
+        "left": {
+         "_": "BinaryExpr",
+         "region": [24, 16, 24, 17],
+         "left": {
+          "_": "VarRef",
+          "region": [24, 16, 24, 17],
+          "name": "s"
+         },
+         "op": "*",
+         "right": {
+          "_": "IntLiteral",
+          "region": [24, 20, 24, 23],
+          "value": 100
+         },
+         "result_type": "int"
+        },
+        "op": "/",
+        "right": {
+         "_": "IntLiteral",
+         "region": [24, 26, 24, 30],
+         "value": 4095
+        },
+        "result_type": "int"
+       }
+      },
+      {
+       "_": "AssignExpr",
+       "region": [25, 5, 25, 14],
+       "target": {
+        "_": "VarRef",
+        "region": [25, 5, 25, 14],
+        "name": "light_lux"
+       },
+       "value": {
+        "_": "BinaryExpr",
+        "region": [25, 17, 25, 18],
+        "left": {
+         "_": "BinaryExpr",
+         "region": [25, 17, 25, 18],
+         "left": {
+          "_": "VarRef",
+          "region": [25, 17, 25, 18],
+          "name": "l"
+         },
+         "op": "*",
+         "right": {
+          "_": "IntLiteral",
+          "region": [25, 21, 25, 25],
+          "value": 1000
+         },
+         "result_type": "int"
+        },
+        "op": "/",
+        "right": {
+         "_": "IntLiteral",
+         "region": [25, 28, 25, 32],
+         "value": 4095
+        },
+        "result_type": "int"
+       }
+      },
+      {
+       "_": "AssignExpr",
+       "region": [26, 5, 26, 13],
+       "target": {
+        "_": "VarRef",
+        "region": [26, 5, 26, 13],
+        "name": "temp_raw"
+       },
+       "value": {
+        "_": "VarRef",
+        "region": [26, 16, 26, 17],
+        "name": "t"
+       }
+      },
+      {
+       "_": "CompoundAssign",
+       "region": [27, 5, 27, 19],
+       "target": {
+        "_": "VarRef",
+        "region": [27, 5, 27, 19],
+        "name": "total_readings"
+       },
+       "op": "+=",
+       "value": {
+        "_": "IntLiteral",
+        "region": [27, 23, 27, 24],
+        "value": 1
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [28, 5, 28, 13],
+        "obj": {
+         "_": "VarRef",
+         "region": [28, 5, 28, 13],
+         "name": "readings"
+        },
+        "method": "send",
+        "args": [
+         {
+          "_": "VarRef",
+          "region": [28, 19, 28, 27],
+          "name": "soil_pct"
+         }
+        ]
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [29, 5, 29, 8],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [29, 9, 29, 17],
+          "value": "sensor"
+         },
+         {
+          "_": "StringLiteral",
+          "region": [29, 19, 29, 58],
+          "value": "soil={soil_pct}% light={light_lux}lux"
+         }
+        ]
+       }
+      }
+     ],
+     "yield_label": 1
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false
+  },
+  {
+   "_": "TaskDecl",
+   "region": [32, 7, 32, 10],
+   "name": "_rule1",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [32, 7, 32, 10],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [32, 7, 32, 10],
+      "microseconds": 30000000,
+      "original": "30s"
+     },
+     "strict": false,
+     "guard": {
+      "_": "MethodCall",
+      "region": [32, 16, 32, 20],
+      "obj": {
+       "_": "VarRef",
+       "region": [32, 16, 32, 20],
+       "name": "wifi"
+      },
+      "method": "is_connected",
+      "args": []
+     },
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "OrExpr",
+        "region": [33, 5, 33, 9],
+        "expr": {
+         "_": "MethodCall",
+         "region": [33, 5, 33, 9],
+         "obj": {
+          "_": "VarRef",
+          "region": [33, 5, 33, 9],
+          "name": "mqtt"
+         },
+         "method": "send_int",
+         "args": [
+          {
+           "_": "StringLiteral",
+           "region": [33, 19, 33, 33],
+           "value": "weather/soil"
+          },
+          {
+           "_": "VarRef",
+           "region": [33, 35, 33, 43],
+           "name": "soil_pct"
+          }
+         ]
+        },
+        "fallback": {
+         "_": "IntLiteral",
+         "region": [33, 54, 33, 55],
+         "value": 3
+        },
+        "kind": "retry"
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "OrExpr",
+        "region": [34, 5, 34, 9],
+        "expr": {
+         "_": "MethodCall",
+         "region": [34, 5, 34, 9],
+         "obj": {
+          "_": "VarRef",
+          "region": [34, 5, 34, 9],
+          "name": "mqtt"
+         },
+         "method": "send_int",
+         "args": [
+          {
+           "_": "StringLiteral",
+           "region": [34, 19, 34, 34],
+           "value": "weather/light"
+          },
+          {
+           "_": "VarRef",
+           "region": [34, 36, 34, 45],
+           "name": "light_lux"
+          }
+         ]
+        },
+        "fallback": {
+         "_": "IntLiteral",
+         "region": [34, 56, 34, 57],
+         "value": 3
+        },
+        "kind": "retry"
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "OrExpr",
+        "region": [35, 5, 35, 9],
+        "expr": {
+         "_": "MethodCall",
+         "region": [35, 5, 35, 9],
+         "obj": {
+          "_": "VarRef",
+          "region": [35, 5, 35, 9],
+          "name": "mqtt"
+         },
+         "method": "send_int",
+         "args": [
+          {
+           "_": "StringLiteral",
+           "region": [35, 19, 35, 33],
+           "value": "weather/temp"
+          },
+          {
+           "_": "VarRef",
+           "region": [35, 35, 35, 43],
+           "name": "temp_raw"
+          }
+         ]
+        },
+        "fallback": {
+         "_": "IntLiteral",
+         "region": [35, 54, 35, 55],
+         "value": 3
+        },
+        "kind": "retry"
+       }
+      },
+      {
+       "_": "WhileStmt",
+       "region": [36, 11, 36, 19],
+       "condition": {
+        "_": "MethodCall",
+        "region": [36, 11, 36, 19],
+        "obj": {
+         "_": "VarRef",
+         "region": [36, 11, 36, 19],
+         "name": "readings"
+        },
+        "method": "has_data",
+        "args": []
+       },
+       "body": [
+        {
+         "_": "VarDecl",
+         "region": [37, 13, 37, 16],
+         "name": "val",
+         "type_name": "int",
+         "value": {
+          "_": "MethodCall",
+          "region": [37, 24, 37, 32],
+          "obj": {
+           "_": "VarRef",
+           "region": [37, 24, 37, 32],
+           "name": "readings"
+          },
+          "method": "receive",
+          "args": []
+         },
+         "mutable": false,
+         "shared": false,
+         "needs_lifting": false
+        },
+        {
+         "_": "ExprStmt",
+         "region": [0, 0, 0, 0],
+         "expr": {
+          "_": "OrExpr",
+          "region": [38, 9, 38, 13],
+          "expr": {
+           "_": "MethodCall",
+           "region": [38, 9, 38, 13],
+           "obj": {
+            "_": "VarRef",
+            "region": [38, 9, 38, 13],
+            "name": "mqtt"
+           },
+           "method": "send_int",
+           "args": [
+            {
+             "_": "StringLiteral",
+             "region": [38, 23, 38, 46],
+             "value": "weather/soil_buffered"
+            },
+            {
+             "_": "VarRef",
+             "region": [38, 48, 38, 51],
+             "name": "val"
+            }
+           ]
+          },
+          "fallback": {
+           "_": "IntLiteral",
+           "region": [38, 62, 38, 63],
+           "value": 3
+          },
+          "kind": "retry"
+         }
+        }
+       ]
+      }
+     ],
+     "yield_label": 1
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false
+  },
+  {
+   "_": "TaskDecl",
+   "region": [42, 7, 42, 10],
+   "name": "_rule2",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [42, 7, 42, 10],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [42, 7, 42, 10],
+      "microseconds": 60000000,
+      "original": "60s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [43, 5, 43, 12],
+        "obj": {
+         "_": "VarRef",
+         "region": [43, 5, 43, 12],
+         "name": "storage"
+        },
+        "method": "save",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [43, 18, 43, 30],
+          "value": "boot_count"
+         },
+         {
+          "_": "VarRef",
+          "region": [43, 32, 43, 42],
+          "name": "boot_count"
+         }
+        ]
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [44, 5, 44, 12],
+        "obj": {
+         "_": "VarRef",
+         "region": [44, 5, 44, 12],
+         "name": "storage"
+        },
+        "method": "save",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [44, 18, 44, 34],
+          "value": "total_readings"
+         },
+         {
+          "_": "VarRef",
+          "region": [44, 36, 44, 50],
+          "name": "total_readings"
+         }
+        ]
+       }
+      }
+     ],
+     "yield_label": 1
+    }
+   ],
+   "tier": "priority",
+   "crossing_vars": [],
+   "has_strict": false
+  },
+  {
+   "_": "TaskDecl",
+   "region": [47, 6, 47, 10],
+   "name": "name",
+   "body": [
+    {
+     "_": "ExprStmt",
+     "region": [0, 0, 0, 0],
+     "expr": {
+      "_": "FuncCall",
+      "region": [48, 5, 48, 15],
+      "name": "deep_sleep",
+      "args": [
+       {
+        "_": "DurationLiteral",
+        "region": [48, 16, 48, 19],
+        "microseconds": 60000000,
+        "original": "60s"
+       }
+      ]
+     },
+     "_yield_label": 1
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false
+  },
+  {
+   "_": "TaskDecl",
+   "region": [51, 7, 51, 10],
+   "name": "_rule3",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [51, 7, 51, 10],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [51, 7, 51, 10],
+      "microseconds": 30000000,
+      "original": "30s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "VarDecl",
+       "region": [52, 9, 52, 13],
+       "name": "heap",
+       "type_name": "int",
+       "value": {
+        "_": "MethodCall",
+        "region": [52, 21, 52, 27],
+        "obj": {
+         "_": "VarRef",
+         "region": [52, 21, 52, 27],
+         "name": "system"
+        },
+        "method": "free_heap",
+        "args": []
+       },
+       "mutable": false,
+       "shared": false,
+       "needs_lifting": false
+      },
+      {
+       "_": "VarDecl",
+       "region": [53, 9, 53, 11],
+       "name": "up",
+       "type_name": "int",
+       "value": {
+        "_": "MethodCall",
+        "region": [53, 19, 53, 25],
+        "obj": {
+         "_": "VarRef",
+         "region": [53, 19, 53, 25],
+         "name": "system"
+        },
+        "method": "uptime",
+        "args": []
+       },
+       "mutable": false,
+       "shared": false,
+       "needs_lifting": false
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [54, 5, 54, 8],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [54, 9, 54, 17],
+          "value": "health"
+         },
+         {
+          "_": "StringLiteral",
+          "region": [54, 19, 54, 71],
+          "value": "uptime={up}s heap={heap} readings={total_readings}"
+         }
+        ]
+       }
+      }
+     ],
+     "yield_label": 1
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false
+  },
+  {
+   "_": "TaskDecl",
+   "region": [57, 7, 57, 9],
+   "name": "_rule4",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [57, 7, 57, 9],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [57, 7, 57, 9],
+      "microseconds": 1000000,
+      "original": "1s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [57, 12, 57, 15],
+        "obj": {
+         "_": "VarRef",
+         "region": [57, 12, 57, 15],
+         "name": "led"
+        },
+        "method": "toggle",
+        "args": []
+       }
+      }
+     ],
+     "yield_label": 1
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false
+  }
+ ],
+ "machines": [],
+ "storage_vars": [
+  {
+   "_": "StorageDecl",
+   "region": [10, 9, 10, 19],
+   "name": "boot_count",
+   "type_name": "int",
+   "default_value": {
+    "_": "IntLiteral",
+    "region": [10, 27, 10, 28],
+    "value": 0
+   }
+  },
+  {
+   "_": "StorageDecl",
+   "region": [12, 9, 12, 23],
+   "name": "total_readings",
+   "type_name": "int",
+   "default_value": {
+    "_": "IntLiteral",
+    "region": [12, 31, 12, 32],
+    "value": 0
+   }
+  }
+ ],
+ "global_vars": [
+  {
+   "_": "VarDecl",
+   "region": [14, 5, 14, 13],
+   "name": "soil_pct",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [14, 21, 14, 22],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  },
+  {
+   "_": "VarDecl",
+   "region": [16, 5, 16, 14],
+   "name": "light_lux",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [16, 22, 16, 23],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  },
+  {
+   "_": "VarDecl",
+   "region": [18, 5, 18, 13],
+   "name": "temp_raw",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [18, 21, 18, 22],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  }
+ ],
+ "channels": [
+  {
+   "_": "ChannelDecl",
+   "region": [8, 9, 8, 17],
+   "name": "readings",
+   "elem_type": "int",
+   "capacity": 16
+  }
+ ],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "CompoundAssign",
+    "region": [60, 5, 60, 15],
+    "target": {
+     "_": "VarRef",
+     "region": [60, 5, 60, 15],
+     "name": "boot_count"
+    },
+    "op": "+=",
+    "value": {
+     "_": "IntLiteral",
+     "region": [60, 19, 60, 20],
+     "value": 1
+    }
+   },
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "OrExpr",
+     "region": [61, 5, 61, 9],
+     "expr": {
+      "_": "MethodCall",
+      "region": [61, 5, 61, 9],
+      "obj": {
+       "_": "VarRef",
+       "region": [61, 5, 61, 9],
+       "name": "wifi"
+      },
+      "method": "connect",
+      "args": [
+       {
+        "_": "StringLiteral",
+        "region": [61, 18, 61, 30],
+        "value": "WeatherNet"
+       },
+       {
+        "_": "StringLiteral",
+        "region": [61, 32, 61, 45],
+        "value": "password123"
+       }
+      ]
+     },
+     "fallback": {
+      "_": "IntLiteral",
+      "region": [61, 56, 61, 58],
+      "value": 10
+     },
+     "kind": "retry"
+    }
+   },
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "OrExpr",
+     "region": [62, 5, 62, 9],
+     "expr": {
+      "_": "MethodCall",
+      "region": [62, 5, 62, 9],
+      "obj": {
+       "_": "VarRef",
+       "region": [62, 5, 62, 9],
+       "name": "mqtt"
+      },
+      "method": "connect",
+      "args": [
+       {
+        "_": "StringLiteral",
+        "region": [62, 18, 62, 40],
+        "value": "mqtt://192.168.1.100"
+       }
+      ]
+     },
+     "fallback": {
+      "_": "IntLiteral",
+      "region": [62, 51, 62, 52],
+      "value": 5
+     },
+     "kind": "retry"
+    }
+   },
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "FuncCall",
+     "region": [63, 5, 63, 8],
+     "name": "log",
+     "args": [
+      {
+       "_": "StringLiteral",
+       "region": [63, 9, 63, 15],
+       "value": "boot"
+      },
+      {
+       "_": "StringLiteral",
+       "region": [63, 17, 63, 58],
+       "value": "Weather Station v3 — boot #{boot_count}"
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

@@ -1,0 +1,122 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [1, 6, 1, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [3, 9, 5, 15],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [3, 9, 3, 12],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   }
+  ],
+  "buses": [
+   {
+    "_": "BusDecl",
+    "region": [4, 9, 4, 13],
+    "bus_type": "i2c",
+    "name": "i2c0",
+    "params": {
+     "sda": {
+      "_": "IntLiteral",
+      "region": [4, 24, 4, 26],
+      "value": 21
+     },
+     "scl": {
+      "_": "IntLiteral",
+      "region": [4, 33, 4, 35],
+      "value": 22
+     }
+    }
+   }
+  ],
+  "sensors": [
+   {
+    "_": "SensorDecl",
+    "region": [5, 12, 5, 15],
+    "name": "dev",
+    "sensor_type": "HMC5883L",
+    "bus_name": "i2c0",
+    "address": 30,
+    "pin_params": {}
+   }
+  ]
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [7, 7, 7, 9],
+   "name": "_rule0",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [7, 7, 7, 9],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [7, 7, 7, 9],
+      "microseconds": 1000000,
+      "original": "1s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [8, 5, 8, 8],
+        "obj": {
+         "_": "VarRef",
+         "region": [8, 5, 8, 8],
+         "name": "led"
+        },
+        "method": "toggle",
+        "args": []
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [9, 5, 9, 8],
+        "obj": {
+         "_": "VarRef",
+         "region": [9, 5, 9, 8],
+         "name": "dev"
+        },
+        "method": "x",
+        "args": []
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "",
+   "crossing_vars": [],
+   "has_strict": false
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

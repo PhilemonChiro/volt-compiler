@@ -1,0 +1,8 @@
+
+[yellow bold]-- HARDWARE WARNING -- main.volt:2[/yellow bold]
+
+GPIO 14 is a JTAG pin. Using it disables JTAG debugging.
+
+ [dim]1 |[/dim] hardware {
+ [dim]2 |[/dim]     pin x: Output = 14
+ [dim]  |[/dim] [yellow]        ^[/yellow]

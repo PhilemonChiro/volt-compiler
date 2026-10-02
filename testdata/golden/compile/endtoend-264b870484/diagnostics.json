@@ -1,0 +1,14 @@
+[
+  {
+    "severity": "error",
+    "category": "NAME ERROR",
+    "message": "Unknown function `nonexistent`.",
+    "hint": null,
+    "region": [
+      2,
+      5,
+      2,
+      16
+    ]
+  }
+]

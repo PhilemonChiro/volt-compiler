@@ -1,0 +1,113 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [4, 9, 5, 22],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [4, 9, 4, 12],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   }
+  ],
+  "buses": [],
+  "sensors": [
+   {
+    "_": "SensorDecl",
+    "region": [5, 12, 5, 22],
+    "name": "dht_sensor",
+    "sensor_type": "DHT11",
+    "bus_name": "gpio4",
+    "address": 4,
+    "pin_params": {}
+   }
+  ]
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [7, 6, 7, 14],
+   "name": "read_dht",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [8, 11, 8, 13],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [8, 11, 8, 13],
+      "microseconds": 2000000,
+      "original": "2s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "VarDecl",
+       "region": [9, 13, 9, 14],
+       "name": "t",
+       "type_name": "float",
+       "value": {
+        "_": "MethodCall",
+        "region": [9, 24, 9, 34],
+        "obj": {
+         "_": "VarRef",
+         "region": [9, 24, 9, 34],
+         "name": "dht_sensor"
+        },
+        "method": "temperature",
+        "args": []
+       },
+       "mutable": true,
+       "shared": false,
+       "needs_lifting": false
+      },
+      {
+       "_": "VarDecl",
+       "region": [10, 13, 10, 14],
+       "name": "h",
+       "type_name": "float",
+       "value": {
+        "_": "MethodCall",
+        "region": [10, 24, 10, 34],
+        "obj": {
+         "_": "VarRef",
+         "region": [10, 24, 10, 34],
+         "name": "dht_sensor"
+        },
+        "method": "humidity",
+        "args": []
+       },
+       "mutable": true,
+       "shared": false,
+       "needs_lifting": false
+      }
+     ],
+     "yield_label": 1
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

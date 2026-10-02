@@ -1,0 +1,21 @@
+
+[yellow bold]-- DEPRECATION -- channel_small.volt:2[/yellow bold]
+
+Move `chip esp32` to volt.toml: chip = "esp32"
+
+ [dim]1 |[/dim] 
+ [dim]2 |[/dim] chip esp32
+ [dim]  |[/dim] [yellow]     ^^^^^[/yellow]
+
+[cyan]Hint: The chip declaration will move to volt.toml in a future version.[/cyan]
+
+
+[yellow bold]-- CHANNEL WARNING -- channel_small.volt:3[/yellow bold]
+
+Channel `data` is sent to but never consumed (no receive/has_data call).
+
+ [dim]2 |[/dim] chip esp32
+ [dim]3 |[/dim] channel data: int[4]
+ [dim]  |[/dim] [yellow]        ^^^^[/yellow]
+
+[cyan]Hint: Add `data.receive()` or `on data.has_data()` in a task to process the data.[/cyan]

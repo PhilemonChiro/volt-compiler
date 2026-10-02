@@ -1,0 +1,173 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [1, 6, 1, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [3, 9, 4, 14],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [3, 9, 3, 12],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 4
+   },
+   {
+    "_": "PinDecl",
+    "region": [4, 9, 4, 14],
+    "name": "motor",
+    "mode": "PWM",
+    "gpio": 25
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [7, 6, 7, 14],
+   "name": "isr_task",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [8, 11, 8, 14],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [8, 11, 8, 14],
+      "microseconds": 1000,
+      "original": "1ms"
+     },
+     "strict": true,
+     "guard": null,
+     "body": [
+      {
+       "_": "AssignExpr",
+       "region": [9, 9, 9, 16],
+       "target": {
+        "_": "VarRef",
+        "region": [9, 9, 9, 16],
+        "name": "counter"
+       },
+       "value": {
+        "_": "BinaryExpr",
+        "region": [9, 19, 9, 26],
+        "left": {
+         "_": "VarRef",
+         "region": [9, 19, 9, 26],
+         "name": "counter"
+        },
+        "op": "+",
+        "right": {
+         "_": "IntLiteral",
+         "region": [9, 29, 9, 30],
+         "value": 1
+        },
+        "result_type": "int"
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "critical",
+   "crossing_vars": [],
+   "has_strict": true,
+   "_annotations": []
+  },
+  {
+   "_": "TaskDecl",
+   "region": [12, 6, 12, 15],
+   "name": "slow_task",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [13, 11, 13, 13],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [13, 11, 13, 13],
+      "microseconds": 1000000,
+      "original": "1s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [14, 9, 14, 12],
+        "obj": {
+         "_": "VarRef",
+         "region": [14, 9, 14, 12],
+         "name": "led"
+        },
+        "method": "toggle",
+        "args": []
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [15, 9, 15, 14],
+        "obj": {
+         "_": "VarRef",
+         "region": [15, 9, 15, 14],
+         "name": "motor"
+        },
+        "method": "set_pwm",
+        "args": [
+         {
+          "_": "VarRef",
+          "region": [15, 23, 15, 30],
+          "name": "counter"
+         }
+        ]
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [
+  {
+   "_": "VarDecl",
+   "region": [6, 5, 6, 12],
+   "name": "counter",
+   "type_name": null,
+   "value": {
+    "_": "IntLiteral",
+    "region": [6, 15, 6, 16],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  }
+ ],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

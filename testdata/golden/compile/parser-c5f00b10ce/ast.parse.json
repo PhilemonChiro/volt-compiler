@@ -1,0 +1,180 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [
+  {
+   "_": "MachineDecl",
+   "region": [2, 9, 2, 20],
+   "name": "DeviceState",
+   "states": [
+    {
+     "_": "StateDecl",
+     "region": [3, 11, 3, 15],
+     "name": "idle",
+     "is_initial": true,
+     "enter_body": [],
+     "exit_body": [],
+     "transitions": [
+      {
+       "_": "StateTransition",
+       "region": [4, 12, 4, 18],
+       "event": {
+        "_": "MethodCall",
+        "region": [4, 12, 4, 18],
+        "obj": {
+         "_": "VarRef",
+         "region": [4, 12, 4, 18],
+         "name": "button"
+        },
+        "method": "press",
+        "args": []
+       },
+       "target_state": "connecting",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "timed_transitions": [],
+     "body": []
+    },
+    {
+     "_": "StateDecl",
+     "region": [6, 11, 6, 21],
+     "name": "connecting",
+     "is_initial": false,
+     "enter_body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [8, 13, 8, 16],
+        "obj": {
+         "_": "VarRef",
+         "region": [8, 13, 8, 16],
+         "name": "led"
+        },
+        "method": "blink",
+        "args": [
+         {
+          "_": "DurationLiteral",
+          "region": [8, 23, 8, 28],
+          "microseconds": 200000,
+          "original": "200ms"
+         }
+        ]
+       }
+      }
+     ],
+     "exit_body": [],
+     "transitions": [
+      {
+       "_": "StateTransition",
+       "region": [10, 12, 10, 16],
+       "event": {
+        "_": "MethodCall",
+        "region": [10, 12, 10, 16],
+        "obj": {
+         "_": "VarRef",
+         "region": [10, 12, 10, 16],
+         "name": "wifi"
+        },
+        "method": "connected",
+        "args": []
+       },
+       "target_state": "running",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "timed_transitions": [
+      {
+       "_": "TimedTransition",
+       "region": [11, 15, 11, 24],
+       "duration": {
+        "_": "DurationLiteral",
+        "region": [11, 15, 11, 24],
+        "microseconds": 10000000,
+        "original": "10seconds"
+       },
+       "target_state": "error",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "body": []
+    },
+    {
+     "_": "StateDecl",
+     "region": [13, 11, 13, 18],
+     "name": "running",
+     "is_initial": false,
+     "enter_body": [],
+     "exit_body": [],
+     "transitions": [
+      {
+       "_": "StateTransition",
+       "region": [14, 12, 14, 16],
+       "event": {
+        "_": "MethodCall",
+        "region": [14, 12, 14, 16],
+        "obj": {
+         "_": "VarRef",
+         "region": [14, 12, 14, 16],
+         "name": "wifi"
+        },
+        "method": "disconnected",
+        "args": []
+       },
+       "target_state": "connecting",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "timed_transitions": [],
+     "body": []
+    },
+    {
+     "_": "StateDecl",
+     "region": [16, 11, 16, 16],
+     "name": "error",
+     "is_initial": false,
+     "enter_body": [],
+     "exit_body": [],
+     "transitions": [],
+     "timed_transitions": [
+      {
+       "_": "TimedTransition",
+       "region": [17, 15, 17, 23],
+       "duration": {
+        "_": "DurationLiteral",
+        "region": [17, 15, 17, 23],
+        "microseconds": 5000000,
+        "original": "5seconds"
+       },
+       "target_state": "idle",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "body": []
+    }
+   ],
+   "variables": []
+  }
+ ],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

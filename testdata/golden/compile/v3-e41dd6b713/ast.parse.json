@@ -1,0 +1,193 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [3, 9, 4, 15],
+  "pins": [],
+  "buses": [
+   {
+    "_": "BusDecl",
+    "region": [3, 9, 3, 10],
+    "bus_type": "i2c",
+    "name": "s",
+    "params": {
+     "sda": {
+      "_": "IntLiteral",
+      "region": [3, 21, 3, 23],
+      "value": 21
+     },
+     "scl": {
+      "_": "IntLiteral",
+      "region": [3, 30, 3, 32],
+      "value": 22
+     }
+    }
+   }
+  ],
+  "sensors": [
+   {
+    "_": "SensorDecl",
+    "region": [4, 12, 4, 15],
+    "name": "bme",
+    "sensor_type": "BME280",
+    "bus_name": "s",
+    "address": 118,
+    "pin_params": {}
+   }
+  ]
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [9, 7, 9, 10],
+   "name": "_rule0",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [9, 7, 9, 10],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [9, 7, 9, 10],
+      "microseconds": 10000000,
+      "original": "10s"
+     },
+     "strict": false,
+     "guard": {
+      "_": "MethodCall",
+      "region": [9, 16, 9, 20],
+      "obj": {
+       "_": "VarRef",
+       "region": [9, 16, 9, 20],
+       "name": "wifi"
+      },
+      "method": "is_connected",
+      "args": []
+     },
+     "body": [
+      {
+       "_": "VarDecl",
+       "region": [10, 9, 10, 13],
+       "name": "temp",
+       "type_name": "float",
+       "value": {
+        "_": "OrExpr",
+        "region": [10, 23, 10, 26],
+        "expr": {
+         "_": "MethodCall",
+         "region": [10, 23, 10, 26],
+         "obj": {
+          "_": "VarRef",
+          "region": [10, 23, 10, 26],
+          "name": "bme"
+         },
+         "method": "temperature",
+         "args": []
+        },
+        "fallback": null,
+        "kind": "skip"
+       },
+       "mutable": true,
+       "shared": false,
+       "needs_lifting": false
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "OrExpr",
+        "region": [11, 5, 11, 9],
+        "expr": {
+         "_": "MethodCall",
+         "region": [11, 5, 11, 9],
+         "obj": {
+          "_": "VarRef",
+          "region": [11, 5, 11, 9],
+          "name": "mqtt"
+         },
+         "method": "send_float",
+         "args": [
+          {
+           "_": "StringLiteral",
+           "region": [11, 21, 11, 27],
+           "value": "temp"
+          },
+          {
+           "_": "VarRef",
+           "region": [11, 29, 11, 33],
+           "name": "temp"
+          }
+         ]
+        },
+        "fallback": {
+         "_": "IntLiteral",
+         "region": [11, 44, 11, 45],
+         "value": 3
+        },
+        "kind": "retry"
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "",
+   "crossing_vars": [],
+   "has_strict": false
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "OrExpr",
+     "region": [7, 5, 7, 9],
+     "expr": {
+      "_": "MethodCall",
+      "region": [7, 5, 7, 9],
+      "obj": {
+       "_": "VarRef",
+       "region": [7, 5, 7, 9],
+       "name": "wifi"
+      },
+      "method": "connect",
+      "args": [
+       {
+        "_": "StringLiteral",
+        "region": [7, 18, 7, 23],
+        "value": "net"
+       },
+       {
+        "_": "StringLiteral",
+        "region": [7, 25, 7, 31],
+        "value": "pass"
+       }
+      ]
+     },
+     "fallback": {
+      "_": "IntLiteral",
+      "region": [7, 42, 7, 44],
+      "value": 10
+     },
+     "kind": "retry"
+    }
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

@@ -1,0 +1,14 @@
+[
+  {
+    "severity": "warning",
+    "category": "HARDWARE WARNING",
+    "message": "GPIO 4 is on ADC2, which is BLOCKED while WiFi is active. Analog reads will return errors or garbage.",
+    "hint": "Use ADC1 pins instead (GPIO 32-39) which work with WiFi.",
+    "region": [
+      3,
+      9,
+      3,
+      15
+    ]
+  }
+]

@@ -1,0 +1,19 @@
+
+[yellow bold]-- DEPRECATION -- multi_servo.volt:2[/yellow bold]
+
+Move `chip esp32` to volt.toml: chip = "esp32"
+
+ [dim]1 |[/dim] 
+ [dim]2 |[/dim] chip esp32
+ [dim]  |[/dim] [yellow]     ^^^^^[/yellow]
+
+[cyan]Hint: The chip declaration will move to volt.toml in a future version.[/cyan]
+
+
+[yellow bold]-- HARDWARE WARNING -- multi_servo.volt:7[/yellow bold]
+
+Strapping pin: GPIO 15 controls boot log output. If pulled LOW, boot messages are suppressed (usually harmless).
+
+ [dim]6 |[/dim]     pin shoulder: Servo = 14
+ [dim]7 |[/dim]     pin elbow: Servo = 15
+ [dim]  |[/dim] [yellow]        ^^^^^[/yellow]

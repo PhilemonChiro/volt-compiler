@@ -1,0 +1,125 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [1, 6, 1, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [3, 9, 4, 13],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [3, 9, 3, 13],
+    "name": "led1",
+    "mode": "Output",
+    "gpio": 2
+   },
+   {
+    "_": "PinDecl",
+    "region": [4, 9, 4, 13],
+    "name": "led2",
+    "mode": "Output",
+    "gpio": 4
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [6, 6, 6, 13],
+   "name": "blinker",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [7, 11, 7, 13],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [7, 11, 7, 13],
+      "microseconds": 1000000,
+      "original": "1s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [8, 9, 8, 13],
+        "obj": {
+         "_": "VarRef",
+         "region": [8, 9, 8, 13],
+         "name": "led1"
+        },
+        "method": "toggle",
+        "args": []
+       }
+      }
+     ],
+     "yield_label": 1
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false
+  },
+  {
+   "_": "TaskDecl",
+   "region": [6, 6, 6, 13],
+   "name": "blinker_2",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [10, 11, 10, 16],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [10, 11, 10, 16],
+      "microseconds": 100000,
+      "original": "100ms"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [11, 9, 11, 13],
+        "obj": {
+         "_": "VarRef",
+         "region": [11, 9, 11, 13],
+         "name": "led2"
+        },
+        "method": "toggle",
+        "args": []
+       }
+      }
+     ],
+     "yield_label": 1
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

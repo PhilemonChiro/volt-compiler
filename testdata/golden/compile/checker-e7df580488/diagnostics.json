@@ -1,0 +1,14 @@
+[
+  {
+    "severity": "error",
+    "category": "TYPE MISMATCH",
+    "message": "Cannot use `-` between `string` and `int`.",
+    "hint": "Convert to string with string interpolation: \"{value}\".",
+    "region": [
+      3,
+      13,
+      3,
+      20
+    ]
+  }
+]

@@ -1,0 +1,134 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [
+  {
+   "_": "MachineDecl",
+   "region": [2, 9, 2, 13],
+   "name": "Conn",
+   "states": [
+    {
+     "_": "StateDecl",
+     "region": [5, 19, 5, 31],
+     "name": "disconnected",
+     "is_initial": true,
+     "enter_body": [],
+     "exit_body": [],
+     "transitions": [
+      {
+       "_": "StateTransition",
+       "region": [6, 12, 6, 25],
+       "event": {
+        "_": "FuncCall",
+        "region": [6, 12, 6, 25],
+        "name": "connect_event",
+        "args": []
+       },
+       "target_state": "connected",
+       "guard": null,
+       "action": [
+        {
+         "_": "AssignExpr",
+         "region": [7, 13, 7, 21],
+         "target": {
+          "_": "VarRef",
+          "region": [7, 13, 7, 21],
+          "name": "attempts"
+         },
+         "value": {
+          "_": "IntLiteral",
+          "region": [7, 24, 7, 25],
+          "value": 0
+         }
+        }
+       ]
+      }
+     ],
+     "timed_transitions": [],
+     "body": []
+    },
+    {
+     "_": "StateDecl",
+     "region": [10, 11, 10, 20],
+     "name": "connected",
+     "is_initial": false,
+     "enter_body": [],
+     "exit_body": [],
+     "transitions": [
+      {
+       "_": "StateTransition",
+       "region": [11, 12, 11, 28],
+       "event": {
+        "_": "FuncCall",
+        "region": [11, 12, 11, 28],
+        "name": "disconnect_event",
+        "args": []
+       },
+       "target_state": "disconnected",
+       "guard": null,
+       "action": [
+        {
+         "_": "AssignExpr",
+         "region": [12, 13, 12, 21],
+         "target": {
+          "_": "VarRef",
+          "region": [12, 13, 12, 21],
+          "name": "attempts"
+         },
+         "value": {
+          "_": "BinaryExpr",
+          "region": [12, 24, 12, 32],
+          "left": {
+           "_": "VarRef",
+           "region": [12, 24, 12, 32],
+           "name": "attempts"
+          },
+          "op": "+",
+          "right": {
+           "_": "IntLiteral",
+           "region": [12, 35, 12, 36],
+           "value": 1
+          },
+          "result_type": null
+         }
+        }
+       ]
+      }
+     ],
+     "timed_transitions": [],
+     "body": []
+    }
+   ],
+   "variables": [
+    {
+     "_": "VarDecl",
+     "region": [3, 9, 3, 17],
+     "name": "attempts",
+     "type_name": null,
+     "value": {
+      "_": "IntLiteral",
+      "region": [3, 20, 3, 21],
+      "value": 0
+     },
+     "mutable": true,
+     "shared": false,
+     "needs_lifting": false
+    }
+   ]
+  }
+ ],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

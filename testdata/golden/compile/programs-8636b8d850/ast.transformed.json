@@ -1,0 +1,463 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [1, 6, 1, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [4, 9, 6, 15],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [4, 9, 4, 12],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   },
+   {
+    "_": "PinDecl",
+    "region": [5, 9, 5, 15],
+    "name": "buzzer",
+    "mode": "PWM",
+    "gpio": 18
+   },
+   {
+    "_": "PinDecl",
+    "region": [6, 9, 6, 15],
+    "name": "button",
+    "mode": "PullUpInput",
+    "gpio": 4
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [
+  {
+   "_": "MachineDecl",
+   "region": [9, 9, 9, 14],
+   "name": "Alarm",
+   "states": [
+    {
+     "_": "StateDecl",
+     "region": [12, 19, 12, 23],
+     "name": "idle",
+     "is_initial": true,
+     "enter_body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [14, 13, 14, 16],
+        "obj": {
+         "_": "VarRef",
+         "region": [14, 13, 14, 16],
+         "name": "led"
+        },
+        "method": "off",
+        "args": []
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [15, 13, 15, 19],
+        "obj": {
+         "_": "VarRef",
+         "region": [15, 13, 15, 19],
+         "name": "buzzer"
+        },
+        "method": "set_pwm",
+        "args": [
+         {
+          "_": "IntLiteral",
+          "region": [15, 28, 15, 29],
+          "value": 0
+         }
+        ]
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [16, 13, 16, 16],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [16, 17, 16, 24],
+          "value": "alarm"
+         },
+         {
+          "_": "StringLiteral",
+          "region": [16, 26, 16, 41],
+          "value": "STATE -> idle"
+         }
+        ]
+       }
+      }
+     ],
+     "exit_body": [],
+     "transitions": [
+      {
+       "_": "StateTransition",
+       "region": [18, 12, 18, 19],
+       "event": {
+        "_": "VarRef",
+        "region": [18, 12, 18, 19],
+        "name": "arm_cmd"
+       },
+       "target_state": "armed",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "timed_transitions": [],
+     "body": []
+    },
+    {
+     "_": "StateDecl",
+     "region": [21, 11, 21, 16],
+     "name": "armed",
+     "is_initial": false,
+     "enter_body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [23, 13, 23, 16],
+        "obj": {
+         "_": "VarRef",
+         "region": [23, 13, 23, 16],
+         "name": "led"
+        },
+        "method": "on",
+        "args": []
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [24, 13, 24, 16],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [24, 17, 24, 24],
+          "value": "alarm"
+         },
+         {
+          "_": "StringLiteral",
+          "region": [24, 26, 24, 63],
+          "value": "STATE -> armed | waiting for motion"
+         }
+        ]
+       }
+      }
+     ],
+     "exit_body": [],
+     "transitions": [
+      {
+       "_": "StateTransition",
+       "region": [26, 12, 26, 18],
+       "event": {
+        "_": "VarRef",
+        "region": [26, 12, 26, 18],
+        "name": "motion"
+       },
+       "target_state": "triggered",
+       "guard": null,
+       "action": []
+      },
+      {
+       "_": "StateTransition",
+       "region": [27, 12, 27, 22],
+       "event": {
+        "_": "VarRef",
+        "region": [27, 12, 27, 22],
+        "name": "disarm_cmd"
+       },
+       "target_state": "idle",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "timed_transitions": [],
+     "body": []
+    },
+    {
+     "_": "StateDecl",
+     "region": [30, 11, 30, 20],
+     "name": "triggered",
+     "is_initial": false,
+     "enter_body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [32, 13, 32, 19],
+        "obj": {
+         "_": "VarRef",
+         "region": [32, 13, 32, 19],
+         "name": "buzzer"
+        },
+        "method": "set_pwm",
+        "args": [
+         {
+          "_": "IntLiteral",
+          "region": [32, 28, 32, 31],
+          "value": 200
+         }
+        ]
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [33, 13, 33, 16],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [33, 17, 33, 24],
+          "value": "alarm"
+         },
+         {
+          "_": "BinaryExpr",
+          "region": [33, 26, 33, 69],
+          "left": {
+           "_": "StringLiteral",
+           "region": [33, 26, 33, 69],
+           "value": "STATE -> triggered | buzzer=200 attempts="
+          },
+          "op": "+",
+          "right": {
+           "_": "VarRef",
+           "region": [33, 72, 33, 80],
+           "name": "attempts"
+          },
+          "result_type": null
+         }
+        ]
+       }
+      }
+     ],
+     "exit_body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [36, 13, 36, 19],
+        "obj": {
+         "_": "VarRef",
+         "region": [36, 13, 36, 19],
+         "name": "buzzer"
+        },
+        "method": "set_pwm",
+        "args": [
+         {
+          "_": "IntLiteral",
+          "region": [36, 28, 36, 29],
+          "value": 0
+         }
+        ]
+       }
+      }
+     ],
+     "transitions": [
+      {
+       "_": "StateTransition",
+       "region": [38, 12, 38, 24],
+       "event": {
+        "_": "VarRef",
+        "region": [38, 12, 38, 24],
+        "name": "correct_code"
+       },
+       "target_state": "idle",
+       "guard": null,
+       "action": []
+      },
+      {
+       "_": "StateTransition",
+       "region": [39, 12, 39, 22],
+       "event": {
+        "_": "VarRef",
+        "region": [39, 12, 39, 22],
+        "name": "wrong_code"
+       },
+       "target_state": "triggered",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "timed_transitions": [
+      {
+       "_": "TimedTransition",
+       "region": [40, 15, 40, 18],
+       "duration": {
+        "_": "DurationLiteral",
+        "region": [40, 15, 40, 18],
+        "microseconds": 60000000,
+        "original": "60s"
+       },
+       "target_state": "siren",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "body": []
+    },
+    {
+     "_": "StateDecl",
+     "region": [43, 11, 43, 16],
+     "name": "siren",
+     "is_initial": false,
+     "enter_body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [45, 13, 45, 19],
+        "obj": {
+         "_": "VarRef",
+         "region": [45, 13, 45, 19],
+         "name": "buzzer"
+        },
+        "method": "set_pwm",
+        "args": [
+         {
+          "_": "IntLiteral",
+          "region": [45, 28, 45, 31],
+          "value": 255
+         }
+        ]
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [46, 13, 46, 16],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [46, 17, 46, 24],
+          "value": "alarm"
+         },
+         {
+          "_": "StringLiteral",
+          "region": [46, 26, 46, 55],
+          "value": "STATE -> siren | full alarm"
+         }
+        ]
+       }
+      }
+     ],
+     "exit_body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [49, 13, 49, 19],
+        "obj": {
+         "_": "VarRef",
+         "region": [49, 13, 49, 19],
+         "name": "buzzer"
+        },
+        "method": "set_pwm",
+        "args": [
+         {
+          "_": "IntLiteral",
+          "region": [49, 28, 49, 29],
+          "value": 0
+         }
+        ]
+       }
+      }
+     ],
+     "transitions": [
+      {
+       "_": "StateTransition",
+       "region": [52, 12, 52, 23],
+       "event": {
+        "_": "VarRef",
+        "region": [52, 12, 52, 23],
+        "name": "master_code"
+       },
+       "target_state": "idle",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "timed_transitions": [
+      {
+       "_": "TimedTransition",
+       "region": [51, 15, 51, 19],
+       "duration": {
+        "_": "DurationLiteral",
+        "region": [51, 15, 51, 19],
+        "microseconds": 300000000,
+        "original": "300s"
+       },
+       "target_state": "idle",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "body": []
+    }
+   ],
+   "variables": [
+    {
+     "_": "VarDecl",
+     "region": [10, 9, 10, 17],
+     "name": "attempts",
+     "type_name": "int",
+     "value": {
+      "_": "IntLiteral",
+      "region": [10, 25, 10, 26],
+      "value": 0
+     },
+     "mutable": false,
+     "shared": false,
+     "needs_lifting": false
+    }
+   ]
+  }
+ ],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": []
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

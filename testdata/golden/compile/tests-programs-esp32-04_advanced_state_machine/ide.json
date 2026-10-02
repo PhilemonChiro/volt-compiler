@@ -1,0 +1,334 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 1,
+    "col": 6,
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "severity": "warning",
+    "hint": "The chip declaration will move to volt.toml in a future version."
+   },
+   {
+    "line": 4,
+    "col": 9,
+    "message": "Strapping pin: GPIO 2 must be LOW during boot for flash programming.",
+    "severity": "warning",
+    "hint": ""
+   }
+  ],
+  "pins": [
+   {
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   },
+   {
+    "name": "buzzer",
+    "mode": "PWM",
+    "gpio": 18
+   },
+   {
+    "name": "button",
+    "mode": "PullUpInput",
+    "gpio": 4
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [],
+  "machines": [
+   {
+    "name": "Alarm",
+    "states": [
+     "idle",
+     "armed",
+     "triggered",
+     "siren"
+    ],
+    "line": 9
+   }
+  ],
+  "channels": [],
+  "enums": [],
+  "chip": "esp32"
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n    pin buzzer: PWM = 18\n    pin button: PullUpInput = 4\n}\n\nmachine Alarm {\n    initial state idle {\n        enter {\n            led.off()\n            buzzer.set_pwm(0)\n            log(\"alarm\", \"STATE -> idle\")\n        }\n        on arm_cmd -> armed\n    }\n\n    state armed {\n        enter {\n            led.on()\n            log(\"alarm\", \"STATE -> armed | waiting for motion\")\n        }\n        on motion -> triggered\n        on disarm_cmd -> idle\n    }\n\n    state triggered {\n        enter {\n            buzzer.set_pwm(200)\n            log(\"alarm\", \"STATE -> triggered | buzzer=200 attempts=\" + attempts)\n        }\n        exit { buzzer.set_pwm(0) }\n        on correct_code -> idle\n        on wrong_code -> triggered\n        after 60s -> siren\n    }\n\n    state siren {\n        enter {\n            buzzer.set_pwm(255)\n            log(\"alarm\", \"STATE -> siren | full alarm\")\n        }\n        exit { buzzer.set_pwm(0) }\n        on master_code -> idle\n        after 300s -> idle\n    }\n}\n\nsetup {\n}\n",
+ "find_symbols": [
+  {
+   "name": "led",
+   "kind": "pin",
+   "def_line": 4,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 14,
+     "col": 13
+    },
+    {
+     "line": 23,
+     "col": 13
+    }
+   ]
+  },
+  {
+   "name": "buzzer",
+   "kind": "pin",
+   "def_line": 5,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 15,
+     "col": 13
+    },
+    {
+     "line": 32,
+     "col": 13
+    },
+    {
+     "line": 36,
+     "col": 13
+    },
+    {
+     "line": 45,
+     "col": 13
+    },
+    {
+     "line": 49,
+     "col": 13
+    }
+   ]
+  },
+  {
+   "name": "button",
+   "kind": "pin",
+   "def_line": 6,
+   "def_col": 9,
+   "refs": []
+  },
+  {
+   "name": "Alarm",
+   "kind": "machine",
+   "def_line": 9,
+   "def_col": 9,
+   "refs": []
+  },
+  {
+   "name": "idle",
+   "kind": "state",
+   "def_line": 12,
+   "def_col": 19,
+   "refs": []
+  },
+  {
+   "name": "armed",
+   "kind": "state",
+   "def_line": 21,
+   "def_col": 11,
+   "refs": []
+  },
+  {
+   "name": "triggered",
+   "kind": "state",
+   "def_line": 30,
+   "def_col": 11,
+   "refs": []
+  },
+  {
+   "name": "siren",
+   "kind": "state",
+   "def_line": 43,
+   "def_col": 11,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": [
+   {
+    "name": "Alarm",
+    "mermaid": "stateDiagram-v2\n    [*] --> idle\n    idle --> armed : arm_cmd\n    armed --> triggered : motion\n    armed --> idle : disarm_cmd\n    triggered --> idle : correct_code\n    triggered --> triggered : wrong_code\n    triggered --> siren : after 60s\n    siren --> idle : master_code\n    siren --> idle : after 300s",
+    "states": [
+     {
+      "name": "idle",
+      "line": 12
+     },
+     {
+      "name": "armed",
+      "line": 21
+     },
+     {
+      "name": "triggered",
+      "line": 30
+     },
+     {
+      "name": "siren",
+      "line": 43
+     }
+    ]
+   }
+  ]
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    u_Alarm[[\"Alarm\"]]\n    p_led([\"led\"])\n    p_buzzer([\"buzzer\"])\n    s_log{{\"log\"}}\n    u_Alarm -->|off, on| p_led\n    u_Alarm -->|set_pwm| p_buzzer\n    u_Alarm -->|log| s_log\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class u_Alarm machine;\n    class p_led pin;\n    class p_buzzer pin;\n    class s_log service;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_Alarm",
+    "name": "Alarm",
+    "line": 9
+   }
+  ],
+  "loops": [],
+  "edges": [
+   {
+    "drive": "machine",
+    "src": "u_Alarm",
+    "dst": "p_led"
+   },
+   {
+    "drive": "machine",
+    "src": "u_Alarm",
+    "dst": "p_buzzer"
+   },
+   {
+    "drive": "machine",
+    "src": "u_Alarm",
+    "dst": "s_log"
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "u_Alarm": {
+    "kind": "machine",
+    "label": "Alarm",
+    "line": 9,
+    "detail": "4 states"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 4,
+    "detail": "Output · GPIO 2"
+   },
+   "p_buzzer": {
+    "kind": "pin",
+    "label": "buzzer",
+    "line": 5,
+    "detail": "PWM · GPIO 18"
+   },
+   "s_log": {
+    "kind": "service",
+    "label": "log",
+    "line": null,
+    "detail": "log"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    u_Alarm[[\"Alarm\"]]\n    p_led([\"led\"])\n    p_buzzer([\"buzzer\"])\n    s_log{{\"log\"}}\n    u_Alarm -->|off, on| p_led\n    u_Alarm -->|set_pwm| p_buzzer\n    u_Alarm -->|log| s_log\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class u_Alarm machine;\n    class p_led pin;\n    class p_buzzer pin;\n    class s_log service;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_Alarm",
+    "name": "Alarm",
+    "line": 9
+   }
+  ],
+  "loops": [],
+  "edges": [
+   {
+    "drive": "machine",
+    "src": "u_Alarm",
+    "dst": "p_led"
+   },
+   {
+    "drive": "machine",
+    "src": "u_Alarm",
+    "dst": "p_buzzer"
+   },
+   {
+    "drive": "machine",
+    "src": "u_Alarm",
+    "dst": "s_log"
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "u_Alarm": {
+    "kind": "machine",
+    "label": "Alarm",
+    "line": 9,
+    "detail": "4 states"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 4,
+    "detail": "Output · GPIO 2"
+   },
+   "p_buzzer": {
+    "kind": "pin",
+    "label": "buzzer",
+    "line": 5,
+    "detail": "PWM · GPIO 18"
+   },
+   "s_log": {
+    "kind": "service",
+    "label": "log",
+    "line": null,
+    "detail": "log"
+   }
+  }
+ }
+}

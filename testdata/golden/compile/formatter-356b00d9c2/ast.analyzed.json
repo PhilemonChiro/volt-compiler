@@ -1,0 +1,48 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [3, 14, 3, 17],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [3, 14, 3, 17],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [
+  {
+   "_": "EnumDecl",
+   "region": [4, 6, 4, 11],
+   "name": "Color",
+   "variants": [
+    "red",
+    "green",
+    "blue"
+   ]
+  }
+ ],
+ "functions": [],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

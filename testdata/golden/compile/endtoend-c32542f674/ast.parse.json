@@ -1,0 +1,39 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [
+  {
+   "_": "FuncDecl",
+   "region": [2, 6, 2, 14],
+   "name": "get_name",
+   "params": [],
+   "return_type": "string",
+   "body": [
+    {
+     "_": "ReturnStmt",
+     "region": [0, 0, 0, 0],
+     "value": {
+      "_": "IntLiteral",
+      "region": [3, 12, 3, 14],
+      "value": 42
+     }
+    }
+   ],
+   "contains_yield": false
+  }
+ ],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

@@ -1,0 +1,8 @@
+
+[yellow bold]-- TASK WARNING -- main.volt:2[/yellow bold]
+
+Task `onetime` has no yield points (no every/on/sleep). It will run once and complete.
+
+ [dim]1 |[/dim] 
+ [dim]2 |[/dim] task onetime {
+ [dim]  |[/dim] [yellow]     ^^^^^^^[/yellow]

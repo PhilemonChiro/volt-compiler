@@ -1,0 +1,70 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [
+  {
+   "_": "FuncDecl",
+   "region": [2, 6, 2, 11],
+   "name": "retry",
+   "params": [
+    {
+     "_": "Param",
+     "region": [2, 12, 2, 13],
+     "name": "n",
+     "type_name": "int"
+    }
+   ],
+   "return_type": null,
+   "body": [
+    {
+     "_": "ExprStmt",
+     "region": [0, 0, 0, 0],
+     "expr": {
+      "_": "FuncCall",
+      "region": [3, 5, 3, 10],
+      "name": "sleep",
+      "args": [
+       {
+        "_": "DurationLiteral",
+        "region": [3, 11, 3, 18],
+        "microseconds": 1000000,
+        "original": "1second"
+       }
+      ]
+     }
+    },
+    {
+     "_": "ExprStmt",
+     "region": [0, 0, 0, 0],
+     "expr": {
+      "_": "FuncCall",
+      "region": [4, 5, 4, 10],
+      "name": "retry",
+      "args": [
+       {
+        "_": "VarRef",
+        "region": [4, 11, 4, 12],
+        "name": "n"
+       }
+      ]
+     }
+    }
+   ],
+   "contains_yield": true
+  }
+ ],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

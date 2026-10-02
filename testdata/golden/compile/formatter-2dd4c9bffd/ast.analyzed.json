@@ -1,0 +1,128 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [3, 14, 3, 17],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [3, 14, 3, 17],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [
+  {
+   "_": "MachineDecl",
+   "region": [4, 9, 4, 16],
+   "name": "blinker",
+   "states": [
+    {
+     "_": "StateDecl",
+     "region": [5, 7, 5, 10],
+     "name": "off",
+     "is_initial": true,
+     "enter_body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [6, 7, 6, 10],
+        "obj": {
+         "_": "VarRef",
+         "region": [6, 7, 6, 10],
+         "name": "led"
+        },
+        "method": "off",
+        "args": []
+       }
+      }
+     ],
+     "exit_body": [],
+     "transitions": [],
+     "timed_transitions": [
+      {
+       "_": "TimedTransition",
+       "region": [7, 7, 7, 9],
+       "duration": {
+        "_": "DurationLiteral",
+        "region": [7, 7, 7, 9],
+        "microseconds": 1000000,
+        "original": "1s"
+       },
+       "target_state": "on",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "body": []
+    },
+    {
+     "_": "StateDecl",
+     "region": [9, 7, 9, 9],
+     "name": "on",
+     "is_initial": false,
+     "enter_body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [10, 7, 10, 10],
+        "obj": {
+         "_": "VarRef",
+         "region": [10, 7, 10, 10],
+         "name": "led"
+        },
+        "method": "on",
+        "args": []
+       }
+      }
+     ],
+     "exit_body": [],
+     "transitions": [],
+     "timed_transitions": [
+      {
+       "_": "TimedTransition",
+       "region": [11, 7, 11, 12],
+       "duration": {
+        "_": "DurationLiteral",
+        "region": [11, 7, 11, 12],
+        "microseconds": 500000,
+        "original": "500ms"
+       },
+       "target_state": "off",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "body": []
+    }
+   ],
+   "variables": []
+  }
+ ],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

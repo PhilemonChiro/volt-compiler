@@ -1,0 +1,10 @@
+
+[red bold]-- MUTABILITY ERROR -- immutable_assign.volt:4[/red bold]
+
+Cannot assign to `x` — it was declared with `let` (immutable).
+
+ [dim]3 |[/dim]     let x = 5
+ [dim]4 |[/dim]     x = 10
+ [dim]  |[/dim] [red]    ^[/red]
+
+[cyan]Hint: Use `var` instead of `let` to make it mutable.[/cyan]

@@ -1,0 +1,155 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 1,
+    "col": 6,
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "severity": "warning",
+    "hint": "The chip declaration will move to volt.toml in a future version."
+   }
+  ],
+  "pins": [
+   {
+    "name": "led",
+    "mode": "Output",
+    "gpio": 4
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "_rule0",
+    "tier": "background",
+    "line": 3
+   }
+  ],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": "esp32"
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 4\n}\n\nevery 60s { led.toggle() }\n",
+ "find_symbols": [
+  {
+   "name": "led",
+   "kind": "pin",
+   "def_line": 2,
+   "def_col": 16,
+   "refs": [
+    {
+     "line": 3,
+     "col": 13
+    }
+   ]
+  },
+  {
+   "name": "_rule0",
+   "kind": "task",
+   "def_line": 3,
+   "def_col": 7,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u__rule0((\"↻ 60s\"))\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u__rule0 timer;",
+  "units": [
+   {
+    "id": "u__rule0",
+    "name": "↻ 60s",
+    "line": 3
+   }
+  ],
+  "loops": [
+   "u__rule0"
+  ],
+  "edges": [],
+  "nodes": {
+   "u__rule0": {
+    "kind": "timer",
+    "label": "↻ 60s",
+    "line": 3,
+    "detail": "every 60s"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 2,
+    "detail": "Output · GPIO 4"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    p_led([\"led\"])\n    u__rule0((\"↻ 60s\"))\n    u__rule0 -->|toggle| p_led\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u__rule0 timer;\n    class p_led pin;",
+  "units": [
+   {
+    "id": "u__rule0",
+    "name": "↻ 60s",
+    "line": 3
+   }
+  ],
+  "loops": [
+   "u__rule0"
+  ],
+  "edges": [
+   {
+    "drive": "timer",
+    "src": "u__rule0",
+    "dst": "p_led",
+    "rate_ms": 60000.0
+   }
+  ],
+  "nodes": {
+   "u__rule0": {
+    "kind": "timer",
+    "label": "↻ 60s",
+    "line": 3,
+    "detail": "every 60s"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 2,
+    "detail": "Output · GPIO 4"
+   }
+  }
+ }
+}

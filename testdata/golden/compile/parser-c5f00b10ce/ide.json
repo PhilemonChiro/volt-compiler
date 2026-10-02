@@ -1,0 +1,214 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 8,
+    "col": 13,
+    "message": "Unknown name `led`.",
+    "severity": "error",
+    "hint": "Did you mean `ble`?"
+   }
+  ],
+  "pins": [],
+  "devices": [],
+  "buses": [],
+  "tasks": [],
+  "machines": [
+   {
+    "name": "DeviceState",
+    "states": [
+     "idle",
+     "connecting",
+     "running",
+     "error"
+    ],
+    "line": 2
+   }
+  ],
+  "channels": [],
+  "enums": [],
+  "chip": ""
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ]
+ ],
+ "format_code": "machine DeviceState {\n    initial state idle {\n        on button.press() -> connecting\n    }\n\n    state connecting {\n        enter { led.blink(200ms) }\n        on wifi.connected() -> running\n        after 10seconds -> error\n    }\n\n    state running {\n        on wifi.disconnected() -> connecting\n    }\n\n    state error {\n        after 5seconds -> idle\n    }\n}\n",
+ "find_symbols": [
+  {
+   "name": "DeviceState",
+   "kind": "machine",
+   "def_line": 2,
+   "def_col": 9,
+   "refs": []
+  },
+  {
+   "name": "idle",
+   "kind": "state",
+   "def_line": 3,
+   "def_col": 11,
+   "refs": []
+  },
+  {
+   "name": "connecting",
+   "kind": "state",
+   "def_line": 6,
+   "def_col": 11,
+   "refs": []
+  },
+  {
+   "name": "running",
+   "kind": "state",
+   "def_line": 13,
+   "def_col": 11,
+   "refs": []
+  },
+  {
+   "name": "error",
+   "kind": "state",
+   "def_line": 16,
+   "def_col": 11,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": [
+   {
+    "name": "DeviceState",
+    "mermaid": "stateDiagram-v2\n    [*] --> idle\n    idle --> connecting : button\n    connecting --> running : wifi\n    connecting --> error : after 10seconds\n    running --> connecting : wifi\n    error --> idle : after 5seconds",
+    "states": [
+     {
+      "name": "idle",
+      "line": 3
+     },
+     {
+      "name": "connecting",
+      "line": 6
+     },
+     {
+      "name": "running",
+      "line": 13
+     },
+     {
+      "name": "error",
+      "line": 16
+     }
+    ]
+   }
+  ]
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_DeviceState[[\"DeviceState\"]]\n    s_button{{\"button\"}}\n    s_led{{\"led\"}}\n    s_wifi{{\"wifi\"}}\n    u_DeviceState -->|press| s_button\n    u_DeviceState -->|blink| s_led\n    u_DeviceState -->|connected, disconnected| s_wifi\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_DeviceState machine;\n    class s_button service;\n    class s_led service;\n    class s_wifi service;",
+  "units": [
+   {
+    "id": "u_DeviceState",
+    "name": "DeviceState",
+    "line": 2
+   }
+  ],
+  "loops": [],
+  "edges": [
+   {
+    "drive": "machine",
+    "src": "u_DeviceState",
+    "dst": "s_button"
+   },
+   {
+    "drive": "machine",
+    "src": "u_DeviceState",
+    "dst": "s_led"
+   },
+   {
+    "drive": "machine",
+    "src": "u_DeviceState",
+    "dst": "s_wifi"
+   }
+  ],
+  "nodes": {
+   "u_DeviceState": {
+    "kind": "machine",
+    "label": "DeviceState",
+    "line": 2,
+    "detail": "4 states"
+   },
+   "s_button": {
+    "kind": "service",
+    "label": "button",
+    "line": null,
+    "detail": "press"
+   },
+   "s_led": {
+    "kind": "service",
+    "label": "led",
+    "line": null,
+    "detail": "blink"
+   },
+   "s_wifi": {
+    "kind": "service",
+    "label": "wifi",
+    "line": null,
+    "detail": "connected, disconnected"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_DeviceState[[\"DeviceState\"]]\n    s_button{{\"button\"}}\n    s_led{{\"led\"}}\n    s_wifi{{\"wifi\"}}\n    u_DeviceState -->|press| s_button\n    u_DeviceState -->|blink| s_led\n    u_DeviceState -->|connected, disconnected| s_wifi\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_DeviceState machine;\n    class s_button service;\n    class s_led service;\n    class s_wifi service;",
+  "units": [
+   {
+    "id": "u_DeviceState",
+    "name": "DeviceState",
+    "line": 2
+   }
+  ],
+  "loops": [],
+  "edges": [
+   {
+    "drive": "machine",
+    "src": "u_DeviceState",
+    "dst": "s_button"
+   },
+   {
+    "drive": "machine",
+    "src": "u_DeviceState",
+    "dst": "s_led"
+   },
+   {
+    "drive": "machine",
+    "src": "u_DeviceState",
+    "dst": "s_wifi"
+   }
+  ],
+  "nodes": {
+   "u_DeviceState": {
+    "kind": "machine",
+    "label": "DeviceState",
+    "line": 2,
+    "detail": "4 states"
+   },
+   "s_button": {
+    "kind": "service",
+    "label": "button",
+    "line": null,
+    "detail": "press"
+   },
+   "s_led": {
+    "kind": "service",
+    "label": "led",
+    "line": null,
+    "detail": "blink"
+   },
+   "s_wifi": {
+    "kind": "service",
+    "label": "wifi",
+    "line": null,
+    "detail": "connected, disconnected"
+   }
+  }
+ }
+}

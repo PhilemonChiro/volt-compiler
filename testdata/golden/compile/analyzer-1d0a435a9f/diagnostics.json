@@ -1,0 +1,14 @@
+[
+  {
+    "severity": "warning",
+    "category": "TASK WARNING",
+    "message": "Task `onetime` has no yield points (no every/on/sleep). It will run once and complete.",
+    "hint": null,
+    "region": [
+      2,
+      6,
+      2,
+      13
+    ]
+  }
+]

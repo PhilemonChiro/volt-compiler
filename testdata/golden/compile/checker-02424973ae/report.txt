@@ -1,0 +1,14 @@
+
+[red bold]-- TYPE MISMATCH -- main.volt:0[/red bold]
+
+Argument 2 of `connect` expects `string`, got `bool`.
+
+
+
+[red bold]-- TYPE MISMATCH -- main.volt:3[/red bold]
+
+Argument 1 of `connect` expects `string`, got `int`.
+
+ [dim]2 |[/dim] setup {
+ [dim]3 |[/dim]     wifi.connect(42, true)
+ [dim]  |[/dim] [red]                 ^^[/red]

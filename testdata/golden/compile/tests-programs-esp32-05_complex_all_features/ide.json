@@ -1,0 +1,1738 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 1,
+    "col": 6,
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "severity": "warning",
+    "hint": "The chip declaration will move to volt.toml in a future version."
+   },
+   {
+    "line": 8,
+    "col": 9,
+    "message": "Strapping pin: GPIO 5 controls boot debug output. Usually safe for general use.",
+    "severity": "warning",
+    "hint": ""
+   },
+   {
+    "line": 9,
+    "col": 9,
+    "message": "Strapping pin: GPIO 15 controls boot log output. If pulled LOW, boot messages are suppressed (usually harmless).",
+    "severity": "warning",
+    "hint": ""
+   },
+   {
+    "line": 0,
+    "col": 0,
+    "message": "Variable `motor_isr_count` is shared between critical task (pid_control) and task (health_report). The compiler will mark it `volatile` in generated C.",
+    "severity": "warning",
+    "hint": "For multi-word values, consider using atomic operations."
+   }
+  ],
+  "pins": [
+   {
+    "name": "led_r",
+    "mode": "Output",
+    "gpio": 23
+   },
+   {
+    "name": "led_g",
+    "mode": "Output",
+    "gpio": 22
+   },
+   {
+    "name": "led_b",
+    "mode": "Output",
+    "gpio": 21
+   },
+   {
+    "name": "motor",
+    "mode": "PWM",
+    "gpio": 4
+   },
+   {
+    "name": "fan",
+    "mode": "Output",
+    "gpio": 5
+   },
+   {
+    "name": "button",
+    "mode": "PullUpInput",
+    "gpio": 15
+   },
+   {
+    "name": "soil",
+    "mode": "Analog",
+    "gpio": 32
+   },
+   {
+    "name": "temp",
+    "mode": "Analog",
+    "gpio": 33
+   },
+   {
+    "name": "light",
+    "mode": "Analog",
+    "gpio": 34
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "sensor_poll",
+    "tier": "background",
+    "line": 28
+   },
+   {
+    "name": "pid_control",
+    "tier": "critical",
+    "line": 53
+   },
+   {
+    "name": "button_monitor",
+    "tier": "background",
+    "line": 60
+   },
+   {
+    "name": "data_logger",
+    "tier": "background",
+    "line": 73
+   },
+   {
+    "name": "cloud_sync",
+    "tier": "priority",
+    "line": 83
+   },
+   {
+    "name": "health_report",
+    "tier": "background",
+    "line": 98
+   }
+  ],
+  "machines": [
+   {
+    "name": "StatusLED",
+    "states": [
+     "off",
+     "connected",
+     "disconnected",
+     "error"
+    ],
+    "line": 105
+   }
+  ],
+  "channels": [],
+  "enums": [],
+  "chip": "esp32"
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "chip esp32\n\nhardware {\n    pin led_r: Output = 23\n    pin led_g: Output = 22\n    pin led_b: Output = 21\n    pin motor: PWM = 4\n    pin fan: Output = 5\n    pin button: PullUpInput = 15\n    pin soil: Analog = 32\n    pin temp: Analog = 33\n    pin light: Analog = 34\n}\n\nvar setpoint: int = 500\n\nvar fan_on: int = 0\n\nvar total_sensor_reads: int = 0\n\nvar total_pushes: int = 0\n\nvar total_syncs: int = 0\n\nvar motor_isr_count: int = 0\n\nvar button_presses: int = 0\n\nvar last_button: int = 1\n\nfunc check_threshold(value: int, limit: int) -> bool {\n    return value > limit\n}\n\ntask sensor_poll {\n    every 2s {\n        let s = soil.read()\n        let t = temp.read()\n        let l = light.read()\n        total_sensor_reads += 1\n        log(\"sensor\", \"#\" + total_sensor_reads + \" soil=\" + s + \" temp=\" + t + \" light=\" + l)\n        if check_threshold(t, 800) {\n            fan.on()\n            fan_on = 1\n        } else {\n            fan.off()\n            fan_on = 0\n        }\n        if s < setpoint {\n            motor.set_pwm(200)\n        } else {\n            motor.set_pwm(0)\n        }\n    }\n}\n\ntask pid_control {\n    every 1ms strict {\n        motor.set_pwm(0)\n        motor_isr_count += 1\n    }\n}\n\ntask button_monitor {\n    every 50ms {\n        let state = button.read()\n        if state == 0 {\n            if last_button == 1 {\n                button_presses += 1\n                log(\"button\", \"PRESS #\" + button_presses)\n            }\n        }\n        last_button = state\n    }\n}\n\ntask data_logger {\n    every 30s {\n        storage.push(\"soil\", soil.read())\n        storage.push(\"temp\", temp.read())\n        storage.push(\"light\", light.read())\n        total_pushes += 3\n        log(\"storage\", \"pushed 3 readings | total=\" + total_pushes)\n    }\n}\n\ntask cloud_sync {\n    every 60s {\n        if wifi.is_connected() {\n            total_syncs += 1\n            log(\"sync\", \"#\" + total_syncs + \" sending\")\n            mqtt.send_int(\"farm/soil\", soil.read())\n            mqtt.send_int(\"farm/temp\", temp.read())\n            mqtt.send_int(\"farm/light\", light.read())\n            mqtt.send_int(\"farm/fan\", fan_on)\n        } else {\n            log(\"sync\", \"wifi not connected, data buffered\")\n        }\n    }\n}\n\ntask health_report {\n    every 10s {\n        log(\"health\", \"reads=\" + total_sensor_reads + \" isr=\" + motor_isr_count + \" btn=\" + button_presses + \" pushes=\" + total_pushes + \" syncs=\" + total_syncs)\n        log(\"health\", \"wifi=\" + wifi.is_connected() + \" heap=\" + system.free_heap() + \" fan=\" + fan_on)\n    }\n}\n\nmachine StatusLED {\n    initial state off {\n        enter {\n            led_r.off()\n            led_g.off()\n            led_b.off()\n        }\n        on wifi_connected -> connected\n    }\n\n    state connected {\n        enter {\n            led_g.on()\n            log(\"led_fsm\", \"STATE -> connected\")\n        }\n        exit { led_g.off() }\n        on wifi_lost -> disconnected\n        on error_event -> error\n    }\n\n    state disconnected {\n        enter {\n            led_r.on()\n            log(\"led_fsm\", \"STATE -> disconnected\")\n        }\n        exit { led_r.off() }\n        on wifi_connected -> connected\n        after 5s -> off\n    }\n\n    state error {\n        enter {\n            led_r.on()\n            led_b.on()\n            log(\"led_fsm\", \"STATE -> error\")\n        }\n        exit {\n            led_r.off()\n            led_b.off()\n        }\n        after 10s -> off\n    }\n}\n\nsetup {\n    wifi.connect(\"FarmNet\", \"password\")\n    mqtt.connect(\"mqtt://broker.local\")\n}\n",
+ "find_symbols": [
+  {
+   "name": "led_r",
+   "kind": "pin",
+   "def_line": 4,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 108,
+     "col": 13
+    },
+    {
+     "line": 129,
+     "col": 13
+    },
+    {
+     "line": 133,
+     "col": 13
+    },
+    {
+     "line": 141,
+     "col": 13
+    },
+    {
+     "line": 146,
+     "col": 13
+    }
+   ]
+  },
+  {
+   "name": "led_g",
+   "kind": "pin",
+   "def_line": 5,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 109,
+     "col": 13
+    },
+    {
+     "line": 117,
+     "col": 13
+    },
+    {
+     "line": 121,
+     "col": 13
+    }
+   ]
+  },
+  {
+   "name": "led_b",
+   "kind": "pin",
+   "def_line": 6,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 110,
+     "col": 13
+    },
+    {
+     "line": 142,
+     "col": 13
+    },
+    {
+     "line": 147,
+     "col": 13
+    }
+   ]
+  },
+  {
+   "name": "motor",
+   "kind": "pin",
+   "def_line": 7,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 46,
+     "col": 13
+    },
+    {
+     "line": 48,
+     "col": 13
+    },
+    {
+     "line": 55,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "fan",
+   "kind": "pin",
+   "def_line": 8,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 38,
+     "col": 13
+    },
+    {
+     "line": 41,
+     "col": 13
+    }
+   ]
+  },
+  {
+   "name": "button",
+   "kind": "pin",
+   "def_line": 9,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 62,
+     "col": 21
+    }
+   ]
+  },
+  {
+   "name": "soil",
+   "kind": "pin",
+   "def_line": 10,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 30,
+     "col": 17
+    },
+    {
+     "line": 75,
+     "col": 30
+    },
+    {
+     "line": 88,
+     "col": 40
+    }
+   ]
+  },
+  {
+   "name": "temp",
+   "kind": "pin",
+   "def_line": 11,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 31,
+     "col": 17
+    },
+    {
+     "line": 76,
+     "col": 30
+    },
+    {
+     "line": 89,
+     "col": 40
+    }
+   ]
+  },
+  {
+   "name": "light",
+   "kind": "pin",
+   "def_line": 12,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 32,
+     "col": 17
+    },
+    {
+     "line": 77,
+     "col": 31
+    },
+    {
+     "line": 90,
+     "col": 41
+    }
+   ]
+  },
+  {
+   "name": "check_threshold",
+   "kind": "func",
+   "def_line": 24,
+   "def_col": 6,
+   "refs": [
+    {
+     "line": 37,
+     "col": 12
+    }
+   ]
+  },
+  {
+   "name": "value",
+   "kind": "param",
+   "def_line": 24,
+   "def_col": 22,
+   "refs": [
+    {
+     "line": 25,
+     "col": 12
+    }
+   ]
+  },
+  {
+   "name": "limit",
+   "kind": "param",
+   "def_line": 24,
+   "def_col": 34,
+   "refs": [
+    {
+     "line": 25,
+     "col": 20
+    }
+   ]
+  },
+  {
+   "name": "sensor_poll",
+   "kind": "task",
+   "def_line": 28,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "pid_control",
+   "kind": "task",
+   "def_line": 53,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "button_monitor",
+   "kind": "task",
+   "def_line": 60,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "data_logger",
+   "kind": "task",
+   "def_line": 73,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "cloud_sync",
+   "kind": "task",
+   "def_line": 83,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "health_report",
+   "kind": "task",
+   "def_line": 98,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "StatusLED",
+   "kind": "machine",
+   "def_line": 105,
+   "def_col": 9,
+   "refs": []
+  },
+  {
+   "name": "off",
+   "kind": "state",
+   "def_line": 106,
+   "def_col": 19,
+   "refs": []
+  },
+  {
+   "name": "connected",
+   "kind": "state",
+   "def_line": 115,
+   "def_col": 11,
+   "refs": []
+  },
+  {
+   "name": "disconnected",
+   "kind": "state",
+   "def_line": 127,
+   "def_col": 11,
+   "refs": []
+  },
+  {
+   "name": "error",
+   "kind": "state",
+   "def_line": 139,
+   "def_col": 11,
+   "refs": []
+  },
+  {
+   "name": "setpoint",
+   "kind": "var",
+   "def_line": 15,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 45,
+     "col": 16
+    }
+   ]
+  },
+  {
+   "name": "fan_on",
+   "kind": "var",
+   "def_line": 16,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 39,
+     "col": 13
+    },
+    {
+     "line": 42,
+     "col": 13
+    },
+    {
+     "line": 91,
+     "col": 39
+    },
+    {
+     "line": 101,
+     "col": 97
+    }
+   ]
+  },
+  {
+   "name": "total_sensor_reads",
+   "kind": "var",
+   "def_line": 17,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 33,
+     "col": 9
+    },
+    {
+     "line": 35,
+     "col": 29
+    },
+    {
+     "line": 100,
+     "col": 34
+    }
+   ]
+  },
+  {
+   "name": "total_pushes",
+   "kind": "var",
+   "def_line": 18,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 78,
+     "col": 9
+    },
+    {
+     "line": 79,
+     "col": 55
+    },
+    {
+     "line": 100,
+     "col": 123
+    }
+   ]
+  },
+  {
+   "name": "total_syncs",
+   "kind": "var",
+   "def_line": 19,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 86,
+     "col": 13
+    },
+    {
+     "line": 87,
+     "col": 31
+    },
+    {
+     "line": 100,
+     "col": 150
+    }
+   ]
+  },
+  {
+   "name": "motor_isr_count",
+   "kind": "var",
+   "def_line": 20,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 56,
+     "col": 9
+    },
+    {
+     "line": 100,
+     "col": 65
+    }
+   ]
+  },
+  {
+   "name": "button_presses",
+   "kind": "var",
+   "def_line": 21,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 65,
+     "col": 17
+    },
+    {
+     "line": 66,
+     "col": 43
+    },
+    {
+     "line": 100,
+     "col": 93
+    }
+   ]
+  },
+  {
+   "name": "last_button",
+   "kind": "var",
+   "def_line": 22,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 64,
+     "col": 16
+    },
+    {
+     "line": 69,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "s",
+   "kind": "var",
+   "def_line": 30,
+   "def_col": 13,
+   "refs": [
+    {
+     "line": 35,
+     "col": 61
+    },
+    {
+     "line": 45,
+     "col": 12
+    }
+   ]
+  },
+  {
+   "name": "t",
+   "kind": "var",
+   "def_line": 31,
+   "def_col": 13,
+   "refs": [
+    {
+     "line": 35,
+     "col": 76
+    },
+    {
+     "line": 37,
+     "col": 28
+    }
+   ]
+  },
+  {
+   "name": "l",
+   "kind": "var",
+   "def_line": 32,
+   "def_col": 13,
+   "refs": [
+    {
+     "line": 35,
+     "col": 92
+    }
+   ]
+  },
+  {
+   "name": "state",
+   "kind": "var",
+   "def_line": 62,
+   "def_col": 13,
+   "refs": [
+    {
+     "line": 63,
+     "col": 12
+    },
+    {
+     "line": 69,
+     "col": 23
+    }
+   ]
+  }
+ ],
+ "state_diagram": {
+  "machines": [
+   {
+    "name": "StatusLED",
+    "mermaid": "stateDiagram-v2\n    [*] --> off\n    off --> connected : wifi_connected\n    connected --> disconnected : wifi_lost\n    connected --> error : error_event\n    disconnected --> connected : wifi_connected\n    disconnected --> off : after 5s\n    error --> off : after 10s",
+    "states": [
+     {
+      "name": "off",
+      "line": 106
+     },
+     {
+      "name": "connected",
+      "line": 115
+     },
+     {
+      "name": "disconnected",
+      "line": 127
+     },
+     {
+      "name": "error",
+      "line": 139
+     }
+    ]
+   }
+  ]
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_wifi{{\"wifi\"}}\n    s_mqtt{{\"mqtt\"}}\n    p_soil([\"soil\"])\n    p_temp([\"temp\"])\n    p_light([\"light\"])\n    v_total_sensor_reads(\"total_sensor_reads\")\n    s_log{{\"log\"}}\n    v_fan_on(\"fan_on\")\n    p_motor([\"motor\"])\n    v_motor_isr_count(\"motor_isr_count\")\n    v_button_presses(\"button_presses\")\n    v_total_pushes(\"total_pushes\")\n    v_total_syncs(\"total_syncs\")\n    u_StatusLED[[\"StatusLED\"]]\n    p_led_r([\"led_r\"])\n    p_led_g([\"led_g\"])\n    p_led_b([\"led_b\"])\n    u_check_threshold(\"check_threshold()\")\n    u_sensor_poll((\"sensor_poll<br>↻ 2s\"))\n    u_pid_control((\"pid_control<br>↻ 1ms\"))\n    u_button_monitor((\"button_monitor<br>↻ 50ms\"))\n    u_data_logger((\"data_logger<br>↻ 30s\"))\n    u_cloud_sync((\"cloud_sync<br>↻ 60s\"))\n    u_health_report((\"health_report<br>↻ 10s\"))\n    u_setup -->|connect| s_wifi\n    u_setup -->|connect| s_mqtt\n    p_soil -.->|read| u_sensor_poll\n    p_temp -.->|read| u_sensor_poll\n    p_light -.->|read| u_sensor_poll\n    u_sensor_poll -->|write| v_total_sensor_reads\n    u_sensor_poll -->|log| s_log\n    v_total_sensor_reads -.->|read| u_sensor_poll\n    u_sensor_poll -->|write| v_fan_on\n    u_sensor_poll -->|set_pwm| p_motor\n    u_pid_control -->|set_pwm| p_motor\n    u_pid_control -->|write| v_motor_isr_count\n    u_button_monitor -->|write| v_button_presses\n    u_button_monitor -->|log| s_log\n    v_button_presses -.->|read| u_button_monitor\n    p_soil -.->|read| u_data_logger\n    p_temp -.->|read| u_data_logger\n    p_light -.->|read| u_data_logger\n    u_data_logger -->|write| v_total_pushes\n    u_data_logger -->|log| s_log\n    v_total_pushes -.->|read| u_data_logger\n    s_wifi -.->|is_connected| u_cloud_sync\n    u_cloud_sync -->|write| v_total_syncs\n    u_cloud_sync -->|log| s_log\n    v_total_syncs -.->|read| u_cloud_sync\n    u_cloud_sync -->|send_int| s_mqtt\n    p_soil -.->|read| u_cloud_sync\n    p_temp -.->|read| u_cloud_sync\n    p_light -.->|read| u_cloud_sync\n    v_fan_on -.->|read| u_cloud_sync\n    u_health_report -->|log| s_log\n    v_total_sensor_reads -.->|read| u_health_report\n    v_motor_isr_count -.->|read| u_health_report\n    v_button_presses -.->|read| u_health_report\n    v_total_pushes -.->|read| u_health_report\n    v_total_syncs -.->|read| u_health_report\n    s_wifi -.->|is_connected| u_health_report\n    v_fan_on -.->|read| u_health_report\n    u_StatusLED -->|off, on| p_led_r\n    u_StatusLED -->|off, on| p_led_g\n    u_StatusLED -->|off, on| p_led_b\n    u_StatusLED -->|log| s_log\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_wifi service;\n    class s_mqtt service;\n    class u_sensor_poll timer;\n    class p_soil shared;\n    class p_temp shared;\n    class p_light shared;\n    class v_total_sensor_reads shared;\n    class s_log service;\n    class v_fan_on shared;\n    class p_motor shared;\n    class u_pid_control timer;\n    class v_motor_isr_count shared;\n    class u_button_monitor timer;\n    class v_button_presses shared;\n    class u_data_logger timer;\n    class v_total_pushes shared;\n    class u_cloud_sync timer;\n    class v_total_syncs shared;\n    class u_health_report timer;\n    class u_StatusLED machine;\n    class p_led_r pin;\n    class p_led_g pin;\n    class p_led_b pin;\n    class u_check_threshold func;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_sensor_poll",
+    "name": "sensor_poll<br>↻ 2s",
+    "line": 28
+   },
+   {
+    "id": "u_pid_control",
+    "name": "pid_control<br>↻ 1ms",
+    "line": 53
+   },
+   {
+    "id": "u_button_monitor",
+    "name": "button_monitor<br>↻ 50ms",
+    "line": 60
+   },
+   {
+    "id": "u_data_logger",
+    "name": "data_logger<br>↻ 30s",
+    "line": 73
+   },
+   {
+    "id": "u_cloud_sync",
+    "name": "cloud_sync<br>↻ 60s",
+    "line": 83
+   },
+   {
+    "id": "u_health_report",
+    "name": "health_report<br>↻ 10s",
+    "line": 98
+   },
+   {
+    "id": "u_StatusLED",
+    "name": "StatusLED",
+    "line": 105
+   },
+   {
+    "id": "u_check_threshold",
+    "name": "check_threshold()",
+    "line": 24
+   }
+  ],
+  "loops": [
+   "u_sensor_poll",
+   "u_pid_control",
+   "u_button_monitor",
+   "u_data_logger",
+   "u_cloud_sync",
+   "u_health_report"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_wifi"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_mqtt"
+   },
+   {
+    "drive": "timer",
+    "src": "p_soil",
+    "dst": "u_sensor_poll",
+    "rate_ms": 2000.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_temp",
+    "dst": "u_sensor_poll",
+    "rate_ms": 2000.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_light",
+    "dst": "u_sensor_poll",
+    "rate_ms": 2000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_sensor_poll",
+    "dst": "v_total_sensor_reads",
+    "rate_ms": 2000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_sensor_poll",
+    "dst": "s_log",
+    "rate_ms": 2000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_total_sensor_reads",
+    "dst": "u_sensor_poll",
+    "rate_ms": 2000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_sensor_poll",
+    "dst": "v_fan_on",
+    "rate_ms": 2000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_sensor_poll",
+    "dst": "p_motor",
+    "rate_ms": 2000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_pid_control",
+    "dst": "p_motor",
+    "rate_ms": 1.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_pid_control",
+    "dst": "v_motor_isr_count",
+    "rate_ms": 1.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_button_monitor",
+    "dst": "v_button_presses",
+    "rate_ms": 50.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_button_monitor",
+    "dst": "s_log",
+    "rate_ms": 50.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_button_presses",
+    "dst": "u_button_monitor",
+    "rate_ms": 50.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_soil",
+    "dst": "u_data_logger",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_temp",
+    "dst": "u_data_logger",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_light",
+    "dst": "u_data_logger",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_data_logger",
+    "dst": "v_total_pushes",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_data_logger",
+    "dst": "s_log",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_total_pushes",
+    "dst": "u_data_logger",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "s_wifi",
+    "dst": "u_cloud_sync",
+    "rate_ms": 60000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_cloud_sync",
+    "dst": "v_total_syncs",
+    "rate_ms": 60000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_cloud_sync",
+    "dst": "s_log",
+    "rate_ms": 60000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_total_syncs",
+    "dst": "u_cloud_sync",
+    "rate_ms": 60000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_cloud_sync",
+    "dst": "s_mqtt",
+    "rate_ms": 60000.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_soil",
+    "dst": "u_cloud_sync",
+    "rate_ms": 60000.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_temp",
+    "dst": "u_cloud_sync",
+    "rate_ms": 60000.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_light",
+    "dst": "u_cloud_sync",
+    "rate_ms": 60000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_fan_on",
+    "dst": "u_cloud_sync",
+    "rate_ms": 60000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_health_report",
+    "dst": "s_log",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_total_sensor_reads",
+    "dst": "u_health_report",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_motor_isr_count",
+    "dst": "u_health_report",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_button_presses",
+    "dst": "u_health_report",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_total_pushes",
+    "dst": "u_health_report",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_total_syncs",
+    "dst": "u_health_report",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "s_wifi",
+    "dst": "u_health_report",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_fan_on",
+    "dst": "u_health_report",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "machine",
+    "src": "u_StatusLED",
+    "dst": "p_led_r"
+   },
+   {
+    "drive": "machine",
+    "src": "u_StatusLED",
+    "dst": "p_led_g"
+   },
+   {
+    "drive": "machine",
+    "src": "u_StatusLED",
+    "dst": "p_led_b"
+   },
+   {
+    "drive": "machine",
+    "src": "u_StatusLED",
+    "dst": "s_log"
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_wifi": {
+    "kind": "service",
+    "label": "wifi",
+    "line": null,
+    "detail": "connect, is_connected"
+   },
+   "s_mqtt": {
+    "kind": "service",
+    "label": "mqtt",
+    "line": null,
+    "detail": "connect, send_int"
+   },
+   "u_sensor_poll": {
+    "kind": "timer",
+    "label": "sensor_poll<br>↻ 2s",
+    "line": 28,
+    "detail": "every 2s"
+   },
+   "p_soil": {
+    "kind": "pin",
+    "label": "soil",
+    "line": 10,
+    "detail": "Analog · GPIO 32"
+   },
+   "p_temp": {
+    "kind": "pin",
+    "label": "temp",
+    "line": 11,
+    "detail": "Analog · GPIO 33"
+   },
+   "p_light": {
+    "kind": "pin",
+    "label": "light",
+    "line": 12,
+    "detail": "Analog · GPIO 34"
+   },
+   "v_total_sensor_reads": {
+    "kind": "var",
+    "label": "total_sensor_reads",
+    "line": 17,
+    "detail": "int"
+   },
+   "s_log": {
+    "kind": "service",
+    "label": "log",
+    "line": null,
+    "detail": "log"
+   },
+   "f_check_threshold": {
+    "kind": "func",
+    "label": "check_threshold()",
+    "line": 24,
+    "detail": "function"
+   },
+   "p_fan": {
+    "kind": "pin",
+    "label": "fan",
+    "line": 8,
+    "detail": "Output · GPIO 5"
+   },
+   "v_fan_on": {
+    "kind": "var",
+    "label": "fan_on",
+    "line": 16,
+    "detail": "int"
+   },
+   "v_setpoint": {
+    "kind": "var",
+    "label": "setpoint",
+    "line": 15,
+    "detail": "int"
+   },
+   "p_motor": {
+    "kind": "pin",
+    "label": "motor",
+    "line": 7,
+    "detail": "PWM · GPIO 4"
+   },
+   "u_pid_control": {
+    "kind": "timer",
+    "label": "pid_control<br>↻ 1ms",
+    "line": 53,
+    "detail": "every 1ms"
+   },
+   "v_motor_isr_count": {
+    "kind": "var",
+    "label": "motor_isr_count",
+    "line": 20,
+    "detail": "int"
+   },
+   "u_button_monitor": {
+    "kind": "timer",
+    "label": "button_monitor<br>↻ 50ms",
+    "line": 60,
+    "detail": "every 50ms"
+   },
+   "p_button": {
+    "kind": "pin",
+    "label": "button",
+    "line": 9,
+    "detail": "PullUpInput · GPIO 15"
+   },
+   "v_last_button": {
+    "kind": "var",
+    "label": "last_button",
+    "line": 22,
+    "detail": "int"
+   },
+   "v_button_presses": {
+    "kind": "var",
+    "label": "button_presses",
+    "line": 21,
+    "detail": "int"
+   },
+   "u_data_logger": {
+    "kind": "timer",
+    "label": "data_logger<br>↻ 30s",
+    "line": 73,
+    "detail": "every 30s"
+   },
+   "s_storage": {
+    "kind": "service",
+    "label": "storage",
+    "line": null,
+    "detail": "push"
+   },
+   "v_total_pushes": {
+    "kind": "var",
+    "label": "total_pushes",
+    "line": 18,
+    "detail": "int"
+   },
+   "u_cloud_sync": {
+    "kind": "timer",
+    "label": "cloud_sync<br>↻ 60s",
+    "line": 83,
+    "detail": "every 60s"
+   },
+   "v_total_syncs": {
+    "kind": "var",
+    "label": "total_syncs",
+    "line": 19,
+    "detail": "int"
+   },
+   "u_health_report": {
+    "kind": "timer",
+    "label": "health_report<br>↻ 10s",
+    "line": 98,
+    "detail": "every 10s"
+   },
+   "s_system": {
+    "kind": "service",
+    "label": "system",
+    "line": null,
+    "detail": "free_heap"
+   },
+   "u_StatusLED": {
+    "kind": "machine",
+    "label": "StatusLED",
+    "line": 105,
+    "detail": "4 states"
+   },
+   "p_led_r": {
+    "kind": "pin",
+    "label": "led_r",
+    "line": 4,
+    "detail": "Output · GPIO 23"
+   },
+   "p_led_g": {
+    "kind": "pin",
+    "label": "led_g",
+    "line": 5,
+    "detail": "Output · GPIO 22"
+   },
+   "p_led_b": {
+    "kind": "pin",
+    "label": "led_b",
+    "line": 6,
+    "detail": "Output · GPIO 21"
+   },
+   "u_check_threshold": {
+    "kind": "func",
+    "label": "check_threshold()",
+    "line": 24,
+    "detail": "function"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_wifi{{\"wifi\"}}\n    s_mqtt{{\"mqtt\"}}\n    p_soil([\"soil\"])\n    p_temp([\"temp\"])\n    p_light([\"light\"])\n    v_total_sensor_reads(\"total_sensor_reads\")\n    s_log{{\"log\"}}\n    f_check_threshold(\"check_threshold()\")\n    p_fan([\"fan\"])\n    v_fan_on(\"fan_on\")\n    v_setpoint(\"setpoint\")\n    p_motor([\"motor\"])\n    v_motor_isr_count(\"motor_isr_count\")\n    p_button([\"button\"])\n    v_last_button(\"last_button\")\n    v_button_presses(\"button_presses\")\n    s_storage{{\"storage\"}}\n    v_total_pushes(\"total_pushes\")\n    v_total_syncs(\"total_syncs\")\n    s_system{{\"system\"}}\n    u_StatusLED[[\"StatusLED\"]]\n    p_led_r([\"led_r\"])\n    p_led_g([\"led_g\"])\n    p_led_b([\"led_b\"])\n    u_check_threshold(\"check_threshold()\")\n    u_sensor_poll((\"sensor_poll<br>↻ 2s\"))\n    u_pid_control((\"pid_control<br>↻ 1ms\"))\n    u_button_monitor((\"button_monitor<br>↻ 50ms\"))\n    u_data_logger((\"data_logger<br>↻ 30s\"))\n    u_cloud_sync((\"cloud_sync<br>↻ 60s\"))\n    u_health_report((\"health_report<br>↻ 10s\"))\n    u_setup -->|connect| s_wifi\n    u_setup -->|connect| s_mqtt\n    p_soil -.->|read| u_sensor_poll\n    p_temp -.->|read| u_sensor_poll\n    p_light -.->|read| u_sensor_poll\n    u_sensor_poll -->|write| v_total_sensor_reads\n    u_sensor_poll -->|log| s_log\n    v_total_sensor_reads -.->|read| u_sensor_poll\n    u_sensor_poll -->|call| f_check_threshold\n    u_sensor_poll -->|off, on| p_fan\n    u_sensor_poll -->|write| v_fan_on\n    v_setpoint -.->|read| u_sensor_poll\n    u_sensor_poll -->|set_pwm| p_motor\n    u_pid_control -->|set_pwm| p_motor\n    u_pid_control -->|write| v_motor_isr_count\n    p_button -.->|read| u_button_monitor\n    v_last_button -.->|read| u_button_monitor\n    u_button_monitor -->|write| v_button_presses\n    u_button_monitor -->|log| s_log\n    v_button_presses -.->|read| u_button_monitor\n    u_button_monitor -->|write| v_last_button\n    u_data_logger -->|push| s_storage\n    p_soil -.->|read| u_data_logger\n    p_temp -.->|read| u_data_logger\n    p_light -.->|read| u_data_logger\n    u_data_logger -->|write| v_total_pushes\n    u_data_logger -->|log| s_log\n    v_total_pushes -.->|read| u_data_logger\n    s_wifi -.->|is_connected| u_cloud_sync\n    u_cloud_sync -->|write| v_total_syncs\n    u_cloud_sync -->|log| s_log\n    v_total_syncs -.->|read| u_cloud_sync\n    u_cloud_sync -->|send_int| s_mqtt\n    p_soil -.->|read| u_cloud_sync\n    p_temp -.->|read| u_cloud_sync\n    p_light -.->|read| u_cloud_sync\n    v_fan_on -.->|read| u_cloud_sync\n    u_health_report -->|log| s_log\n    v_total_sensor_reads -.->|read| u_health_report\n    v_motor_isr_count -.->|read| u_health_report\n    v_button_presses -.->|read| u_health_report\n    v_total_pushes -.->|read| u_health_report\n    v_total_syncs -.->|read| u_health_report\n    s_wifi -.->|is_connected| u_health_report\n    u_health_report -->|free_heap| s_system\n    v_fan_on -.->|read| u_health_report\n    u_StatusLED -->|off, on| p_led_r\n    u_StatusLED -->|off, on| p_led_g\n    u_StatusLED -->|off, on| p_led_b\n    u_StatusLED -->|log| s_log\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_wifi service;\n    class s_mqtt service;\n    class u_sensor_poll timer;\n    class p_soil shared;\n    class p_temp shared;\n    class p_light shared;\n    class v_total_sensor_reads shared;\n    class s_log service;\n    class f_check_threshold func;\n    class p_fan pin;\n    class v_fan_on shared;\n    class v_setpoint var;\n    class p_motor shared;\n    class u_pid_control timer;\n    class v_motor_isr_count shared;\n    class u_button_monitor timer;\n    class p_button pin;\n    class v_last_button var;\n    class v_button_presses shared;\n    class u_data_logger timer;\n    class s_storage service;\n    class v_total_pushes shared;\n    class u_cloud_sync timer;\n    class v_total_syncs shared;\n    class u_health_report timer;\n    class s_system service;\n    class u_StatusLED machine;\n    class p_led_r pin;\n    class p_led_g pin;\n    class p_led_b pin;\n    class u_check_threshold func;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_sensor_poll",
+    "name": "sensor_poll<br>↻ 2s",
+    "line": 28
+   },
+   {
+    "id": "u_pid_control",
+    "name": "pid_control<br>↻ 1ms",
+    "line": 53
+   },
+   {
+    "id": "u_button_monitor",
+    "name": "button_monitor<br>↻ 50ms",
+    "line": 60
+   },
+   {
+    "id": "u_data_logger",
+    "name": "data_logger<br>↻ 30s",
+    "line": 73
+   },
+   {
+    "id": "u_cloud_sync",
+    "name": "cloud_sync<br>↻ 60s",
+    "line": 83
+   },
+   {
+    "id": "u_health_report",
+    "name": "health_report<br>↻ 10s",
+    "line": 98
+   },
+   {
+    "id": "u_StatusLED",
+    "name": "StatusLED",
+    "line": 105
+   },
+   {
+    "id": "u_check_threshold",
+    "name": "check_threshold()",
+    "line": 24
+   }
+  ],
+  "loops": [
+   "u_sensor_poll",
+   "u_pid_control",
+   "u_button_monitor",
+   "u_data_logger",
+   "u_cloud_sync",
+   "u_health_report"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_wifi"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_mqtt"
+   },
+   {
+    "drive": "timer",
+    "src": "p_soil",
+    "dst": "u_sensor_poll",
+    "rate_ms": 2000.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_temp",
+    "dst": "u_sensor_poll",
+    "rate_ms": 2000.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_light",
+    "dst": "u_sensor_poll",
+    "rate_ms": 2000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_sensor_poll",
+    "dst": "v_total_sensor_reads",
+    "rate_ms": 2000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_sensor_poll",
+    "dst": "s_log",
+    "rate_ms": 2000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_total_sensor_reads",
+    "dst": "u_sensor_poll",
+    "rate_ms": 2000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_sensor_poll",
+    "dst": "f_check_threshold",
+    "rate_ms": 2000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_sensor_poll",
+    "dst": "p_fan",
+    "rate_ms": 2000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_sensor_poll",
+    "dst": "v_fan_on",
+    "rate_ms": 2000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_setpoint",
+    "dst": "u_sensor_poll",
+    "rate_ms": 2000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_sensor_poll",
+    "dst": "p_motor",
+    "rate_ms": 2000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_pid_control",
+    "dst": "p_motor",
+    "rate_ms": 1.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_pid_control",
+    "dst": "v_motor_isr_count",
+    "rate_ms": 1.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_button",
+    "dst": "u_button_monitor",
+    "rate_ms": 50.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_last_button",
+    "dst": "u_button_monitor",
+    "rate_ms": 50.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_button_monitor",
+    "dst": "v_button_presses",
+    "rate_ms": 50.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_button_monitor",
+    "dst": "s_log",
+    "rate_ms": 50.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_button_presses",
+    "dst": "u_button_monitor",
+    "rate_ms": 50.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_button_monitor",
+    "dst": "v_last_button",
+    "rate_ms": 50.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_data_logger",
+    "dst": "s_storage",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_soil",
+    "dst": "u_data_logger",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_temp",
+    "dst": "u_data_logger",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_light",
+    "dst": "u_data_logger",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_data_logger",
+    "dst": "v_total_pushes",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_data_logger",
+    "dst": "s_log",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_total_pushes",
+    "dst": "u_data_logger",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "s_wifi",
+    "dst": "u_cloud_sync",
+    "rate_ms": 60000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_cloud_sync",
+    "dst": "v_total_syncs",
+    "rate_ms": 60000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_cloud_sync",
+    "dst": "s_log",
+    "rate_ms": 60000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_total_syncs",
+    "dst": "u_cloud_sync",
+    "rate_ms": 60000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_cloud_sync",
+    "dst": "s_mqtt",
+    "rate_ms": 60000.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_soil",
+    "dst": "u_cloud_sync",
+    "rate_ms": 60000.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_temp",
+    "dst": "u_cloud_sync",
+    "rate_ms": 60000.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_light",
+    "dst": "u_cloud_sync",
+    "rate_ms": 60000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_fan_on",
+    "dst": "u_cloud_sync",
+    "rate_ms": 60000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_health_report",
+    "dst": "s_log",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_total_sensor_reads",
+    "dst": "u_health_report",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_motor_isr_count",
+    "dst": "u_health_report",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_button_presses",
+    "dst": "u_health_report",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_total_pushes",
+    "dst": "u_health_report",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_total_syncs",
+    "dst": "u_health_report",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "s_wifi",
+    "dst": "u_health_report",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_health_report",
+    "dst": "s_system",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_fan_on",
+    "dst": "u_health_report",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "machine",
+    "src": "u_StatusLED",
+    "dst": "p_led_r"
+   },
+   {
+    "drive": "machine",
+    "src": "u_StatusLED",
+    "dst": "p_led_g"
+   },
+   {
+    "drive": "machine",
+    "src": "u_StatusLED",
+    "dst": "p_led_b"
+   },
+   {
+    "drive": "machine",
+    "src": "u_StatusLED",
+    "dst": "s_log"
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_wifi": {
+    "kind": "service",
+    "label": "wifi",
+    "line": null,
+    "detail": "connect, is_connected"
+   },
+   "s_mqtt": {
+    "kind": "service",
+    "label": "mqtt",
+    "line": null,
+    "detail": "connect, send_int"
+   },
+   "u_sensor_poll": {
+    "kind": "timer",
+    "label": "sensor_poll<br>↻ 2s",
+    "line": 28,
+    "detail": "every 2s"
+   },
+   "p_soil": {
+    "kind": "pin",
+    "label": "soil",
+    "line": 10,
+    "detail": "Analog · GPIO 32"
+   },
+   "p_temp": {
+    "kind": "pin",
+    "label": "temp",
+    "line": 11,
+    "detail": "Analog · GPIO 33"
+   },
+   "p_light": {
+    "kind": "pin",
+    "label": "light",
+    "line": 12,
+    "detail": "Analog · GPIO 34"
+   },
+   "v_total_sensor_reads": {
+    "kind": "var",
+    "label": "total_sensor_reads",
+    "line": 17,
+    "detail": "int"
+   },
+   "s_log": {
+    "kind": "service",
+    "label": "log",
+    "line": null,
+    "detail": "log"
+   },
+   "f_check_threshold": {
+    "kind": "func",
+    "label": "check_threshold()",
+    "line": 24,
+    "detail": "function"
+   },
+   "p_fan": {
+    "kind": "pin",
+    "label": "fan",
+    "line": 8,
+    "detail": "Output · GPIO 5"
+   },
+   "v_fan_on": {
+    "kind": "var",
+    "label": "fan_on",
+    "line": 16,
+    "detail": "int"
+   },
+   "v_setpoint": {
+    "kind": "var",
+    "label": "setpoint",
+    "line": 15,
+    "detail": "int"
+   },
+   "p_motor": {
+    "kind": "pin",
+    "label": "motor",
+    "line": 7,
+    "detail": "PWM · GPIO 4"
+   },
+   "u_pid_control": {
+    "kind": "timer",
+    "label": "pid_control<br>↻ 1ms",
+    "line": 53,
+    "detail": "every 1ms"
+   },
+   "v_motor_isr_count": {
+    "kind": "var",
+    "label": "motor_isr_count",
+    "line": 20,
+    "detail": "int"
+   },
+   "u_button_monitor": {
+    "kind": "timer",
+    "label": "button_monitor<br>↻ 50ms",
+    "line": 60,
+    "detail": "every 50ms"
+   },
+   "p_button": {
+    "kind": "pin",
+    "label": "button",
+    "line": 9,
+    "detail": "PullUpInput · GPIO 15"
+   },
+   "v_last_button": {
+    "kind": "var",
+    "label": "last_button",
+    "line": 22,
+    "detail": "int"
+   },
+   "v_button_presses": {
+    "kind": "var",
+    "label": "button_presses",
+    "line": 21,
+    "detail": "int"
+   },
+   "u_data_logger": {
+    "kind": "timer",
+    "label": "data_logger<br>↻ 30s",
+    "line": 73,
+    "detail": "every 30s"
+   },
+   "s_storage": {
+    "kind": "service",
+    "label": "storage",
+    "line": null,
+    "detail": "push"
+   },
+   "v_total_pushes": {
+    "kind": "var",
+    "label": "total_pushes",
+    "line": 18,
+    "detail": "int"
+   },
+   "u_cloud_sync": {
+    "kind": "timer",
+    "label": "cloud_sync<br>↻ 60s",
+    "line": 83,
+    "detail": "every 60s"
+   },
+   "v_total_syncs": {
+    "kind": "var",
+    "label": "total_syncs",
+    "line": 19,
+    "detail": "int"
+   },
+   "u_health_report": {
+    "kind": "timer",
+    "label": "health_report<br>↻ 10s",
+    "line": 98,
+    "detail": "every 10s"
+   },
+   "s_system": {
+    "kind": "service",
+    "label": "system",
+    "line": null,
+    "detail": "free_heap"
+   },
+   "u_StatusLED": {
+    "kind": "machine",
+    "label": "StatusLED",
+    "line": 105,
+    "detail": "4 states"
+   },
+   "p_led_r": {
+    "kind": "pin",
+    "label": "led_r",
+    "line": 4,
+    "detail": "Output · GPIO 23"
+   },
+   "p_led_g": {
+    "kind": "pin",
+    "label": "led_g",
+    "line": 5,
+    "detail": "Output · GPIO 22"
+   },
+   "p_led_b": {
+    "kind": "pin",
+    "label": "led_b",
+    "line": 6,
+    "detail": "Output · GPIO 21"
+   },
+   "u_check_threshold": {
+    "kind": "func",
+    "label": "check_threshold()",
+    "line": 24,
+    "detail": "function"
+   }
+  }
+ }
+}

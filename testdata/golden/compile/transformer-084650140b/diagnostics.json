@@ -1,0 +1,50 @@
+[
+  {
+    "severity": "warning",
+    "category": "DEPRECATION",
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "hint": "The chip declaration will move to volt.toml in a future version.",
+    "region": [
+      2,
+      6,
+      2,
+      11
+    ]
+  },
+  {
+    "severity": "warning",
+    "category": "HARDWARE WARNING",
+    "message": "Strapping pin: GPIO 2 must be LOW during boot for flash programming.",
+    "hint": null,
+    "region": [
+      4,
+      9,
+      4,
+      10
+    ]
+  },
+  {
+    "severity": "warning",
+    "category": "HARDWARE WARNING",
+    "message": "Strapping pin: GPIO 5 controls boot debug output. Usually safe for general use.",
+    "hint": null,
+    "region": [
+      6,
+      9,
+      6,
+      10
+    ]
+  },
+  {
+    "severity": "warning",
+    "category": "UNREACHABLE",
+    "message": "Code after `every`/`on` block in task `triple` will never execute.",
+    "hint": "Move this code before the `every` block, or into a separate task.",
+    "region": [
+      10,
+      11,
+      10,
+      16
+    ]
+  }
+]

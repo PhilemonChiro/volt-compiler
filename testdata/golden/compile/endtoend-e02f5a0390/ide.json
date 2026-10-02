@@ -1,0 +1,159 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 2,
+    "col": 6,
+    "message": "Function `retry` contains a yield (sleep/every/on) and calls itself recursively. Recursive yielding functions cannot be inlined into protothreads.",
+    "severity": "error",
+    "hint": "Rewrite as a while loop instead of recursion."
+   }
+  ],
+  "pins": [],
+  "devices": [],
+  "buses": [],
+  "tasks": [],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": ""
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ]
+ ],
+ "format_code": "func retry(n: int) {\n    sleep(1second)\n    retry(n)\n}\n",
+ "find_symbols": [
+  {
+   "name": "retry",
+   "kind": "func",
+   "def_line": 2,
+   "def_col": 6,
+   "refs": [
+    {
+     "line": 4,
+     "col": 5
+    }
+   ]
+  },
+  {
+   "name": "n",
+   "kind": "param",
+   "def_line": 2,
+   "def_col": 12,
+   "refs": [
+    {
+     "line": 4,
+     "col": 11
+    }
+   ]
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_retry(\"retry()\")\n    s_sleep{{\"sleep\"}}\n    f_retry(\"retry()\")\n    u_retry -->|sleep| s_sleep\n    u_retry -->|call| f_retry\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_retry func;\n    class s_sleep service;\n    class f_retry func;",
+  "units": [
+   {
+    "id": "u_retry",
+    "name": "retry()",
+    "line": 2
+   }
+  ],
+  "loops": [],
+  "edges": [
+   {
+    "drive": "func",
+    "src": "u_retry",
+    "dst": "s_sleep"
+   },
+   {
+    "drive": "func",
+    "src": "u_retry",
+    "dst": "f_retry"
+   }
+  ],
+  "nodes": {
+   "u_retry": {
+    "kind": "func",
+    "label": "retry()",
+    "line": 2,
+    "detail": "function"
+   },
+   "s_sleep": {
+    "kind": "service",
+    "label": "sleep",
+    "line": null,
+    "detail": "sleep"
+   },
+   "f_retry": {
+    "kind": "func",
+    "label": "retry()",
+    "line": 2,
+    "detail": "function"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_retry(\"retry()\")\n    s_sleep{{\"sleep\"}}\n    f_retry(\"retry()\")\n    u_retry -->|sleep| s_sleep\n    u_retry -->|call| f_retry\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_retry func;\n    class s_sleep service;\n    class f_retry func;",
+  "units": [
+   {
+    "id": "u_retry",
+    "name": "retry()",
+    "line": 2
+   }
+  ],
+  "loops": [],
+  "edges": [
+   {
+    "drive": "func",
+    "src": "u_retry",
+    "dst": "s_sleep"
+   },
+   {
+    "drive": "func",
+    "src": "u_retry",
+    "dst": "f_retry"
+   }
+  ],
+  "nodes": {
+   "u_retry": {
+    "kind": "func",
+    "label": "retry()",
+    "line": 2,
+    "detail": "function"
+   },
+   "s_sleep": {
+    "kind": "service",
+    "label": "sleep",
+    "line": null,
+    "detail": "sleep"
+   },
+   "f_retry": {
+    "kind": "func",
+    "label": "retry()",
+    "line": 2,
+    "detail": "function"
+   }
+  }
+ }
+}

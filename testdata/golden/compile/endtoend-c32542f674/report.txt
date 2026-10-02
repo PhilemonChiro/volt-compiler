@@ -1,0 +1,5 @@
+
+[red bold]-- TYPE MISMATCH -- wrong_return_type.volt:0[/red bold]
+
+Function returns `string` but got `int`.
+

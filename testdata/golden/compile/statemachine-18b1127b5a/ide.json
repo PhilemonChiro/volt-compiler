@@ -1,0 +1,204 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 13,
+    "col": 11,
+    "message": "State `done` in machine `Retry` has no outgoing transitions (dead-end state).",
+    "severity": "warning",
+    "hint": "Add a transition or mark with @terminal if intentional."
+   }
+  ],
+  "pins": [],
+  "devices": [],
+  "buses": [],
+  "tasks": [],
+  "machines": [
+   {
+    "name": "Retry",
+    "states": [
+     "trying",
+     "gave_up",
+     "done"
+    ],
+    "line": 2
+   }
+  ],
+  "channels": [],
+  "enums": [],
+  "chip": ""
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "machine Retry {\n    initial state trying {\n        on fail() [count < 3] -> trying\n        on fail() -> gave_up\n        on succeed() -> done\n    }\n\n    state gave_up {\n        after 10seconds -> trying\n    }\n\n    state done {\n    }\n}\n",
+ "find_symbols": [
+  {
+   "name": "Retry",
+   "kind": "machine",
+   "def_line": 2,
+   "def_col": 9,
+   "refs": []
+  },
+  {
+   "name": "trying",
+   "kind": "state",
+   "def_line": 5,
+   "def_col": 19,
+   "refs": []
+  },
+  {
+   "name": "gave_up",
+   "kind": "state",
+   "def_line": 10,
+   "def_col": 11,
+   "refs": []
+  },
+  {
+   "name": "done",
+   "kind": "state",
+   "def_line": 13,
+   "def_col": 11,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": [
+   {
+    "name": "Retry",
+    "mermaid": "stateDiagram-v2\n    [*] --> trying\n    trying --> trying : fail [count < 3]\n    trying --> gave_up : fail\n    trying --> done : succeed\n    gave_up --> trying : after 10seconds",
+    "states": [
+     {
+      "name": "trying",
+      "line": 5
+     },
+     {
+      "name": "gave_up",
+      "line": 10
+     },
+     {
+      "name": "done",
+      "line": 13
+     }
+    ]
+   }
+  ]
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_Retry[[\"Retry\"]]\n    s_fail{{\"fail\"}}\n    s_succeed{{\"succeed\"}}\n    u_Retry -->|fail| s_fail\n    u_Retry -->|succeed| s_succeed\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_Retry machine;\n    class s_fail service;\n    class s_succeed service;",
+  "units": [
+   {
+    "id": "u_Retry",
+    "name": "Retry",
+    "line": 2
+   }
+  ],
+  "loops": [],
+  "edges": [
+   {
+    "drive": "machine",
+    "src": "u_Retry",
+    "dst": "s_fail"
+   },
+   {
+    "drive": "machine",
+    "src": "u_Retry",
+    "dst": "s_succeed"
+   }
+  ],
+  "nodes": {
+   "u_Retry": {
+    "kind": "machine",
+    "label": "Retry",
+    "line": 2,
+    "detail": "3 states"
+   },
+   "s_fail": {
+    "kind": "service",
+    "label": "fail",
+    "line": null,
+    "detail": "fail"
+   },
+   "s_succeed": {
+    "kind": "service",
+    "label": "succeed",
+    "line": null,
+    "detail": "succeed"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_Retry[[\"Retry\"]]\n    s_fail{{\"fail\"}}\n    s_succeed{{\"succeed\"}}\n    u_Retry -->|fail| s_fail\n    u_Retry -->|succeed| s_succeed\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_Retry machine;\n    class s_fail service;\n    class s_succeed service;",
+  "units": [
+   {
+    "id": "u_Retry",
+    "name": "Retry",
+    "line": 2
+   }
+  ],
+  "loops": [],
+  "edges": [
+   {
+    "drive": "machine",
+    "src": "u_Retry",
+    "dst": "s_fail"
+   },
+   {
+    "drive": "machine",
+    "src": "u_Retry",
+    "dst": "s_succeed"
+   }
+  ],
+  "nodes": {
+   "u_Retry": {
+    "kind": "machine",
+    "label": "Retry",
+    "line": 2,
+    "detail": "3 states"
+   },
+   "s_fail": {
+    "kind": "service",
+    "label": "fail",
+    "line": null,
+    "detail": "fail"
+   },
+   "s_succeed": {
+    "kind": "service",
+    "label": "succeed",
+    "line": null,
+    "detail": "succeed"
+   }
+  }
+ }
+}

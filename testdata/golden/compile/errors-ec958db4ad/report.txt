@@ -1,0 +1,21 @@
+
+[yellow bold]-- DEPRECATION -- int_and_string.volt:2[/yellow bold]
+
+Move `chip esp32` to volt.toml: chip = "esp32"
+
+ [dim]1 |[/dim] 
+ [dim]2 |[/dim] chip esp32
+ [dim]  |[/dim] [yellow]     ^^^^^[/yellow]
+
+[cyan]Hint: The chip declaration will move to volt.toml in a future version.[/cyan]
+
+
+[red bold]-- TYPE MISMATCH -- int_and_string.volt:4[/red bold]
+
+Condition must be `bool`, got `int`.
+
+ [dim]3 |[/dim] setup {
+ [dim]4 |[/dim]     if 42 {
+ [dim]  |[/dim] [red]       ^^[/red]
+
+[cyan]Hint: Use a comparison like `x > 0` or a boolean function.[/cyan]

@@ -1,0 +1,63 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [5, 9, 5, 12],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [5, 9, 5, 12],
+    "name": "arm",
+    "mode": "Servo",
+    "gpio": 13
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "MethodCall",
+     "region": [9, 5, 9, 8],
+     "obj": {
+      "_": "VarRef",
+      "region": [9, 5, 9, 8],
+      "name": "arm"
+     },
+     "method": "move",
+     "args": [
+      {
+       "_": "IntLiteral",
+       "region": [9, 14, 9, 16],
+       "value": 90
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

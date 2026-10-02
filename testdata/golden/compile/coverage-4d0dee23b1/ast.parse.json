@@ -1,0 +1,63 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "VarDecl",
+    "region": [4, 9, 4, 10],
+    "name": "x",
+    "type_name": "int",
+    "value": {
+     "_": "IntLiteral",
+     "region": [4, 18, 4, 20],
+     "value": 42
+    },
+    "mutable": true,
+    "shared": false,
+    "needs_lifting": false
+   },
+   {
+    "_": "VarDecl",
+    "region": [5, 9, 5, 10],
+    "name": "f",
+    "type_name": "float",
+    "value": {
+     "_": "FuncCall",
+     "region": [5, 20, 5, 25],
+     "name": "float",
+     "args": [
+      {
+       "_": "VarRef",
+       "region": [5, 26, 5, 27],
+       "name": "x"
+      }
+     ]
+    },
+    "mutable": true,
+    "shared": false,
+    "needs_lifting": false
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

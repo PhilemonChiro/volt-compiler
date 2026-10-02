@@ -1,0 +1,173 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 1,
+    "col": 6,
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "severity": "warning",
+    "hint": "The chip declaration will move to volt.toml in a future version."
+   },
+   {
+    "line": 0,
+    "col": 0,
+    "message": "unbounded `or retry` forbidden in state-machine `enter` blocks; would hang the transition.",
+    "severity": "error",
+    "hint": "Use bounded retry with an `else` policy: `or retry N times else <skip|restart|fail>`."
+   },
+   {
+    "line": 4,
+    "col": 11,
+    "message": "State `s` in machine `m` has no outgoing transitions (dead-end state).",
+    "severity": "warning",
+    "hint": "Add a transition or mark with @terminal if intentional."
+   }
+  ],
+  "pins": [
+   {
+    "name": "led",
+    "mode": "Output",
+    "gpio": 4
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [],
+  "machines": [
+   {
+    "name": "m",
+    "states": [
+     "s"
+    ],
+    "line": 3
+   }
+  ],
+  "channels": [],
+  "enums": [],
+  "chip": "esp32"
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ]
+ ],
+ "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 4\n}\n\nmachine m {\n    initial state s {\n        enter {\n            try {\n                wifi.connect(\"a\", \"b\")\n            } or retry\n        }\n    }\n}\n",
+ "find_symbols": [
+  {
+   "name": "led",
+   "kind": "pin",
+   "def_line": 2,
+   "def_col": 16,
+   "refs": []
+  },
+  {
+   "name": "m",
+   "kind": "machine",
+   "def_line": 3,
+   "def_col": 9,
+   "refs": []
+  },
+  {
+   "name": "s",
+   "kind": "state",
+   "def_line": 4,
+   "def_col": 11,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": [
+   {
+    "name": "m",
+    "mermaid": "stateDiagram-v2\n    [*] --> s",
+    "states": [
+     {
+      "name": "s",
+      "line": 4
+     }
+    ]
+   }
+  ]
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_m[[\"m\"]]\n    s_wifi{{\"wifi\"}}\n    u_m -->|connect| s_wifi\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_m machine;\n    class s_wifi service;",
+  "units": [
+   {
+    "id": "u_m",
+    "name": "m",
+    "line": 3
+   }
+  ],
+  "loops": [],
+  "edges": [
+   {
+    "drive": "machine",
+    "src": "u_m",
+    "dst": "s_wifi"
+   }
+  ],
+  "nodes": {
+   "u_m": {
+    "kind": "machine",
+    "label": "m",
+    "line": 3,
+    "detail": "1 state"
+   },
+   "s_wifi": {
+    "kind": "service",
+    "label": "wifi",
+    "line": null,
+    "detail": "connect"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_m[[\"m\"]]\n    s_wifi{{\"wifi\"}}\n    u_m -->|connect| s_wifi\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_m machine;\n    class s_wifi service;",
+  "units": [
+   {
+    "id": "u_m",
+    "name": "m",
+    "line": 3
+   }
+  ],
+  "loops": [],
+  "edges": [
+   {
+    "drive": "machine",
+    "src": "u_m",
+    "dst": "s_wifi"
+   }
+  ],
+  "nodes": {
+   "u_m": {
+    "kind": "machine",
+    "label": "m",
+    "line": 3,
+    "detail": "1 state"
+   },
+   "s_wifi": {
+    "kind": "service",
+    "label": "wifi",
+    "line": null,
+    "detail": "connect"
+   }
+  }
+ }
+}

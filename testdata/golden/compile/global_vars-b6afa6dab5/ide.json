@@ -1,0 +1,294 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 0,
+    "col": 0,
+    "message": "Variable `counter` is shared between critical task (fast_task, fast_task, fast_task) and task (slow_task, slow_task, slow_task). The compiler will mark it `volatile` in generated C.",
+    "severity": "warning",
+    "hint": "For multi-word values, consider using atomic operations."
+   }
+  ],
+  "pins": [],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "slow_task",
+    "tier": "background",
+    "line": 3
+   },
+   {
+    "name": "fast_task",
+    "tier": "critical",
+    "line": 8
+   }
+  ],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": ""
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "var counter: int = 0\n\ntask slow_task {\n    every 1seconds { counter = counter + 1 }\n}\n\ntask fast_task {\n    every 1ms strict { counter = counter + 1 }\n}\n\nsetup {\n    run(slow_task, fast_task)\n}\n",
+ "find_symbols": [
+  {
+   "name": "slow_task",
+   "kind": "task",
+   "def_line": 3,
+   "def_col": 6,
+   "refs": [
+    {
+     "line": 14,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "fast_task",
+   "kind": "task",
+   "def_line": 8,
+   "def_col": 6,
+   "refs": [
+    {
+     "line": 14,
+     "col": 20
+    }
+   ]
+  },
+  {
+   "name": "counter",
+   "kind": "var",
+   "def_line": 2,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 5,
+     "col": 9
+    },
+    {
+     "line": 5,
+     "col": 19
+    },
+    {
+     "line": 10,
+     "col": 9
+    },
+    {
+     "line": 10,
+     "col": 19
+    }
+   ]
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_run{{\"run\"}}\n    v_counter(\"counter\")\n    u_slow_task((\"slow_task<br>↻ 1seconds\"))\n    u_fast_task((\"fast_task<br>↻ 1ms\"))\n    u_setup -->|run| s_run\n    u_slow_task -->|write| v_counter\n    v_counter -.->|read| u_slow_task\n    u_fast_task -->|write| v_counter\n    v_counter -.->|read| u_fast_task\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_run service;\n    class u_slow_task timer;\n    class v_counter shared;\n    class u_fast_task timer;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_slow_task",
+    "name": "slow_task<br>↻ 1seconds",
+    "line": 3
+   },
+   {
+    "id": "u_fast_task",
+    "name": "fast_task<br>↻ 1ms",
+    "line": 8
+   }
+  ],
+  "loops": [
+   "u_slow_task",
+   "u_fast_task"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_run"
+   },
+   {
+    "drive": "timer",
+    "src": "u_slow_task",
+    "dst": "v_counter",
+    "rate_ms": 1000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_counter",
+    "dst": "u_slow_task",
+    "rate_ms": 1000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_fast_task",
+    "dst": "v_counter",
+    "rate_ms": 1.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_counter",
+    "dst": "u_fast_task",
+    "rate_ms": 1.0
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_run": {
+    "kind": "service",
+    "label": "run",
+    "line": null,
+    "detail": "run"
+   },
+   "u_slow_task": {
+    "kind": "timer",
+    "label": "slow_task<br>↻ 1seconds",
+    "line": 3,
+    "detail": "every 1seconds"
+   },
+   "v_counter": {
+    "kind": "var",
+    "label": "counter",
+    "line": 2,
+    "detail": "int"
+   },
+   "u_fast_task": {
+    "kind": "timer",
+    "label": "fast_task<br>↻ 1ms",
+    "line": 8,
+    "detail": "every 1ms"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_run{{\"run\"}}\n    v_counter(\"counter\")\n    u_slow_task((\"slow_task<br>↻ 1seconds\"))\n    u_fast_task((\"fast_task<br>↻ 1ms\"))\n    u_setup -->|run| s_run\n    u_slow_task -->|write| v_counter\n    v_counter -.->|read| u_slow_task\n    u_fast_task -->|write| v_counter\n    v_counter -.->|read| u_fast_task\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_run service;\n    class u_slow_task timer;\n    class v_counter shared;\n    class u_fast_task timer;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_slow_task",
+    "name": "slow_task<br>↻ 1seconds",
+    "line": 3
+   },
+   {
+    "id": "u_fast_task",
+    "name": "fast_task<br>↻ 1ms",
+    "line": 8
+   }
+  ],
+  "loops": [
+   "u_slow_task",
+   "u_fast_task"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_run"
+   },
+   {
+    "drive": "timer",
+    "src": "u_slow_task",
+    "dst": "v_counter",
+    "rate_ms": 1000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_counter",
+    "dst": "u_slow_task",
+    "rate_ms": 1000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_fast_task",
+    "dst": "v_counter",
+    "rate_ms": 1.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_counter",
+    "dst": "u_fast_task",
+    "rate_ms": 1.0
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_run": {
+    "kind": "service",
+    "label": "run",
+    "line": null,
+    "detail": "run"
+   },
+   "u_slow_task": {
+    "kind": "timer",
+    "label": "slow_task<br>↻ 1seconds",
+    "line": 3,
+    "detail": "every 1seconds"
+   },
+   "v_counter": {
+    "kind": "var",
+    "label": "counter",
+    "line": 2,
+    "detail": "int"
+   },
+   "u_fast_task": {
+    "kind": "timer",
+    "label": "fast_task<br>↻ 1ms",
+    "line": 8,
+    "detail": "every 1ms"
+   }
+  }
+ }
+}

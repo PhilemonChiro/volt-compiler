@@ -1,0 +1,38 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [
+  {
+   "_": "VarDecl",
+   "region": [2, 5, 2, 6],
+   "name": "x",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [2, 14, 2, 16],
+    "value": 10
+   },
+   "mutable": false,
+   "shared": false,
+   "needs_lifting": false
+  }
+ ],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": []
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

@@ -1,0 +1,10 @@
+
+[yellow bold]-- STATE MACHINE WARNING -- guards.volt:13[/yellow bold]
+
+State `done` in machine `Retry` has no outgoing transitions (dead-end state).
+
+ [dim]12 |[/dim]     }
+ [dim]13 |[/dim]     state done {
+ [dim]   |[/dim] [yellow]          ^^^^[/yellow]
+
+[cyan]Hint: Add a transition or mark with @terminal if intentional.[/cyan]

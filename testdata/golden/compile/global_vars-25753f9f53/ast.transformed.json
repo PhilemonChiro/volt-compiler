@@ -1,0 +1,106 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [3, 6, 3, 12],
+   "name": "ticker",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [4, 11, 4, 16],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [4, 11, 4, 16],
+      "microseconds": 500000,
+      "original": "500ms"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "AssignExpr",
+       "region": [5, 9, 5, 14],
+       "target": {
+        "_": "VarRef",
+        "region": [5, 9, 5, 14],
+        "name": "ticks"
+       },
+       "value": {
+        "_": "BinaryExpr",
+        "region": [5, 17, 5, 22],
+        "left": {
+         "_": "VarRef",
+         "region": [5, 17, 5, 22],
+         "name": "ticks"
+        },
+        "op": "+",
+        "right": {
+         "_": "IntLiteral",
+         "region": [5, 25, 5, 26],
+         "value": 1
+        },
+        "result_type": "int"
+       }
+      }
+     ],
+     "yield_label": 1
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [
+  {
+   "_": "VarDecl",
+   "region": [2, 5, 2, 10],
+   "name": "ticks",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [2, 18, 2, 19],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  }
+ ],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "FuncCall",
+     "region": [9, 5, 9, 8],
+     "name": "run",
+     "args": [
+      {
+       "_": "VarRef",
+       "region": [9, 9, 9, 15],
+       "name": "ticker"
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

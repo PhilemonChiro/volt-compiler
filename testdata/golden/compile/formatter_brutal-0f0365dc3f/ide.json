@@ -1,0 +1,336 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 10,
+    "col": 6,
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "severity": "warning",
+    "hint": "The chip declaration will move to volt.toml in a future version."
+   }
+  ],
+  "pins": [
+   {
+    "name": "led",
+    "mode": "Output",
+    "gpio": 4
+   }
+  ],
+  "devices": [
+   {
+    "name": "weather",
+    "type": "BME280",
+    "bus": "i2c0",
+    "address": 118
+   }
+  ],
+  "buses": [
+   {
+    "name": "i2c0",
+    "type": "i2c"
+   }
+  ],
+  "tasks": [
+   {
+    "name": "_rule0",
+    "tier": "background",
+    "line": 28
+   },
+   {
+    "name": "_rule1",
+    "tier": "background",
+    "line": 32
+   }
+  ],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": "esp32"
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "/* Safe-boot example — try blocks for boot sequence + telemetry\n\nThe setup `try { ... } or retry 5 times else restart` is the idiom for\nbring-up: each step (wifi → mqtt → storage) must succeed before the\ndevice runs. If any step keeps failing, reboot.\n\nThe telemetry `try { ... } or skip` lets a bad sensor read fall through\nwithout killing the task — next tick gets a fresh attempt. */\n\nchip esp32\n\nhardware {\n    pin led: Output = 4\n    bus i2c0: I2C(sda: 21, scl: 22)\n    device weather: BME280 on i2c0 at 0x76\n}\n\nsetup {\n    // Boot sequence — must come up cleanly. 5 attempts each, reboot on\n    // exhaustion. wifi.connect / mqtt.connect / storage.load all idempotent.\n    try {\n        wifi.connect(\"home-ssid\", \"password\")\n        mqtt.connect(\"broker.local\")\n        storage.load(\"device_id\")\n    } or retry 5 times else restart\n}\n\nevery 500ms { led.toggle() }\n\n// Per-tick telemetry pipeline. A flaky sensor or transient MQTT failure\n// drops this cycle, but the task keeps running.\nevery 30s {\n    try {\n        let t: float = weather.temperature()\n        let h: float = weather.humidity()\n        mqtt.send_float(\"env/temp\", t)\n        mqtt.send_float(\"env/hum\", h)\n    } or skip\n}\n",
+ "find_symbols": [
+  {
+   "name": "led",
+   "kind": "pin",
+   "def_line": 13,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 28,
+     "col": 15
+    }
+   ]
+  },
+  {
+   "name": "weather",
+   "kind": "sensor",
+   "def_line": 15,
+   "def_col": 12,
+   "refs": []
+  },
+  {
+   "name": "i2c0",
+   "kind": "bus",
+   "def_line": 14,
+   "def_col": 9,
+   "refs": []
+  },
+  {
+   "name": "_rule0",
+   "kind": "task",
+   "def_line": 28,
+   "def_col": 7,
+   "refs": []
+  },
+  {
+   "name": "_rule1",
+   "kind": "task",
+   "def_line": 32,
+   "def_col": 7,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_wifi{{\"wifi\"}}\n    s_mqtt{{\"mqtt\"}}\n    s_storage{{\"storage\"}}\n    u__rule0((\"↻ 500ms\"))\n    u__rule1((\"↻ 30s\"))\n    u_setup -->|connect| s_wifi\n    u_setup -->|connect| s_mqtt\n    u_setup -->|load| s_storage\n    u__rule1 -->|send_float| s_mqtt\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_wifi service;\n    class s_mqtt service;\n    class s_storage service;\n    class u__rule0 timer;\n    class u__rule1 timer;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u__rule0",
+    "name": "↻ 500ms",
+    "line": 28
+   },
+   {
+    "id": "u__rule1",
+    "name": "↻ 30s",
+    "line": 32
+   }
+  ],
+  "loops": [
+   "u__rule0",
+   "u__rule1"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_wifi"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_mqtt"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_storage"
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule1",
+    "dst": "s_mqtt",
+    "rate_ms": 30000.0
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_wifi": {
+    "kind": "service",
+    "label": "wifi",
+    "line": null,
+    "detail": "connect"
+   },
+   "s_mqtt": {
+    "kind": "service",
+    "label": "mqtt",
+    "line": null,
+    "detail": "connect, send_float"
+   },
+   "s_storage": {
+    "kind": "service",
+    "label": "storage",
+    "line": null,
+    "detail": "load"
+   },
+   "u__rule0": {
+    "kind": "timer",
+    "label": "↻ 500ms",
+    "line": 28,
+    "detail": "every 500ms"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 13,
+    "detail": "Output · GPIO 4"
+   },
+   "u__rule1": {
+    "kind": "timer",
+    "label": "↻ 30s",
+    "line": 32,
+    "detail": "every 30s"
+   },
+   "s_weather": {
+    "kind": "service",
+    "label": "weather",
+    "line": null,
+    "detail": "humidity, temperature"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_wifi{{\"wifi\"}}\n    s_mqtt{{\"mqtt\"}}\n    s_storage{{\"storage\"}}\n    p_led([\"led\"])\n    s_weather{{\"weather\"}}\n    u__rule0((\"↻ 500ms\"))\n    u__rule1((\"↻ 30s\"))\n    u_setup -->|connect| s_wifi\n    u_setup -->|connect| s_mqtt\n    u_setup -->|load| s_storage\n    u__rule0 -->|toggle| p_led\n    u__rule1 -->|humidity, temperature| s_weather\n    u__rule1 -->|send_float| s_mqtt\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_wifi service;\n    class s_mqtt service;\n    class s_storage service;\n    class u__rule0 timer;\n    class p_led pin;\n    class u__rule1 timer;\n    class s_weather service;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u__rule0",
+    "name": "↻ 500ms",
+    "line": 28
+   },
+   {
+    "id": "u__rule1",
+    "name": "↻ 30s",
+    "line": 32
+   }
+  ],
+  "loops": [
+   "u__rule0",
+   "u__rule1"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_wifi"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_mqtt"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_storage"
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule0",
+    "dst": "p_led",
+    "rate_ms": 500.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule1",
+    "dst": "s_weather",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule1",
+    "dst": "s_mqtt",
+    "rate_ms": 30000.0
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_wifi": {
+    "kind": "service",
+    "label": "wifi",
+    "line": null,
+    "detail": "connect"
+   },
+   "s_mqtt": {
+    "kind": "service",
+    "label": "mqtt",
+    "line": null,
+    "detail": "connect, send_float"
+   },
+   "s_storage": {
+    "kind": "service",
+    "label": "storage",
+    "line": null,
+    "detail": "load"
+   },
+   "u__rule0": {
+    "kind": "timer",
+    "label": "↻ 500ms",
+    "line": 28,
+    "detail": "every 500ms"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 13,
+    "detail": "Output · GPIO 4"
+   },
+   "u__rule1": {
+    "kind": "timer",
+    "label": "↻ 30s",
+    "line": 32,
+    "detail": "every 30s"
+   },
+   "s_weather": {
+    "kind": "service",
+    "label": "weather",
+    "line": null,
+    "detail": "humidity, temperature"
+   }
+  }
+ }
+}

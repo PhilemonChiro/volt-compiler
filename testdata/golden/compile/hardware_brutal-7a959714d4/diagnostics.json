@@ -1,0 +1,26 @@
+[
+  {
+    "severity": "warning",
+    "category": "DEPRECATION",
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "hint": "The chip declaration will move to volt.toml in a future version.",
+    "region": [
+      1,
+      6,
+      1,
+      11
+    ]
+  },
+  {
+    "severity": "error",
+    "category": "HARDWARE ERROR",
+    "message": "GPIO 36 is input-only (GPIO 34-39 cannot output).",
+    "hint": "Available output pins: 0, 2, 4, 5, 12, 13, 14, 15, 16, 17, 18, 19, 21, 22, 23, 25, 26, 27, 32, 33",
+    "region": [
+      3,
+      9,
+      3,
+      12
+    ]
+  }
+]

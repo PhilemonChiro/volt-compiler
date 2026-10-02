@@ -1,0 +1,94 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [3, 16, 3, 19],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [3, 16, 3, 19],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "MethodCall",
+     "region": [5, 5, 5, 12],
+     "obj": {
+      "_": "VarRef",
+      "region": [5, 5, 5, 12],
+      "name": "storage"
+     },
+     "method": "save",
+     "args": [
+      {
+       "_": "StringLiteral",
+       "region": [5, 18, 5, 24],
+       "value": "name"
+      },
+      {
+       "_": "StringLiteral",
+       "region": [5, 26, 5, 32],
+       "value": "volt"
+      }
+     ]
+    }
+   },
+   {
+    "_": "VarDecl",
+    "region": [6, 9, 6, 10],
+    "name": "n",
+    "type_name": "string",
+    "value": {
+     "_": "MethodCall",
+     "region": [6, 21, 6, 28],
+     "obj": {
+      "_": "VarRef",
+      "region": [6, 21, 6, 28],
+      "name": "storage"
+     },
+     "method": "load_str",
+     "args": [
+      {
+       "_": "StringLiteral",
+       "region": [6, 38, 6, 44],
+       "value": "name"
+      }
+     ]
+    },
+    "mutable": true,
+    "shared": false,
+    "needs_lifting": false
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

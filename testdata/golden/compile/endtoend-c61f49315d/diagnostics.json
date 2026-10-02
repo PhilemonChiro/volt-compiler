@@ -1,0 +1,14 @@
+[
+  {
+    "severity": "error",
+    "category": "SYNTAX ERROR",
+    "message": "Unexpected token Token('$END', '') at line 2, column 12.",
+    "hint": null,
+    "region": [
+      1,
+      1,
+      1,
+      1
+    ]
+  }
+]

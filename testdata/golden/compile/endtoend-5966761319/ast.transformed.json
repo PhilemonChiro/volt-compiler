@@ -1,0 +1,92 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "VarDecl",
+    "region": [3, 9, 3, 10],
+    "name": "a",
+    "type_name": "bool",
+    "value": {
+     "_": "BoolLiteral",
+     "region": [0, 0, 0, 0],
+     "value": true
+    },
+    "mutable": false,
+    "shared": false,
+    "needs_lifting": false
+   },
+   {
+    "_": "VarDecl",
+    "region": [4, 9, 4, 10],
+    "name": "b",
+    "type_name": "bool",
+    "value": {
+     "_": "BoolLiteral",
+     "region": [0, 0, 0, 0],
+     "value": true
+    },
+    "mutable": false,
+    "shared": false,
+    "needs_lifting": false
+   },
+   {
+    "_": "IfStmt",
+    "region": [5, 8, 5, 9],
+    "condition": {
+     "_": "VarRef",
+     "region": [5, 8, 5, 9],
+     "name": "a"
+    },
+    "then_body": [
+     {
+      "_": "IfStmt",
+      "region": [6, 12, 6, 13],
+      "condition": {
+       "_": "VarRef",
+       "region": [6, 12, 6, 13],
+       "name": "b"
+      },
+      "then_body": [
+       {
+        "_": "ExprStmt",
+        "region": [0, 0, 0, 0],
+        "expr": {
+         "_": "FuncCall",
+         "region": [7, 13, 7, 16],
+         "name": "log",
+         "args": [
+          {
+           "_": "StringLiteral",
+           "region": [7, 17, 7, 23],
+           "value": "both"
+          }
+         ]
+        }
+       }
+      ],
+      "else_body": null
+     }
+    ],
+    "else_body": null
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

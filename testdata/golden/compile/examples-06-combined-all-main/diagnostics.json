@@ -1,0 +1,38 @@
+[
+  {
+    "severity": "warning",
+    "category": "HARDWARE WARNING",
+    "message": "Strapping pin: GPIO 2 must be LOW during boot for flash programming.",
+    "hint": null,
+    "region": [
+      4,
+      9,
+      4,
+      12
+    ]
+  },
+  {
+    "severity": "warning",
+    "category": "HARDWARE WARNING",
+    "message": "Strapping pin: GPIO 5 controls boot debug output. Usually safe for general use.",
+    "hint": null,
+    "region": [
+      5,
+      9,
+      5,
+      14
+    ]
+  },
+  {
+    "severity": "warning",
+    "category": "STATE MACHINE WARNING",
+    "message": "State `low_power` in machine `power_manager` is unreachable from initial state `normal`.",
+    "hint": null,
+    "region": [
+      41,
+      11,
+      41,
+      20
+    ]
+  }
+]

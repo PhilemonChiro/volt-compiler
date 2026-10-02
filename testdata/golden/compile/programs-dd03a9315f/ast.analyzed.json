@@ -1,0 +1,855 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [1, 6, 1, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [4, 9, 7, 13],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [4, 9, 4, 12],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   },
+   {
+    "_": "PinDecl",
+    "region": [5, 9, 5, 14],
+    "name": "motor",
+    "mode": "PWM",
+    "gpio": 4
+   },
+   {
+    "_": "PinDecl",
+    "region": [6, 9, 6, 16],
+    "name": "battery",
+    "mode": "Analog",
+    "gpio": 36
+   },
+   {
+    "_": "PinDecl",
+    "region": [7, 9, 7, 13],
+    "name": "temp",
+    "mode": "Analog",
+    "gpio": 39
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [15, 6, 15, 15],
+   "name": "heartbeat",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [16, 11, 16, 13],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [16, 11, 16, 13],
+      "microseconds": 1000000,
+      "original": "1s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [17, 9, 17, 12],
+        "obj": {
+         "_": "VarRef",
+         "region": [17, 9, 17, 12],
+         "name": "led"
+        },
+        "method": "toggle",
+        "args": []
+       }
+      },
+      {
+       "_": "CompoundAssign",
+       "region": [18, 9, 18, 24],
+       "target": {
+        "_": "VarRef",
+        "region": [18, 9, 18, 24],
+        "name": "heartbeat_count"
+       },
+       "op": "+=",
+       "value": {
+        "_": "IntLiteral",
+        "region": [18, 28, 18, 29],
+        "value": 1
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [19, 9, 19, 12],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [19, 13, 19, 24],
+          "value": "heartbeat"
+         },
+         {
+          "_": "BinaryExpr",
+          "region": [19, 26, 19, 29],
+          "left": {
+           "_": "BinaryExpr",
+           "region": [19, 26, 19, 29],
+           "left": {
+            "_": "BinaryExpr",
+            "region": [19, 26, 19, 29],
+            "left": {
+             "_": "StringLiteral",
+             "region": [19, 26, 19, 29],
+             "value": "#"
+            },
+            "op": "+",
+            "right": {
+             "_": "VarRef",
+             "region": [19, 32, 19, 47],
+             "name": "heartbeat_count"
+            },
+            "result_type": "string"
+           },
+           "op": "+",
+           "right": {
+            "_": "StringLiteral",
+            "region": [19, 50, 19, 60],
+            "value": " | heap="
+           },
+           "result_type": "string"
+          },
+          "op": "+",
+          "right": {
+           "_": "MethodCall",
+           "region": [19, 63, 19, 69],
+           "obj": {
+            "_": "VarRef",
+            "region": [19, 63, 19, 69],
+            "name": "system"
+           },
+           "method": "free_heap",
+           "args": []
+          },
+          "result_type": "string"
+         }
+        ]
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  },
+  {
+   "_": "TaskDecl",
+   "region": [23, 6, 23, 19],
+   "name": "motor_control",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [24, 11, 24, 14],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [24, 11, 24, 14],
+      "microseconds": 1000,
+      "original": "1ms"
+     },
+     "strict": true,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [25, 9, 25, 14],
+        "obj": {
+         "_": "VarRef",
+         "region": [25, 9, 25, 14],
+         "name": "motor"
+        },
+        "method": "set_pwm",
+        "args": [
+         {
+          "_": "IntLiteral",
+          "region": [25, 23, 25, 24],
+          "value": 0
+         }
+        ]
+       }
+      },
+      {
+       "_": "CompoundAssign",
+       "region": [26, 9, 26, 24],
+       "target": {
+        "_": "VarRef",
+        "region": [26, 9, 26, 24],
+        "name": "motor_isr_count"
+       },
+       "op": "+=",
+       "value": {
+        "_": "IntLiteral",
+        "region": [26, 28, 26, 29],
+        "value": 1
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "critical",
+   "crossing_vars": [],
+   "has_strict": true,
+   "_annotations": []
+  },
+  {
+   "_": "TaskDecl",
+   "region": [30, 6, 30, 15],
+   "name": "telemetry",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [31, 11, 31, 14],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [31, 11, 31, 14],
+      "microseconds": 30000000,
+      "original": "30s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "VarDecl",
+       "region": [32, 13, 32, 16],
+       "name": "bat",
+       "type_name": "int",
+       "value": {
+        "_": "MethodCall",
+        "region": [32, 19, 32, 26],
+        "obj": {
+         "_": "VarRef",
+         "region": [32, 19, 32, 26],
+         "name": "battery"
+        },
+        "method": "read",
+        "args": []
+       },
+       "mutable": false,
+       "shared": false,
+       "needs_lifting": false
+      },
+      {
+       "_": "VarDecl",
+       "region": [33, 13, 33, 14],
+       "name": "t",
+       "type_name": "int",
+       "value": {
+        "_": "MethodCall",
+        "region": [33, 17, 33, 21],
+        "obj": {
+         "_": "VarRef",
+         "region": [33, 17, 33, 21],
+         "name": "temp"
+        },
+        "method": "read",
+        "args": []
+       },
+       "mutable": false,
+       "shared": false,
+       "needs_lifting": false
+      },
+      {
+       "_": "CompoundAssign",
+       "region": [34, 9, 34, 24],
+       "target": {
+        "_": "VarRef",
+        "region": [34, 9, 34, 24],
+        "name": "telemetry_count"
+       },
+       "op": "+=",
+       "value": {
+        "_": "IntLiteral",
+        "region": [34, 28, 34, 29],
+        "value": 1
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [35, 9, 35, 12],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [35, 13, 35, 24],
+          "value": "telemetry"
+         },
+         {
+          "_": "BinaryExpr",
+          "region": [35, 26, 35, 29],
+          "left": {
+           "_": "BinaryExpr",
+           "region": [35, 26, 35, 29],
+           "left": {
+            "_": "BinaryExpr",
+            "region": [35, 26, 35, 29],
+            "left": {
+             "_": "BinaryExpr",
+             "region": [35, 26, 35, 29],
+             "left": {
+              "_": "BinaryExpr",
+              "region": [35, 26, 35, 29],
+              "left": {
+               "_": "StringLiteral",
+               "region": [35, 26, 35, 29],
+               "value": "#"
+              },
+              "op": "+",
+              "right": {
+               "_": "VarRef",
+               "region": [35, 32, 35, 47],
+               "name": "telemetry_count"
+              },
+              "result_type": "string"
+             },
+             "op": "+",
+             "right": {
+              "_": "StringLiteral",
+              "region": [35, 50, 35, 57],
+              "value": " bat="
+             },
+             "result_type": "string"
+            },
+            "op": "+",
+            "right": {
+             "_": "VarRef",
+             "region": [35, 60, 35, 63],
+             "name": "bat"
+            },
+            "result_type": "string"
+           },
+           "op": "+",
+           "right": {
+            "_": "StringLiteral",
+            "region": [35, 66, 35, 74],
+            "value": " temp="
+           },
+           "result_type": "string"
+          },
+          "op": "+",
+          "right": {
+           "_": "VarRef",
+           "region": [35, 77, 35, 78],
+           "name": "t"
+          },
+          "result_type": "string"
+         }
+        ]
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [36, 9, 36, 13],
+        "obj": {
+         "_": "VarRef",
+         "region": [36, 9, 36, 13],
+         "name": "mqtt"
+        },
+        "method": "send_int",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [36, 23, 36, 39],
+          "value": "device/battery"
+         },
+         {
+          "_": "VarRef",
+          "region": [36, 41, 36, 44],
+          "name": "bat"
+         }
+        ]
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [37, 9, 37, 13],
+        "obj": {
+         "_": "VarRef",
+         "region": [37, 9, 37, 13],
+         "name": "mqtt"
+        },
+        "method": "send_int",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [37, 23, 37, 36],
+          "value": "device/temp"
+         },
+         {
+          "_": "VarRef",
+          "region": [37, 38, 37, 39],
+          "name": "t"
+         }
+        ]
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "priority",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  },
+  {
+   "_": "TaskDecl",
+   "region": [41, 6, 41, 18],
+   "name": "cloud_report",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [42, 11, 42, 14],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [42, 11, 42, 14],
+      "microseconds": 60000000,
+      "original": "60s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "CompoundAssign",
+       "region": [43, 9, 43, 20],
+       "target": {
+        "_": "VarRef",
+        "region": [43, 9, 43, 20],
+        "name": "cloud_count"
+       },
+       "op": "+=",
+       "value": {
+        "_": "IntLiteral",
+        "region": [43, 24, 43, 25],
+        "value": 1
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [44, 9, 44, 12],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [44, 13, 44, 20],
+          "value": "cloud"
+         },
+         {
+          "_": "BinaryExpr",
+          "region": [44, 22, 44, 25],
+          "left": {
+           "_": "BinaryExpr",
+           "region": [44, 22, 44, 25],
+           "left": {
+            "_": "StringLiteral",
+            "region": [44, 22, 44, 25],
+            "value": "#"
+           },
+           "op": "+",
+           "right": {
+            "_": "VarRef",
+            "region": [44, 28, 44, 39],
+            "name": "cloud_count"
+           },
+           "result_type": "string"
+          },
+          "op": "+",
+          "right": {
+           "_": "StringLiteral",
+           "region": [44, 42, 44, 59],
+           "value": " posting to API"
+          },
+          "result_type": "string"
+         }
+        ]
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [45, 9, 45, 13],
+        "obj": {
+         "_": "VarRef",
+         "region": [45, 9, 45, 13],
+         "name": "http"
+        },
+        "method": "post",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [45, 19, 45, 49],
+          "value": "https://api.example.com/data"
+         },
+         {
+          "_": "StringLiteral",
+          "region": [45, 51, 45, 55],
+          "value": "ok"
+         }
+        ]
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "priority",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  },
+  {
+   "_": "TaskDecl",
+   "region": [49, 6, 49, 11],
+   "name": "stats",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [50, 11, 50, 14],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [50, 11, 50, 14],
+      "microseconds": 10000000,
+      "original": "10s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [51, 9, 51, 12],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [51, 13, 51, 20],
+          "value": "stats"
+         },
+         {
+          "_": "BinaryExpr",
+          "region": [51, 22, 51, 34],
+          "left": {
+           "_": "BinaryExpr",
+           "region": [51, 22, 51, 34],
+           "left": {
+            "_": "BinaryExpr",
+            "region": [51, 22, 51, 34],
+            "left": {
+             "_": "BinaryExpr",
+             "region": [51, 22, 51, 34],
+             "left": {
+              "_": "BinaryExpr",
+              "region": [51, 22, 51, 34],
+              "left": {
+               "_": "BinaryExpr",
+               "region": [51, 22, 51, 34],
+               "left": {
+                "_": "BinaryExpr",
+                "region": [51, 22, 51, 34],
+                "left": {
+                 "_": "StringLiteral",
+                 "region": [51, 22, 51, 34],
+                 "value": "heartbeat="
+                },
+                "op": "+",
+                "right": {
+                 "_": "VarRef",
+                 "region": [51, 37, 51, 52],
+                 "name": "heartbeat_count"
+                },
+                "result_type": "string"
+               },
+               "op": "+",
+               "right": {
+                "_": "StringLiteral",
+                "region": [51, 55, 51, 62],
+                "value": " isr="
+               },
+               "result_type": "string"
+              },
+              "op": "+",
+              "right": {
+               "_": "VarRef",
+               "region": [51, 65, 51, 80],
+               "name": "motor_isr_count"
+              },
+              "result_type": "string"
+             },
+             "op": "+",
+             "right": {
+              "_": "StringLiteral",
+              "region": [51, 83, 51, 96],
+              "value": " telemetry="
+             },
+             "result_type": "string"
+            },
+            "op": "+",
+            "right": {
+             "_": "VarRef",
+             "region": [51, 99, 51, 114],
+             "name": "telemetry_count"
+            },
+            "result_type": "string"
+           },
+           "op": "+",
+           "right": {
+            "_": "StringLiteral",
+            "region": [51, 117, 51, 126],
+            "value": " cloud="
+           },
+           "result_type": "string"
+          },
+          "op": "+",
+          "right": {
+           "_": "VarRef",
+           "region": [51, 129, 51, 140],
+           "name": "cloud_count"
+          },
+          "result_type": "string"
+         }
+        ]
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [52, 9, 52, 12],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [52, 13, 52, 20],
+          "value": "stats"
+         },
+         {
+          "_": "BinaryExpr",
+          "region": [52, 22, 52, 29],
+          "left": {
+           "_": "BinaryExpr",
+           "region": [52, 22, 52, 29],
+           "left": {
+            "_": "BinaryExpr",
+            "region": [52, 22, 52, 29],
+            "left": {
+             "_": "StringLiteral",
+             "region": [52, 22, 52, 29],
+             "value": "wifi="
+            },
+            "op": "+",
+            "right": {
+             "_": "MethodCall",
+             "region": [52, 32, 52, 36],
+             "obj": {
+              "_": "VarRef",
+              "region": [52, 32, 52, 36],
+              "name": "wifi"
+             },
+             "method": "is_connected",
+             "args": []
+            },
+            "result_type": "string"
+           },
+           "op": "+",
+           "right": {
+            "_": "StringLiteral",
+            "region": [52, 54, 52, 62],
+            "value": " heap="
+           },
+           "result_type": "string"
+          },
+          "op": "+",
+          "right": {
+           "_": "MethodCall",
+           "region": [52, 65, 52, 71],
+           "obj": {
+            "_": "VarRef",
+            "region": [52, 65, 52, 71],
+            "name": "system"
+           },
+           "method": "free_heap",
+           "args": []
+          },
+          "result_type": "string"
+         }
+        ]
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [
+  {
+   "_": "VarDecl",
+   "region": [10, 5, 10, 20],
+   "name": "heartbeat_count",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [10, 28, 10, 29],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  },
+  {
+   "_": "VarDecl",
+   "region": [11, 5, 11, 20],
+   "name": "motor_isr_count",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [11, 28, 11, 29],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  },
+  {
+   "_": "VarDecl",
+   "region": [12, 5, 12, 20],
+   "name": "telemetry_count",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [12, 28, 12, 29],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  },
+  {
+   "_": "VarDecl",
+   "region": [13, 5, 13, 16],
+   "name": "cloud_count",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [13, 24, 13, 25],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  }
+ ],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "MethodCall",
+     "region": [57, 5, 57, 9],
+     "obj": {
+      "_": "VarRef",
+      "region": [57, 5, 57, 9],
+      "name": "wifi"
+     },
+     "method": "connect",
+     "args": [
+      {
+       "_": "StringLiteral",
+       "region": [57, 18, 57, 31],
+       "value": "TestNetwork"
+      },
+      {
+       "_": "StringLiteral",
+       "region": [57, 33, 57, 47],
+       "value": "TestPassword"
+      }
+     ]
+    }
+   },
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "MethodCall",
+     "region": [58, 5, 58, 9],
+     "obj": {
+      "_": "VarRef",
+      "region": [58, 5, 58, 9],
+      "name": "mqtt"
+     },
+     "method": "connect",
+     "args": [
+      {
+       "_": "StringLiteral",
+       "region": [58, 18, 58, 39],
+       "value": "mqtt://broker.local"
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

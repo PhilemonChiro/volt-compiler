@@ -1,0 +1,383 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [5, 9, 6, 15],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [5, 9, 5, 12],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   },
+   {
+    "_": "PinDecl",
+    "region": [6, 9, 6, 15],
+    "name": "button",
+    "mode": "PullUpInput",
+    "gpio": 0
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [
+  {
+   "_": "MachineDecl",
+   "region": [9, 9, 9, 20],
+   "name": "DeviceState",
+   "states": [
+    {
+     "_": "StateDecl",
+     "region": [12, 19, 12, 23],
+     "name": "idle",
+     "is_initial": true,
+     "enter_body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [14, 13, 14, 16],
+        "obj": {
+         "_": "VarRef",
+         "region": [14, 13, 14, 16],
+         "name": "led"
+        },
+        "method": "off",
+        "args": []
+       }
+      }
+     ],
+     "exit_body": [],
+     "transitions": [
+      {
+       "_": "StateTransition",
+       "region": [16, 12, 16, 18],
+       "event": {
+        "_": "MethodCall",
+        "region": [16, 12, 16, 18],
+        "obj": {
+         "_": "VarRef",
+         "region": [16, 12, 16, 18],
+         "name": "button"
+        },
+        "method": "press",
+        "args": []
+       },
+       "target_state": "connecting",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "timed_transitions": [],
+     "body": []
+    },
+    {
+     "_": "StateDecl",
+     "region": [19, 11, 19, 21],
+     "name": "connecting",
+     "is_initial": false,
+     "enter_body": [
+      {
+       "_": "AssignExpr",
+       "region": [21, 13, 21, 24],
+       "target": {
+        "_": "VarRef",
+        "region": [21, 13, 21, 24],
+        "name": "retry_count"
+       },
+       "value": {
+        "_": "BinaryExpr",
+        "region": [21, 27, 21, 38],
+        "left": {
+         "_": "VarRef",
+         "region": [21, 27, 21, 38],
+         "name": "retry_count"
+        },
+        "op": "+",
+        "right": {
+         "_": "IntLiteral",
+         "region": [21, 41, 21, 42],
+         "value": 1
+        },
+        "result_type": null
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [22, 13, 22, 16],
+        "obj": {
+         "_": "VarRef",
+         "region": [22, 13, 22, 16],
+         "name": "led"
+        },
+        "method": "on",
+        "args": []
+       }
+      }
+     ],
+     "exit_body": [],
+     "transitions": [
+      {
+       "_": "StateTransition",
+       "region": [24, 12, 24, 16],
+       "event": {
+        "_": "MethodCall",
+        "region": [24, 12, 24, 16],
+        "obj": {
+         "_": "VarRef",
+         "region": [24, 12, 24, 16],
+         "name": "wifi"
+        },
+        "method": "connected",
+        "args": []
+       },
+       "target_state": "online",
+       "guard": null,
+       "action": []
+      },
+      {
+       "_": "StateTransition",
+       "region": [25, 12, 25, 16],
+       "event": {
+        "_": "MethodCall",
+        "region": [25, 12, 25, 16],
+        "obj": {
+         "_": "VarRef",
+         "region": [25, 12, 25, 16],
+         "name": "wifi"
+        },
+        "method": "disconnected",
+        "args": []
+       },
+       "target_state": "connecting",
+       "guard": {
+        "_": "BinaryExpr",
+        "region": [25, 33, 25, 44],
+        "left": {
+         "_": "VarRef",
+         "region": [25, 33, 25, 44],
+         "name": "retry_count"
+        },
+        "op": "<",
+        "right": {
+         "_": "IntLiteral",
+         "region": [25, 47, 25, 48],
+         "value": 5
+        },
+        "result_type": null
+       },
+       "action": []
+      },
+      {
+       "_": "StateTransition",
+       "region": [26, 12, 26, 16],
+       "event": {
+        "_": "MethodCall",
+        "region": [26, 12, 26, 16],
+        "obj": {
+         "_": "VarRef",
+         "region": [26, 12, 26, 16],
+         "name": "wifi"
+        },
+        "method": "disconnected",
+        "args": []
+       },
+       "target_state": "error",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "timed_transitions": [
+      {
+       "_": "TimedTransition",
+       "region": [27, 15, 27, 24],
+       "duration": {
+        "_": "DurationLiteral",
+        "region": [27, 15, 27, 24],
+        "microseconds": 10000000,
+        "original": "10seconds"
+       },
+       "target_state": "error",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "body": []
+    },
+    {
+     "_": "StateDecl",
+     "region": [30, 11, 30, 17],
+     "name": "online",
+     "is_initial": false,
+     "enter_body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [32, 13, 32, 16],
+        "obj": {
+         "_": "VarRef",
+         "region": [32, 13, 32, 16],
+         "name": "led"
+        },
+        "method": "on",
+        "args": []
+       }
+      }
+     ],
+     "exit_body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [35, 13, 35, 16],
+        "obj": {
+         "_": "VarRef",
+         "region": [35, 13, 35, 16],
+         "name": "led"
+        },
+        "method": "off",
+        "args": []
+       }
+      }
+     ],
+     "transitions": [
+      {
+       "_": "StateTransition",
+       "region": [37, 12, 37, 16],
+       "event": {
+        "_": "MethodCall",
+        "region": [37, 12, 37, 16],
+        "obj": {
+         "_": "VarRef",
+         "region": [37, 12, 37, 16],
+         "name": "wifi"
+        },
+        "method": "disconnected",
+        "args": []
+       },
+       "target_state": "connecting",
+       "guard": null,
+       "action": [
+        {
+         "_": "AssignExpr",
+         "region": [38, 13, 38, 24],
+         "target": {
+          "_": "VarRef",
+          "region": [38, 13, 38, 24],
+          "name": "retry_count"
+         },
+         "value": {
+          "_": "IntLiteral",
+          "region": [38, 27, 38, 28],
+          "value": 0
+         }
+        }
+       ]
+      }
+     ],
+     "timed_transitions": [],
+     "body": []
+    },
+    {
+     "_": "StateDecl",
+     "region": [42, 11, 42, 16],
+     "name": "error",
+     "is_initial": false,
+     "enter_body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [44, 13, 44, 16],
+        "obj": {
+         "_": "VarRef",
+         "region": [44, 13, 44, 16],
+         "name": "led"
+        },
+        "method": "off",
+        "args": []
+       }
+      }
+     ],
+     "exit_body": [],
+     "transitions": [],
+     "timed_transitions": [
+      {
+       "_": "TimedTransition",
+       "region": [46, 15, 46, 24],
+       "duration": {
+        "_": "DurationLiteral",
+        "region": [46, 15, 46, 24],
+        "microseconds": 30000000,
+        "original": "30seconds"
+       },
+       "target_state": "idle",
+       "guard": null,
+       "action": [
+        {
+         "_": "AssignExpr",
+         "region": [47, 13, 47, 24],
+         "target": {
+          "_": "VarRef",
+          "region": [47, 13, 47, 24],
+          "name": "retry_count"
+         },
+         "value": {
+          "_": "IntLiteral",
+          "region": [47, 27, 47, 28],
+          "value": 0
+         }
+        }
+       ]
+      }
+     ],
+     "body": []
+    }
+   ],
+   "variables": [
+    {
+     "_": "VarDecl",
+     "region": [10, 9, 10, 20],
+     "name": "retry_count",
+     "type_name": null,
+     "value": {
+      "_": "IntLiteral",
+      "region": [10, 23, 10, 24],
+      "value": 0
+     },
+     "mutable": true,
+     "shared": false,
+     "needs_lifting": false
+    }
+   ]
+  }
+ ],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

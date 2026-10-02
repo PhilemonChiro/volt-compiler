@@ -1,0 +1,14 @@
+[
+  {
+    "severity": "error",
+    "category": "MUTABILITY ERROR",
+    "message": "Cannot assign to `count` \u2014 it was declared with `let` (immutable).",
+    "hint": "Use `var` instead of `let` to make it mutable.",
+    "region": [
+      5,
+      9,
+      5,
+      14
+    ]
+  }
+]

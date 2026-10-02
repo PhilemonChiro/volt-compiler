@@ -1,0 +1,17 @@
+
+[yellow bold]-- HARDWARE WARNING -- main.volt:2[/yellow bold]
+
+GPIO 12: GPIO 12 is a CRITICAL strapping pin. If pulled HIGH at boot, VDD_SDIO switches to 1.8V, which CRASHES 3.3V flash chips. Never connect a pull-up resistor. If using SD card on this pin, burn the VDD_SDIO eFuse: espefuse.py set_flash_voltage 3.3V
+
+ [dim]1 |[/dim] hardware {
+ [dim]2 |[/dim]     pin x: Output = 12
+ [dim]  |[/dim] [yellow]        ^[/yellow]
+
+
+[yellow bold]-- HARDWARE WARNING -- main.volt:2[/yellow bold]
+
+GPIO 12 is a JTAG pin. Using it disables JTAG debugging.
+
+ [dim]1 |[/dim] hardware {
+ [dim]2 |[/dim]     pin x: Output = 12
+ [dim]  |[/dim] [yellow]        ^[/yellow]

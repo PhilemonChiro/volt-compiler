@@ -1,0 +1,370 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 2,
+    "col": 6,
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "severity": "warning",
+    "hint": "The chip declaration will move to volt.toml in a future version."
+   },
+   {
+    "line": 4,
+    "col": 9,
+    "message": "Strapping pin: GPIO 2 must be LOW during boot for flash programming.",
+    "severity": "warning",
+    "hint": ""
+   }
+  ],
+  "pins": [
+   {
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   }
+  ],
+  "devices": [
+   {
+    "name": "bme",
+    "type": "BME280",
+    "bus": "i2c0",
+    "address": 118
+   }
+  ],
+  "buses": [
+   {
+    "name": "i2c0",
+    "type": "i2c"
+   }
+  ],
+  "tasks": [
+   {
+    "name": "telemetry",
+    "tier": "priority",
+    "line": 16
+   }
+  ],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": "esp32"
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n    bus i2c0: I2C(sda: 21, scl: 22)\n    device bme: BME280 on i2c0 at 0x76\n}\n\nstorage readings_count: int = 0\n\ntask telemetry {\n    every 30s {\n        var temp: float = bme.temperature()\n        var hum: float = bme.humidity()\n        mqtt.send(\"home/temp\", \"temp={temp}\")\n        mqtt.send(\"home/hum\", \"hum={hum}\")\n        readings_count = readings_count + 1\n        storage.save(\"count\", readings_count)\n        led.toggle()\n    }\n}\n\nsetup {\n    wifi.connect(\"MySSID\", \"MyPass\")\n    mqtt.connect(\"mqtt://broker.local\")\n}\n",
+ "find_symbols": [
+  {
+   "name": "led",
+   "kind": "pin",
+   "def_line": 4,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 24,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "bme",
+   "kind": "sensor",
+   "def_line": 6,
+   "def_col": 12,
+   "refs": [
+    {
+     "line": 18,
+     "col": 27
+    },
+    {
+     "line": 19,
+     "col": 26
+    }
+   ]
+  },
+  {
+   "name": "i2c0",
+   "kind": "bus",
+   "def_line": 5,
+   "def_col": 9,
+   "refs": []
+  },
+  {
+   "name": "telemetry",
+   "kind": "task",
+   "def_line": 16,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "readings_count",
+   "kind": "storage",
+   "def_line": 9,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 22,
+     "col": 9
+    },
+    {
+     "line": 22,
+     "col": 26
+    },
+    {
+     "line": 23,
+     "col": 31
+    }
+   ]
+  },
+  {
+   "name": "temp",
+   "kind": "var",
+   "def_line": 18,
+   "def_col": 13,
+   "refs": []
+  },
+  {
+   "name": "hum",
+   "kind": "var",
+   "def_line": 19,
+   "def_col": 13,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_wifi{{\"wifi\"}}\n    s_mqtt{{\"mqtt\"}}\n    u_telemetry((\"telemetry<br>↻ 30s\"))\n    u_setup -->|connect| s_wifi\n    u_setup -->|connect| s_mqtt\n    u_telemetry -->|send| s_mqtt\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_wifi service;\n    class s_mqtt service;\n    class u_telemetry timer;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_telemetry",
+    "name": "telemetry<br>↻ 30s",
+    "line": 16
+   }
+  ],
+  "loops": [
+   "u_telemetry"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_wifi"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_mqtt"
+   },
+   {
+    "drive": "timer",
+    "src": "u_telemetry",
+    "dst": "s_mqtt",
+    "rate_ms": 30000.0
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_wifi": {
+    "kind": "service",
+    "label": "wifi",
+    "line": null,
+    "detail": "connect"
+   },
+   "s_mqtt": {
+    "kind": "service",
+    "label": "mqtt",
+    "line": null,
+    "detail": "connect, send"
+   },
+   "u_telemetry": {
+    "kind": "timer",
+    "label": "telemetry<br>↻ 30s",
+    "line": 16,
+    "detail": "every 30s"
+   },
+   "s_bme": {
+    "kind": "service",
+    "label": "bme",
+    "line": null,
+    "detail": "humidity, temperature"
+   },
+   "v_readings_count": {
+    "kind": "var",
+    "label": "readings_count",
+    "line": 9,
+    "detail": "int · storage"
+   },
+   "s_storage": {
+    "kind": "service",
+    "label": "storage",
+    "line": null,
+    "detail": "save"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 4,
+    "detail": "Output · GPIO 2"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_wifi{{\"wifi\"}}\n    s_mqtt{{\"mqtt\"}}\n    s_bme{{\"bme\"}}\n    v_readings_count(\"readings_count\")\n    s_storage{{\"storage\"}}\n    p_led([\"led\"])\n    u_telemetry((\"telemetry<br>↻ 30s\"))\n    u_setup -->|connect| s_wifi\n    u_setup -->|connect| s_mqtt\n    u_telemetry -->|humidity, temperature| s_bme\n    u_telemetry -->|send| s_mqtt\n    u_telemetry -->|write| v_readings_count\n    v_readings_count -.->|read| u_telemetry\n    u_telemetry -->|save| s_storage\n    u_telemetry -->|toggle| p_led\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_wifi service;\n    class s_mqtt service;\n    class u_telemetry timer;\n    class s_bme service;\n    class v_readings_count var;\n    class s_storage service;\n    class p_led pin;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_telemetry",
+    "name": "telemetry<br>↻ 30s",
+    "line": 16
+   }
+  ],
+  "loops": [
+   "u_telemetry"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_wifi"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_mqtt"
+   },
+   {
+    "drive": "timer",
+    "src": "u_telemetry",
+    "dst": "s_bme",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_telemetry",
+    "dst": "s_mqtt",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_telemetry",
+    "dst": "v_readings_count",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_readings_count",
+    "dst": "u_telemetry",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_telemetry",
+    "dst": "s_storage",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_telemetry",
+    "dst": "p_led",
+    "rate_ms": 30000.0
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_wifi": {
+    "kind": "service",
+    "label": "wifi",
+    "line": null,
+    "detail": "connect"
+   },
+   "s_mqtt": {
+    "kind": "service",
+    "label": "mqtt",
+    "line": null,
+    "detail": "connect, send"
+   },
+   "u_telemetry": {
+    "kind": "timer",
+    "label": "telemetry<br>↻ 30s",
+    "line": 16,
+    "detail": "every 30s"
+   },
+   "s_bme": {
+    "kind": "service",
+    "label": "bme",
+    "line": null,
+    "detail": "humidity, temperature"
+   },
+   "v_readings_count": {
+    "kind": "var",
+    "label": "readings_count",
+    "line": 9,
+    "detail": "int · storage"
+   },
+   "s_storage": {
+    "kind": "service",
+    "label": "storage",
+    "line": null,
+    "detail": "save"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 4,
+    "detail": "Output · GPIO 2"
+   }
+  }
+ }
+}

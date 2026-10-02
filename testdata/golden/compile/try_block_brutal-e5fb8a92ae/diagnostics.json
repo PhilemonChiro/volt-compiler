@@ -1,0 +1,14 @@
+[
+  {
+    "severity": "error",
+    "category": "SYNTAX ERROR",
+    "message": "Unexpected token Token('FAIL', 'fail') at line 3, column 42.",
+    "hint": null,
+    "region": [
+      1,
+      1,
+      1,
+      1
+    ]
+  }
+]

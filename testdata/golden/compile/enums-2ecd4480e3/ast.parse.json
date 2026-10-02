@@ -1,0 +1,58 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 12],
+  "target": "rp2040"
+ },
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [
+  {
+   "_": "EnumDecl",
+   "region": [3, 6, 3, 10],
+   "name": "Mode",
+   "variants": [
+    "standby",
+    "active",
+    "sleep"
+   ]
+  }
+ ],
+ "functions": [],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "VarDecl",
+    "region": [9, 9, 9, 10],
+    "name": "m",
+    "type_name": "Mode",
+    "value": {
+     "_": "DotAccess",
+     "region": [9, 19, 9, 23],
+     "obj": {
+      "_": "VarRef",
+      "region": [9, 19, 9, 23],
+      "name": "Mode"
+     },
+     "field_name": "standby"
+    },
+    "mutable": true,
+    "shared": false,
+    "needs_lifting": false
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

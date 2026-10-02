@@ -1,0 +1,190 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 2,
+    "col": 6,
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "severity": "warning",
+    "hint": "The chip declaration will move to volt.toml in a future version."
+   }
+  ],
+  "pins": [],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "update",
+    "tier": "background",
+    "line": 8
+   }
+  ],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": "esp32"
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "chip esp32\n\ntask update {\n    every 5s {\n        ble.update_int(0, 25)\n        ble.update_float(1, 65.5)\n    }\n}\n\nsetup {\n    ble.advertise(\"Volt Sensor\")\n    var temp_id: int = ble.expose_int(\"temperature\", 0)\n    var hum_id: int = ble.expose_float(\"humidity\", 0.0)\n}\n",
+ "find_symbols": [
+  {
+   "name": "update",
+   "kind": "task",
+   "def_line": 8,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "temp_id",
+   "kind": "var",
+   "def_line": 5,
+   "def_col": 9,
+   "refs": []
+  },
+  {
+   "name": "hum_id",
+   "kind": "var",
+   "def_line": 6,
+   "def_col": 9,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_ble{{\"ble\"}}\n    u_update((\"update<br>↻ 5s\"))\n    u_setup -->|advertise, expose_float, expose_int| s_ble\n    u_update -->|update_float, update_int| s_ble\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_ble service;\n    class u_update timer;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_update",
+    "name": "update<br>↻ 5s",
+    "line": 8
+   }
+  ],
+  "loops": [
+   "u_update"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_ble"
+   },
+   {
+    "drive": "timer",
+    "src": "u_update",
+    "dst": "s_ble",
+    "rate_ms": 5000.0
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_ble": {
+    "kind": "service",
+    "label": "ble",
+    "line": null,
+    "detail": "advertise, expose_float, expose_int, update_float …"
+   },
+   "u_update": {
+    "kind": "timer",
+    "label": "update<br>↻ 5s",
+    "line": 8,
+    "detail": "every 5s"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_ble{{\"ble\"}}\n    u_update((\"update<br>↻ 5s\"))\n    u_setup -->|advertise, expose_float, expose_int| s_ble\n    u_update -->|update_float, update_int| s_ble\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_ble service;\n    class u_update timer;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_update",
+    "name": "update<br>↻ 5s",
+    "line": 8
+   }
+  ],
+  "loops": [
+   "u_update"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_ble"
+   },
+   {
+    "drive": "timer",
+    "src": "u_update",
+    "dst": "s_ble",
+    "rate_ms": 5000.0
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_ble": {
+    "kind": "service",
+    "label": "ble",
+    "line": null,
+    "detail": "advertise, expose_float, expose_int, update_float …"
+   },
+   "u_update": {
+    "kind": "timer",
+    "label": "update<br>↻ 5s",
+    "line": 8,
+    "detail": "every 5s"
+   }
+  }
+ }
+}

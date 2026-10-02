@@ -1,0 +1,156 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [3, 16, 3, 19],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [3, 16, 3, 19],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [
+  {
+   "_": "StructDecl",
+   "region": [4, 6, 4, 13],
+   "name": "counter_ctx_t",
+   "fields": [
+    {
+     "_": "FieldDecl",
+     "region": [5, 9, 5, 14],
+     "name": "count",
+     "type_name": "int"
+    }
+   ]
+  }
+ ],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [4, 6, 4, 13],
+   "name": "counter",
+   "body": [
+    {
+     "_": "VarDecl",
+     "region": [5, 9, 5, 14],
+     "name": "count",
+     "type_name": "int",
+     "value": {
+      "_": "IntLiteral",
+      "region": [5, 22, 5, 23],
+      "value": 0
+     },
+     "mutable": true,
+     "shared": false,
+     "needs_lifting": true
+    },
+    {
+     "_": "EveryBlock",
+     "region": [6, 11, 6, 13],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [6, 11, 6, 13],
+      "microseconds": 1000000,
+      "original": "1s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "AssignExpr",
+       "region": [7, 9, 7, 14],
+       "target": {
+        "_": "VarRef",
+        "region": [7, 9, 7, 14],
+        "name": "count"
+       },
+       "value": {
+        "_": "BinaryExpr",
+        "region": [7, 17, 7, 22],
+        "left": {
+         "_": "VarRef",
+         "region": [7, 17, 7, 22],
+         "name": "count"
+        },
+        "op": "+",
+        "right": {
+         "_": "IntLiteral",
+         "region": [7, 25, 7, 26],
+         "value": 1
+        },
+        "result_type": "int"
+       }
+      },
+      {
+       "_": "IfStmt",
+       "region": [8, 12, 8, 17],
+       "condition": {
+        "_": "BinaryExpr",
+        "region": [8, 12, 8, 17],
+        "left": {
+         "_": "VarRef",
+         "region": [8, 12, 8, 17],
+         "name": "count"
+        },
+        "op": ">",
+        "right": {
+         "_": "IntLiteral",
+         "region": [8, 20, 8, 22],
+         "value": 10
+        },
+        "result_type": "bool"
+       },
+       "then_body": [
+        {
+         "_": "ExprStmt",
+         "region": [0, 0, 0, 0],
+         "expr": {
+          "_": "MethodCall",
+          "region": [9, 13, 9, 16],
+          "obj": {
+           "_": "VarRef",
+           "region": [9, 13, 9, 16],
+           "name": "led"
+          },
+          "method": "on",
+          "args": []
+         }
+        }
+       ],
+       "else_body": null
+      }
+     ],
+     "yield_label": 1
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [
+    "count"
+   ],
+   "has_strict": false
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

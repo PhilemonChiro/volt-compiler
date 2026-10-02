@@ -1,0 +1,334 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 2,
+    "col": 6,
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "severity": "warning",
+    "hint": "The chip declaration will move to volt.toml in a future version."
+   }
+  ],
+  "pins": [],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "main",
+    "tier": "background",
+    "line": 11
+   }
+  ],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": "esp32"
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "chip esp32\n\nstorage count: int = 0\n\ntask main {\n    every 5s {\n        system.watchdog_feed()\n        if ble.is_connected() {\n            ble.update_int(0, count)\n        }\n    }\n}\n\nsetup {\n    count = count + 1\n    storage.save(\"count\", count)\n    system.watchdog_enable(10000)\n    ble.advertise(\"Volt\")\n    wifi.connect(\"ssid\", \"pass\")\n}\n",
+ "find_symbols": [
+  {
+   "name": "main",
+   "kind": "task",
+   "def_line": 11,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "count",
+   "kind": "storage",
+   "def_line": 3,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 15,
+     "col": 31
+    },
+    {
+     "line": 5,
+     "col": 5
+    },
+    {
+     "line": 5,
+     "col": 13
+    },
+    {
+     "line": 6,
+     "col": 27
+    }
+   ]
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    v_count(\"count\")\n    s_storage{{\"storage\"}}\n    s_system{{\"system\"}}\n    s_ble{{\"ble\"}}\n    s_wifi{{\"wifi\"}}\n    u_main((\"main<br>↻ 5s\"))\n    u_setup -->|write| v_count\n    v_count -.->|read| u_setup\n    u_setup -->|save| s_storage\n    u_setup -->|watchdog_enable| s_system\n    u_setup -->|advertise| s_ble\n    u_setup -->|connect| s_wifi\n    u_main -->|watchdog_feed| s_system\n    s_ble -.->|is_connected| u_main\n    u_main -->|update_int| s_ble\n    v_count -.->|read| u_main\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class v_count shared;\n    class s_storage service;\n    class s_system service;\n    class s_ble service;\n    class s_wifi service;\n    class u_main timer;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_main",
+    "name": "main<br>↻ 5s",
+    "line": 11
+   }
+  ],
+  "loops": [
+   "u_main"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "v_count"
+   },
+   {
+    "drive": "setup",
+    "src": "v_count",
+    "dst": "u_setup"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_storage"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_system"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_ble"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_wifi"
+   },
+   {
+    "drive": "timer",
+    "src": "u_main",
+    "dst": "s_system",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "s_ble",
+    "dst": "u_main",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_main",
+    "dst": "s_ble",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_count",
+    "dst": "u_main",
+    "rate_ms": 5000.0
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "v_count": {
+    "kind": "var",
+    "label": "count",
+    "line": 3,
+    "detail": "int · storage"
+   },
+   "s_storage": {
+    "kind": "service",
+    "label": "storage",
+    "line": null,
+    "detail": "save"
+   },
+   "s_system": {
+    "kind": "service",
+    "label": "system",
+    "line": null,
+    "detail": "watchdog_enable, watchdog_feed"
+   },
+   "s_ble": {
+    "kind": "service",
+    "label": "ble",
+    "line": null,
+    "detail": "advertise, is_connected, update_int"
+   },
+   "s_wifi": {
+    "kind": "service",
+    "label": "wifi",
+    "line": null,
+    "detail": "connect"
+   },
+   "u_main": {
+    "kind": "timer",
+    "label": "main<br>↻ 5s",
+    "line": 11,
+    "detail": "every 5s"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    v_count(\"count\")\n    s_storage{{\"storage\"}}\n    s_system{{\"system\"}}\n    s_ble{{\"ble\"}}\n    s_wifi{{\"wifi\"}}\n    u_main((\"main<br>↻ 5s\"))\n    u_setup -->|write| v_count\n    v_count -.->|read| u_setup\n    u_setup -->|save| s_storage\n    u_setup -->|watchdog_enable| s_system\n    u_setup -->|advertise| s_ble\n    u_setup -->|connect| s_wifi\n    u_main -->|watchdog_feed| s_system\n    s_ble -.->|is_connected| u_main\n    u_main -->|update_int| s_ble\n    v_count -.->|read| u_main\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class v_count shared;\n    class s_storage service;\n    class s_system service;\n    class s_ble service;\n    class s_wifi service;\n    class u_main timer;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_main",
+    "name": "main<br>↻ 5s",
+    "line": 11
+   }
+  ],
+  "loops": [
+   "u_main"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "v_count"
+   },
+   {
+    "drive": "setup",
+    "src": "v_count",
+    "dst": "u_setup"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_storage"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_system"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_ble"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_wifi"
+   },
+   {
+    "drive": "timer",
+    "src": "u_main",
+    "dst": "s_system",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "s_ble",
+    "dst": "u_main",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_main",
+    "dst": "s_ble",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_count",
+    "dst": "u_main",
+    "rate_ms": 5000.0
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "v_count": {
+    "kind": "var",
+    "label": "count",
+    "line": 3,
+    "detail": "int · storage"
+   },
+   "s_storage": {
+    "kind": "service",
+    "label": "storage",
+    "line": null,
+    "detail": "save"
+   },
+   "s_system": {
+    "kind": "service",
+    "label": "system",
+    "line": null,
+    "detail": "watchdog_enable, watchdog_feed"
+   },
+   "s_ble": {
+    "kind": "service",
+    "label": "ble",
+    "line": null,
+    "detail": "advertise, is_connected, update_int"
+   },
+   "s_wifi": {
+    "kind": "service",
+    "label": "wifi",
+    "line": null,
+    "detail": "connect"
+   },
+   "u_main": {
+    "kind": "timer",
+    "label": "main<br>↻ 5s",
+    "line": 11,
+    "detail": "every 5s"
+   }
+  }
+ }
+}

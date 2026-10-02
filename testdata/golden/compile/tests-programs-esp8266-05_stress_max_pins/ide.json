@@ -1,0 +1,1501 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 1,
+    "col": 6,
+    "message": "Move `chip esp8266` to volt.toml: chip = \"esp8266\"",
+    "severity": "warning",
+    "hint": "The chip declaration will move to volt.toml in a future version."
+   },
+   {
+    "line": 4,
+    "col": 9,
+    "message": "Strapping pin: GPIO 0 must be HIGH during boot. If LOW, chip enters flash/programming mode.",
+    "severity": "warning",
+    "hint": ""
+   },
+   {
+    "line": 5,
+    "col": 9,
+    "message": "Strapping pin: GPIO 2 must be HIGH at boot. Often connected to onboard LED.",
+    "severity": "warning",
+    "hint": ""
+   },
+   {
+    "line": 11,
+    "col": 9,
+    "message": "Strapping pin: GPIO 15 must be LOW during boot. If HIGH, chip boots from SD card (not flash).",
+    "severity": "warning",
+    "hint": ""
+   }
+  ],
+  "pins": [
+   {
+    "name": "p0",
+    "mode": "Output",
+    "gpio": 0
+   },
+   {
+    "name": "p2",
+    "mode": "Output",
+    "gpio": 2
+   },
+   {
+    "name": "p4",
+    "mode": "Output",
+    "gpio": 4
+   },
+   {
+    "name": "p5",
+    "mode": "Output",
+    "gpio": 5
+   },
+   {
+    "name": "p12",
+    "mode": "Output",
+    "gpio": 12
+   },
+   {
+    "name": "p13",
+    "mode": "Output",
+    "gpio": 13
+   },
+   {
+    "name": "p14",
+    "mode": "Output",
+    "gpio": 14
+   },
+   {
+    "name": "p15",
+    "mode": "Output",
+    "gpio": 15
+   },
+   {
+    "name": "p16",
+    "mode": "Output",
+    "gpio": 16
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "t1",
+    "tier": "background",
+    "line": 26
+   },
+   {
+    "name": "t2",
+    "tier": "background",
+    "line": 33
+   },
+   {
+    "name": "t3",
+    "tier": "background",
+    "line": 40
+   },
+   {
+    "name": "t4",
+    "tier": "background",
+    "line": 47
+   },
+   {
+    "name": "t5",
+    "tier": "background",
+    "line": 54
+   },
+   {
+    "name": "t6",
+    "tier": "background",
+    "line": 61
+   },
+   {
+    "name": "t7",
+    "tier": "background",
+    "line": 68
+   },
+   {
+    "name": "t8",
+    "tier": "background",
+    "line": 75
+   },
+   {
+    "name": "t9",
+    "tier": "background",
+    "line": 82
+   },
+   {
+    "name": "net",
+    "tier": "priority",
+    "line": 89
+   },
+   {
+    "name": "stress_report",
+    "tier": "background",
+    "line": 97
+   }
+  ],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": "esp8266"
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "chip esp8266\n\nhardware {\n    pin p0: Output = 0\n    pin p2: Output = 2\n    pin p4: Output = 4\n    pin p5: Output = 5\n    pin p12: Output = 12\n    pin p13: Output = 13\n    pin p14: Output = 14\n    pin p15: Output = 15\n    pin p16: Output = 16\n}\n\nvar c0: int = 0\n\nvar c2: int = 0\n\nvar c4: int = 0\n\nvar c5: int = 0\n\nvar c12: int = 0\n\nvar c13: int = 0\n\nvar c14: int = 0\n\nvar c15: int = 0\n\nvar c16: int = 0\n\nvar net_count: int = 0\n\ntask t1 {\n    every 100ms {\n        p0.toggle()\n        c0 += 1\n    }\n}\n\ntask t2 {\n    every 200ms {\n        p2.toggle()\n        c2 += 1\n    }\n}\n\ntask t3 {\n    every 300ms {\n        p4.toggle()\n        c4 += 1\n    }\n}\n\ntask t4 {\n    every 400ms {\n        p5.toggle()\n        c5 += 1\n    }\n}\n\ntask t5 {\n    every 500ms {\n        p12.toggle()\n        c12 += 1\n    }\n}\n\ntask t6 {\n    every 600ms {\n        p13.toggle()\n        c13 += 1\n    }\n}\n\ntask t7 {\n    every 700ms {\n        p14.toggle()\n        c14 += 1\n    }\n}\n\ntask t8 {\n    every 800ms {\n        p15.toggle()\n        c15 += 1\n    }\n}\n\ntask t9 {\n    every 900ms {\n        p16.toggle()\n        c16 += 1\n    }\n}\n\ntask net {\n    every 10s {\n        net_count += 1\n        mqtt.send_int(\"stress/alive\", net_count)\n        log(\"net\", \"#\" + net_count + \" mqtt sent\")\n    }\n}\n\ntask stress_report {\n    every 5s {\n        log(\"stress\", \"GPIO0=\" + c0 + \" GPIO2=\" + c2 + \" GPIO4=\" + c4 + \" GPIO5=\" + c5)\n        log(\"stress\", \"GPIO12=\" + c12 + \" GPIO13=\" + c13 + \" GPIO14=\" + c14 + \" GPIO15=\" + c15 + \" GPIO16=\" + c16)\n        log(\"stress\", \"net=\" + net_count + \" wifi=\" + wifi.is_connected() + \" heap=\" + system.free_heap())\n    }\n}\n\nsetup {\n    wifi.connect(\"StressNet\", \"password\")\n    mqtt.connect(\"mqtt://broker.local\")\n}\n",
+ "find_symbols": [
+  {
+   "name": "p0",
+   "kind": "pin",
+   "def_line": 4,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 28,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "p2",
+   "kind": "pin",
+   "def_line": 5,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 35,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "p4",
+   "kind": "pin",
+   "def_line": 6,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 42,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "p5",
+   "kind": "pin",
+   "def_line": 7,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 49,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "p12",
+   "kind": "pin",
+   "def_line": 8,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 56,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "p13",
+   "kind": "pin",
+   "def_line": 9,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 63,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "p14",
+   "kind": "pin",
+   "def_line": 10,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 70,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "p15",
+   "kind": "pin",
+   "def_line": 11,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 77,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "p16",
+   "kind": "pin",
+   "def_line": 12,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 84,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "t1",
+   "kind": "task",
+   "def_line": 26,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "t2",
+   "kind": "task",
+   "def_line": 33,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "t3",
+   "kind": "task",
+   "def_line": 40,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "t4",
+   "kind": "task",
+   "def_line": 47,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "t5",
+   "kind": "task",
+   "def_line": 54,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "t6",
+   "kind": "task",
+   "def_line": 61,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "t7",
+   "kind": "task",
+   "def_line": 68,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "t8",
+   "kind": "task",
+   "def_line": 75,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "t9",
+   "kind": "task",
+   "def_line": 82,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "net",
+   "kind": "task",
+   "def_line": 89,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "stress_report",
+   "kind": "task",
+   "def_line": 97,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "c0",
+   "kind": "var",
+   "def_line": 15,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 29,
+     "col": 9
+    },
+    {
+     "line": 99,
+     "col": 34
+    }
+   ]
+  },
+  {
+   "name": "c2",
+   "kind": "var",
+   "def_line": 16,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 36,
+     "col": 9
+    },
+    {
+     "line": 99,
+     "col": 51
+    }
+   ]
+  },
+  {
+   "name": "c4",
+   "kind": "var",
+   "def_line": 17,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 43,
+     "col": 9
+    },
+    {
+     "line": 99,
+     "col": 68
+    }
+   ]
+  },
+  {
+   "name": "c5",
+   "kind": "var",
+   "def_line": 18,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 50,
+     "col": 9
+    },
+    {
+     "line": 99,
+     "col": 85
+    }
+   ]
+  },
+  {
+   "name": "c12",
+   "kind": "var",
+   "def_line": 19,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 57,
+     "col": 9
+    },
+    {
+     "line": 100,
+     "col": 35
+    }
+   ]
+  },
+  {
+   "name": "c13",
+   "kind": "var",
+   "def_line": 20,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 64,
+     "col": 9
+    },
+    {
+     "line": 100,
+     "col": 54
+    }
+   ]
+  },
+  {
+   "name": "c14",
+   "kind": "var",
+   "def_line": 21,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 71,
+     "col": 9
+    },
+    {
+     "line": 100,
+     "col": 73
+    }
+   ]
+  },
+  {
+   "name": "c15",
+   "kind": "var",
+   "def_line": 22,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 78,
+     "col": 9
+    },
+    {
+     "line": 100,
+     "col": 92
+    }
+   ]
+  },
+  {
+   "name": "c16",
+   "kind": "var",
+   "def_line": 23,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 85,
+     "col": 9
+    },
+    {
+     "line": 100,
+     "col": 111
+    }
+   ]
+  },
+  {
+   "name": "net_count",
+   "kind": "var",
+   "def_line": 24,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 91,
+     "col": 9
+    },
+    {
+     "line": 92,
+     "col": 39
+    },
+    {
+     "line": 93,
+     "col": 26
+    },
+    {
+     "line": 101,
+     "col": 32
+    }
+   ]
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_wifi{{\"wifi\"}}\n    s_mqtt{{\"mqtt\"}}\n    v_c0(\"c0\")\n    v_c2(\"c2\")\n    v_c4(\"c4\")\n    v_c5(\"c5\")\n    v_c12(\"c12\")\n    v_c13(\"c13\")\n    v_c14(\"c14\")\n    v_c15(\"c15\")\n    v_c16(\"c16\")\n    v_net_count(\"net_count\")\n    s_log{{\"log\"}}\n    u_t1((\"t1<br>↻ 100ms\"))\n    u_t2((\"t2<br>↻ 200ms\"))\n    u_t3((\"t3<br>↻ 300ms\"))\n    u_t4((\"t4<br>↻ 400ms\"))\n    u_t5((\"t5<br>↻ 500ms\"))\n    u_t6((\"t6<br>↻ 600ms\"))\n    u_t7((\"t7<br>↻ 700ms\"))\n    u_t8((\"t8<br>↻ 800ms\"))\n    u_t9((\"t9<br>↻ 900ms\"))\n    u_net((\"net<br>↻ 10s\"))\n    u_stress_report((\"stress_report<br>↻ 5s\"))\n    u_setup -->|connect| s_wifi\n    u_setup -->|connect| s_mqtt\n    u_t1 -->|write| v_c0\n    u_t2 -->|write| v_c2\n    u_t3 -->|write| v_c4\n    u_t4 -->|write| v_c5\n    u_t5 -->|write| v_c12\n    u_t6 -->|write| v_c13\n    u_t7 -->|write| v_c14\n    u_t8 -->|write| v_c15\n    u_t9 -->|write| v_c16\n    u_net -->|write| v_net_count\n    u_net -->|send_int| s_mqtt\n    v_net_count -.->|read| u_net\n    u_net -->|log| s_log\n    u_stress_report -->|log| s_log\n    v_c0 -.->|read| u_stress_report\n    v_c2 -.->|read| u_stress_report\n    v_c4 -.->|read| u_stress_report\n    v_c5 -.->|read| u_stress_report\n    v_c12 -.->|read| u_stress_report\n    v_c13 -.->|read| u_stress_report\n    v_c14 -.->|read| u_stress_report\n    v_c15 -.->|read| u_stress_report\n    v_c16 -.->|read| u_stress_report\n    v_net_count -.->|read| u_stress_report\n    s_wifi -.->|is_connected| u_stress_report\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_wifi service;\n    class s_mqtt service;\n    class u_t1 timer;\n    class v_c0 shared;\n    class u_t2 timer;\n    class v_c2 shared;\n    class u_t3 timer;\n    class v_c4 shared;\n    class u_t4 timer;\n    class v_c5 shared;\n    class u_t5 timer;\n    class v_c12 shared;\n    class u_t6 timer;\n    class v_c13 shared;\n    class u_t7 timer;\n    class v_c14 shared;\n    class u_t8 timer;\n    class v_c15 shared;\n    class u_t9 timer;\n    class v_c16 shared;\n    class u_net timer;\n    class v_net_count shared;\n    class s_log service;\n    class u_stress_report timer;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_t1",
+    "name": "t1<br>↻ 100ms",
+    "line": 26
+   },
+   {
+    "id": "u_t2",
+    "name": "t2<br>↻ 200ms",
+    "line": 33
+   },
+   {
+    "id": "u_t3",
+    "name": "t3<br>↻ 300ms",
+    "line": 40
+   },
+   {
+    "id": "u_t4",
+    "name": "t4<br>↻ 400ms",
+    "line": 47
+   },
+   {
+    "id": "u_t5",
+    "name": "t5<br>↻ 500ms",
+    "line": 54
+   },
+   {
+    "id": "u_t6",
+    "name": "t6<br>↻ 600ms",
+    "line": 61
+   },
+   {
+    "id": "u_t7",
+    "name": "t7<br>↻ 700ms",
+    "line": 68
+   },
+   {
+    "id": "u_t8",
+    "name": "t8<br>↻ 800ms",
+    "line": 75
+   },
+   {
+    "id": "u_t9",
+    "name": "t9<br>↻ 900ms",
+    "line": 82
+   },
+   {
+    "id": "u_net",
+    "name": "net<br>↻ 10s",
+    "line": 89
+   },
+   {
+    "id": "u_stress_report",
+    "name": "stress_report<br>↻ 5s",
+    "line": 97
+   }
+  ],
+  "loops": [
+   "u_t1",
+   "u_t2",
+   "u_t3",
+   "u_t4",
+   "u_t5",
+   "u_t6",
+   "u_t7",
+   "u_t8",
+   "u_t9",
+   "u_net",
+   "u_stress_report"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_wifi"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_mqtt"
+   },
+   {
+    "drive": "timer",
+    "src": "u_t1",
+    "dst": "v_c0",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t2",
+    "dst": "v_c2",
+    "rate_ms": 200.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t3",
+    "dst": "v_c4",
+    "rate_ms": 300.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t4",
+    "dst": "v_c5",
+    "rate_ms": 400.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t5",
+    "dst": "v_c12",
+    "rate_ms": 500.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t6",
+    "dst": "v_c13",
+    "rate_ms": 600.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t7",
+    "dst": "v_c14",
+    "rate_ms": 700.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t8",
+    "dst": "v_c15",
+    "rate_ms": 800.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t9",
+    "dst": "v_c16",
+    "rate_ms": 900.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_net",
+    "dst": "v_net_count",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_net",
+    "dst": "s_mqtt",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_net_count",
+    "dst": "u_net",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_net",
+    "dst": "s_log",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_stress_report",
+    "dst": "s_log",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_c0",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_c2",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_c4",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_c5",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_c12",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_c13",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_c14",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_c15",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_c16",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_net_count",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "s_wifi",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_wifi": {
+    "kind": "service",
+    "label": "wifi",
+    "line": null,
+    "detail": "connect, is_connected"
+   },
+   "s_mqtt": {
+    "kind": "service",
+    "label": "mqtt",
+    "line": null,
+    "detail": "connect, send_int"
+   },
+   "u_t1": {
+    "kind": "timer",
+    "label": "t1<br>↻ 100ms",
+    "line": 26,
+    "detail": "every 100ms"
+   },
+   "p_p0": {
+    "kind": "pin",
+    "label": "p0",
+    "line": 4,
+    "detail": "Output · GPIO 0"
+   },
+   "v_c0": {
+    "kind": "var",
+    "label": "c0",
+    "line": 15,
+    "detail": "int"
+   },
+   "u_t2": {
+    "kind": "timer",
+    "label": "t2<br>↻ 200ms",
+    "line": 33,
+    "detail": "every 200ms"
+   },
+   "p_p2": {
+    "kind": "pin",
+    "label": "p2",
+    "line": 5,
+    "detail": "Output · GPIO 2"
+   },
+   "v_c2": {
+    "kind": "var",
+    "label": "c2",
+    "line": 16,
+    "detail": "int"
+   },
+   "u_t3": {
+    "kind": "timer",
+    "label": "t3<br>↻ 300ms",
+    "line": 40,
+    "detail": "every 300ms"
+   },
+   "p_p4": {
+    "kind": "pin",
+    "label": "p4",
+    "line": 6,
+    "detail": "Output · GPIO 4"
+   },
+   "v_c4": {
+    "kind": "var",
+    "label": "c4",
+    "line": 17,
+    "detail": "int"
+   },
+   "u_t4": {
+    "kind": "timer",
+    "label": "t4<br>↻ 400ms",
+    "line": 47,
+    "detail": "every 400ms"
+   },
+   "p_p5": {
+    "kind": "pin",
+    "label": "p5",
+    "line": 7,
+    "detail": "Output · GPIO 5"
+   },
+   "v_c5": {
+    "kind": "var",
+    "label": "c5",
+    "line": 18,
+    "detail": "int"
+   },
+   "u_t5": {
+    "kind": "timer",
+    "label": "t5<br>↻ 500ms",
+    "line": 54,
+    "detail": "every 500ms"
+   },
+   "p_p12": {
+    "kind": "pin",
+    "label": "p12",
+    "line": 8,
+    "detail": "Output · GPIO 12"
+   },
+   "v_c12": {
+    "kind": "var",
+    "label": "c12",
+    "line": 19,
+    "detail": "int"
+   },
+   "u_t6": {
+    "kind": "timer",
+    "label": "t6<br>↻ 600ms",
+    "line": 61,
+    "detail": "every 600ms"
+   },
+   "p_p13": {
+    "kind": "pin",
+    "label": "p13",
+    "line": 9,
+    "detail": "Output · GPIO 13"
+   },
+   "v_c13": {
+    "kind": "var",
+    "label": "c13",
+    "line": 20,
+    "detail": "int"
+   },
+   "u_t7": {
+    "kind": "timer",
+    "label": "t7<br>↻ 700ms",
+    "line": 68,
+    "detail": "every 700ms"
+   },
+   "p_p14": {
+    "kind": "pin",
+    "label": "p14",
+    "line": 10,
+    "detail": "Output · GPIO 14"
+   },
+   "v_c14": {
+    "kind": "var",
+    "label": "c14",
+    "line": 21,
+    "detail": "int"
+   },
+   "u_t8": {
+    "kind": "timer",
+    "label": "t8<br>↻ 800ms",
+    "line": 75,
+    "detail": "every 800ms"
+   },
+   "p_p15": {
+    "kind": "pin",
+    "label": "p15",
+    "line": 11,
+    "detail": "Output · GPIO 15"
+   },
+   "v_c15": {
+    "kind": "var",
+    "label": "c15",
+    "line": 22,
+    "detail": "int"
+   },
+   "u_t9": {
+    "kind": "timer",
+    "label": "t9<br>↻ 900ms",
+    "line": 82,
+    "detail": "every 900ms"
+   },
+   "p_p16": {
+    "kind": "pin",
+    "label": "p16",
+    "line": 12,
+    "detail": "Output · GPIO 16"
+   },
+   "v_c16": {
+    "kind": "var",
+    "label": "c16",
+    "line": 23,
+    "detail": "int"
+   },
+   "u_net": {
+    "kind": "timer",
+    "label": "net<br>↻ 10s",
+    "line": 89,
+    "detail": "every 10s"
+   },
+   "v_net_count": {
+    "kind": "var",
+    "label": "net_count",
+    "line": 24,
+    "detail": "int"
+   },
+   "s_log": {
+    "kind": "service",
+    "label": "log",
+    "line": null,
+    "detail": "log"
+   },
+   "u_stress_report": {
+    "kind": "timer",
+    "label": "stress_report<br>↻ 5s",
+    "line": 97,
+    "detail": "every 5s"
+   },
+   "s_system": {
+    "kind": "service",
+    "label": "system",
+    "line": null,
+    "detail": "free_heap"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_wifi{{\"wifi\"}}\n    s_mqtt{{\"mqtt\"}}\n    p_p0([\"p0\"])\n    v_c0(\"c0\")\n    p_p2([\"p2\"])\n    v_c2(\"c2\")\n    p_p4([\"p4\"])\n    v_c4(\"c4\")\n    p_p5([\"p5\"])\n    v_c5(\"c5\")\n    p_p12([\"p12\"])\n    v_c12(\"c12\")\n    p_p13([\"p13\"])\n    v_c13(\"c13\")\n    p_p14([\"p14\"])\n    v_c14(\"c14\")\n    p_p15([\"p15\"])\n    v_c15(\"c15\")\n    p_p16([\"p16\"])\n    v_c16(\"c16\")\n    v_net_count(\"net_count\")\n    s_log{{\"log\"}}\n    s_system{{\"system\"}}\n    u_t1((\"t1<br>↻ 100ms\"))\n    u_t2((\"t2<br>↻ 200ms\"))\n    u_t3((\"t3<br>↻ 300ms\"))\n    u_t4((\"t4<br>↻ 400ms\"))\n    u_t5((\"t5<br>↻ 500ms\"))\n    u_t6((\"t6<br>↻ 600ms\"))\n    u_t7((\"t7<br>↻ 700ms\"))\n    u_t8((\"t8<br>↻ 800ms\"))\n    u_t9((\"t9<br>↻ 900ms\"))\n    u_net((\"net<br>↻ 10s\"))\n    u_stress_report((\"stress_report<br>↻ 5s\"))\n    u_setup -->|connect| s_wifi\n    u_setup -->|connect| s_mqtt\n    u_t1 -->|toggle| p_p0\n    u_t1 -->|write| v_c0\n    u_t2 -->|toggle| p_p2\n    u_t2 -->|write| v_c2\n    u_t3 -->|toggle| p_p4\n    u_t3 -->|write| v_c4\n    u_t4 -->|toggle| p_p5\n    u_t4 -->|write| v_c5\n    u_t5 -->|toggle| p_p12\n    u_t5 -->|write| v_c12\n    u_t6 -->|toggle| p_p13\n    u_t6 -->|write| v_c13\n    u_t7 -->|toggle| p_p14\n    u_t7 -->|write| v_c14\n    u_t8 -->|toggle| p_p15\n    u_t8 -->|write| v_c15\n    u_t9 -->|toggle| p_p16\n    u_t9 -->|write| v_c16\n    u_net -->|write| v_net_count\n    u_net -->|send_int| s_mqtt\n    v_net_count -.->|read| u_net\n    u_net -->|log| s_log\n    u_stress_report -->|log| s_log\n    v_c0 -.->|read| u_stress_report\n    v_c2 -.->|read| u_stress_report\n    v_c4 -.->|read| u_stress_report\n    v_c5 -.->|read| u_stress_report\n    v_c12 -.->|read| u_stress_report\n    v_c13 -.->|read| u_stress_report\n    v_c14 -.->|read| u_stress_report\n    v_c15 -.->|read| u_stress_report\n    v_c16 -.->|read| u_stress_report\n    v_net_count -.->|read| u_stress_report\n    s_wifi -.->|is_connected| u_stress_report\n    u_stress_report -->|free_heap| s_system\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_wifi service;\n    class s_mqtt service;\n    class u_t1 timer;\n    class p_p0 pin;\n    class v_c0 shared;\n    class u_t2 timer;\n    class p_p2 pin;\n    class v_c2 shared;\n    class u_t3 timer;\n    class p_p4 pin;\n    class v_c4 shared;\n    class u_t4 timer;\n    class p_p5 pin;\n    class v_c5 shared;\n    class u_t5 timer;\n    class p_p12 pin;\n    class v_c12 shared;\n    class u_t6 timer;\n    class p_p13 pin;\n    class v_c13 shared;\n    class u_t7 timer;\n    class p_p14 pin;\n    class v_c14 shared;\n    class u_t8 timer;\n    class p_p15 pin;\n    class v_c15 shared;\n    class u_t9 timer;\n    class p_p16 pin;\n    class v_c16 shared;\n    class u_net timer;\n    class v_net_count shared;\n    class s_log service;\n    class u_stress_report timer;\n    class s_system service;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_t1",
+    "name": "t1<br>↻ 100ms",
+    "line": 26
+   },
+   {
+    "id": "u_t2",
+    "name": "t2<br>↻ 200ms",
+    "line": 33
+   },
+   {
+    "id": "u_t3",
+    "name": "t3<br>↻ 300ms",
+    "line": 40
+   },
+   {
+    "id": "u_t4",
+    "name": "t4<br>↻ 400ms",
+    "line": 47
+   },
+   {
+    "id": "u_t5",
+    "name": "t5<br>↻ 500ms",
+    "line": 54
+   },
+   {
+    "id": "u_t6",
+    "name": "t6<br>↻ 600ms",
+    "line": 61
+   },
+   {
+    "id": "u_t7",
+    "name": "t7<br>↻ 700ms",
+    "line": 68
+   },
+   {
+    "id": "u_t8",
+    "name": "t8<br>↻ 800ms",
+    "line": 75
+   },
+   {
+    "id": "u_t9",
+    "name": "t9<br>↻ 900ms",
+    "line": 82
+   },
+   {
+    "id": "u_net",
+    "name": "net<br>↻ 10s",
+    "line": 89
+   },
+   {
+    "id": "u_stress_report",
+    "name": "stress_report<br>↻ 5s",
+    "line": 97
+   }
+  ],
+  "loops": [
+   "u_t1",
+   "u_t2",
+   "u_t3",
+   "u_t4",
+   "u_t5",
+   "u_t6",
+   "u_t7",
+   "u_t8",
+   "u_t9",
+   "u_net",
+   "u_stress_report"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_wifi"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_mqtt"
+   },
+   {
+    "drive": "timer",
+    "src": "u_t1",
+    "dst": "p_p0",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t1",
+    "dst": "v_c0",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t2",
+    "dst": "p_p2",
+    "rate_ms": 200.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t2",
+    "dst": "v_c2",
+    "rate_ms": 200.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t3",
+    "dst": "p_p4",
+    "rate_ms": 300.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t3",
+    "dst": "v_c4",
+    "rate_ms": 300.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t4",
+    "dst": "p_p5",
+    "rate_ms": 400.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t4",
+    "dst": "v_c5",
+    "rate_ms": 400.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t5",
+    "dst": "p_p12",
+    "rate_ms": 500.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t5",
+    "dst": "v_c12",
+    "rate_ms": 500.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t6",
+    "dst": "p_p13",
+    "rate_ms": 600.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t6",
+    "dst": "v_c13",
+    "rate_ms": 600.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t7",
+    "dst": "p_p14",
+    "rate_ms": 700.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t7",
+    "dst": "v_c14",
+    "rate_ms": 700.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t8",
+    "dst": "p_p15",
+    "rate_ms": 800.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t8",
+    "dst": "v_c15",
+    "rate_ms": 800.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t9",
+    "dst": "p_p16",
+    "rate_ms": 900.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t9",
+    "dst": "v_c16",
+    "rate_ms": 900.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_net",
+    "dst": "v_net_count",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_net",
+    "dst": "s_mqtt",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_net_count",
+    "dst": "u_net",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_net",
+    "dst": "s_log",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_stress_report",
+    "dst": "s_log",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_c0",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_c2",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_c4",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_c5",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_c12",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_c13",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_c14",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_c15",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_c16",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_net_count",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "s_wifi",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_stress_report",
+    "dst": "s_system",
+    "rate_ms": 5000.0
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_wifi": {
+    "kind": "service",
+    "label": "wifi",
+    "line": null,
+    "detail": "connect, is_connected"
+   },
+   "s_mqtt": {
+    "kind": "service",
+    "label": "mqtt",
+    "line": null,
+    "detail": "connect, send_int"
+   },
+   "u_t1": {
+    "kind": "timer",
+    "label": "t1<br>↻ 100ms",
+    "line": 26,
+    "detail": "every 100ms"
+   },
+   "p_p0": {
+    "kind": "pin",
+    "label": "p0",
+    "line": 4,
+    "detail": "Output · GPIO 0"
+   },
+   "v_c0": {
+    "kind": "var",
+    "label": "c0",
+    "line": 15,
+    "detail": "int"
+   },
+   "u_t2": {
+    "kind": "timer",
+    "label": "t2<br>↻ 200ms",
+    "line": 33,
+    "detail": "every 200ms"
+   },
+   "p_p2": {
+    "kind": "pin",
+    "label": "p2",
+    "line": 5,
+    "detail": "Output · GPIO 2"
+   },
+   "v_c2": {
+    "kind": "var",
+    "label": "c2",
+    "line": 16,
+    "detail": "int"
+   },
+   "u_t3": {
+    "kind": "timer",
+    "label": "t3<br>↻ 300ms",
+    "line": 40,
+    "detail": "every 300ms"
+   },
+   "p_p4": {
+    "kind": "pin",
+    "label": "p4",
+    "line": 6,
+    "detail": "Output · GPIO 4"
+   },
+   "v_c4": {
+    "kind": "var",
+    "label": "c4",
+    "line": 17,
+    "detail": "int"
+   },
+   "u_t4": {
+    "kind": "timer",
+    "label": "t4<br>↻ 400ms",
+    "line": 47,
+    "detail": "every 400ms"
+   },
+   "p_p5": {
+    "kind": "pin",
+    "label": "p5",
+    "line": 7,
+    "detail": "Output · GPIO 5"
+   },
+   "v_c5": {
+    "kind": "var",
+    "label": "c5",
+    "line": 18,
+    "detail": "int"
+   },
+   "u_t5": {
+    "kind": "timer",
+    "label": "t5<br>↻ 500ms",
+    "line": 54,
+    "detail": "every 500ms"
+   },
+   "p_p12": {
+    "kind": "pin",
+    "label": "p12",
+    "line": 8,
+    "detail": "Output · GPIO 12"
+   },
+   "v_c12": {
+    "kind": "var",
+    "label": "c12",
+    "line": 19,
+    "detail": "int"
+   },
+   "u_t6": {
+    "kind": "timer",
+    "label": "t6<br>↻ 600ms",
+    "line": 61,
+    "detail": "every 600ms"
+   },
+   "p_p13": {
+    "kind": "pin",
+    "label": "p13",
+    "line": 9,
+    "detail": "Output · GPIO 13"
+   },
+   "v_c13": {
+    "kind": "var",
+    "label": "c13",
+    "line": 20,
+    "detail": "int"
+   },
+   "u_t7": {
+    "kind": "timer",
+    "label": "t7<br>↻ 700ms",
+    "line": 68,
+    "detail": "every 700ms"
+   },
+   "p_p14": {
+    "kind": "pin",
+    "label": "p14",
+    "line": 10,
+    "detail": "Output · GPIO 14"
+   },
+   "v_c14": {
+    "kind": "var",
+    "label": "c14",
+    "line": 21,
+    "detail": "int"
+   },
+   "u_t8": {
+    "kind": "timer",
+    "label": "t8<br>↻ 800ms",
+    "line": 75,
+    "detail": "every 800ms"
+   },
+   "p_p15": {
+    "kind": "pin",
+    "label": "p15",
+    "line": 11,
+    "detail": "Output · GPIO 15"
+   },
+   "v_c15": {
+    "kind": "var",
+    "label": "c15",
+    "line": 22,
+    "detail": "int"
+   },
+   "u_t9": {
+    "kind": "timer",
+    "label": "t9<br>↻ 900ms",
+    "line": 82,
+    "detail": "every 900ms"
+   },
+   "p_p16": {
+    "kind": "pin",
+    "label": "p16",
+    "line": 12,
+    "detail": "Output · GPIO 16"
+   },
+   "v_c16": {
+    "kind": "var",
+    "label": "c16",
+    "line": 23,
+    "detail": "int"
+   },
+   "u_net": {
+    "kind": "timer",
+    "label": "net<br>↻ 10s",
+    "line": 89,
+    "detail": "every 10s"
+   },
+   "v_net_count": {
+    "kind": "var",
+    "label": "net_count",
+    "line": 24,
+    "detail": "int"
+   },
+   "s_log": {
+    "kind": "service",
+    "label": "log",
+    "line": null,
+    "detail": "log"
+   },
+   "u_stress_report": {
+    "kind": "timer",
+    "label": "stress_report<br>↻ 5s",
+    "line": 97,
+    "detail": "every 5s"
+   },
+   "s_system": {
+    "kind": "service",
+    "label": "system",
+    "line": null,
+    "detail": "free_heap"
+   }
+  }
+ }
+}

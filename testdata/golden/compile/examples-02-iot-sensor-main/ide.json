@@ -1,0 +1,383 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 4,
+    "col": 9,
+    "message": "Strapping pin: GPIO 2 must be LOW during boot for flash programming.",
+    "severity": "warning",
+    "hint": ""
+   }
+  ],
+  "pins": [
+   {
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   },
+   {
+    "name": "motor",
+    "mode": "PWM",
+    "gpio": 4
+   },
+   {
+    "name": "battery",
+    "mode": "Analog",
+    "gpio": 36
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "_rule0",
+    "tier": "background",
+    "line": 14
+   },
+   {
+    "name": "_rule1",
+    "tier": "critical",
+    "line": 16
+   },
+   {
+    "name": "_rule2",
+    "tier": "background",
+    "line": 20
+   }
+  ],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": ""
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "/* IoT sensor — WiFi + MQTT + battery monitor */\n\nhardware {\n    pin led = 2\n    pin motor: PWM = 4\n    pin battery: Analog = 36\n}\n\nsetup {\n    wifi.connect(\"MyNetwork\", \"MyPassword\") or retry(10)\n    mqtt.connect(\"mqtt://broker.local\") or retry(5)\n}\n\nevery 500ms { led.toggle() }\n\nevery 1ms strict {\n    motor.set_pwm(0)\n}\n\nevery 5s when wifi.is_connected() {\n    mqtt.send_int(\"volt/battery\", battery.read()) or retry(3)\n}\n",
+ "find_symbols": [
+  {
+   "name": "led",
+   "kind": "pin",
+   "def_line": 4,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 14,
+     "col": 15
+    }
+   ]
+  },
+  {
+   "name": "motor",
+   "kind": "pin",
+   "def_line": 5,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 17,
+     "col": 5
+    }
+   ]
+  },
+  {
+   "name": "battery",
+   "kind": "pin",
+   "def_line": 6,
+   "def_col": 9,
+   "refs": []
+  },
+  {
+   "name": "_rule0",
+   "kind": "task",
+   "def_line": 14,
+   "def_col": 7,
+   "refs": []
+  },
+  {
+   "name": "_rule1",
+   "kind": "task",
+   "def_line": 16,
+   "def_col": 7,
+   "refs": []
+  },
+  {
+   "name": "_rule2",
+   "kind": "task",
+   "def_line": 20,
+   "def_col": 7,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_wifi{{\"wifi\"}}\n    s_mqtt{{\"mqtt\"}}\n    u__rule0((\"↻ 500ms\"))\n    u__rule1((\"↻ 1ms\"))\n    u__rule2((\"↻ 5s\"))\n    u_setup -->|connect| s_wifi\n    u_setup -->|connect| s_mqtt\n    s_wifi -.->|is_connected| u__rule2\n    u__rule2 -->|send_int| s_mqtt\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_wifi service;\n    class s_mqtt service;\n    class u__rule0 timer;\n    class u__rule1 timer;\n    class u__rule2 timer;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u__rule0",
+    "name": "↻ 500ms",
+    "line": 14
+   },
+   {
+    "id": "u__rule1",
+    "name": "↻ 1ms",
+    "line": 16
+   },
+   {
+    "id": "u__rule2",
+    "name": "↻ 5s",
+    "line": 20
+   }
+  ],
+  "loops": [
+   "u__rule0",
+   "u__rule1",
+   "u__rule2"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_wifi"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_mqtt"
+   },
+   {
+    "drive": "timer",
+    "src": "s_wifi",
+    "dst": "u__rule2",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule2",
+    "dst": "s_mqtt",
+    "rate_ms": 5000.0
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_wifi": {
+    "kind": "service",
+    "label": "wifi",
+    "line": null,
+    "detail": "connect, is_connected"
+   },
+   "s_mqtt": {
+    "kind": "service",
+    "label": "mqtt",
+    "line": null,
+    "detail": "connect, send_int"
+   },
+   "u__rule0": {
+    "kind": "timer",
+    "label": "↻ 500ms",
+    "line": 14,
+    "detail": "every 500ms"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 4,
+    "detail": "GPIO 2"
+   },
+   "u__rule1": {
+    "kind": "timer",
+    "label": "↻ 1ms",
+    "line": 16,
+    "detail": "every 1ms"
+   },
+   "p_motor": {
+    "kind": "pin",
+    "label": "motor",
+    "line": 5,
+    "detail": "PWM · GPIO 4"
+   },
+   "u__rule2": {
+    "kind": "timer",
+    "label": "↻ 5s",
+    "line": 20,
+    "detail": "every 5s"
+   },
+   "p_battery": {
+    "kind": "pin",
+    "label": "battery",
+    "line": 6,
+    "detail": "Analog · GPIO 36"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_wifi{{\"wifi\"}}\n    s_mqtt{{\"mqtt\"}}\n    p_led([\"led\"])\n    p_motor([\"motor\"])\n    p_battery([\"battery\"])\n    u__rule0((\"↻ 500ms\"))\n    u__rule1((\"↻ 1ms\"))\n    u__rule2((\"↻ 5s\"))\n    u_setup -->|connect| s_wifi\n    u_setup -->|connect| s_mqtt\n    u__rule0 -->|toggle| p_led\n    u__rule1 -->|set_pwm| p_motor\n    s_wifi -.->|is_connected| u__rule2\n    u__rule2 -->|send_int| s_mqtt\n    p_battery -.->|read| u__rule2\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_wifi service;\n    class s_mqtt service;\n    class u__rule0 timer;\n    class p_led pin;\n    class u__rule1 timer;\n    class p_motor pin;\n    class u__rule2 timer;\n    class p_battery pin;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u__rule0",
+    "name": "↻ 500ms",
+    "line": 14
+   },
+   {
+    "id": "u__rule1",
+    "name": "↻ 1ms",
+    "line": 16
+   },
+   {
+    "id": "u__rule2",
+    "name": "↻ 5s",
+    "line": 20
+   }
+  ],
+  "loops": [
+   "u__rule0",
+   "u__rule1",
+   "u__rule2"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_wifi"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_mqtt"
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule0",
+    "dst": "p_led",
+    "rate_ms": 500.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule1",
+    "dst": "p_motor",
+    "rate_ms": 1.0
+   },
+   {
+    "drive": "timer",
+    "src": "s_wifi",
+    "dst": "u__rule2",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule2",
+    "dst": "s_mqtt",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_battery",
+    "dst": "u__rule2",
+    "rate_ms": 5000.0
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_wifi": {
+    "kind": "service",
+    "label": "wifi",
+    "line": null,
+    "detail": "connect, is_connected"
+   },
+   "s_mqtt": {
+    "kind": "service",
+    "label": "mqtt",
+    "line": null,
+    "detail": "connect, send_int"
+   },
+   "u__rule0": {
+    "kind": "timer",
+    "label": "↻ 500ms",
+    "line": 14,
+    "detail": "every 500ms"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 4,
+    "detail": "GPIO 2"
+   },
+   "u__rule1": {
+    "kind": "timer",
+    "label": "↻ 1ms",
+    "line": 16,
+    "detail": "every 1ms"
+   },
+   "p_motor": {
+    "kind": "pin",
+    "label": "motor",
+    "line": 5,
+    "detail": "PWM · GPIO 4"
+   },
+   "u__rule2": {
+    "kind": "timer",
+    "label": "↻ 5s",
+    "line": 20,
+    "detail": "every 5s"
+   },
+   "p_battery": {
+    "kind": "pin",
+    "label": "battery",
+    "line": 6,
+    "detail": "Analog · GPIO 36"
+   }
+  }
+ }
+}

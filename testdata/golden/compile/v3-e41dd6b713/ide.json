@@ -1,0 +1,237 @@
+{
+ "compile_full": {
+  "diagnostics": [],
+  "pins": [],
+  "devices": [
+   {
+    "name": "bme",
+    "type": "BME280",
+    "bus": "s",
+    "address": 118
+   }
+  ],
+  "buses": [
+   {
+    "name": "s",
+    "type": "i2c"
+   }
+  ],
+  "tasks": [
+   {
+    "name": "_rule0",
+    "tier": "background",
+    "line": 9
+   }
+  ],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": ""
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "hardware {\n    bus s: I2C(sda: 21, scl: 22)\n    device bme: BME280 on s at 0x76\n}\n\nevery 10s when wifi.is_connected() {\n    var temp: float = bme.temperature() or skip\n    mqtt.send_float(\"temp\", temp) or retry(3)\n}\n\nsetup {\n    wifi.connect(\"net\", \"pass\") or retry(10)\n}\n",
+ "find_symbols": [
+  {
+   "name": "bme",
+   "kind": "sensor",
+   "def_line": 4,
+   "def_col": 12,
+   "refs": []
+  },
+  {
+   "name": "s",
+   "kind": "bus",
+   "def_line": 3,
+   "def_col": 9,
+   "refs": []
+  },
+  {
+   "name": "_rule0",
+   "kind": "task",
+   "def_line": 9,
+   "def_col": 7,
+   "refs": []
+  },
+  {
+   "name": "temp",
+   "kind": "var",
+   "def_line": 10,
+   "def_col": 9,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_wifi{{\"wifi\"}}\n    u__rule0((\"↻ 10s\"))\n    u_setup -->|connect| s_wifi\n    s_wifi -.->|is_connected| u__rule0\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_wifi service;\n    class u__rule0 timer;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u__rule0",
+    "name": "↻ 10s",
+    "line": 9
+   }
+  ],
+  "loops": [
+   "u__rule0"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_wifi"
+   },
+   {
+    "drive": "timer",
+    "src": "s_wifi",
+    "dst": "u__rule0",
+    "rate_ms": 10000.0
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_wifi": {
+    "kind": "service",
+    "label": "wifi",
+    "line": null,
+    "detail": "connect, is_connected"
+   },
+   "u__rule0": {
+    "kind": "timer",
+    "label": "↻ 10s",
+    "line": 9,
+    "detail": "every 10s"
+   },
+   "s_bme": {
+    "kind": "service",
+    "label": "bme",
+    "line": null,
+    "detail": "temperature"
+   },
+   "s_mqtt": {
+    "kind": "service",
+    "label": "mqtt",
+    "line": null,
+    "detail": "send_float"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_wifi{{\"wifi\"}}\n    s_bme{{\"bme\"}}\n    s_mqtt{{\"mqtt\"}}\n    u__rule0((\"↻ 10s\"))\n    u_setup -->|connect| s_wifi\n    s_wifi -.->|is_connected| u__rule0\n    u__rule0 -->|temperature| s_bme\n    u__rule0 -->|send_float| s_mqtt\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_wifi service;\n    class u__rule0 timer;\n    class s_bme service;\n    class s_mqtt service;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u__rule0",
+    "name": "↻ 10s",
+    "line": 9
+   }
+  ],
+  "loops": [
+   "u__rule0"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_wifi"
+   },
+   {
+    "drive": "timer",
+    "src": "s_wifi",
+    "dst": "u__rule0",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule0",
+    "dst": "s_bme",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule0",
+    "dst": "s_mqtt",
+    "rate_ms": 10000.0
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_wifi": {
+    "kind": "service",
+    "label": "wifi",
+    "line": null,
+    "detail": "connect, is_connected"
+   },
+   "u__rule0": {
+    "kind": "timer",
+    "label": "↻ 10s",
+    "line": 9,
+    "detail": "every 10s"
+   },
+   "s_bme": {
+    "kind": "service",
+    "label": "bme",
+    "line": null,
+    "detail": "temperature"
+   },
+   "s_mqtt": {
+    "kind": "service",
+    "label": "mqtt",
+    "line": null,
+    "detail": "send_float"
+   }
+  }
+ }
+}

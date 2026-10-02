@@ -1,0 +1,369 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 2,
+    "col": 6,
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "severity": "warning",
+    "hint": "The chip declaration will move to volt.toml in a future version."
+   },
+   {
+    "line": 4,
+    "col": 9,
+    "message": "Strapping pin: GPIO 2 must be LOW during boot for flash programming.",
+    "severity": "warning",
+    "hint": ""
+   }
+  ],
+  "pins": [
+   {
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   }
+  ],
+  "devices": [
+   {
+    "name": "bme",
+    "type": "BME280",
+    "bus": "sensors",
+    "address": 118
+   }
+  ],
+  "buses": [
+   {
+    "name": "sensors",
+    "type": "i2c"
+   }
+  ],
+  "tasks": [
+   {
+    "name": "monitor",
+    "tier": "background",
+    "line": 14
+   },
+   {
+    "name": "heartbeat",
+    "tier": "background",
+    "line": 22
+   }
+  ],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": "esp32"
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n    bus sensors: I2C(sda: 21, scl: 22)\n    device bme: BME280 on sensors at 0x76\n}\n\nstorage boot_count: int = 0\n\ntask monitor {\n    every 10s {\n        var temp: float = bme.temperature() or skip\n        var hum: float = bme.humidity() or skip\n        mqtt.send_float(\"weather/temp\", temp) or retry(3)\n        mqtt.send_float(\"weather/hum\", hum) or retry(3)\n    }\n}\n\ntask heartbeat {\n    every 1s { led.toggle() }\n}\n\nsetup {\n    boot_count += 1\n    wifi.connect(\"WeatherNet\", \"pass\") or retry(10)\n    mqtt.connect(\"mqtt://192.168.1.100\") or retry(5)\n}\n",
+ "find_symbols": [
+  {
+   "name": "led",
+   "kind": "pin",
+   "def_line": 4,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 24,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "bme",
+   "kind": "sensor",
+   "def_line": 6,
+   "def_col": 12,
+   "refs": []
+  },
+  {
+   "name": "sensors",
+   "kind": "bus",
+   "def_line": 5,
+   "def_col": 9,
+   "refs": []
+  },
+  {
+   "name": "monitor",
+   "kind": "task",
+   "def_line": 14,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "heartbeat",
+   "kind": "task",
+   "def_line": 22,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "boot_count",
+   "kind": "storage",
+   "def_line": 8,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 10,
+     "col": 5
+    }
+   ]
+  },
+  {
+   "name": "temp",
+   "kind": "var",
+   "def_line": 16,
+   "def_col": 13,
+   "refs": []
+  },
+  {
+   "name": "hum",
+   "kind": "var",
+   "def_line": 17,
+   "def_col": 13,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    v_boot_count(\"boot_count\")\n    s_wifi{{\"wifi\"}}\n    s_mqtt{{\"mqtt\"}}\n    u_monitor((\"monitor<br>↻ 10s\"))\n    u_heartbeat((\"heartbeat<br>↻ 1s\"))\n    u_setup -->|write| v_boot_count\n    u_setup -->|connect| s_wifi\n    u_setup -->|connect| s_mqtt\n    u_monitor -->|send_float| s_mqtt\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class v_boot_count var;\n    class s_wifi service;\n    class s_mqtt service;\n    class u_monitor timer;\n    class u_heartbeat timer;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_monitor",
+    "name": "monitor<br>↻ 10s",
+    "line": 14
+   },
+   {
+    "id": "u_heartbeat",
+    "name": "heartbeat<br>↻ 1s",
+    "line": 22
+   }
+  ],
+  "loops": [
+   "u_monitor",
+   "u_heartbeat"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "v_boot_count"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_wifi"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_mqtt"
+   },
+   {
+    "drive": "timer",
+    "src": "u_monitor",
+    "dst": "s_mqtt",
+    "rate_ms": 10000.0
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "v_boot_count": {
+    "kind": "var",
+    "label": "boot_count",
+    "line": 8,
+    "detail": "int · storage"
+   },
+   "s_wifi": {
+    "kind": "service",
+    "label": "wifi",
+    "line": null,
+    "detail": "connect"
+   },
+   "s_mqtt": {
+    "kind": "service",
+    "label": "mqtt",
+    "line": null,
+    "detail": "connect, send_float"
+   },
+   "u_monitor": {
+    "kind": "timer",
+    "label": "monitor<br>↻ 10s",
+    "line": 14,
+    "detail": "every 10s"
+   },
+   "s_bme": {
+    "kind": "service",
+    "label": "bme",
+    "line": null,
+    "detail": "humidity, temperature"
+   },
+   "u_heartbeat": {
+    "kind": "timer",
+    "label": "heartbeat<br>↻ 1s",
+    "line": 22,
+    "detail": "every 1s"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 4,
+    "detail": "Output · GPIO 2"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    v_boot_count(\"boot_count\")\n    s_wifi{{\"wifi\"}}\n    s_mqtt{{\"mqtt\"}}\n    s_bme{{\"bme\"}}\n    p_led([\"led\"])\n    u_monitor((\"monitor<br>↻ 10s\"))\n    u_heartbeat((\"heartbeat<br>↻ 1s\"))\n    u_setup -->|write| v_boot_count\n    u_setup -->|connect| s_wifi\n    u_setup -->|connect| s_mqtt\n    u_monitor -->|humidity, temperature| s_bme\n    u_monitor -->|send_float| s_mqtt\n    u_heartbeat -->|toggle| p_led\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class v_boot_count var;\n    class s_wifi service;\n    class s_mqtt service;\n    class u_monitor timer;\n    class s_bme service;\n    class u_heartbeat timer;\n    class p_led pin;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_monitor",
+    "name": "monitor<br>↻ 10s",
+    "line": 14
+   },
+   {
+    "id": "u_heartbeat",
+    "name": "heartbeat<br>↻ 1s",
+    "line": 22
+   }
+  ],
+  "loops": [
+   "u_monitor",
+   "u_heartbeat"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "v_boot_count"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_wifi"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_mqtt"
+   },
+   {
+    "drive": "timer",
+    "src": "u_monitor",
+    "dst": "s_bme",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_monitor",
+    "dst": "s_mqtt",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_heartbeat",
+    "dst": "p_led",
+    "rate_ms": 1000.0
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "v_boot_count": {
+    "kind": "var",
+    "label": "boot_count",
+    "line": 8,
+    "detail": "int · storage"
+   },
+   "s_wifi": {
+    "kind": "service",
+    "label": "wifi",
+    "line": null,
+    "detail": "connect"
+   },
+   "s_mqtt": {
+    "kind": "service",
+    "label": "mqtt",
+    "line": null,
+    "detail": "connect, send_float"
+   },
+   "u_monitor": {
+    "kind": "timer",
+    "label": "monitor<br>↻ 10s",
+    "line": 14,
+    "detail": "every 10s"
+   },
+   "s_bme": {
+    "kind": "service",
+    "label": "bme",
+    "line": null,
+    "detail": "humidity, temperature"
+   },
+   "u_heartbeat": {
+    "kind": "timer",
+    "label": "heartbeat<br>↻ 1s",
+    "line": 22,
+    "detail": "every 1s"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 4,
+    "detail": "Output · GPIO 2"
+   }
+  }
+ }
+}

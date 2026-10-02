@@ -1,0 +1,19 @@
+
+[yellow bold]-- DEPRECATION -- undeclared_var.volt:2[/yellow bold]
+
+Move `chip esp32` to volt.toml: chip = "esp32"
+
+ [dim]1 |[/dim] 
+ [dim]2 |[/dim] chip esp32
+ [dim]  |[/dim] [yellow]     ^^^^^[/yellow]
+
+[cyan]Hint: The chip declaration will move to volt.toml in a future version.[/cyan]
+
+
+[red bold]-- NAME ERROR -- undeclared_var.volt:4[/red bold]
+
+Unknown name `x`.
+
+ [dim]3 |[/dim] setup {
+ [dim]4 |[/dim]     x = 42
+ [dim]  |[/dim] [red]    ^[/red]

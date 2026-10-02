@@ -1,0 +1,10 @@
+
+[red bold]-- TYPE MISMATCH -- method_not_found.volt:6[/red bold]
+
+Type `Output` has no method `read`.
+
+ [dim]5 |[/dim] setup {
+ [dim]6 |[/dim]     led.read()
+ [dim]  |[/dim] [red]    ^^^[/red]
+
+[cyan]Hint: Available: on, off, toggle, write, is_on, blink, blink_once[/cyan]

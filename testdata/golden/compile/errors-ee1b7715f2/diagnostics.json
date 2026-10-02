@@ -1,0 +1,26 @@
+[
+  {
+    "severity": "warning",
+    "category": "DEPRECATION",
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "hint": "The chip declaration will move to volt.toml in a future version.",
+    "region": [
+      2,
+      6,
+      2,
+      11
+    ]
+  },
+  {
+    "severity": "error",
+    "category": "TYPE MISMATCH",
+    "message": "Type `System` has no method `nonexistent`.",
+    "hint": "Available: restart, id, uptime, free_heap, watchdog_enable, watchdog_feed, watchdog_disable",
+    "region": [
+      4,
+      5,
+      4,
+      11
+    ]
+  }
+]

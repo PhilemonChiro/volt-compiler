@@ -1,0 +1,10 @@
+
+[red bold]-- HARDWARE ERROR -- main.volt:2[/red bold]
+
+GPIO 35 is input-only — cannot be used as Output.
+
+ [dim]1 |[/dim] hardware {
+ [dim]2 |[/dim]     pin x: Output = 35
+ [dim]  |[/dim] [red]        ^[/red]
+
+[cyan]Hint: Input-only pins: 34-39. Available output pins: 2, 4, 5, 12, 13, 14, 15, 16, 17, 18, 19, 21, 22, 23, 25, 26, 27, 32, 33[/cyan]

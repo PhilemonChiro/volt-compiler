@@ -1,0 +1,157 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 2,
+    "col": 6,
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "severity": "warning",
+    "hint": "The chip declaration will move to volt.toml in a future version."
+   }
+  ],
+  "pins": [
+   {
+    "name": "btn",
+    "mode": "Input",
+    "gpio": 4
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "reader",
+    "tier": "background",
+    "line": 4
+   }
+  ],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": "esp32"
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "chip esp32\n\nhardware {\n    pin btn: Input = 4\n}\n\ntask reader {\n    every 2s { var val: int = btn.read() or skip }\n}\n",
+ "find_symbols": [
+  {
+   "name": "btn",
+   "kind": "pin",
+   "def_line": 3,
+   "def_col": 16,
+   "refs": []
+  },
+  {
+   "name": "reader",
+   "kind": "task",
+   "def_line": 4,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "val",
+   "kind": "var",
+   "def_line": 6,
+   "def_col": 13,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_reader((\"reader<br>↻ 2s\"))\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_reader timer;",
+  "units": [
+   {
+    "id": "u_reader",
+    "name": "reader<br>↻ 2s",
+    "line": 4
+   }
+  ],
+  "loops": [
+   "u_reader"
+  ],
+  "edges": [],
+  "nodes": {
+   "u_reader": {
+    "kind": "timer",
+    "label": "reader<br>↻ 2s",
+    "line": 4,
+    "detail": "every 2s"
+   },
+   "p_btn": {
+    "kind": "pin",
+    "label": "btn",
+    "line": 3,
+    "detail": "Input · GPIO 4"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    p_btn([\"btn\"])\n    u_reader((\"reader<br>↻ 2s\"))\n    p_btn -.->|read| u_reader\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_reader timer;\n    class p_btn pin;",
+  "units": [
+   {
+    "id": "u_reader",
+    "name": "reader<br>↻ 2s",
+    "line": 4
+   }
+  ],
+  "loops": [
+   "u_reader"
+  ],
+  "edges": [
+   {
+    "drive": "timer",
+    "src": "p_btn",
+    "dst": "u_reader",
+    "rate_ms": 2000.0
+   }
+  ],
+  "nodes": {
+   "u_reader": {
+    "kind": "timer",
+    "label": "reader<br>↻ 2s",
+    "line": 4,
+    "detail": "every 2s"
+   },
+   "p_btn": {
+    "kind": "pin",
+    "label": "btn",
+    "line": 3,
+    "detail": "Input · GPIO 4"
+   }
+  }
+ }
+}

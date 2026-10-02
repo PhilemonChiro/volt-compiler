@@ -1,0 +1,298 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 2,
+    "col": 6,
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "severity": "warning",
+    "hint": "The chip declaration will move to volt.toml in a future version."
+   },
+   {
+    "line": 5,
+    "col": 9,
+    "message": "Strapping pin: GPIO 2 must be LOW during boot for flash programming.",
+    "severity": "warning",
+    "hint": ""
+   },
+   {
+    "line": 6,
+    "col": 9,
+    "message": "Strapping pin: GPIO 0 must be HIGH during boot (pulled up by default). If driven LOW externally, the chip enters bootloader mode.",
+    "severity": "warning",
+    "hint": ""
+   }
+  ],
+  "pins": [
+   {
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   },
+   {
+    "name": "button",
+    "mode": "PullUpInput",
+    "gpio": 0
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [],
+  "machines": [
+   {
+    "name": "DeviceState",
+    "states": [
+     "idle",
+     "connecting",
+     "online",
+     "error"
+    ],
+    "line": 9
+   }
+  ],
+  "channels": [],
+  "enums": [],
+  "chip": "esp32"
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n    pin button: PullUpInput = 0\n}\n\nmachine DeviceState {\n    initial state idle {\n        enter { led.off() }\n        on button.press() -> connecting\n    }\n\n    state connecting {\n        enter {\n            retry_count = retry_count + 1\n            led.on()\n        }\n        on wifi.connected() -> online\n        on wifi.disconnected() [retry_count < 5] -> connecting\n        on wifi.disconnected() -> error\n        after 10seconds -> error\n    }\n\n    state online {\n        enter { led.on() }\n        exit { led.off() }\n        on wifi.disconnected() -> connecting\n    }\n\n    state error {\n        enter { led.off() }\n        after 30seconds -> idle\n    }\n}\n",
+ "find_symbols": [
+  {
+   "name": "led",
+   "kind": "pin",
+   "def_line": 5,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 14,
+     "col": 13
+    },
+    {
+     "line": 22,
+     "col": 13
+    },
+    {
+     "line": 32,
+     "col": 13
+    },
+    {
+     "line": 35,
+     "col": 13
+    },
+    {
+     "line": 44,
+     "col": 13
+    }
+   ]
+  },
+  {
+   "name": "button",
+   "kind": "pin",
+   "def_line": 6,
+   "def_col": 9,
+   "refs": []
+  },
+  {
+   "name": "DeviceState",
+   "kind": "machine",
+   "def_line": 9,
+   "def_col": 9,
+   "refs": []
+  },
+  {
+   "name": "idle",
+   "kind": "state",
+   "def_line": 12,
+   "def_col": 19,
+   "refs": []
+  },
+  {
+   "name": "connecting",
+   "kind": "state",
+   "def_line": 19,
+   "def_col": 11,
+   "refs": []
+  },
+  {
+   "name": "online",
+   "kind": "state",
+   "def_line": 30,
+   "def_col": 11,
+   "refs": []
+  },
+  {
+   "name": "error",
+   "kind": "state",
+   "def_line": 42,
+   "def_col": 11,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": [
+   {
+    "name": "DeviceState",
+    "mermaid": "stateDiagram-v2\n    [*] --> idle\n    idle --> connecting : button\n    connecting --> online : wifi\n    connecting --> connecting : wifi [retry_count < 5]\n    connecting --> error : wifi\n    connecting --> error : after 10seconds\n    online --> connecting : wifi\n    error --> idle : after 30seconds",
+    "states": [
+     {
+      "name": "idle",
+      "line": 12
+     },
+     {
+      "name": "connecting",
+      "line": 19
+     },
+     {
+      "name": "online",
+      "line": 30
+     },
+     {
+      "name": "error",
+      "line": 42
+     }
+    ]
+   }
+  ]
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_DeviceState[[\"DeviceState\"]]\n    p_led([\"led\"])\n    p_button([\"button\"])\n    s_wifi{{\"wifi\"}}\n    u_DeviceState -->|off, on| p_led\n    u_DeviceState -->|press| p_button\n    u_DeviceState -->|connected, disconnected| s_wifi\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_DeviceState machine;\n    class p_led pin;\n    class p_button pin;\n    class s_wifi service;",
+  "units": [
+   {
+    "id": "u_DeviceState",
+    "name": "DeviceState",
+    "line": 9
+   }
+  ],
+  "loops": [],
+  "edges": [
+   {
+    "drive": "machine",
+    "src": "u_DeviceState",
+    "dst": "p_led"
+   },
+   {
+    "drive": "machine",
+    "src": "u_DeviceState",
+    "dst": "p_button"
+   },
+   {
+    "drive": "machine",
+    "src": "u_DeviceState",
+    "dst": "s_wifi"
+   }
+  ],
+  "nodes": {
+   "u_DeviceState": {
+    "kind": "machine",
+    "label": "DeviceState",
+    "line": 9,
+    "detail": "4 states"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 5,
+    "detail": "Output · GPIO 2"
+   },
+   "p_button": {
+    "kind": "pin",
+    "label": "button",
+    "line": 6,
+    "detail": "PullUpInput · GPIO 0"
+   },
+   "s_wifi": {
+    "kind": "service",
+    "label": "wifi",
+    "line": null,
+    "detail": "connected, disconnected"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_DeviceState[[\"DeviceState\"]]\n    p_led([\"led\"])\n    p_button([\"button\"])\n    s_wifi{{\"wifi\"}}\n    u_DeviceState -->|off, on| p_led\n    u_DeviceState -->|press| p_button\n    u_DeviceState -->|connected, disconnected| s_wifi\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_DeviceState machine;\n    class p_led pin;\n    class p_button pin;\n    class s_wifi service;",
+  "units": [
+   {
+    "id": "u_DeviceState",
+    "name": "DeviceState",
+    "line": 9
+   }
+  ],
+  "loops": [],
+  "edges": [
+   {
+    "drive": "machine",
+    "src": "u_DeviceState",
+    "dst": "p_led"
+   },
+   {
+    "drive": "machine",
+    "src": "u_DeviceState",
+    "dst": "p_button"
+   },
+   {
+    "drive": "machine",
+    "src": "u_DeviceState",
+    "dst": "s_wifi"
+   }
+  ],
+  "nodes": {
+   "u_DeviceState": {
+    "kind": "machine",
+    "label": "DeviceState",
+    "line": 9,
+    "detail": "4 states"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 5,
+    "detail": "Output · GPIO 2"
+   },
+   "p_button": {
+    "kind": "pin",
+    "label": "button",
+    "line": 6,
+    "detail": "PullUpInput · GPIO 0"
+   },
+   "s_wifi": {
+    "kind": "service",
+    "label": "wifi",
+    "line": null,
+    "detail": "connected, disconnected"
+   }
+  }
+ }
+}

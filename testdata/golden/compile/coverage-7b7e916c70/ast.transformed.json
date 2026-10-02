@@ -1,0 +1,119 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [5, 6, 5, 7],
+   "name": "a",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [6, 11, 6, 13],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [6, 11, 6, 13],
+      "microseconds": 1000000,
+      "original": "1s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "CompoundAssign",
+       "region": [7, 9, 7, 14],
+       "target": {
+        "_": "VarRef",
+        "region": [7, 9, 7, 14],
+        "name": "total"
+       },
+       "op": "+=",
+       "value": {
+        "_": "IntLiteral",
+        "region": [7, 18, 7, 19],
+        "value": 1
+       }
+      }
+     ],
+     "yield_label": 1
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false
+  },
+  {
+   "_": "TaskDecl",
+   "region": [10, 6, 10, 7],
+   "name": "b",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [11, 11, 11, 13],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [11, 11, 11, 13],
+      "microseconds": 2000000,
+      "original": "2s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "CompoundAssign",
+       "region": [12, 9, 12, 14],
+       "target": {
+        "_": "VarRef",
+        "region": [12, 9, 12, 14],
+        "name": "total"
+       },
+       "op": "+=",
+       "value": {
+        "_": "IntLiteral",
+        "region": [12, 18, 12, 20],
+        "value": 10
+       }
+      }
+     ],
+     "yield_label": 1
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [
+  {
+   "_": "VarDecl",
+   "region": [3, 5, 3, 10],
+   "name": "total",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [3, 18, 3, 19],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  }
+ ],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

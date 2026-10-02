@@ -1,0 +1,14 @@
+[
+  {
+    "severity": "error",
+    "category": "TYPE MISMATCH",
+    "message": "Cannot use `+` between `bool` and `bool`.",
+    "hint": null,
+    "region": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+]

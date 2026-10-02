@@ -1,0 +1,8 @@
+
+[red bold]-- NAME ERROR -- main.volt:7[/red bold]
+
+Unknown name `done`.
+
+ [dim]6 |[/dim]     count = count + 1
+ [dim]7 |[/dim]     let flag = !done
+ [dim]  |[/dim] [red]                ^^^^[/red]

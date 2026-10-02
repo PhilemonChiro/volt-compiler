@@ -1,0 +1,17 @@
+
+[red bold]-- TYPE MISMATCH -- main.volt:6[/red bold]
+
+Argument 1 of `add` expects `int`, got `string`.
+
+ [dim]5 |[/dim] setup {
+ [dim]6 |[/dim]     let x = add("one", "two")
+ [dim]  |[/dim] [red]                ^^^^^[/red]
+
+
+[red bold]-- TYPE MISMATCH -- main.volt:6[/red bold]
+
+Argument 2 of `add` expects `int`, got `string`.
+
+ [dim]5 |[/dim] setup {
+ [dim]6 |[/dim]     let x = add("one", "two")
+ [dim]  |[/dim] [red]                       ^^^^^[/red]

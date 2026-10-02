@@ -1,0 +1,97 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [3, 16, 3, 19],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [3, 16, 3, 19],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [4, 6, 4, 13],
+   "name": "monitor",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [5, 11, 5, 13],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [5, 11, 5, 13],
+      "microseconds": 5000000,
+      "original": "5s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "IfStmt",
+       "region": [6, 12, 6, 16],
+       "condition": {
+        "_": "MethodCall",
+        "region": [6, 12, 6, 16],
+        "obj": {
+         "_": "VarRef",
+         "region": [6, 12, 6, 16],
+         "name": "wifi"
+        },
+        "method": "is_connected",
+        "args": []
+       },
+       "then_body": [
+        {
+         "_": "ExprStmt",
+         "region": [0, 0, 0, 0],
+         "expr": {
+          "_": "MethodCall",
+          "region": [7, 13, 7, 16],
+          "obj": {
+           "_": "VarRef",
+           "region": [7, 13, 7, 16],
+           "name": "led"
+          },
+          "method": "on",
+          "args": []
+         }
+        }
+       ],
+       "else_body": null
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

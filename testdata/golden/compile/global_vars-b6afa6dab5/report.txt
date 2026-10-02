@@ -1,0 +1,7 @@
+
+[yellow bold]-- CONCURRENCY -- volatile_shared_across_tiers.volt:0[/yellow bold]
+
+Variable `counter` is shared between critical task (fast_task, fast_task, fast_task) and task (slow_task, slow_task, slow_task). The compiler will mark it `volatile` in generated C.
+
+
+[cyan]Hint: For multi-word values, consider using atomic operations.[/cyan]

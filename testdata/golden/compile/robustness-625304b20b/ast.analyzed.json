@@ -1,0 +1,71 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "ForStmt",
+    "region": [4, 9, 4, 10],
+    "var_name": "i",
+    "start": {
+     "_": "IntLiteral",
+     "region": [4, 14, 4, 15],
+     "value": 0
+    },
+    "end": {
+     "_": "IntLiteral",
+     "region": [4, 17, 4, 21],
+     "value": 1000
+    },
+    "body": [
+     {
+      "_": "ExprStmt",
+      "region": [0, 0, 0, 0],
+      "expr": {
+       "_": "FuncCall",
+       "region": [5, 9, 5, 12],
+       "name": "log",
+       "args": [
+        {
+         "_": "StringLiteral",
+         "region": [5, 13, 5, 19],
+         "value": "step"
+        },
+        {
+         "_": "StringLiteral",
+         "region": [5, 21, 5, 24],
+         "value": "i"
+        }
+       ]
+      }
+     }
+    ],
+    "step": {
+     "_": "IntLiteral",
+     "region": [4, 27, 4, 30],
+     "value": 100
+    }
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

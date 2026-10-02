@@ -1,0 +1,146 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [
+  {
+   "_": "MachineDecl",
+   "region": [2, 9, 2, 13],
+   "name": "Good",
+   "states": [
+    {
+     "_": "StateDecl",
+     "region": [4, 19, 4, 20],
+     "name": "a",
+     "is_initial": true,
+     "enter_body": [],
+     "exit_body": [],
+     "transitions": [
+      {
+       "_": "StateTransition",
+       "region": [5, 12, 5, 13],
+       "event": {
+        "_": "FuncCall",
+        "region": [5, 12, 5, 13],
+        "name": "x",
+        "args": []
+       },
+       "target_state": "b",
+       "guard": {
+        "_": "BinaryExpr",
+        "region": [5, 17, 5, 18],
+        "left": {
+         "_": "VarRef",
+         "region": [5, 17, 5, 18],
+         "name": "n"
+        },
+        "op": "<",
+        "right": {
+         "_": "IntLiteral",
+         "region": [5, 21, 5, 22],
+         "value": 5
+        },
+        "result_type": null
+       },
+       "action": []
+      },
+      {
+       "_": "StateTransition",
+       "region": [6, 12, 6, 13],
+       "event": {
+        "_": "FuncCall",
+        "region": [6, 12, 6, 13],
+        "name": "x",
+        "args": []
+       },
+       "target_state": "c",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "timed_transitions": [],
+     "body": []
+    },
+    {
+     "_": "StateDecl",
+     "region": [8, 11, 8, 12],
+     "name": "b",
+     "is_initial": false,
+     "enter_body": [],
+     "exit_body": [],
+     "transitions": [
+      {
+       "_": "StateTransition",
+       "region": [9, 12, 9, 13],
+       "event": {
+        "_": "FuncCall",
+        "region": [9, 12, 9, 13],
+        "name": "y",
+        "args": []
+       },
+       "target_state": "a",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "timed_transitions": [],
+     "body": []
+    },
+    {
+     "_": "StateDecl",
+     "region": [11, 11, 11, 12],
+     "name": "c",
+     "is_initial": false,
+     "enter_body": [],
+     "exit_body": [],
+     "transitions": [
+      {
+       "_": "StateTransition",
+       "region": [12, 12, 12, 13],
+       "event": {
+        "_": "FuncCall",
+        "region": [12, 12, 12, 13],
+        "name": "y",
+        "args": []
+       },
+       "target_state": "a",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "timed_transitions": [],
+     "body": []
+    }
+   ],
+   "variables": [
+    {
+     "_": "VarDecl",
+     "region": [3, 9, 3, 10],
+     "name": "n",
+     "type_name": null,
+     "value": {
+      "_": "IntLiteral",
+      "region": [3, 13, 3, 14],
+      "value": 0
+     },
+     "mutable": true,
+     "shared": false,
+     "needs_lifting": false
+    }
+   ]
+  }
+ ],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

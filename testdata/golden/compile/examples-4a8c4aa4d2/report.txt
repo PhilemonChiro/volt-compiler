@@ -1,0 +1,28 @@
+
+[yellow bold]-- HARDWARE WARNING -- main.volt:4[/yellow bold]
+
+GPIO 2: GPIO 2 is a strapping pin. Must be LOW or floating for download mode.
+
+ [dim]3 |[/dim] hardware {
+ [dim]4 |[/dim]     pin led = 2
+ [dim]  |[/dim] [yellow]        ^^^[/yellow]
+
+
+[yellow bold]-- HARDWARE WARNING -- main.volt:6[/yellow bold]
+
+GPIO 36 has a hardware errata: interrupts may fire spuriously during WiFi/BT light sleep. Use a different pin for interrupt-driven input.
+
+ [dim]5 |[/dim]     pin motor: PWM = 4
+ [dim]6 |[/dim]     pin battery: Analog = 36
+ [dim]  |[/dim] [yellow]        ^^^^^^^[/yellow]
+
+[cyan]Hint: GPIO 34, 35 do not have this errata.[/cyan]
+
+
+[yellow bold]-- HARDWARE NOTE -- main.volt:6[/yellow bold]
+
+GPIO 36: Hardware errata: interrupts on GPIO 36 may fire spuriously during WiFi/BT light sleep.
+
+ [dim]5 |[/dim]     pin motor: PWM = 4
+ [dim]6 |[/dim]     pin battery: Analog = 36
+ [dim]  |[/dim] [yellow]        ^^^^^^^[/yellow]

@@ -1,0 +1,321 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [0, 0, 0, 0],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [13, 9, 15, 19],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [13, 9, 13, 12],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 4
+   }
+  ],
+  "buses": [
+   {
+    "_": "BusDecl",
+    "region": [14, 9, 14, 13],
+    "bus_type": "i2c",
+    "name": "i2c0",
+    "params": {
+     "sda": {
+      "_": "IntLiteral",
+      "region": [14, 24, 14, 26],
+      "value": 21
+     },
+     "scl": {
+      "_": "IntLiteral",
+      "region": [14, 33, 14, 35],
+      "value": 22
+     }
+    }
+   }
+  ],
+  "sensors": [
+   {
+    "_": "SensorDecl",
+    "region": [15, 12, 15, 19],
+    "name": "weather",
+    "sensor_type": "BME280",
+    "bus_name": "i2c0",
+    "address": 118,
+    "pin_params": {}
+   }
+  ]
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [28, 7, 28, 12],
+   "name": "_rule0",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [28, 7, 28, 12],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [28, 7, 28, 12],
+      "microseconds": 500000,
+      "original": "500ms"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [28, 15, 28, 18],
+        "obj": {
+         "_": "VarRef",
+         "region": [28, 15, 28, 18],
+         "name": "led"
+        },
+        "method": "toggle",
+        "args": []
+       }
+      }
+     ],
+     "yield_label": 1
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false
+  },
+  {
+   "_": "TaskDecl",
+   "region": [32, 7, 32, 10],
+   "name": "_rule1",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [32, 7, 32, 10],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [32, 7, 32, 10],
+      "microseconds": 30000000,
+      "original": "30s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "TryBlock",
+       "region": [34, 13, 34, 14],
+       "body": [
+        {
+         "_": "VarDecl",
+         "region": [34, 13, 34, 14],
+         "name": "t",
+         "type_name": "float",
+         "value": {
+          "_": "MethodCall",
+          "region": [34, 24, 34, 31],
+          "obj": {
+           "_": "VarRef",
+           "region": [34, 24, 34, 31],
+           "name": "weather"
+          },
+          "method": "temperature",
+          "args": []
+         },
+         "mutable": false,
+         "shared": false,
+         "needs_lifting": false
+        },
+        {
+         "_": "VarDecl",
+         "region": [35, 13, 35, 14],
+         "name": "h",
+         "type_name": "float",
+         "value": {
+          "_": "MethodCall",
+          "region": [35, 24, 35, 31],
+          "obj": {
+           "_": "VarRef",
+           "region": [35, 24, 35, 31],
+           "name": "weather"
+          },
+          "method": "humidity",
+          "args": []
+         },
+         "mutable": false,
+         "shared": false,
+         "needs_lifting": false
+        },
+        {
+         "_": "ExprStmt",
+         "region": [0, 0, 0, 0],
+         "expr": {
+          "_": "MethodCall",
+          "region": [36, 9, 36, 13],
+          "obj": {
+           "_": "VarRef",
+           "region": [36, 9, 36, 13],
+           "name": "mqtt"
+          },
+          "method": "send_float",
+          "args": [
+           {
+            "_": "StringLiteral",
+            "region": [36, 25, 36, 35],
+            "value": "env/temp"
+           },
+           {
+            "_": "VarRef",
+            "region": [36, 37, 36, 38],
+            "name": "t"
+           }
+          ]
+         }
+        },
+        {
+         "_": "ExprStmt",
+         "region": [0, 0, 0, 0],
+         "expr": {
+          "_": "MethodCall",
+          "region": [37, 9, 37, 13],
+          "obj": {
+           "_": "VarRef",
+           "region": [37, 9, 37, 13],
+           "name": "mqtt"
+          },
+          "method": "send_float",
+          "args": [
+           {
+            "_": "StringLiteral",
+            "region": [37, 25, 37, 34],
+            "value": "env/hum"
+           },
+           {
+            "_": "VarRef",
+            "region": [37, 36, 37, 37],
+            "name": "h"
+           }
+          ]
+         }
+        }
+       ],
+       "policy": "skip",
+       "retry_limit": null,
+       "terminal": null,
+       "try_id": 1,
+       "needs_context_lift": false,
+       "is_yield_point": true
+      }
+     ],
+     "yield_label": 1
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "TryBlock",
+    "region": [0, 0, 0, 0],
+    "body": [
+     {
+      "_": "ExprStmt",
+      "region": [0, 0, 0, 0],
+      "expr": {
+       "_": "MethodCall",
+       "region": [22, 9, 22, 13],
+       "obj": {
+        "_": "VarRef",
+        "region": [22, 9, 22, 13],
+        "name": "wifi"
+       },
+       "method": "connect",
+       "args": [
+        {
+         "_": "StringLiteral",
+         "region": [22, 22, 22, 33],
+         "value": "home-ssid"
+        },
+        {
+         "_": "StringLiteral",
+         "region": [22, 35, 22, 45],
+         "value": "password"
+        }
+       ]
+      }
+     },
+     {
+      "_": "ExprStmt",
+      "region": [0, 0, 0, 0],
+      "expr": {
+       "_": "MethodCall",
+       "region": [23, 9, 23, 13],
+       "obj": {
+        "_": "VarRef",
+        "region": [23, 9, 23, 13],
+        "name": "mqtt"
+       },
+       "method": "connect",
+       "args": [
+        {
+         "_": "StringLiteral",
+         "region": [23, 22, 23, 36],
+         "value": "broker.local"
+        }
+       ]
+      }
+     },
+     {
+      "_": "ExprStmt",
+      "region": [0, 0, 0, 0],
+      "expr": {
+       "_": "MethodCall",
+       "region": [24, 9, 24, 16],
+       "obj": {
+        "_": "VarRef",
+        "region": [24, 9, 24, 16],
+        "name": "storage"
+       },
+       "method": "load",
+       "args": [
+        {
+         "_": "StringLiteral",
+         "region": [24, 22, 24, 33],
+         "value": "device_id"
+        }
+       ]
+      }
+     }
+    ],
+    "policy": "retry",
+    "retry_limit": 5,
+    "terminal": "restart",
+    "try_id": 0,
+    "needs_context_lift": false,
+    "is_yield_point": false
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

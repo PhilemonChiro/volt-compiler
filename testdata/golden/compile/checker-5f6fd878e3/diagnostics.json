@@ -1,0 +1,14 @@
+[
+  {
+    "severity": "error",
+    "category": "TYPE MISMATCH",
+    "message": "Cannot negate `int` with `!`. Only `bool` allowed.",
+    "hint": null,
+    "region": [
+      2,
+      14,
+      2,
+      16
+    ]
+  }
+]

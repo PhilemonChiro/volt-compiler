@@ -1,0 +1,14 @@
+[
+  {
+    "severity": "error",
+    "category": "MUTABILITY ERROR",
+    "message": "Cannot assign to `x` \u2014 it was declared with `let` (immutable).",
+    "hint": "Use `var` instead of `let` to make it mutable.",
+    "region": [
+      4,
+      5,
+      4,
+      6
+    ]
+  }
+]

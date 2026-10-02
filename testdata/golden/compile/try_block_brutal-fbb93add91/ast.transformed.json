@@ -1,0 +1,151 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [1, 6, 1, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [2, 16, 2, 19],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [2, 16, 2, 19],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 4
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [10, 7, 10, 9],
+   "name": "_rule0",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [10, 7, 10, 9],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [10, 7, 10, 9],
+      "microseconds": 1000000,
+      "original": "1s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [10, 12, 10, 15],
+        "obj": {
+         "_": "VarRef",
+         "region": [10, 12, 10, 15],
+         "name": "led"
+        },
+        "method": "toggle",
+        "args": []
+       }
+      }
+     ],
+     "yield_label": 1
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [
+  {
+   "_": "VarDecl",
+   "region": [3, 5, 3, 12],
+   "name": "counter",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [3, 20, 3, 21],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  }
+ ],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "TryBlock",
+    "region": [6, 9, 6, 16],
+    "body": [
+     {
+      "_": "CompoundAssign",
+      "region": [6, 9, 6, 16],
+      "target": {
+       "_": "VarRef",
+       "region": [6, 9, 6, 16],
+       "name": "counter"
+      },
+      "op": "+=",
+      "value": {
+       "_": "IntLiteral",
+       "region": [6, 20, 6, 21],
+       "value": 1
+      }
+     },
+     {
+      "_": "ExprStmt",
+      "region": [0, 0, 0, 0],
+      "expr": {
+       "_": "MethodCall",
+       "region": [7, 9, 7, 13],
+       "obj": {
+        "_": "VarRef",
+        "region": [7, 9, 7, 13],
+        "name": "wifi"
+       },
+       "method": "connect",
+       "args": [
+        {
+         "_": "StringLiteral",
+         "region": [7, 22, 7, 25],
+         "value": "a"
+        },
+        {
+         "_": "StringLiteral",
+         "region": [7, 26, 7, 29],
+         "value": "b"
+        }
+       ]
+      }
+     }
+    ],
+    "policy": "retry",
+    "retry_limit": 3,
+    "terminal": "skip",
+    "try_id": 0,
+    "needs_context_lift": false,
+    "is_yield_point": false
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

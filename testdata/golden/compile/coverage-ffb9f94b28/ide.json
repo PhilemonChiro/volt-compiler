@@ -1,0 +1,155 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 2,
+    "col": 6,
+    "message": "Move `chip rp2040` to volt.toml: chip = \"rp2040\"",
+    "severity": "warning",
+    "hint": "The chip declaration will move to volt.toml in a future version."
+   }
+  ],
+  "pins": [
+   {
+    "name": "motor",
+    "mode": "PWM",
+    "gpio": 5
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "_rule0",
+    "tier": "critical",
+    "line": 4
+   }
+  ],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": "rp2040"
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "chip rp2040\n\nhardware {\n    pin motor: PWM = 5\n}\n\nevery 1ms strict { motor.set_pwm(0) }\n",
+ "find_symbols": [
+  {
+   "name": "motor",
+   "kind": "pin",
+   "def_line": 3,
+   "def_col": 16,
+   "refs": [
+    {
+     "line": 5,
+     "col": 5
+    }
+   ]
+  },
+  {
+   "name": "_rule0",
+   "kind": "task",
+   "def_line": 4,
+   "def_col": 7,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u__rule0((\"↻ 1ms\"))\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u__rule0 timer;",
+  "units": [
+   {
+    "id": "u__rule0",
+    "name": "↻ 1ms",
+    "line": 4
+   }
+  ],
+  "loops": [
+   "u__rule0"
+  ],
+  "edges": [],
+  "nodes": {
+   "u__rule0": {
+    "kind": "timer",
+    "label": "↻ 1ms",
+    "line": 4,
+    "detail": "every 1ms"
+   },
+   "p_motor": {
+    "kind": "pin",
+    "label": "motor",
+    "line": 3,
+    "detail": "PWM · GPIO 5"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    p_motor([\"motor\"])\n    u__rule0((\"↻ 1ms\"))\n    u__rule0 -->|set_pwm| p_motor\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u__rule0 timer;\n    class p_motor pin;",
+  "units": [
+   {
+    "id": "u__rule0",
+    "name": "↻ 1ms",
+    "line": 4
+   }
+  ],
+  "loops": [
+   "u__rule0"
+  ],
+  "edges": [
+   {
+    "drive": "timer",
+    "src": "u__rule0",
+    "dst": "p_motor",
+    "rate_ms": 1.0
+   }
+  ],
+  "nodes": {
+   "u__rule0": {
+    "kind": "timer",
+    "label": "↻ 1ms",
+    "line": 4,
+    "detail": "every 1ms"
+   },
+   "p_motor": {
+    "kind": "pin",
+    "label": "motor",
+    "line": 3,
+    "detail": "PWM · GPIO 5"
+   }
+  }
+ }
+}

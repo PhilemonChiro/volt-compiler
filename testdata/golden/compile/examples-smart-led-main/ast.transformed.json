@@ -1,0 +1,1301 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [0, 0, 0, 0],
+  "target": "rp2040"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [15, 9, 17, 15],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [15, 9, 15, 12],
+    "name": "led",
+    "mode": "PWM",
+    "gpio": 25
+   },
+   {
+    "_": "PinDecl",
+    "region": [16, 9, 16, 15],
+    "name": "button",
+    "mode": "PullUpInput",
+    "gpio": 15
+   },
+   {
+    "_": "PinDecl",
+    "region": [17, 9, 17, 15],
+    "name": "status",
+    "mode": "Output",
+    "gpio": 0
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [
+  {
+   "_": "StructDecl",
+   "region": [28, 6, 28, 20],
+   "name": "button_watcher_ctx_t",
+   "fields": [
+    {
+     "_": "FieldDecl",
+     "region": [29, 9, 29, 19],
+     "name": "last_state",
+     "type_name": "int"
+    },
+    {
+     "_": "FieldDecl",
+     "region": [30, 9, 30, 20],
+     "name": "press_count",
+     "type_name": "int"
+    }
+   ]
+  },
+  {
+   "_": "StructDecl",
+   "region": [55, 6, 55, 16],
+   "name": "led_driver_ctx_t",
+   "fields": [
+    {
+     "_": "FieldDecl",
+     "region": [56, 9, 56, 19],
+     "name": "brightness",
+     "type_name": "int"
+    },
+    {
+     "_": "FieldDecl",
+     "region": [57, 9, 57, 18],
+     "name": "direction",
+     "type_name": "int"
+    },
+    {
+     "_": "FieldDecl",
+     "region": [58, 9, 58, 20],
+     "name": "blink_state",
+     "type_name": "int"
+    },
+    {
+     "_": "FieldDecl",
+     "region": [59, 9, 59, 20],
+     "name": "pulse_phase",
+     "type_name": "int"
+    }
+   ]
+  }
+ ],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [28, 6, 28, 20],
+   "name": "button_watcher",
+   "body": [
+    {
+     "_": "VarDecl",
+     "region": [29, 9, 29, 19],
+     "name": "last_state",
+     "type_name": "int",
+     "value": {
+      "_": "IntLiteral",
+      "region": [29, 27, 29, 28],
+      "value": 1
+     },
+     "mutable": true,
+     "shared": false,
+     "needs_lifting": true
+    },
+    {
+     "_": "VarDecl",
+     "region": [30, 9, 30, 20],
+     "name": "press_count",
+     "type_name": "int",
+     "value": {
+      "_": "IntLiteral",
+      "region": [30, 28, 30, 29],
+      "value": 0
+     },
+     "mutable": true,
+     "shared": false,
+     "needs_lifting": true
+    },
+    {
+     "_": "EveryBlock",
+     "region": [32, 11, 32, 15],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [32, 11, 32, 15],
+      "microseconds": 20000,
+      "original": "20ms"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "VarDecl",
+       "region": [33, 13, 33, 18],
+       "name": "state",
+       "type_name": "int",
+       "value": {
+        "_": "MethodCall",
+        "region": [33, 21, 33, 27],
+        "obj": {
+         "_": "VarRef",
+         "region": [33, 21, 33, 27],
+         "name": "button"
+        },
+        "method": "read",
+        "args": []
+       },
+       "mutable": false,
+       "shared": false,
+       "needs_lifting": false
+      },
+      {
+       "_": "IfStmt",
+       "region": [34, 12, 34, 17],
+       "condition": {
+        "_": "BinaryExpr",
+        "region": [34, 12, 34, 17],
+        "left": {
+         "_": "VarRef",
+         "region": [34, 12, 34, 17],
+         "name": "state"
+        },
+        "op": "==",
+        "right": {
+         "_": "IntLiteral",
+         "region": [34, 21, 34, 22],
+         "value": 0
+        },
+        "result_type": "bool"
+       },
+       "then_body": [
+        {
+         "_": "IfStmt",
+         "region": [35, 16, 35, 26],
+         "condition": {
+          "_": "BinaryExpr",
+          "region": [35, 16, 35, 26],
+          "left": {
+           "_": "VarRef",
+           "region": [35, 16, 35, 26],
+           "name": "last_state"
+          },
+          "op": "==",
+          "right": {
+           "_": "IntLiteral",
+           "region": [35, 30, 35, 31],
+           "value": 1
+          },
+          "result_type": "bool"
+         },
+         "then_body": [
+          {
+           "_": "CompoundAssign",
+           "region": [36, 17, 36, 28],
+           "target": {
+            "_": "VarRef",
+            "region": [36, 17, 36, 28],
+            "name": "press_count"
+           },
+           "op": "+=",
+           "value": {
+            "_": "IntLiteral",
+            "region": [36, 32, 36, 33],
+            "value": 1
+           }
+          },
+          {
+           "_": "ExprStmt",
+           "region": [0, 0, 0, 0],
+           "expr": {
+            "_": "MethodCall",
+            "region": [37, 17, 37, 30],
+            "obj": {
+             "_": "VarRef",
+             "region": [37, 17, 37, 30],
+             "name": "button_events"
+            },
+            "method": "send",
+            "args": [
+             {
+              "_": "VarRef",
+              "region": [37, 36, 37, 47],
+              "name": "press_count"
+             }
+            ]
+           }
+          }
+         ],
+         "else_body": null
+        }
+       ],
+       "else_body": null
+      },
+      {
+       "_": "AssignExpr",
+       "region": [40, 9, 40, 19],
+       "target": {
+        "_": "VarRef",
+        "region": [40, 9, 40, 19],
+        "name": "last_state"
+       },
+       "value": {
+        "_": "VarRef",
+        "region": [40, 22, 40, 27],
+        "name": "state"
+       }
+      }
+     ],
+     "yield_label": 1
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [
+    "last_state",
+    "press_count"
+   ],
+   "has_strict": false
+  },
+  {
+   "_": "TaskDecl",
+   "region": [45, 6, 45, 21],
+   "name": "mode_controller",
+   "body": [
+    {
+     "_": "OnBlock",
+     "region": [46, 8, 46, 21],
+     "event": {
+      "_": "MethodCall",
+      "region": [46, 8, 46, 21],
+      "obj": {
+       "_": "VarRef",
+       "region": [46, 8, 46, 21],
+       "name": "button_events"
+      },
+      "method": "has_data",
+      "args": []
+     },
+     "debounce": null,
+     "throttle": null,
+     "body": [
+      {
+       "_": "VarDecl",
+       "region": [47, 13, 47, 18],
+       "name": "event",
+       "type_name": "int",
+       "value": {
+        "_": "MethodCall",
+        "region": [47, 21, 47, 34],
+        "obj": {
+         "_": "VarRef",
+         "region": [47, 21, 47, 34],
+         "name": "button_events"
+        },
+        "method": "receive",
+        "args": []
+       },
+       "mutable": false,
+       "shared": false,
+       "needs_lifting": false
+      },
+      {
+       "_": "AssignExpr",
+       "region": [48, 9, 48, 21],
+       "target": {
+        "_": "VarRef",
+        "region": [48, 9, 48, 21],
+        "name": "current_mode"
+       },
+       "value": {
+        "_": "BinaryExpr",
+        "region": [48, 25, 48, 37],
+        "left": {
+         "_": "BinaryExpr",
+         "region": [48, 25, 48, 37],
+         "left": {
+          "_": "VarRef",
+          "region": [48, 25, 48, 37],
+          "name": "current_mode"
+         },
+         "op": "+",
+         "right": {
+          "_": "IntLiteral",
+          "region": [48, 40, 48, 41],
+          "value": 1
+         },
+         "result_type": "int"
+        },
+        "op": "%",
+        "right": {
+         "_": "VarRef",
+         "region": [48, 45, 48, 55],
+         "name": "mode_count"
+        },
+        "result_type": "int"
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [49, 9, 49, 12],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [49, 13, 49, 19],
+          "value": "mode"
+         },
+         {
+          "_": "StringLiteral",
+          "region": [49, 21, 49, 54],
+          "value": "switched to mode {current_mode}"
+         }
+        ]
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [50, 9, 50, 15],
+        "obj": {
+         "_": "VarRef",
+         "region": [50, 9, 50, 15],
+         "name": "status"
+        },
+        "method": "toggle",
+        "args": []
+       }
+      }
+     ],
+     "yield_label": 1,
+     "debounce_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false
+  },
+  {
+   "_": "TaskDecl",
+   "region": [55, 6, 55, 16],
+   "name": "led_driver",
+   "body": [
+    {
+     "_": "VarDecl",
+     "region": [56, 9, 56, 19],
+     "name": "brightness",
+     "type_name": "int",
+     "value": {
+      "_": "IntLiteral",
+      "region": [56, 27, 56, 28],
+      "value": 0
+     },
+     "mutable": true,
+     "shared": false,
+     "needs_lifting": true
+    },
+    {
+     "_": "VarDecl",
+     "region": [57, 9, 57, 18],
+     "name": "direction",
+     "type_name": "int",
+     "value": {
+      "_": "IntLiteral",
+      "region": [57, 26, 57, 27],
+      "value": 1
+     },
+     "mutable": true,
+     "shared": false,
+     "needs_lifting": true
+    },
+    {
+     "_": "VarDecl",
+     "region": [58, 9, 58, 20],
+     "name": "blink_state",
+     "type_name": "int",
+     "value": {
+      "_": "IntLiteral",
+      "region": [58, 28, 58, 29],
+      "value": 0
+     },
+     "mutable": true,
+     "shared": false,
+     "needs_lifting": true
+    },
+    {
+     "_": "VarDecl",
+     "region": [59, 9, 59, 20],
+     "name": "pulse_phase",
+     "type_name": "int",
+     "value": {
+      "_": "IntLiteral",
+      "region": [59, 28, 59, 29],
+      "value": 0
+     },
+     "mutable": true,
+     "shared": false,
+     "needs_lifting": true
+    },
+    {
+     "_": "EveryBlock",
+     "region": [61, 11, 61, 15],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [61, 11, 61, 15],
+      "microseconds": 10000,
+      "original": "10ms"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "IfStmt",
+       "region": [62, 12, 62, 24],
+       "condition": {
+        "_": "BinaryExpr",
+        "region": [62, 12, 62, 24],
+        "left": {
+         "_": "VarRef",
+         "region": [62, 12, 62, 24],
+         "name": "current_mode"
+        },
+        "op": "==",
+        "right": {
+         "_": "IntLiteral",
+         "region": [62, 28, 62, 29],
+         "value": 0
+        },
+        "result_type": "bool"
+       },
+       "then_body": [
+        {
+         "_": "CompoundAssign",
+         "region": [64, 13, 64, 23],
+         "target": {
+          "_": "VarRef",
+          "region": [64, 13, 64, 23],
+          "name": "brightness"
+         },
+         "op": "+=",
+         "value": {
+          "_": "BinaryExpr",
+          "region": [64, 27, 64, 36],
+          "left": {
+           "_": "VarRef",
+           "region": [64, 27, 64, 36],
+           "name": "direction"
+          },
+          "op": "*",
+          "right": {
+           "_": "IntLiteral",
+           "region": [64, 39, 64, 40],
+           "value": 3
+          },
+          "result_type": "int"
+         }
+        },
+        {
+         "_": "IfStmt",
+         "region": [65, 16, 65, 26],
+         "condition": {
+          "_": "BinaryExpr",
+          "region": [65, 16, 65, 26],
+          "left": {
+           "_": "VarRef",
+           "region": [65, 16, 65, 26],
+           "name": "brightness"
+          },
+          "op": ">=",
+          "right": {
+           "_": "IntLiteral",
+           "region": [65, 30, 65, 33],
+           "value": 255
+          },
+          "result_type": "bool"
+         },
+         "then_body": [
+          {
+           "_": "AssignExpr",
+           "region": [66, 17, 66, 27],
+           "target": {
+            "_": "VarRef",
+            "region": [66, 17, 66, 27],
+            "name": "brightness"
+           },
+           "value": {
+            "_": "IntLiteral",
+            "region": [66, 30, 66, 33],
+            "value": 255
+           }
+          },
+          {
+           "_": "AssignExpr",
+           "region": [67, 17, 67, 26],
+           "target": {
+            "_": "VarRef",
+            "region": [67, 17, 67, 26],
+            "name": "direction"
+           },
+           "value": {
+            "_": "UnaryExpr",
+            "region": [67, 30, 67, 31],
+            "op": "-",
+            "operand": {
+             "_": "IntLiteral",
+             "region": [67, 30, 67, 31],
+             "value": 1
+            }
+           }
+          }
+         ],
+         "else_body": null
+        },
+        {
+         "_": "IfStmt",
+         "region": [69, 16, 69, 26],
+         "condition": {
+          "_": "BinaryExpr",
+          "region": [69, 16, 69, 26],
+          "left": {
+           "_": "VarRef",
+           "region": [69, 16, 69, 26],
+           "name": "brightness"
+          },
+          "op": "<=",
+          "right": {
+           "_": "IntLiteral",
+           "region": [69, 30, 69, 31],
+           "value": 0
+          },
+          "result_type": "bool"
+         },
+         "then_body": [
+          {
+           "_": "AssignExpr",
+           "region": [70, 17, 70, 27],
+           "target": {
+            "_": "VarRef",
+            "region": [70, 17, 70, 27],
+            "name": "brightness"
+           },
+           "value": {
+            "_": "IntLiteral",
+            "region": [70, 30, 70, 31],
+            "value": 0
+           }
+          },
+          {
+           "_": "AssignExpr",
+           "region": [71, 17, 71, 26],
+           "target": {
+            "_": "VarRef",
+            "region": [71, 17, 71, 26],
+            "name": "direction"
+           },
+           "value": {
+            "_": "IntLiteral",
+            "region": [71, 29, 71, 30],
+            "value": 1
+           }
+          }
+         ],
+         "else_body": null
+        },
+        {
+         "_": "ExprStmt",
+         "region": [0, 0, 0, 0],
+         "expr": {
+          "_": "MethodCall",
+          "region": [73, 13, 73, 16],
+          "obj": {
+           "_": "VarRef",
+           "region": [73, 13, 73, 16],
+           "name": "led"
+          },
+          "method": "set_pwm",
+          "args": [
+           {
+            "_": "VarRef",
+            "region": [73, 25, 73, 35],
+            "name": "brightness"
+           }
+          ]
+         }
+        }
+       ],
+       "else_body": null
+      },
+      {
+       "_": "IfStmt",
+       "region": [76, 12, 76, 24],
+       "condition": {
+        "_": "BinaryExpr",
+        "region": [76, 12, 76, 24],
+        "left": {
+         "_": "VarRef",
+         "region": [76, 12, 76, 24],
+         "name": "current_mode"
+        },
+        "op": "==",
+        "right": {
+         "_": "IntLiteral",
+         "region": [76, 28, 76, 29],
+         "value": 1
+        },
+        "result_type": "bool"
+       },
+       "then_body": [
+        {
+         "_": "CompoundAssign",
+         "region": [78, 13, 78, 24],
+         "target": {
+          "_": "VarRef",
+          "region": [78, 13, 78, 24],
+          "name": "blink_state"
+         },
+         "op": "+=",
+         "value": {
+          "_": "IntLiteral",
+          "region": [78, 28, 78, 29],
+          "value": 1
+         }
+        },
+        {
+         "_": "IfStmt",
+         "region": [79, 16, 79, 27],
+         "condition": {
+          "_": "BinaryExpr",
+          "region": [79, 16, 79, 27],
+          "left": {
+           "_": "VarRef",
+           "region": [79, 16, 79, 27],
+           "name": "blink_state"
+          },
+          "op": ">=",
+          "right": {
+           "_": "IntLiteral",
+           "region": [79, 31, 79, 33],
+           "value": 10
+          },
+          "result_type": "bool"
+         },
+         "then_body": [
+          {
+           "_": "AssignExpr",
+           "region": [80, 17, 80, 28],
+           "target": {
+            "_": "VarRef",
+            "region": [80, 17, 80, 28],
+            "name": "blink_state"
+           },
+           "value": {
+            "_": "IntLiteral",
+            "region": [80, 31, 80, 32],
+            "value": 0
+           }
+          },
+          {
+           "_": "IfStmt",
+           "region": [81, 20, 81, 30],
+           "condition": {
+            "_": "BinaryExpr",
+            "region": [81, 20, 81, 30],
+            "left": {
+             "_": "VarRef",
+             "region": [81, 20, 81, 30],
+             "name": "brightness"
+            },
+            "op": "==",
+            "right": {
+             "_": "IntLiteral",
+             "region": [81, 34, 81, 35],
+             "value": 0
+            },
+            "result_type": "bool"
+           },
+           "then_body": [
+            {
+             "_": "AssignExpr",
+             "region": [82, 21, 82, 31],
+             "target": {
+              "_": "VarRef",
+              "region": [82, 21, 82, 31],
+              "name": "brightness"
+             },
+             "value": {
+              "_": "IntLiteral",
+              "region": [82, 34, 82, 37],
+              "value": 255
+             }
+            }
+           ],
+           "else_body": [
+            {
+             "_": "AssignExpr",
+             "region": [84, 21, 84, 31],
+             "target": {
+              "_": "VarRef",
+              "region": [84, 21, 84, 31],
+              "name": "brightness"
+             },
+             "value": {
+              "_": "IntLiteral",
+              "region": [84, 34, 84, 35],
+              "value": 0
+             }
+            }
+           ]
+          },
+          {
+           "_": "ExprStmt",
+           "region": [0, 0, 0, 0],
+           "expr": {
+            "_": "MethodCall",
+            "region": [86, 17, 86, 20],
+            "obj": {
+             "_": "VarRef",
+             "region": [86, 17, 86, 20],
+             "name": "led"
+            },
+            "method": "set_pwm",
+            "args": [
+             {
+              "_": "VarRef",
+              "region": [86, 29, 86, 39],
+              "name": "brightness"
+             }
+            ]
+           }
+          }
+         ],
+         "else_body": null
+        }
+       ],
+       "else_body": null
+      },
+      {
+       "_": "IfStmt",
+       "region": [90, 12, 90, 24],
+       "condition": {
+        "_": "BinaryExpr",
+        "region": [90, 12, 90, 24],
+        "left": {
+         "_": "VarRef",
+         "region": [90, 12, 90, 24],
+         "name": "current_mode"
+        },
+        "op": "==",
+        "right": {
+         "_": "IntLiteral",
+         "region": [90, 28, 90, 29],
+         "value": 2
+        },
+        "result_type": "bool"
+       },
+       "then_body": [
+        {
+         "_": "CompoundAssign",
+         "region": [92, 13, 92, 24],
+         "target": {
+          "_": "VarRef",
+          "region": [92, 13, 92, 24],
+          "name": "pulse_phase"
+         },
+         "op": "+=",
+         "value": {
+          "_": "IntLiteral",
+          "region": [92, 28, 92, 29],
+          "value": 1
+         }
+        },
+        {
+         "_": "IfStmt",
+         "region": [93, 16, 93, 27],
+         "condition": {
+          "_": "BinaryExpr",
+          "region": [93, 16, 93, 27],
+          "left": {
+           "_": "VarRef",
+           "region": [93, 16, 93, 27],
+           "name": "pulse_phase"
+          },
+          "op": ">=",
+          "right": {
+           "_": "IntLiteral",
+           "region": [93, 31, 93, 34],
+           "value": 200
+          },
+          "result_type": "bool"
+         },
+         "then_body": [
+          {
+           "_": "AssignExpr",
+           "region": [94, 17, 94, 28],
+           "target": {
+            "_": "VarRef",
+            "region": [94, 17, 94, 28],
+            "name": "pulse_phase"
+           },
+           "value": {
+            "_": "IntLiteral",
+            "region": [94, 31, 94, 32],
+            "value": 0
+           }
+          }
+         ],
+         "else_body": null
+        },
+        {
+         "_": "IfStmt",
+         "region": [96, 16, 96, 27],
+         "condition": {
+          "_": "BinaryExpr",
+          "region": [96, 16, 96, 27],
+          "left": {
+           "_": "VarRef",
+           "region": [96, 16, 96, 27],
+           "name": "pulse_phase"
+          },
+          "op": "<",
+          "right": {
+           "_": "IntLiteral",
+           "region": [96, 30, 96, 32],
+           "value": 20
+          },
+          "result_type": "bool"
+         },
+         "then_body": [
+          {
+           "_": "ExprStmt",
+           "region": [0, 0, 0, 0],
+           "expr": {
+            "_": "MethodCall",
+            "region": [97, 17, 97, 20],
+            "obj": {
+             "_": "VarRef",
+             "region": [97, 17, 97, 20],
+             "name": "led"
+            },
+            "method": "set_pwm",
+            "args": [
+             {
+              "_": "IntLiteral",
+              "region": [97, 29, 97, 32],
+              "value": 200
+             }
+            ]
+           }
+          }
+         ],
+         "else_body": null
+        },
+        {
+         "_": "IfStmt",
+         "region": [99, 16, 99, 27],
+         "condition": {
+          "_": "BinaryExpr",
+          "region": [99, 16, 99, 27],
+          "left": {
+           "_": "VarRef",
+           "region": [99, 16, 99, 27],
+           "name": "pulse_phase"
+          },
+          "op": ">=",
+          "right": {
+           "_": "IntLiteral",
+           "region": [99, 31, 99, 33],
+           "value": 20
+          },
+          "result_type": "bool"
+         },
+         "then_body": [
+          {
+           "_": "IfStmt",
+           "region": [100, 20, 100, 31],
+           "condition": {
+            "_": "BinaryExpr",
+            "region": [100, 20, 100, 31],
+            "left": {
+             "_": "VarRef",
+             "region": [100, 20, 100, 31],
+             "name": "pulse_phase"
+            },
+            "op": "<",
+            "right": {
+             "_": "IntLiteral",
+             "region": [100, 34, 100, 36],
+             "value": 40
+            },
+            "result_type": "bool"
+           },
+           "then_body": [
+            {
+             "_": "ExprStmt",
+             "region": [0, 0, 0, 0],
+             "expr": {
+              "_": "MethodCall",
+              "region": [101, 21, 101, 24],
+              "obj": {
+               "_": "VarRef",
+               "region": [101, 21, 101, 24],
+               "name": "led"
+              },
+              "method": "set_pwm",
+              "args": [
+               {
+                "_": "IntLiteral",
+                "region": [101, 33, 101, 34],
+                "value": 0
+               }
+              ]
+             }
+            }
+           ],
+           "else_body": null
+          }
+         ],
+         "else_body": null
+        },
+        {
+         "_": "IfStmt",
+         "region": [104, 16, 104, 27],
+         "condition": {
+          "_": "BinaryExpr",
+          "region": [104, 16, 104, 27],
+          "left": {
+           "_": "VarRef",
+           "region": [104, 16, 104, 27],
+           "name": "pulse_phase"
+          },
+          "op": ">=",
+          "right": {
+           "_": "IntLiteral",
+           "region": [104, 31, 104, 33],
+           "value": 40
+          },
+          "result_type": "bool"
+         },
+         "then_body": [
+          {
+           "_": "IfStmt",
+           "region": [105, 20, 105, 31],
+           "condition": {
+            "_": "BinaryExpr",
+            "region": [105, 20, 105, 31],
+            "left": {
+             "_": "VarRef",
+             "region": [105, 20, 105, 31],
+             "name": "pulse_phase"
+            },
+            "op": "<",
+            "right": {
+             "_": "IntLiteral",
+             "region": [105, 34, 105, 36],
+             "value": 60
+            },
+            "result_type": "bool"
+           },
+           "then_body": [
+            {
+             "_": "ExprStmt",
+             "region": [0, 0, 0, 0],
+             "expr": {
+              "_": "MethodCall",
+              "region": [106, 21, 106, 24],
+              "obj": {
+               "_": "VarRef",
+               "region": [106, 21, 106, 24],
+               "name": "led"
+              },
+              "method": "set_pwm",
+              "args": [
+               {
+                "_": "IntLiteral",
+                "region": [106, 33, 106, 36],
+                "value": 150
+               }
+              ]
+             }
+            }
+           ],
+           "else_body": null
+          }
+         ],
+         "else_body": null
+        },
+        {
+         "_": "IfStmt",
+         "region": [109, 16, 109, 27],
+         "condition": {
+          "_": "BinaryExpr",
+          "region": [109, 16, 109, 27],
+          "left": {
+           "_": "VarRef",
+           "region": [109, 16, 109, 27],
+           "name": "pulse_phase"
+          },
+          "op": ">=",
+          "right": {
+           "_": "IntLiteral",
+           "region": [109, 31, 109, 33],
+           "value": 60
+          },
+          "result_type": "bool"
+         },
+         "then_body": [
+          {
+           "_": "ExprStmt",
+           "region": [0, 0, 0, 0],
+           "expr": {
+            "_": "MethodCall",
+            "region": [110, 17, 110, 20],
+            "obj": {
+             "_": "VarRef",
+             "region": [110, 17, 110, 20],
+             "name": "led"
+            },
+            "method": "set_pwm",
+            "args": [
+             {
+              "_": "IntLiteral",
+              "region": [110, 29, 110, 30],
+              "value": 0
+             }
+            ]
+           }
+          }
+         ],
+         "else_body": null
+        }
+       ],
+       "else_body": null
+      },
+      {
+       "_": "IfStmt",
+       "region": [114, 12, 114, 24],
+       "condition": {
+        "_": "BinaryExpr",
+        "region": [114, 12, 114, 24],
+        "left": {
+         "_": "VarRef",
+         "region": [114, 12, 114, 24],
+         "name": "current_mode"
+        },
+        "op": "==",
+        "right": {
+         "_": "IntLiteral",
+         "region": [114, 28, 114, 29],
+         "value": 3
+        },
+        "result_type": "bool"
+       },
+       "then_body": [
+        {
+         "_": "ExprStmt",
+         "region": [0, 0, 0, 0],
+         "expr": {
+          "_": "MethodCall",
+          "region": [116, 13, 116, 16],
+          "obj": {
+           "_": "VarRef",
+           "region": [116, 13, 116, 16],
+           "name": "led"
+          },
+          "method": "set_pwm",
+          "args": [
+           {
+            "_": "IntLiteral",
+            "region": [116, 25, 116, 26],
+            "value": 0
+           }
+          ]
+         }
+        }
+       ],
+       "else_body": null
+      }
+     ],
+     "yield_label": 1
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [
+    "blink_state",
+    "brightness",
+    "direction",
+    "pulse_phase"
+   ],
+   "has_strict": false
+  },
+  {
+   "_": "TaskDecl",
+   "region": [122, 6, 122, 12],
+   "name": "health",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [123, 11, 123, 13],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [123, 11, 123, 13],
+      "microseconds": 5000000,
+      "original": "5s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [124, 9, 124, 12],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [124, 13, 124, 21],
+          "value": "health"
+         },
+         {
+          "_": "StringLiteral",
+          "region": [124, 23, 124, 96],
+          "value": "mode={current_mode} uptime={system.uptime()}s heap={system.free_heap()}"
+         }
+        ]
+       }
+      }
+     ],
+     "yield_label": 1
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [
+  {
+   "_": "VarDecl",
+   "region": [21, 5, 21, 17],
+   "name": "current_mode",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [21, 25, 21, 26],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  },
+  {
+   "_": "VarDecl",
+   "region": [22, 5, 22, 15],
+   "name": "mode_count",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [22, 23, 22, 24],
+    "value": 4
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  }
+ ],
+ "channels": [
+  {
+   "_": "ChannelDecl",
+   "region": [25, 9, 25, 22],
+   "name": "button_events",
+   "elem_type": "int",
+   "capacity": 4
+  }
+ ],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "FuncCall",
+     "region": [130, 5, 130, 8],
+     "name": "log",
+     "args": [
+      {
+       "_": "StringLiteral",
+       "region": [130, 9, 130, 15],
+       "value": "boot"
+      },
+      {
+       "_": "StringLiteral",
+       "region": [130, 17, 130, 39],
+       "value": "Smart LED Controller"
+      }
+     ]
+    }
+   },
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "FuncCall",
+     "region": [131, 5, 131, 8],
+     "name": "log",
+     "args": [
+      {
+       "_": "StringLiteral",
+       "region": [131, 9, 131, 15],
+       "value": "boot"
+      },
+      {
+       "_": "StringLiteral",
+       "region": [131, 17, 131, 61],
+       "value": "modes: 0=breathe 1=blink 2=heartbeat 3=off"
+      }
+     ]
+    }
+   },
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "FuncCall",
+     "region": [132, 5, 132, 8],
+     "name": "log",
+     "args": [
+      {
+       "_": "StringLiteral",
+       "region": [132, 9, 132, 15],
+       "value": "boot"
+      },
+      {
+       "_": "StringLiteral",
+       "region": [132, 17, 132, 48],
+       "value": "press button on GP15 to cycle"
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

@@ -1,0 +1,35 @@
+
+[yellow bold]-- HARDWARE NOTE -- main.volt:15[/yellow bold]
+
+GPIO 25: Also DAC channel 1. When DAC is enabled, outputs ~1.6V by default.
+
+ [dim]14 |[/dim] hardware {
+ [dim]15 |[/dim]     pin led: PWM = GP25
+ [dim]   |[/dim] [yellow]        ^^^[/yellow]
+
+
+[yellow bold]-- HARDWARE WARNING -- main.volt:16[/yellow bold]
+
+GPIO 15: GPIO 15 is a strapping pin. Outputs PWM signal during boot. LOW at boot suppresses UART boot log messages.
+
+ [dim]15 |[/dim]     pin led: PWM = GP25
+ [dim]16 |[/dim]     pin button: PullUpInput = GP15
+ [dim]   |[/dim] [yellow]        ^^^^^^[/yellow]
+
+
+[yellow bold]-- HARDWARE WARNING -- main.volt:16[/yellow bold]
+
+GPIO 15 is a JTAG pin. Using it disables JTAG debugging.
+
+ [dim]15 |[/dim]     pin led: PWM = GP25
+ [dim]16 |[/dim]     pin button: PullUpInput = GP15
+ [dim]   |[/dim] [yellow]        ^^^^^^[/yellow]
+
+
+[yellow bold]-- HARDWARE WARNING -- main.volt:17[/yellow bold]
+
+GPIO 0: GPIO 0 is a strapping pin. LOW at boot = download mode. Ensure pull-up (internal or external) for normal boot.
+
+ [dim]16 |[/dim]     pin button: PullUpInput = GP15
+ [dim]17 |[/dim]     pin status: Output = GP0
+ [dim]   |[/dim] [yellow]        ^^^^^^[/yellow]

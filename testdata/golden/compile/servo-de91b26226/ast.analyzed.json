@@ -1,0 +1,119 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [5, 9, 7, 14],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [5, 9, 5, 13],
+    "name": "base",
+    "mode": "Servo",
+    "gpio": 13
+   },
+   {
+    "_": "PinDecl",
+    "region": [6, 9, 6, 17],
+    "name": "shoulder",
+    "mode": "Servo",
+    "gpio": 14
+   },
+   {
+    "_": "PinDecl",
+    "region": [7, 9, 7, 14],
+    "name": "elbow",
+    "mode": "Servo",
+    "gpio": 15
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "MethodCall",
+     "region": [11, 5, 11, 9],
+     "obj": {
+      "_": "VarRef",
+      "region": [11, 5, 11, 9],
+      "name": "base"
+     },
+     "method": "move",
+     "args": [
+      {
+       "_": "IntLiteral",
+       "region": [11, 15, 11, 17],
+       "value": 90
+      }
+     ]
+    }
+   },
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "MethodCall",
+     "region": [12, 5, 12, 13],
+     "obj": {
+      "_": "VarRef",
+      "region": [12, 5, 12, 13],
+      "name": "shoulder"
+     },
+     "method": "move",
+     "args": [
+      {
+       "_": "IntLiteral",
+       "region": [12, 19, 12, 21],
+       "value": 45
+      }
+     ]
+    }
+   },
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "MethodCall",
+     "region": [13, 5, 13, 10],
+     "obj": {
+      "_": "VarRef",
+      "region": [13, 5, 13, 10],
+      "name": "elbow"
+     },
+     "method": "move",
+     "args": [
+      {
+       "_": "IntLiteral",
+       "region": [13, 16, 13, 19],
+       "value": 135
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

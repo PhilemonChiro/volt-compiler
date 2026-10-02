@@ -1,0 +1,77 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [3, 12, 3, 15],
+  "pins": [],
+  "buses": [],
+  "sensors": [
+   {
+    "_": "SensorDecl",
+    "region": [3, 12, 3, 15],
+    "name": "bme",
+    "sensor_type": "BME280",
+    "bus_name": "bus",
+    "address": 118,
+    "pin_params": {}
+   }
+  ]
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [5, 6, 5, 9],
+   "name": "pid",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [6, 11, 6, 14],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [6, 11, 6, 14],
+      "microseconds": 1000,
+      "original": "1ms"
+     },
+     "strict": true,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [7, 9, 7, 12],
+        "obj": {
+         "_": "VarRef",
+         "region": [7, 9, 7, 12],
+         "name": "bme"
+        },
+        "method": "temperature",
+        "args": []
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "critical",
+   "crossing_vars": [],
+   "has_strict": true,
+   "_annotations": []
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

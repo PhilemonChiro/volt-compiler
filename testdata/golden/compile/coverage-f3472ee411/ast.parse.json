@@ -1,0 +1,174 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [5, 6, 5, 7],
+   "name": "t",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [6, 11, 6, 13],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [6, 11, 6, 13],
+      "microseconds": 1000000,
+      "original": "1s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [7, 9, 7, 10],
+        "obj": {
+         "_": "VarRef",
+         "region": [7, 9, 7, 10],
+         "name": "q"
+        },
+        "method": "send",
+        "args": [
+         {
+          "_": "IntLiteral",
+          "region": [7, 16, 7, 17],
+          "value": 1
+         }
+        ]
+       }
+      },
+      {
+       "_": "VarDecl",
+       "region": [8, 13, 8, 14],
+       "name": "x",
+       "type_name": "int",
+       "value": {
+        "_": "MethodCall",
+        "region": [8, 22, 8, 23],
+        "obj": {
+         "_": "VarRef",
+         "region": [8, 22, 8, 23],
+         "name": "q"
+        },
+        "method": "receive",
+        "args": []
+       },
+       "mutable": true,
+       "shared": false,
+       "needs_lifting": false
+      },
+      {
+       "_": "VarDecl",
+       "region": [9, 13, 9, 14],
+       "name": "n",
+       "type_name": "int",
+       "value": {
+        "_": "MethodCall",
+        "region": [9, 22, 9, 23],
+        "obj": {
+         "_": "VarRef",
+         "region": [9, 22, 9, 23],
+         "name": "q"
+        },
+        "method": "count",
+        "args": []
+       },
+       "mutable": true,
+       "shared": false,
+       "needs_lifting": false
+      },
+      {
+       "_": "VarDecl",
+       "region": [10, 13, 10, 18],
+       "name": "empty",
+       "type_name": "bool",
+       "value": {
+        "_": "MethodCall",
+        "region": [10, 27, 10, 28],
+        "obj": {
+         "_": "VarRef",
+         "region": [10, 27, 10, 28],
+         "name": "q"
+        },
+        "method": "is_empty",
+        "args": []
+       },
+       "mutable": true,
+       "shared": false,
+       "needs_lifting": false
+      },
+      {
+       "_": "VarDecl",
+       "region": [11, 13, 11, 17],
+       "name": "full",
+       "type_name": "bool",
+       "value": {
+        "_": "MethodCall",
+        "region": [11, 26, 11, 27],
+        "obj": {
+         "_": "VarRef",
+         "region": [11, 26, 11, 27],
+         "name": "q"
+        },
+        "method": "is_full",
+        "args": []
+       },
+       "mutable": true,
+       "shared": false,
+       "needs_lifting": false
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [12, 9, 12, 10],
+        "obj": {
+         "_": "VarRef",
+         "region": [12, 9, 12, 10],
+         "name": "q"
+        },
+        "method": "clear",
+        "args": []
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [
+  {
+   "_": "ChannelDecl",
+   "region": [3, 9, 3, 10],
+   "name": "q",
+   "elem_type": "int",
+   "capacity": 8
+  }
+ ],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

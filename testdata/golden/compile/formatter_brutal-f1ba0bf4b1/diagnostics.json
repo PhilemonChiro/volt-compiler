@@ -1,0 +1,14 @@
+[
+  {
+    "severity": "warning",
+    "category": "HARDWARE WARNING",
+    "message": "GPIO 2: GPIO 2 is a strapping pin. Must be LOW or floating for download mode.",
+    "hint": null,
+    "region": [
+      8,
+      9,
+      8,
+      12
+    ]
+  }
+]

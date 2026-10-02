@@ -1,0 +1,10 @@
+
+[yellow bold]-- STATE MACHINE WARNING -- main.volt:6[/yellow bold]
+
+State `dead` in machine `Bad` has no outgoing transitions (dead-end state).
+
+ [dim]5 |[/dim]     }
+ [dim]6 |[/dim]     state dead {
+ [dim]  |[/dim] [yellow]          ^^^^[/yellow]
+
+[cyan]Hint: Add a transition or mark with @terminal if intentional.[/cyan]

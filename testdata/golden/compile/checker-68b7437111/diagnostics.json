@@ -1,0 +1,14 @@
+[
+  {
+    "severity": "error",
+    "category": "TYPE MISMATCH",
+    "message": "Variable `x` declared as `int` but assigned `string`.",
+    "hint": "Change the type to `string` or convert the value with `int(value)`.",
+    "region": [
+      3,
+      9,
+      3,
+      10
+    ]
+  }
+]

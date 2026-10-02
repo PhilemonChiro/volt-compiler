@@ -1,0 +1,55 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "VarDecl",
+    "region": [4, 9, 4, 14],
+    "name": "count",
+    "type_name": "int",
+    "value": {
+     "_": "MethodCall",
+     "region": [4, 22, 4, 25],
+     "obj": {
+      "_": "VarRef",
+      "region": [4, 22, 4, 25],
+      "name": "ble"
+     },
+     "method": "scan",
+     "args": [
+      {
+       "_": "DurationLiteral",
+       "region": [4, 31, 4, 37],
+       "microseconds": 3000000,
+       "original": "3000ms"
+      }
+     ]
+    },
+    "mutable": true,
+    "shared": false,
+    "needs_lifting": false
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

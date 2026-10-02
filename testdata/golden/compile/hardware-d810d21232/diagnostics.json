@@ -1,0 +1,14 @@
+[
+  {
+    "severity": "warning",
+    "category": "HARDWARE WARNING",
+    "message": "GPIO 0: GPIO 0 is a strapping pin. LOW at boot = download mode. Ensure pull-up (internal or external) for normal boot.",
+    "hint": null,
+    "region": [
+      2,
+      9,
+      2,
+      10
+    ]
+  }
+]

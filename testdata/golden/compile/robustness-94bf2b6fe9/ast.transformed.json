@@ -1,0 +1,185 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [4, 9, 4, 12],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [4, 9, 4, 12],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [
+  {
+   "_": "MachineDecl",
+   "region": [6, 9, 6, 16],
+   "name": "traffic",
+   "states": [
+    {
+     "_": "StateDecl",
+     "region": [7, 19, 7, 24],
+     "name": "green",
+     "is_initial": true,
+     "enter_body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [9, 13, 9, 16],
+        "obj": {
+         "_": "VarRef",
+         "region": [9, 13, 9, 16],
+         "name": "led"
+        },
+        "method": "on",
+        "args": []
+       }
+      }
+     ],
+     "exit_body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [12, 13, 12, 16],
+        "obj": {
+         "_": "VarRef",
+         "region": [12, 13, 12, 16],
+         "name": "led"
+        },
+        "method": "off",
+        "args": []
+       }
+      }
+     ],
+     "transitions": [],
+     "timed_transitions": [
+      {
+       "_": "TimedTransition",
+       "region": [14, 15, 14, 17],
+       "duration": {
+        "_": "DurationLiteral",
+        "region": [14, 15, 14, 17],
+        "microseconds": 5000000,
+        "original": "5s"
+       },
+       "target_state": "yellow",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "body": []
+    },
+    {
+     "_": "StateDecl",
+     "region": [16, 11, 16, 17],
+     "name": "yellow",
+     "is_initial": false,
+     "enter_body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [18, 13, 18, 16],
+        "obj": {
+         "_": "VarRef",
+         "region": [18, 13, 18, 16],
+         "name": "led"
+        },
+        "method": "on",
+        "args": []
+       }
+      }
+     ],
+     "exit_body": [],
+     "transitions": [],
+     "timed_transitions": [
+      {
+       "_": "TimedTransition",
+       "region": [20, 15, 20, 17],
+       "duration": {
+        "_": "DurationLiteral",
+        "region": [20, 15, 20, 17],
+        "microseconds": 2000000,
+        "original": "2s"
+       },
+       "target_state": "red",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "body": []
+    },
+    {
+     "_": "StateDecl",
+     "region": [22, 11, 22, 14],
+     "name": "red",
+     "is_initial": false,
+     "enter_body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [24, 13, 24, 16],
+        "obj": {
+         "_": "VarRef",
+         "region": [24, 13, 24, 16],
+         "name": "led"
+        },
+        "method": "off",
+        "args": []
+       }
+      }
+     ],
+     "exit_body": [],
+     "transitions": [],
+     "timed_transitions": [
+      {
+       "_": "TimedTransition",
+       "region": [26, 15, 26, 17],
+       "duration": {
+        "_": "DurationLiteral",
+        "region": [26, 15, 26, 17],
+        "microseconds": 5000000,
+        "original": "5s"
+       },
+       "target_state": "green",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "body": []
+    }
+   ],
+   "variables": []
+  }
+ ],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

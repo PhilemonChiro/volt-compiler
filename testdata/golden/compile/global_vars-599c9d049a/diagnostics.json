@@ -1,0 +1,14 @@
+[
+  {
+    "severity": "warning",
+    "category": "CONCURRENCY",
+    "message": "Variable `x` is shared between critical task (isr, isr) and task (bg, bg, bg). The compiler will mark it `volatile` in generated C.",
+    "hint": "For multi-word values, consider using atomic operations.",
+    "region": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+]

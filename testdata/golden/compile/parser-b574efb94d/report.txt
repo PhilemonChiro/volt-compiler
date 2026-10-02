@@ -1,0 +1,10 @@
+
+[red bold]-- NAME ERROR -- main.volt:4[/red bold]
+
+Unknown name `led`.
+
+ [dim]3 |[/dim]     every 500ms {
+ [dim]4 |[/dim]         led.toggle()
+ [dim]  |[/dim] [red]        ^^^[/red]
+
+[cyan]Hint: Did you mean `ble`?[/cyan]

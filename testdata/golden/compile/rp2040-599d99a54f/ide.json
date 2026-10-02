@@ -1,0 +1,195 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 2,
+    "col": 6,
+    "message": "Move `chip rp2040` to volt.toml: chip = \"rp2040\"",
+    "severity": "warning",
+    "hint": "The chip declaration will move to volt.toml in a future version."
+   },
+   {
+    "line": 4,
+    "col": 9,
+    "message": "GP25 is the onboard LED on Pico. On Pico W, GP25 is used for WiFi SPI — not available as GPIO.",
+    "severity": "warning",
+    "hint": ""
+   }
+  ],
+  "pins": [
+   {
+    "name": "led",
+    "mode": "Output",
+    "gpio": 25
+   }
+  ],
+  "devices": [
+   {
+    "name": "bme",
+    "type": "BME280",
+    "bus": "i2c0",
+    "address": 118
+   }
+  ],
+  "buses": [
+   {
+    "name": "i2c0",
+    "type": "i2c"
+   }
+  ],
+  "tasks": [
+   {
+    "name": "reader",
+    "tier": "background",
+    "line": 8
+   }
+  ],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": "rp2040"
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "chip rp2040\n\nhardware {\n    pin led: Output = 25\n    bus i2c0: I2C(sda: 4, scl: 5)\n    device bme: BME280 on i2c0 at 0x76\n}\n\ntask reader {\n    every 2s { var temp: float = bme.temperature() }\n}\n",
+ "find_symbols": [
+  {
+   "name": "led",
+   "kind": "pin",
+   "def_line": 4,
+   "def_col": 9,
+   "refs": []
+  },
+  {
+   "name": "bme",
+   "kind": "sensor",
+   "def_line": 6,
+   "def_col": 12,
+   "refs": [
+    {
+     "line": 10,
+     "col": 27
+    }
+   ]
+  },
+  {
+   "name": "i2c0",
+   "kind": "bus",
+   "def_line": 5,
+   "def_col": 9,
+   "refs": []
+  },
+  {
+   "name": "reader",
+   "kind": "task",
+   "def_line": 8,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "temp",
+   "kind": "var",
+   "def_line": 10,
+   "def_col": 13,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_reader((\"reader<br>↻ 2s\"))\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_reader timer;",
+  "units": [
+   {
+    "id": "u_reader",
+    "name": "reader<br>↻ 2s",
+    "line": 8
+   }
+  ],
+  "loops": [
+   "u_reader"
+  ],
+  "edges": [],
+  "nodes": {
+   "u_reader": {
+    "kind": "timer",
+    "label": "reader<br>↻ 2s",
+    "line": 8,
+    "detail": "every 2s"
+   },
+   "s_bme": {
+    "kind": "service",
+    "label": "bme",
+    "line": null,
+    "detail": "temperature"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    s_bme{{\"bme\"}}\n    u_reader((\"reader<br>↻ 2s\"))\n    u_reader -->|temperature| s_bme\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_reader timer;\n    class s_bme service;",
+  "units": [
+   {
+    "id": "u_reader",
+    "name": "reader<br>↻ 2s",
+    "line": 8
+   }
+  ],
+  "loops": [
+   "u_reader"
+  ],
+  "edges": [
+   {
+    "drive": "timer",
+    "src": "u_reader",
+    "dst": "s_bme",
+    "rate_ms": 2000.0
+   }
+  ],
+  "nodes": {
+   "u_reader": {
+    "kind": "timer",
+    "label": "reader<br>↻ 2s",
+    "line": 8,
+    "detail": "every 2s"
+   },
+   "s_bme": {
+    "kind": "service",
+    "label": "bme",
+    "line": null,
+    "detail": "temperature"
+   }
+  }
+ }
+}

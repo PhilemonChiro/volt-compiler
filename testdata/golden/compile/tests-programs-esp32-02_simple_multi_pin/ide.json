@@ -1,0 +1,692 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 1,
+    "col": 6,
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "severity": "warning",
+    "hint": "The chip declaration will move to volt.toml in a future version."
+   }
+  ],
+  "pins": [
+   {
+    "name": "red",
+    "mode": "Output",
+    "gpio": 23
+   },
+   {
+    "name": "green",
+    "mode": "Output",
+    "gpio": 22
+   },
+   {
+    "name": "yellow",
+    "mode": "Output",
+    "gpio": 21
+   },
+   {
+    "name": "button",
+    "mode": "PullUpInput",
+    "gpio": 4
+   },
+   {
+    "name": "sensor",
+    "mode": "Analog",
+    "gpio": 36
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "blink_red",
+    "tier": "background",
+    "line": 16
+   },
+   {
+    "name": "blink_green",
+    "tier": "background",
+    "line": 26
+   },
+   {
+    "name": "read_button",
+    "tier": "background",
+    "line": 34
+   },
+   {
+    "name": "adc_monitor",
+    "tier": "background",
+    "line": 50
+   }
+  ],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": "esp32"
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "chip esp32\n\nhardware {\n    pin red: Output = 23\n    pin green: Output = 22\n    pin yellow: Output = 21\n    pin button: PullUpInput = 4\n    pin sensor: Analog = 36\n}\n\nvar red_count: int = 0\n\nvar green_count: int = 0\n\nvar button_presses: int = 0\n\nvar last_button: int = 1\n\ntask blink_red {\n    every 100ms {\n        red.toggle()\n        red_count += 1\n        if red_count % 10 == 0 {\n            log(\"red\", \"toggles=\" + red_count)\n        }\n    }\n}\n\ntask blink_green {\n    every 400ms {\n        green.toggle()\n        green_count += 1\n        log(\"green\", \"toggle #\" + green_count)\n    }\n}\n\ntask read_button {\n    every 50ms {\n        let state = button.read()\n        if state == 0 {\n            if last_button == 1 {\n                button_presses += 1\n                log(\"button\", \"PRESSED #\" + button_presses)\n            }\n            yellow.on()\n        } else {\n            yellow.off()\n        }\n        last_button = state\n    }\n}\n\ntask adc_monitor {\n    every 2s {\n        let val = sensor.read()\n        log(\"adc\", \"GPIO36 ADC1_CH0 raw=\" + val)\n    }\n}\n\nsetup {\n    log(\"system\", \"multi-pin demo: red=23, green=22, yellow=21, button=4, adc=36\")\n}\n",
+ "find_symbols": [
+  {
+   "name": "red",
+   "kind": "pin",
+   "def_line": 4,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 18,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "green",
+   "kind": "pin",
+   "def_line": 5,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 28,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "yellow",
+   "kind": "pin",
+   "def_line": 6,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 42,
+     "col": 13
+    },
+    {
+     "line": 44,
+     "col": 13
+    }
+   ]
+  },
+  {
+   "name": "button",
+   "kind": "pin",
+   "def_line": 7,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 36,
+     "col": 21
+    }
+   ]
+  },
+  {
+   "name": "sensor",
+   "kind": "pin",
+   "def_line": 8,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 52,
+     "col": 19
+    }
+   ]
+  },
+  {
+   "name": "blink_red",
+   "kind": "task",
+   "def_line": 16,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "blink_green",
+   "kind": "task",
+   "def_line": 26,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "read_button",
+   "kind": "task",
+   "def_line": 34,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "adc_monitor",
+   "kind": "task",
+   "def_line": 50,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "red_count",
+   "kind": "var",
+   "def_line": 11,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 19,
+     "col": 9
+    },
+    {
+     "line": 20,
+     "col": 12
+    },
+    {
+     "line": 21,
+     "col": 37
+    }
+   ]
+  },
+  {
+   "name": "green_count",
+   "kind": "var",
+   "def_line": 12,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 29,
+     "col": 9
+    },
+    {
+     "line": 30,
+     "col": 35
+    }
+   ]
+  },
+  {
+   "name": "button_presses",
+   "kind": "var",
+   "def_line": 13,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 39,
+     "col": 17
+    },
+    {
+     "line": 40,
+     "col": 45
+    }
+   ]
+  },
+  {
+   "name": "last_button",
+   "kind": "var",
+   "def_line": 14,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 38,
+     "col": 16
+    },
+    {
+     "line": 46,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "state",
+   "kind": "var",
+   "def_line": 36,
+   "def_col": 13,
+   "refs": [
+    {
+     "line": 37,
+     "col": 12
+    },
+    {
+     "line": 46,
+     "col": 23
+    }
+   ]
+  },
+  {
+   "name": "val",
+   "kind": "var",
+   "def_line": 52,
+   "def_col": 13,
+   "refs": [
+    {
+     "line": 53,
+     "col": 45
+    }
+   ]
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_log{{\"log\"}}\n    u_blink_red((\"blink_red<br>↻ 100ms\"))\n    u_blink_green((\"blink_green<br>↻ 400ms\"))\n    u_read_button((\"read_button<br>↻ 50ms\"))\n    u_adc_monitor((\"adc_monitor<br>↻ 2s\"))\n    u_setup -->|log| s_log\n    u_blink_red -->|log| s_log\n    u_blink_green -->|log| s_log\n    u_read_button -->|log| s_log\n    u_adc_monitor -->|log| s_log\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_log service;\n    class u_blink_red timer;\n    class u_blink_green timer;\n    class u_read_button timer;\n    class u_adc_monitor timer;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_blink_red",
+    "name": "blink_red<br>↻ 100ms",
+    "line": 16
+   },
+   {
+    "id": "u_blink_green",
+    "name": "blink_green<br>↻ 400ms",
+    "line": 26
+   },
+   {
+    "id": "u_read_button",
+    "name": "read_button<br>↻ 50ms",
+    "line": 34
+   },
+   {
+    "id": "u_adc_monitor",
+    "name": "adc_monitor<br>↻ 2s",
+    "line": 50
+   }
+  ],
+  "loops": [
+   "u_blink_red",
+   "u_blink_green",
+   "u_read_button",
+   "u_adc_monitor"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_log"
+   },
+   {
+    "drive": "timer",
+    "src": "u_blink_red",
+    "dst": "s_log",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_blink_green",
+    "dst": "s_log",
+    "rate_ms": 400.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_read_button",
+    "dst": "s_log",
+    "rate_ms": 50.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_adc_monitor",
+    "dst": "s_log",
+    "rate_ms": 2000.0
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_log": {
+    "kind": "service",
+    "label": "log",
+    "line": null,
+    "detail": "log"
+   },
+   "u_blink_red": {
+    "kind": "timer",
+    "label": "blink_red<br>↻ 100ms",
+    "line": 16,
+    "detail": "every 100ms"
+   },
+   "p_red": {
+    "kind": "pin",
+    "label": "red",
+    "line": 4,
+    "detail": "Output · GPIO 23"
+   },
+   "v_red_count": {
+    "kind": "var",
+    "label": "red_count",
+    "line": 11,
+    "detail": "int"
+   },
+   "u_blink_green": {
+    "kind": "timer",
+    "label": "blink_green<br>↻ 400ms",
+    "line": 26,
+    "detail": "every 400ms"
+   },
+   "p_green": {
+    "kind": "pin",
+    "label": "green",
+    "line": 5,
+    "detail": "Output · GPIO 22"
+   },
+   "v_green_count": {
+    "kind": "var",
+    "label": "green_count",
+    "line": 12,
+    "detail": "int"
+   },
+   "u_read_button": {
+    "kind": "timer",
+    "label": "read_button<br>↻ 50ms",
+    "line": 34,
+    "detail": "every 50ms"
+   },
+   "p_button": {
+    "kind": "pin",
+    "label": "button",
+    "line": 7,
+    "detail": "PullUpInput · GPIO 4"
+   },
+   "v_last_button": {
+    "kind": "var",
+    "label": "last_button",
+    "line": 14,
+    "detail": "int"
+   },
+   "v_button_presses": {
+    "kind": "var",
+    "label": "button_presses",
+    "line": 13,
+    "detail": "int"
+   },
+   "p_yellow": {
+    "kind": "pin",
+    "label": "yellow",
+    "line": 6,
+    "detail": "Output · GPIO 21"
+   },
+   "u_adc_monitor": {
+    "kind": "timer",
+    "label": "adc_monitor<br>↻ 2s",
+    "line": 50,
+    "detail": "every 2s"
+   },
+   "p_sensor": {
+    "kind": "pin",
+    "label": "sensor",
+    "line": 8,
+    "detail": "Analog · GPIO 36"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_log{{\"log\"}}\n    p_red([\"red\"])\n    v_red_count(\"red_count\")\n    p_green([\"green\"])\n    v_green_count(\"green_count\")\n    p_button([\"button\"])\n    v_last_button(\"last_button\")\n    v_button_presses(\"button_presses\")\n    p_yellow([\"yellow\"])\n    p_sensor([\"sensor\"])\n    u_blink_red((\"blink_red<br>↻ 100ms\"))\n    u_blink_green((\"blink_green<br>↻ 400ms\"))\n    u_read_button((\"read_button<br>↻ 50ms\"))\n    u_adc_monitor((\"adc_monitor<br>↻ 2s\"))\n    u_setup -->|log| s_log\n    u_blink_red -->|toggle| p_red\n    u_blink_red -->|write| v_red_count\n    v_red_count -.->|read| u_blink_red\n    u_blink_red -->|log| s_log\n    u_blink_green -->|toggle| p_green\n    u_blink_green -->|write| v_green_count\n    u_blink_green -->|log| s_log\n    v_green_count -.->|read| u_blink_green\n    p_button -.->|read| u_read_button\n    v_last_button -.->|read| u_read_button\n    u_read_button -->|write| v_button_presses\n    u_read_button -->|log| s_log\n    v_button_presses -.->|read| u_read_button\n    u_read_button -->|off, on| p_yellow\n    u_read_button -->|write| v_last_button\n    p_sensor -.->|read| u_adc_monitor\n    u_adc_monitor -->|log| s_log\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_log service;\n    class u_blink_red timer;\n    class p_red pin;\n    class v_red_count var;\n    class u_blink_green timer;\n    class p_green pin;\n    class v_green_count var;\n    class u_read_button timer;\n    class p_button pin;\n    class v_last_button var;\n    class v_button_presses var;\n    class p_yellow pin;\n    class u_adc_monitor timer;\n    class p_sensor pin;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_blink_red",
+    "name": "blink_red<br>↻ 100ms",
+    "line": 16
+   },
+   {
+    "id": "u_blink_green",
+    "name": "blink_green<br>↻ 400ms",
+    "line": 26
+   },
+   {
+    "id": "u_read_button",
+    "name": "read_button<br>↻ 50ms",
+    "line": 34
+   },
+   {
+    "id": "u_adc_monitor",
+    "name": "adc_monitor<br>↻ 2s",
+    "line": 50
+   }
+  ],
+  "loops": [
+   "u_blink_red",
+   "u_blink_green",
+   "u_read_button",
+   "u_adc_monitor"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_log"
+   },
+   {
+    "drive": "timer",
+    "src": "u_blink_red",
+    "dst": "p_red",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_blink_red",
+    "dst": "v_red_count",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_red_count",
+    "dst": "u_blink_red",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_blink_red",
+    "dst": "s_log",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_blink_green",
+    "dst": "p_green",
+    "rate_ms": 400.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_blink_green",
+    "dst": "v_green_count",
+    "rate_ms": 400.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_blink_green",
+    "dst": "s_log",
+    "rate_ms": 400.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_green_count",
+    "dst": "u_blink_green",
+    "rate_ms": 400.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_button",
+    "dst": "u_read_button",
+    "rate_ms": 50.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_last_button",
+    "dst": "u_read_button",
+    "rate_ms": 50.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_read_button",
+    "dst": "v_button_presses",
+    "rate_ms": 50.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_read_button",
+    "dst": "s_log",
+    "rate_ms": 50.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_button_presses",
+    "dst": "u_read_button",
+    "rate_ms": 50.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_read_button",
+    "dst": "p_yellow",
+    "rate_ms": 50.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_read_button",
+    "dst": "v_last_button",
+    "rate_ms": 50.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_sensor",
+    "dst": "u_adc_monitor",
+    "rate_ms": 2000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_adc_monitor",
+    "dst": "s_log",
+    "rate_ms": 2000.0
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_log": {
+    "kind": "service",
+    "label": "log",
+    "line": null,
+    "detail": "log"
+   },
+   "u_blink_red": {
+    "kind": "timer",
+    "label": "blink_red<br>↻ 100ms",
+    "line": 16,
+    "detail": "every 100ms"
+   },
+   "p_red": {
+    "kind": "pin",
+    "label": "red",
+    "line": 4,
+    "detail": "Output · GPIO 23"
+   },
+   "v_red_count": {
+    "kind": "var",
+    "label": "red_count",
+    "line": 11,
+    "detail": "int"
+   },
+   "u_blink_green": {
+    "kind": "timer",
+    "label": "blink_green<br>↻ 400ms",
+    "line": 26,
+    "detail": "every 400ms"
+   },
+   "p_green": {
+    "kind": "pin",
+    "label": "green",
+    "line": 5,
+    "detail": "Output · GPIO 22"
+   },
+   "v_green_count": {
+    "kind": "var",
+    "label": "green_count",
+    "line": 12,
+    "detail": "int"
+   },
+   "u_read_button": {
+    "kind": "timer",
+    "label": "read_button<br>↻ 50ms",
+    "line": 34,
+    "detail": "every 50ms"
+   },
+   "p_button": {
+    "kind": "pin",
+    "label": "button",
+    "line": 7,
+    "detail": "PullUpInput · GPIO 4"
+   },
+   "v_last_button": {
+    "kind": "var",
+    "label": "last_button",
+    "line": 14,
+    "detail": "int"
+   },
+   "v_button_presses": {
+    "kind": "var",
+    "label": "button_presses",
+    "line": 13,
+    "detail": "int"
+   },
+   "p_yellow": {
+    "kind": "pin",
+    "label": "yellow",
+    "line": 6,
+    "detail": "Output · GPIO 21"
+   },
+   "u_adc_monitor": {
+    "kind": "timer",
+    "label": "adc_monitor<br>↻ 2s",
+    "line": 50,
+    "detail": "every 2s"
+   },
+   "p_sensor": {
+    "kind": "pin",
+    "label": "sensor",
+    "line": 8,
+    "detail": "Analog · GPIO 36"
+   }
+  }
+ }
+}

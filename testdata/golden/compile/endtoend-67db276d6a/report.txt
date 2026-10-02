@@ -1,0 +1,7 @@
+
+[red bold]-- SYNTAX ERROR -- empty_parens.volt:1[/red bold]
+
+Unexpected token Token('RPAR', ')') at line 2, column 14.
+
+ [dim]1 |[/dim] setup {
+ [dim]  |[/dim] [red]^[/red]

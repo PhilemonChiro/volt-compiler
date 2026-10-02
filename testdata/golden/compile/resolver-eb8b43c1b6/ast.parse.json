@@ -1,0 +1,66 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "VarDecl",
+    "region": [3, 9, 3, 10],
+    "name": "x",
+    "type_name": null,
+    "value": {
+     "_": "VarRef",
+     "region": [3, 13, 3, 21],
+     "name": "unknown1"
+    },
+    "mutable": false,
+    "shared": false,
+    "needs_lifting": false
+   },
+   {
+    "_": "VarDecl",
+    "region": [4, 9, 4, 10],
+    "name": "y",
+    "type_name": null,
+    "value": {
+     "_": "VarRef",
+     "region": [4, 13, 4, 21],
+     "name": "unknown2"
+    },
+    "mutable": false,
+    "shared": false,
+    "needs_lifting": false
+   },
+   {
+    "_": "VarDecl",
+    "region": [5, 9, 5, 10],
+    "name": "z",
+    "type_name": null,
+    "value": {
+     "_": "VarRef",
+     "region": [5, 13, 5, 21],
+     "name": "unknown3"
+    },
+    "mutable": false,
+    "shared": false,
+    "needs_lifting": false
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

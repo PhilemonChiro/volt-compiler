@@ -1,0 +1,276 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [3, 9, 4, 16],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [3, 9, 3, 12],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   },
+   {
+    "_": "PinDecl",
+    "region": [4, 9, 4, 16],
+    "name": "battery",
+    "mode": "Analog",
+    "gpio": 36
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [
+  {
+   "_": "FuncDecl",
+   "region": [6, 6, 6, 9],
+   "name": "add",
+   "params": [
+    {
+     "_": "Param",
+     "region": [6, 10, 6, 11],
+     "name": "a",
+     "type_name": "int"
+    },
+    {
+     "_": "Param",
+     "region": [6, 18, 6, 19],
+     "name": "b",
+     "type_name": "int"
+    }
+   ],
+   "return_type": "int",
+   "body": [
+    {
+     "_": "ReturnStmt",
+     "region": [0, 0, 0, 0],
+     "value": {
+      "_": "BinaryExpr",
+      "region": [7, 12, 7, 13],
+      "left": {
+       "_": "VarRef",
+       "region": [7, 12, 7, 13],
+       "name": "a"
+      },
+      "op": "+",
+      "right": {
+       "_": "VarRef",
+       "region": [7, 16, 7, 17],
+       "name": "b"
+      },
+      "result_type": null
+     }
+    }
+   ],
+   "contains_yield": false
+  }
+ ],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [9, 6, 9, 11],
+   "name": "blink",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [10, 11, 10, 16],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [10, 11, 10, 16],
+      "microseconds": 500000,
+      "original": "500ms"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [11, 9, 11, 12],
+        "obj": {
+         "_": "VarRef",
+         "region": [11, 9, 11, 12],
+         "name": "led"
+        },
+        "method": "toggle",
+        "args": []
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "VarDecl",
+    "region": [15, 9, 15, 10],
+    "name": "x",
+    "type_name": null,
+    "value": {
+     "_": "IntLiteral",
+     "region": [15, 13, 15, 15],
+     "value": 42
+    },
+    "mutable": false,
+    "shared": false,
+    "needs_lifting": false
+   },
+   {
+    "_": "VarDecl",
+    "region": [16, 9, 16, 10],
+    "name": "y",
+    "type_name": null,
+    "value": {
+     "_": "FuncCall",
+     "region": [16, 13, 16, 16],
+     "name": "add",
+     "args": [
+      {
+       "_": "VarRef",
+       "region": [16, 17, 16, 18],
+       "name": "x"
+      },
+      {
+       "_": "IntLiteral",
+       "region": [16, 20, 16, 21],
+       "value": 1
+      }
+     ]
+    },
+    "mutable": false,
+    "shared": false,
+    "needs_lifting": false
+   },
+   {
+    "_": "VarDecl",
+    "region": [17, 9, 17, 11],
+    "name": "pi",
+    "type_name": null,
+    "value": {
+     "_": "FloatLiteral",
+     "region": [17, 14, 17, 18],
+     "value": 3.14
+    },
+    "mutable": false,
+    "shared": false,
+    "needs_lifting": false
+   },
+   {
+    "_": "VarDecl",
+    "region": [18, 9, 18, 13],
+    "name": "name",
+    "type_name": null,
+    "value": {
+     "_": "StringLiteral",
+     "region": [18, 16, 18, 24],
+     "value": "sensor"
+    },
+    "mutable": false,
+    "shared": false,
+    "needs_lifting": false
+   },
+   {
+    "_": "VarDecl",
+    "region": [19, 9, 19, 13],
+    "name": "flag",
+    "type_name": null,
+    "value": {
+     "_": "BoolLiteral",
+     "region": [0, 0, 0, 0],
+     "value": true
+    },
+    "mutable": false,
+    "shared": false,
+    "needs_lifting": false
+   },
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "MethodCall",
+     "region": [20, 5, 20, 9],
+     "obj": {
+      "_": "VarRef",
+      "region": [20, 5, 20, 9],
+      "name": "wifi"
+     },
+     "method": "connect",
+     "args": [
+      {
+       "_": "StringLiteral",
+       "region": [20, 18, 20, 23],
+       "value": "net"
+      },
+      {
+       "_": "StringLiteral",
+       "region": [20, 25, 20, 31],
+       "value": "pass"
+      }
+     ]
+    }
+   },
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "MethodCall",
+     "region": [21, 5, 21, 9],
+     "obj": {
+      "_": "VarRef",
+      "region": [21, 5, 21, 9],
+      "name": "mqtt"
+     },
+     "method": "connect",
+     "args": [
+      {
+       "_": "StringLiteral",
+       "region": [21, 18, 21, 36],
+       "value": "mqtt://localhost"
+      }
+     ]
+    }
+   },
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "FuncCall",
+     "region": [22, 5, 22, 8],
+     "name": "run",
+     "args": [
+      {
+       "_": "VarRef",
+       "region": [22, 9, 22, 14],
+       "name": "blink"
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

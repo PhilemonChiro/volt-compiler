@@ -1,0 +1,19 @@
+
+[yellow bold]-- DEPRECATION -- enum_wrong_type.volt:2[/yellow bold]
+
+Move `chip esp32` to volt.toml: chip = "esp32"
+
+ [dim]1 |[/dim] 
+ [dim]2 |[/dim] chip esp32
+ [dim]  |[/dim] [yellow]     ^^^^^[/yellow]
+
+[cyan]Hint: The chip declaration will move to volt.toml in a future version.[/cyan]
+
+
+[red bold]-- TYPE MISMATCH -- enum_wrong_type.volt:13[/red bold]
+
+Cannot use `==` between `Color` and `Size`.
+
+ [dim]12 |[/dim]     var c: Color = Color.red
+ [dim]13 |[/dim]     if c == Size.small {
+ [dim]   |[/dim] [red]       ^[/red]

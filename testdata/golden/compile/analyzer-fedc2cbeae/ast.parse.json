@@ -1,0 +1,212 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [3, 9, 4, 14],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [3, 9, 3, 12],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   },
+   {
+    "_": "PinDecl",
+    "region": [4, 9, 4, 14],
+    "name": "motor",
+    "mode": "PWM",
+    "gpio": 4
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [7, 6, 7, 11],
+   "name": "blink",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [8, 11, 8, 16],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [8, 11, 8, 16],
+      "microseconds": 500000,
+      "original": "500ms"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [9, 9, 9, 12],
+        "obj": {
+         "_": "VarRef",
+         "region": [9, 9, 9, 12],
+         "name": "led"
+        },
+        "method": "toggle",
+        "args": []
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  },
+  {
+   "_": "TaskDecl",
+   "region": [13, 6, 13, 15],
+   "name": "motor_pid",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [14, 11, 14, 14],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [14, 11, 14, 14],
+      "microseconds": 1000,
+      "original": "1ms"
+     },
+     "strict": true,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [15, 9, 15, 14],
+        "obj": {
+         "_": "VarRef",
+         "region": [15, 9, 15, 14],
+         "name": "motor"
+        },
+        "method": "set_pwm",
+        "args": [
+         {
+          "_": "IntLiteral",
+          "region": [15, 23, 15, 24],
+          "value": 0
+         }
+        ]
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  },
+  {
+   "_": "TaskDecl",
+   "region": [19, 6, 19, 17],
+   "name": "net_handler",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [20, 11, 20, 19],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [20, 11, 20, 19],
+      "microseconds": 5000000,
+      "original": "5seconds"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [21, 9, 21, 13],
+        "obj": {
+         "_": "VarRef",
+         "region": [21, 9, 21, 13],
+         "name": "wifi"
+        },
+        "method": "connect",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [21, 22, 21, 27],
+          "value": "net"
+         },
+         {
+          "_": "StringLiteral",
+          "region": [21, 29, 21, 35],
+          "value": "pass"
+         }
+        ]
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "FuncCall",
+     "region": [26, 5, 26, 8],
+     "name": "run",
+     "args": [
+      {
+       "_": "VarRef",
+       "region": [26, 9, 26, 14],
+       "name": "blink"
+      },
+      {
+       "_": "VarRef",
+       "region": [26, 16, 26, 25],
+       "name": "motor_pid"
+      },
+      {
+       "_": "VarRef",
+       "region": [26, 27, 26, 38],
+       "name": "net_handler"
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

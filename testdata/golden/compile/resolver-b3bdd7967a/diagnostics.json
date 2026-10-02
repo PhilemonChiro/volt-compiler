@@ -1,0 +1,14 @@
+[
+  {
+    "severity": "error",
+    "category": "NAME ERROR",
+    "message": "Unknown name `unknown_var`.",
+    "hint": null,
+    "region": [
+      3,
+      13,
+      3,
+      24
+    ]
+  }
+]

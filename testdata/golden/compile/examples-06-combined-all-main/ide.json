@@ -1,0 +1,696 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 4,
+    "col": 9,
+    "message": "Strapping pin: GPIO 2 must be LOW during boot for flash programming.",
+    "severity": "warning",
+    "hint": ""
+   },
+   {
+    "line": 5,
+    "col": 9,
+    "message": "Strapping pin: GPIO 5 controls boot debug output. Usually safe for general use.",
+    "severity": "warning",
+    "hint": ""
+   },
+   {
+    "line": 41,
+    "col": 11,
+    "message": "State `low_power` in machine `power_manager` is unreachable from initial state `normal`.",
+    "severity": "warning",
+    "hint": ""
+   }
+  ],
+  "pins": [
+   {
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   },
+   {
+    "name": "motor",
+    "mode": "PWM",
+    "gpio": 5
+   },
+   {
+    "name": "battery",
+    "mode": "Analog",
+    "gpio": 36
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "_rule0",
+    "tier": "background",
+    "line": 49
+   },
+   {
+    "name": "_rule1",
+    "tier": "critical",
+    "line": 51
+   },
+   {
+    "name": "slow_counter",
+    "tier": "background",
+    "line": 55
+   }
+  ],
+  "machines": [
+   {
+    "name": "power_manager",
+    "states": [
+     "normal",
+     "check_battery",
+     "low_power"
+    ],
+    "line": 19
+   }
+  ],
+  "channels": [],
+  "enums": [],
+  "chip": ""
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "/* Combined: functions, state machines, tasks, storage, ADC */\n\nhardware {\n    pin led = 2\n    pin motor: PWM = 5\n    pin battery: Analog = 36\n}\n\nfunc clamp(val: int, lo: int, hi: int) -> int {\n    if val < lo { return lo }\n    if val > hi { return hi }\n    return val\n}\n\nfunc scale(raw: int) -> int {\n    return clamp(raw * 100 / 4095, 0, 100)\n}\n\nmachine power_manager {\n    var battery_pct: int = 100\n\n    state normal {\n        enter {\n            log(\"power\", \"normal\")\n            led.on()\n        }\n        exit {\n            led.off()\n        }\n        after 10s -> check_battery\n    }\n\n    state check_battery {\n        enter {\n            battery_pct = scale(battery.read())\n            log(\"power\", \"battery check\")\n        }\n        after 100ms -> normal\n    }\n\n    state low_power {\n        enter {\n            log(\"power\", \"LOW\")\n        }\n        after 30s -> check_battery\n    }\n}\n\nevery 100ms { led.toggle() }\n\nevery 1ms strict {\n    motor.set_pwm(0)\n}\n\ntask slow_counter {\n    var n: int = 0\n    every 2s {\n        n = n + 1\n        let bat: int = battery.read()\n        let pct: int = scale(bat)\n        log(\"status\", \"tick\")\n    }\n}\n",
+ "find_symbols": [
+  {
+   "name": "led",
+   "kind": "pin",
+   "def_line": 4,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 49,
+     "col": 15
+    },
+    {
+     "line": 25,
+     "col": 13
+    },
+    {
+     "line": 28,
+     "col": 13
+    }
+   ]
+  },
+  {
+   "name": "motor",
+   "kind": "pin",
+   "def_line": 5,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 52,
+     "col": 5
+    }
+   ]
+  },
+  {
+   "name": "battery",
+   "kind": "pin",
+   "def_line": 6,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 59,
+     "col": 24
+    },
+    {
+     "line": 35,
+     "col": 33
+    }
+   ]
+  },
+  {
+   "name": "clamp",
+   "kind": "func",
+   "def_line": 9,
+   "def_col": 6,
+   "refs": [
+    {
+     "line": 16,
+     "col": 12
+    }
+   ]
+  },
+  {
+   "name": "val",
+   "kind": "param",
+   "def_line": 9,
+   "def_col": 12,
+   "refs": [
+    {
+     "line": 10,
+     "col": 8
+    },
+    {
+     "line": 11,
+     "col": 8
+    },
+    {
+     "line": 12,
+     "col": 12
+    }
+   ]
+  },
+  {
+   "name": "lo",
+   "kind": "param",
+   "def_line": 9,
+   "def_col": 22,
+   "refs": [
+    {
+     "line": 10,
+     "col": 14
+    },
+    {
+     "line": 10,
+     "col": 26
+    }
+   ]
+  },
+  {
+   "name": "hi",
+   "kind": "param",
+   "def_line": 9,
+   "def_col": 31,
+   "refs": [
+    {
+     "line": 11,
+     "col": 14
+    },
+    {
+     "line": 11,
+     "col": 26
+    }
+   ]
+  },
+  {
+   "name": "scale",
+   "kind": "func",
+   "def_line": 15,
+   "def_col": 6,
+   "refs": [
+    {
+     "line": 60,
+     "col": 24
+    },
+    {
+     "line": 35,
+     "col": 27
+    }
+   ]
+  },
+  {
+   "name": "raw",
+   "kind": "param",
+   "def_line": 15,
+   "def_col": 12,
+   "refs": [
+    {
+     "line": 16,
+     "col": 18
+    }
+   ]
+  },
+  {
+   "name": "_rule0",
+   "kind": "task",
+   "def_line": 49,
+   "def_col": 7,
+   "refs": []
+  },
+  {
+   "name": "_rule1",
+   "kind": "task",
+   "def_line": 51,
+   "def_col": 7,
+   "refs": []
+  },
+  {
+   "name": "slow_counter",
+   "kind": "task",
+   "def_line": 55,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "power_manager",
+   "kind": "machine",
+   "def_line": 19,
+   "def_col": 9,
+   "refs": []
+  },
+  {
+   "name": "normal",
+   "kind": "state",
+   "def_line": 22,
+   "def_col": 11,
+   "refs": []
+  },
+  {
+   "name": "check_battery",
+   "kind": "state",
+   "def_line": 33,
+   "def_col": 11,
+   "refs": []
+  },
+  {
+   "name": "low_power",
+   "kind": "state",
+   "def_line": 41,
+   "def_col": 11,
+   "refs": []
+  },
+  {
+   "name": "n",
+   "kind": "var",
+   "def_line": 56,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 58,
+     "col": 9
+    },
+    {
+     "line": 58,
+     "col": 13
+    }
+   ]
+  },
+  {
+   "name": "bat",
+   "kind": "var",
+   "def_line": 59,
+   "def_col": 13,
+   "refs": [
+    {
+     "line": 60,
+     "col": 30
+    }
+   ]
+  },
+  {
+   "name": "pct",
+   "kind": "var",
+   "def_line": 60,
+   "def_col": 13,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": [
+   {
+    "name": "power_manager",
+    "mermaid": "stateDiagram-v2\n    [*] --> normal\n    normal --> check_battery : after 10s\n    check_battery --> normal : after 100ms\n    low_power --> check_battery : after 30s",
+    "states": [
+     {
+      "name": "normal",
+      "line": 22
+     },
+     {
+      "name": "check_battery",
+      "line": 33
+     },
+     {
+      "name": "low_power",
+      "line": 41
+     }
+    ]
+   }
+  ]
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    p_led([\"led\"])\n    p_battery([\"battery\"])\n    f_scale(\"scale()\")\n    s_log{{\"log\"}}\n    u_power_manager[[\"power_manager\"]]\n    u_clamp(\"clamp()\")\n    u_scale(\"scale()\")\n    f_clamp(\"clamp()\")\n    u__rule0((\"↻ 100ms\"))\n    u__rule1((\"↻ 1ms\"))\n    u_slow_counter((\"slow_counter<br>↻ 2s\"))\n    u__rule0 -->|toggle| p_led\n    p_battery -.->|read| u_slow_counter\n    u_slow_counter -->|call| f_scale\n    u_slow_counter -->|log| s_log\n    u_power_manager -->|log| s_log\n    u_power_manager -->|off, on| p_led\n    u_power_manager -->|call| f_scale\n    p_battery -.->|read| u_power_manager\n    u_scale -->|call| f_clamp\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u__rule0 timer;\n    class p_led shared;\n    class u__rule1 timer;\n    class u_slow_counter timer;\n    class p_battery shared;\n    class f_scale func;\n    class s_log service;\n    class u_power_manager machine;\n    class u_clamp func;\n    class u_scale func;\n    class f_clamp func;",
+  "units": [
+   {
+    "id": "u__rule0",
+    "name": "↻ 100ms",
+    "line": 49
+   },
+   {
+    "id": "u__rule1",
+    "name": "↻ 1ms",
+    "line": 51
+   },
+   {
+    "id": "u_slow_counter",
+    "name": "slow_counter<br>↻ 2s",
+    "line": 55
+   },
+   {
+    "id": "u_power_manager",
+    "name": "power_manager",
+    "line": 19
+   },
+   {
+    "id": "u_clamp",
+    "name": "clamp()",
+    "line": 9
+   },
+   {
+    "id": "u_scale",
+    "name": "scale()",
+    "line": 15
+   }
+  ],
+  "loops": [
+   "u__rule0",
+   "u__rule1",
+   "u_slow_counter"
+  ],
+  "edges": [
+   {
+    "drive": "timer",
+    "src": "u__rule0",
+    "dst": "p_led",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_battery",
+    "dst": "u_slow_counter",
+    "rate_ms": 2000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_slow_counter",
+    "dst": "f_scale",
+    "rate_ms": 2000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_slow_counter",
+    "dst": "s_log",
+    "rate_ms": 2000.0
+   },
+   {
+    "drive": "machine",
+    "src": "u_power_manager",
+    "dst": "s_log"
+   },
+   {
+    "drive": "machine",
+    "src": "u_power_manager",
+    "dst": "p_led"
+   },
+   {
+    "drive": "machine",
+    "src": "u_power_manager",
+    "dst": "f_scale"
+   },
+   {
+    "drive": "machine",
+    "src": "p_battery",
+    "dst": "u_power_manager"
+   },
+   {
+    "drive": "func",
+    "src": "u_scale",
+    "dst": "f_clamp"
+   }
+  ],
+  "nodes": {
+   "u__rule0": {
+    "kind": "timer",
+    "label": "↻ 100ms",
+    "line": 49,
+    "detail": "every 100ms"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 4,
+    "detail": "GPIO 2"
+   },
+   "u__rule1": {
+    "kind": "timer",
+    "label": "↻ 1ms",
+    "line": 51,
+    "detail": "every 1ms"
+   },
+   "p_motor": {
+    "kind": "pin",
+    "label": "motor",
+    "line": 5,
+    "detail": "PWM · GPIO 5"
+   },
+   "u_slow_counter": {
+    "kind": "timer",
+    "label": "slow_counter<br>↻ 2s",
+    "line": 55,
+    "detail": "every 2s"
+   },
+   "p_battery": {
+    "kind": "pin",
+    "label": "battery",
+    "line": 6,
+    "detail": "Analog · GPIO 36"
+   },
+   "f_scale": {
+    "kind": "func",
+    "label": "scale()",
+    "line": 15,
+    "detail": "function"
+   },
+   "s_log": {
+    "kind": "service",
+    "label": "log",
+    "line": null,
+    "detail": "log"
+   },
+   "u_power_manager": {
+    "kind": "machine",
+    "label": "power_manager",
+    "line": 19,
+    "detail": "3 states"
+   },
+   "u_clamp": {
+    "kind": "func",
+    "label": "clamp()",
+    "line": 9,
+    "detail": "function"
+   },
+   "u_scale": {
+    "kind": "func",
+    "label": "scale()",
+    "line": 15,
+    "detail": "function"
+   },
+   "f_clamp": {
+    "kind": "func",
+    "label": "clamp()",
+    "line": 9,
+    "detail": "function"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    p_led([\"led\"])\n    p_motor([\"motor\"])\n    p_battery([\"battery\"])\n    f_scale(\"scale()\")\n    s_log{{\"log\"}}\n    u_power_manager[[\"power_manager\"]]\n    u_clamp(\"clamp()\")\n    u_scale(\"scale()\")\n    f_clamp(\"clamp()\")\n    u__rule0((\"↻ 100ms\"))\n    u__rule1((\"↻ 1ms\"))\n    u_slow_counter((\"slow_counter<br>↻ 2s\"))\n    u__rule0 -->|toggle| p_led\n    u__rule1 -->|set_pwm| p_motor\n    p_battery -.->|read| u_slow_counter\n    u_slow_counter -->|call| f_scale\n    u_slow_counter -->|log| s_log\n    u_power_manager -->|log| s_log\n    u_power_manager -->|off, on| p_led\n    u_power_manager -->|call| f_scale\n    p_battery -.->|read| u_power_manager\n    u_scale -->|call| f_clamp\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u__rule0 timer;\n    class p_led shared;\n    class u__rule1 timer;\n    class p_motor pin;\n    class u_slow_counter timer;\n    class p_battery shared;\n    class f_scale func;\n    class s_log service;\n    class u_power_manager machine;\n    class u_clamp func;\n    class u_scale func;\n    class f_clamp func;",
+  "units": [
+   {
+    "id": "u__rule0",
+    "name": "↻ 100ms",
+    "line": 49
+   },
+   {
+    "id": "u__rule1",
+    "name": "↻ 1ms",
+    "line": 51
+   },
+   {
+    "id": "u_slow_counter",
+    "name": "slow_counter<br>↻ 2s",
+    "line": 55
+   },
+   {
+    "id": "u_power_manager",
+    "name": "power_manager",
+    "line": 19
+   },
+   {
+    "id": "u_clamp",
+    "name": "clamp()",
+    "line": 9
+   },
+   {
+    "id": "u_scale",
+    "name": "scale()",
+    "line": 15
+   }
+  ],
+  "loops": [
+   "u__rule0",
+   "u__rule1",
+   "u_slow_counter"
+  ],
+  "edges": [
+   {
+    "drive": "timer",
+    "src": "u__rule0",
+    "dst": "p_led",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule1",
+    "dst": "p_motor",
+    "rate_ms": 1.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_battery",
+    "dst": "u_slow_counter",
+    "rate_ms": 2000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_slow_counter",
+    "dst": "f_scale",
+    "rate_ms": 2000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_slow_counter",
+    "dst": "s_log",
+    "rate_ms": 2000.0
+   },
+   {
+    "drive": "machine",
+    "src": "u_power_manager",
+    "dst": "s_log"
+   },
+   {
+    "drive": "machine",
+    "src": "u_power_manager",
+    "dst": "p_led"
+   },
+   {
+    "drive": "machine",
+    "src": "u_power_manager",
+    "dst": "f_scale"
+   },
+   {
+    "drive": "machine",
+    "src": "p_battery",
+    "dst": "u_power_manager"
+   },
+   {
+    "drive": "func",
+    "src": "u_scale",
+    "dst": "f_clamp"
+   }
+  ],
+  "nodes": {
+   "u__rule0": {
+    "kind": "timer",
+    "label": "↻ 100ms",
+    "line": 49,
+    "detail": "every 100ms"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 4,
+    "detail": "GPIO 2"
+   },
+   "u__rule1": {
+    "kind": "timer",
+    "label": "↻ 1ms",
+    "line": 51,
+    "detail": "every 1ms"
+   },
+   "p_motor": {
+    "kind": "pin",
+    "label": "motor",
+    "line": 5,
+    "detail": "PWM · GPIO 5"
+   },
+   "u_slow_counter": {
+    "kind": "timer",
+    "label": "slow_counter<br>↻ 2s",
+    "line": 55,
+    "detail": "every 2s"
+   },
+   "p_battery": {
+    "kind": "pin",
+    "label": "battery",
+    "line": 6,
+    "detail": "Analog · GPIO 36"
+   },
+   "f_scale": {
+    "kind": "func",
+    "label": "scale()",
+    "line": 15,
+    "detail": "function"
+   },
+   "s_log": {
+    "kind": "service",
+    "label": "log",
+    "line": null,
+    "detail": "log"
+   },
+   "u_power_manager": {
+    "kind": "machine",
+    "label": "power_manager",
+    "line": 19,
+    "detail": "3 states"
+   },
+   "u_clamp": {
+    "kind": "func",
+    "label": "clamp()",
+    "line": 9,
+    "detail": "function"
+   },
+   "u_scale": {
+    "kind": "func",
+    "label": "scale()",
+    "line": 15,
+    "detail": "function"
+   },
+   "f_clamp": {
+    "kind": "func",
+    "label": "clamp()",
+    "line": 9,
+    "detail": "function"
+   }
+  }
+ }
+}

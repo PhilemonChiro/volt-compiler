@@ -1,0 +1,111 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [1, 6, 1, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [3, 9, 3, 12],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [3, 9, 3, 12],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [
+  {
+   "_": "MachineDecl",
+   "region": [5, 9, 5, 13],
+   "name": "Test",
+   "states": [
+    {
+     "_": "StateDecl",
+     "region": [6, 19, 6, 21],
+     "name": "on",
+     "is_initial": true,
+     "enter_body": [],
+     "exit_body": [
+      {
+       "_": "VarDecl",
+       "region": [8, 17, 8, 18],
+       "name": "x",
+       "type_name": null,
+       "value": {
+        "_": "VarRef",
+        "region": [8, 21, 8, 35],
+        "name": "oops_undefined"
+       },
+       "mutable": false,
+       "shared": false,
+       "needs_lifting": false
+      }
+     ],
+     "transitions": [],
+     "timed_transitions": [
+      {
+       "_": "TimedTransition",
+       "region": [10, 15, 10, 17],
+       "duration": {
+        "_": "DurationLiteral",
+        "region": [10, 15, 10, 17],
+        "microseconds": 5000000,
+        "original": "5s"
+       },
+       "target_state": "off",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "body": []
+    },
+    {
+     "_": "StateDecl",
+     "region": [12, 11, 12, 14],
+     "name": "off",
+     "is_initial": false,
+     "enter_body": [],
+     "exit_body": [],
+     "transitions": [],
+     "timed_transitions": [
+      {
+       "_": "TimedTransition",
+       "region": [13, 15, 13, 17],
+       "duration": {
+        "_": "DurationLiteral",
+        "region": [13, 15, 13, 17],
+        "microseconds": 5000000,
+        "original": "5s"
+       },
+       "target_state": "on",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "body": []
+    }
+   ],
+   "variables": []
+  }
+ ],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

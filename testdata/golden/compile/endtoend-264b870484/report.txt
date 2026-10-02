@@ -1,0 +1,8 @@
+
+[red bold]-- NAME ERROR -- unknown_func.volt:2[/red bold]
+
+Unknown function `nonexistent`.
+
+ [dim]1 |[/dim] setup {
+ [dim]2 |[/dim]     nonexistent()
+ [dim]  |[/dim] [red]    ^^^^^^^^^^^[/red]

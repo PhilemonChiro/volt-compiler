@@ -1,0 +1,84 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [3, 9, 3, 15],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [3, 9, 3, 15],
+    "name": "sensor",
+    "mode": "Analog",
+    "gpio": 4
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "MethodCall",
+     "region": [6, 5, 6, 9],
+     "obj": {
+      "_": "VarRef",
+      "region": [6, 5, 6, 9],
+      "name": "wifi"
+     },
+     "method": "connect",
+     "args": [
+      {
+       "_": "StringLiteral",
+       "region": [6, 18, 6, 23],
+       "value": "net"
+      },
+      {
+       "_": "StringLiteral",
+       "region": [6, 25, 6, 31],
+       "value": "pass"
+      }
+     ]
+    }
+   },
+   {
+    "_": "VarDecl",
+    "region": [7, 9, 7, 12],
+    "name": "val",
+    "type_name": null,
+    "value": {
+     "_": "MethodCall",
+     "region": [7, 15, 7, 21],
+     "obj": {
+      "_": "VarRef",
+      "region": [7, 15, 7, 21],
+      "name": "sensor"
+     },
+     "method": "read",
+     "args": []
+    },
+    "mutable": false,
+    "shared": false,
+    "needs_lifting": false
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

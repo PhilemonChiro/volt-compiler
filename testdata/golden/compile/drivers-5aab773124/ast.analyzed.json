@@ -1,0 +1,91 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 12],
+  "target": "rp2040"
+ },
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [6, 6, 6, 11],
+   "name": "alive",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [7, 11, 7, 13],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [7, 11, 7, 13],
+      "microseconds": 3000000,
+      "original": "3s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [8, 9, 8, 15],
+        "obj": {
+         "_": "VarRef",
+         "region": [8, 9, 8, 15],
+         "name": "system"
+        },
+        "method": "watchdog_feed",
+        "args": []
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "MethodCall",
+     "region": [4, 5, 4, 11],
+     "obj": {
+      "_": "VarRef",
+      "region": [4, 5, 4, 11],
+      "name": "system"
+     },
+     "method": "watchdog_enable",
+     "args": [
+      {
+       "_": "IntLiteral",
+       "region": [4, 28, 4, 32],
+       "value": 8000
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

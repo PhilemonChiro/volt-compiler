@@ -1,0 +1,105 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [5, 9, 9, 13],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [5, 9, 5, 12],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   },
+   {
+    "_": "PinDecl",
+    "region": [6, 9, 6, 14],
+    "name": "motor",
+    "mode": "PWM",
+    "gpio": 4
+   },
+   {
+    "_": "PinDecl",
+    "region": [7, 9, 7, 15],
+    "name": "button",
+    "mode": "PullUpInput",
+    "gpio": 0
+   },
+   {
+    "_": "PinDecl",
+    "region": [8, 9, 8, 16],
+    "name": "battery",
+    "mode": "Analog",
+    "gpio": 36
+   },
+   {
+    "_": "PinDecl",
+    "region": [9, 9, 9, 13],
+    "name": "soil",
+    "mode": "Analog",
+    "gpio": 39
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "MethodCall",
+     "region": [13, 5, 13, 8],
+     "obj": {
+      "_": "VarRef",
+      "region": [13, 5, 13, 8],
+      "name": "led"
+     },
+     "method": "toggle",
+     "args": []
+    }
+   },
+   {
+    "_": "VarDecl",
+    "region": [14, 9, 14, 12],
+    "name": "bat",
+    "type_name": "int",
+    "value": {
+     "_": "MethodCall",
+     "region": [14, 15, 14, 22],
+     "obj": {
+      "_": "VarRef",
+      "region": [14, 15, 14, 22],
+      "name": "battery"
+     },
+     "method": "read",
+     "args": []
+    },
+    "mutable": false,
+    "shared": false,
+    "needs_lifting": false
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

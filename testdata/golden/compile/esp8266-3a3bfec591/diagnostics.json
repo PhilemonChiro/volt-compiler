@@ -1,0 +1,26 @@
+[
+  {
+    "severity": "warning",
+    "category": "DEPRECATION",
+    "message": "Move `chip esp8266` to volt.toml: chip = \"esp8266\"",
+    "hint": "The chip declaration will move to volt.toml in a future version.",
+    "region": [
+      2,
+      6,
+      2,
+      13
+    ]
+  },
+  {
+    "severity": "error",
+    "category": "HARDWARE ERROR",
+    "message": "Pin 4 is already used by `a` (line 4).",
+    "hint": "Each pin can only be used once.",
+    "region": [
+      5,
+      9,
+      5,
+      10
+    ]
+  }
+]

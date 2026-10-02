@@ -1,0 +1,79 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [4, 9, 4, 12],
+  "pins": [],
+  "buses": [
+   {
+    "_": "BusDecl",
+    "region": [4, 9, 4, 12],
+    "bus_type": "uart",
+    "name": "com",
+    "params": {
+     "tx": {
+      "_": "IntLiteral",
+      "region": [4, 23, 4, 25],
+      "value": 17
+     },
+     "rx": {
+      "_": "IntLiteral",
+      "region": [4, 31, 4, 33],
+      "value": 16
+     },
+     "baud": {
+      "_": "IntLiteral",
+      "region": [4, 41, 4, 47],
+      "value": 115200
+     }
+    }
+   }
+  ],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "MethodCall",
+     "region": [7, 5, 7, 8],
+     "obj": {
+      "_": "VarRef",
+      "region": [7, 5, 7, 8],
+      "name": "com"
+     },
+     "method": "print",
+     "args": [
+      {
+       "_": "StringLiteral",
+       "region": [7, 15, 7, 22],
+       "value": "hello"
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

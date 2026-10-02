@@ -1,0 +1,8 @@
+
+[yellow bold]-- HARDWARE WARNING -- main.volt:2[/yellow bold]
+
+GPIO 5: GPIO 5 is a strapping pin. Outputs PWM signal during boot. Connected loads (relays, motors) may briefly activate.
+
+ [dim]1 |[/dim] hardware {
+ [dim]2 |[/dim]     pin x: Output = 5
+ [dim]  |[/dim] [yellow]        ^[/yellow]

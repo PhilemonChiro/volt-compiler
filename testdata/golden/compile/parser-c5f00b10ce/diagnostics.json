@@ -1,0 +1,14 @@
+[
+  {
+    "severity": "error",
+    "category": "NAME ERROR",
+    "message": "Unknown name `led`.",
+    "hint": "Did you mean `ble`?",
+    "region": [
+      8,
+      13,
+      8,
+      16
+    ]
+  }
+]

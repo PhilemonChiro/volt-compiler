@@ -1,0 +1,8 @@
+
+[red bold]-- NAME ERROR -- main.volt:3[/red bold]
+
+Unknown name `unknown_var`.
+
+ [dim]2 |[/dim] setup {
+ [dim]3 |[/dim]     let x = unknown_var
+ [dim]  |[/dim] [red]            ^^^^^^^^^^^[/red]

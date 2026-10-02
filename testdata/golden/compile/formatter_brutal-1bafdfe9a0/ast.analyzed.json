@@ -1,0 +1,118 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [1, 6, 1, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [2, 16, 2, 19],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [2, 16, 2, 19],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 4
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [4, 7, 4, 9],
+   "name": "_rule0",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [4, 7, 4, 9],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [4, 7, 4, 9],
+      "microseconds": 1000000,
+      "original": "1s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [5, 3, 5, 6],
+        "obj": {
+         "_": "VarRef",
+         "region": [5, 3, 5, 6],
+         "name": "led"
+        },
+        "method": "toggle",
+        "args": []
+       }
+      },
+      {
+       "_": "AssignExpr",
+       "region": [6, 3, 6, 4],
+       "target": {
+        "_": "VarRef",
+        "region": [6, 3, 6, 4],
+        "name": "n"
+       },
+       "value": {
+        "_": "BinaryExpr",
+        "region": [6, 7, 6, 8],
+        "left": {
+         "_": "VarRef",
+         "region": [6, 7, 6, 8],
+         "name": "n"
+        },
+        "op": "+",
+        "right": {
+         "_": "IntLiteral",
+         "region": [6, 11, 6, 12],
+         "value": 1
+        },
+        "result_type": "int"
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [
+  {
+   "_": "VarDecl",
+   "region": [3, 5, 3, 6],
+   "name": "n",
+   "type_name": null,
+   "value": {
+    "_": "IntLiteral",
+    "region": [3, 9, 3, 10],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  }
+ ],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

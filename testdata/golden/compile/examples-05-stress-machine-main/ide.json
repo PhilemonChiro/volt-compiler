@@ -1,0 +1,432 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 4,
+    "col": 9,
+    "message": "Strapping pin: GPIO 2 must be LOW during boot for flash programming.",
+    "severity": "warning",
+    "hint": ""
+   }
+  ],
+  "pins": [
+   {
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   },
+   {
+    "name": "motor",
+    "mode": "PWM",
+    "gpio": 4
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "_rule0",
+    "tier": "critical",
+    "line": 61
+   },
+   {
+    "name": "_rule1",
+    "tier": "background",
+    "line": 65
+   }
+  ],
+  "machines": [
+   {
+    "name": "sequencer",
+    "states": [
+     "phase_a",
+     "phase_b",
+     "phase_c",
+     "phase_d",
+     "phase_e"
+    ],
+    "line": 12
+   }
+  ],
+  "channels": [],
+  "enums": [],
+  "chip": ""
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "/* Stress test: 5-phase sequencer + watchdog + multiple tasks */\n\nhardware {\n    pin led = 2\n    pin motor: PWM = 4\n}\n\nsetup {\n    system.watchdog_enable(15000)\n}\n\nmachine sequencer {\n    var step: int = 0\n    var total_cycles: int = 0\n\n    state phase_a {\n        enter {\n            step = 0\n            led.on()\n            log(\"seq\", \"phase A\")\n        }\n        exit {\n            led.off()\n        }\n        after 1s -> phase_b\n    }\n\n    state phase_b {\n        enter {\n            step = step + 1\n            log(\"seq\", \"phase B\")\n        }\n        after 800ms -> phase_c\n    }\n\n    state phase_c {\n        enter {\n            step = step + 1\n            log(\"seq\", \"phase C\")\n        }\n        after 600ms -> phase_d\n    }\n\n    state phase_d {\n        enter {\n            step = step + 1\n            log(\"seq\", \"phase D\")\n        }\n        after 400ms -> phase_e\n    }\n\n    state phase_e {\n        enter {\n            total_cycles = total_cycles + 1\n            log(\"seq\", \"cycle complete\")\n        }\n        after 200ms -> phase_a\n    }\n}\n\nevery 1ms strict {\n    motor.set_pwm(0)\n}\n\nevery 500ms {\n    system.watchdog_feed()\n    led.toggle()\n}\n",
+ "find_symbols": [
+  {
+   "name": "led",
+   "kind": "pin",
+   "def_line": 4,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 67,
+     "col": 5
+    },
+    {
+     "line": 19,
+     "col": 13
+    },
+    {
+     "line": 23,
+     "col": 13
+    }
+   ]
+  },
+  {
+   "name": "motor",
+   "kind": "pin",
+   "def_line": 5,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 62,
+     "col": 5
+    }
+   ]
+  },
+  {
+   "name": "_rule0",
+   "kind": "task",
+   "def_line": 61,
+   "def_col": 7,
+   "refs": []
+  },
+  {
+   "name": "_rule1",
+   "kind": "task",
+   "def_line": 65,
+   "def_col": 7,
+   "refs": []
+  },
+  {
+   "name": "sequencer",
+   "kind": "machine",
+   "def_line": 12,
+   "def_col": 9,
+   "refs": []
+  },
+  {
+   "name": "phase_a",
+   "kind": "state",
+   "def_line": 16,
+   "def_col": 11,
+   "refs": []
+  },
+  {
+   "name": "phase_b",
+   "kind": "state",
+   "def_line": 28,
+   "def_col": 11,
+   "refs": []
+  },
+  {
+   "name": "phase_c",
+   "kind": "state",
+   "def_line": 36,
+   "def_col": 11,
+   "refs": []
+  },
+  {
+   "name": "phase_d",
+   "kind": "state",
+   "def_line": 44,
+   "def_col": 11,
+   "refs": []
+  },
+  {
+   "name": "phase_e",
+   "kind": "state",
+   "def_line": 52,
+   "def_col": 11,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": [
+   {
+    "name": "sequencer",
+    "mermaid": "stateDiagram-v2\n    [*] --> phase_a\n    phase_a --> phase_b : after 1s\n    phase_b --> phase_c : after 800ms\n    phase_c --> phase_d : after 600ms\n    phase_d --> phase_e : after 400ms\n    phase_e --> phase_a : after 200ms",
+    "states": [
+     {
+      "name": "phase_a",
+      "line": 16
+     },
+     {
+      "name": "phase_b",
+      "line": 28
+     },
+     {
+      "name": "phase_c",
+      "line": 36
+     },
+     {
+      "name": "phase_d",
+      "line": 44
+     },
+     {
+      "name": "phase_e",
+      "line": 52
+     }
+    ]
+   }
+  ]
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_system{{\"system\"}}\n    p_led([\"led\"])\n    u_sequencer[[\"sequencer\"]]\n    s_log{{\"log\"}}\n    u__rule0((\"↻ 1ms\"))\n    u__rule1((\"↻ 500ms\"))\n    u_setup -->|watchdog_enable| s_system\n    u__rule1 -->|watchdog_feed| s_system\n    u__rule1 -->|toggle| p_led\n    u_sequencer -->|off, on| p_led\n    u_sequencer -->|log| s_log\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_system service;\n    class u__rule0 timer;\n    class u__rule1 timer;\n    class p_led shared;\n    class u_sequencer machine;\n    class s_log service;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u__rule0",
+    "name": "↻ 1ms",
+    "line": 61
+   },
+   {
+    "id": "u__rule1",
+    "name": "↻ 500ms",
+    "line": 65
+   },
+   {
+    "id": "u_sequencer",
+    "name": "sequencer",
+    "line": 12
+   }
+  ],
+  "loops": [
+   "u__rule0",
+   "u__rule1"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_system"
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule1",
+    "dst": "s_system",
+    "rate_ms": 500.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule1",
+    "dst": "p_led",
+    "rate_ms": 500.0
+   },
+   {
+    "drive": "machine",
+    "src": "u_sequencer",
+    "dst": "p_led"
+   },
+   {
+    "drive": "machine",
+    "src": "u_sequencer",
+    "dst": "s_log"
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_system": {
+    "kind": "service",
+    "label": "system",
+    "line": null,
+    "detail": "watchdog_enable, watchdog_feed"
+   },
+   "u__rule0": {
+    "kind": "timer",
+    "label": "↻ 1ms",
+    "line": 61,
+    "detail": "every 1ms"
+   },
+   "p_motor": {
+    "kind": "pin",
+    "label": "motor",
+    "line": 5,
+    "detail": "PWM · GPIO 4"
+   },
+   "u__rule1": {
+    "kind": "timer",
+    "label": "↻ 500ms",
+    "line": 65,
+    "detail": "every 500ms"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 4,
+    "detail": "GPIO 2"
+   },
+   "u_sequencer": {
+    "kind": "machine",
+    "label": "sequencer",
+    "line": 12,
+    "detail": "5 states"
+   },
+   "s_log": {
+    "kind": "service",
+    "label": "log",
+    "line": null,
+    "detail": "log"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_system{{\"system\"}}\n    p_motor([\"motor\"])\n    p_led([\"led\"])\n    u_sequencer[[\"sequencer\"]]\n    s_log{{\"log\"}}\n    u__rule0((\"↻ 1ms\"))\n    u__rule1((\"↻ 500ms\"))\n    u_setup -->|watchdog_enable| s_system\n    u__rule0 -->|set_pwm| p_motor\n    u__rule1 -->|watchdog_feed| s_system\n    u__rule1 -->|toggle| p_led\n    u_sequencer -->|off, on| p_led\n    u_sequencer -->|log| s_log\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_system service;\n    class u__rule0 timer;\n    class p_motor pin;\n    class u__rule1 timer;\n    class p_led shared;\n    class u_sequencer machine;\n    class s_log service;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u__rule0",
+    "name": "↻ 1ms",
+    "line": 61
+   },
+   {
+    "id": "u__rule1",
+    "name": "↻ 500ms",
+    "line": 65
+   },
+   {
+    "id": "u_sequencer",
+    "name": "sequencer",
+    "line": 12
+   }
+  ],
+  "loops": [
+   "u__rule0",
+   "u__rule1"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_system"
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule0",
+    "dst": "p_motor",
+    "rate_ms": 1.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule1",
+    "dst": "s_system",
+    "rate_ms": 500.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule1",
+    "dst": "p_led",
+    "rate_ms": 500.0
+   },
+   {
+    "drive": "machine",
+    "src": "u_sequencer",
+    "dst": "p_led"
+   },
+   {
+    "drive": "machine",
+    "src": "u_sequencer",
+    "dst": "s_log"
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_system": {
+    "kind": "service",
+    "label": "system",
+    "line": null,
+    "detail": "watchdog_enable, watchdog_feed"
+   },
+   "u__rule0": {
+    "kind": "timer",
+    "label": "↻ 1ms",
+    "line": 61,
+    "detail": "every 1ms"
+   },
+   "p_motor": {
+    "kind": "pin",
+    "label": "motor",
+    "line": 5,
+    "detail": "PWM · GPIO 4"
+   },
+   "u__rule1": {
+    "kind": "timer",
+    "label": "↻ 500ms",
+    "line": 65,
+    "detail": "every 500ms"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 4,
+    "detail": "GPIO 2"
+   },
+   "u_sequencer": {
+    "kind": "machine",
+    "label": "sequencer",
+    "line": 12,
+    "detail": "5 states"
+   },
+   "s_log": {
+    "kind": "service",
+    "label": "log",
+    "line": null,
+    "detail": "log"
+   }
+  }
+ }
+}

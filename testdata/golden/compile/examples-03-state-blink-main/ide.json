@@ -1,0 +1,192 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 4,
+    "col": 9,
+    "message": "Strapping pin: GPIO 2 must be LOW during boot for flash programming.",
+    "severity": "warning",
+    "hint": ""
+   }
+  ],
+  "pins": [
+   {
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [],
+  "machines": [
+   {
+    "name": "blinker",
+    "states": [
+     "off_state",
+     "on_state"
+    ],
+    "line": 7
+   }
+  ],
+  "channels": [],
+  "enums": [],
+  "chip": ""
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "/* LED blink via state machine */\n\nhardware {\n    pin led = 2\n}\n\nmachine blinker {\n    state off_state {\n        enter {\n            led.off()\n        }\n        after 500ms -> on_state\n    }\n    state on_state {\n        enter {\n            led.on()\n        }\n        after 500ms -> off_state\n    }\n}\n",
+ "find_symbols": [
+  {
+   "name": "led",
+   "kind": "pin",
+   "def_line": 4,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 10,
+     "col": 13
+    },
+    {
+     "line": 16,
+     "col": 13
+    }
+   ]
+  },
+  {
+   "name": "blinker",
+   "kind": "machine",
+   "def_line": 7,
+   "def_col": 9,
+   "refs": []
+  },
+  {
+   "name": "off_state",
+   "kind": "state",
+   "def_line": 8,
+   "def_col": 11,
+   "refs": []
+  },
+  {
+   "name": "on_state",
+   "kind": "state",
+   "def_line": 14,
+   "def_col": 11,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": [
+   {
+    "name": "blinker",
+    "mermaid": "stateDiagram-v2\n    [*] --> off_state\n    off_state --> on_state : after 500ms\n    on_state --> off_state : after 500ms",
+    "states": [
+     {
+      "name": "off_state",
+      "line": 8
+     },
+     {
+      "name": "on_state",
+      "line": 14
+     }
+    ]
+   }
+  ]
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_blinker[[\"blinker\"]]\n    p_led([\"led\"])\n    u_blinker -->|off, on| p_led\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_blinker machine;\n    class p_led pin;",
+  "units": [
+   {
+    "id": "u_blinker",
+    "name": "blinker",
+    "line": 7
+   }
+  ],
+  "loops": [],
+  "edges": [
+   {
+    "drive": "machine",
+    "src": "u_blinker",
+    "dst": "p_led"
+   }
+  ],
+  "nodes": {
+   "u_blinker": {
+    "kind": "machine",
+    "label": "blinker",
+    "line": 7,
+    "detail": "2 states"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 4,
+    "detail": "GPIO 2"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_blinker[[\"blinker\"]]\n    p_led([\"led\"])\n    u_blinker -->|off, on| p_led\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_blinker machine;\n    class p_led pin;",
+  "units": [
+   {
+    "id": "u_blinker",
+    "name": "blinker",
+    "line": 7
+   }
+  ],
+  "loops": [],
+  "edges": [
+   {
+    "drive": "machine",
+    "src": "u_blinker",
+    "dst": "p_led"
+   }
+  ],
+  "nodes": {
+   "u_blinker": {
+    "kind": "machine",
+    "label": "blinker",
+    "line": 7,
+    "detail": "2 states"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 4,
+    "detail": "GPIO 2"
+   }
+  }
+ }
+}

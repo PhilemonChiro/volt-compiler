@@ -1,0 +1,14 @@
+[
+  {
+    "severity": "error",
+    "category": "TYPE MISMATCH",
+    "message": "Cannot negate `string` with `-`.",
+    "hint": null,
+    "region": [
+      2,
+      14,
+      2,
+      21
+    ]
+  }
+]

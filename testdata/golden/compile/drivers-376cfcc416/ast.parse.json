@@ -1,0 +1,222 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [4, 9, 10, 12],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [4, 9, 4, 12],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   },
+   {
+    "_": "PinDecl",
+    "region": [5, 9, 5, 12],
+    "name": "btn",
+    "mode": "PullUpInput",
+    "gpio": 0
+   },
+   {
+    "_": "PinDecl",
+    "region": [6, 9, 6, 12],
+    "name": "pot",
+    "mode": "Analog",
+    "gpio": 34
+   },
+   {
+    "_": "PinDecl",
+    "region": [7, 9, 7, 14],
+    "name": "motor",
+    "mode": "PWM",
+    "gpio": 25
+   },
+   {
+    "_": "PinDecl",
+    "region": [8, 9, 8, 12],
+    "name": "arm",
+    "mode": "Servo",
+    "gpio": 13
+   },
+   {
+    "_": "PinDecl",
+    "region": [9, 9, 9, 14],
+    "name": "audio",
+    "mode": "DAC",
+    "gpio": 26
+   },
+   {
+    "_": "PinDecl",
+    "region": [10, 9, 10, 12],
+    "name": "pad",
+    "mode": "Touch",
+    "gpio": 4
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "MethodCall",
+     "region": [13, 5, 13, 8],
+     "obj": {
+      "_": "VarRef",
+      "region": [13, 5, 13, 8],
+      "name": "led"
+     },
+     "method": "on",
+     "args": []
+    }
+   },
+   {
+    "_": "VarDecl",
+    "region": [14, 9, 14, 16],
+    "name": "pressed",
+    "type_name": "bool",
+    "value": {
+     "_": "MethodCall",
+     "region": [14, 25, 14, 28],
+     "obj": {
+      "_": "VarRef",
+      "region": [14, 25, 14, 28],
+      "name": "btn"
+     },
+     "method": "is_pressed",
+     "args": []
+    },
+    "mutable": true,
+    "shared": false,
+    "needs_lifting": false
+   },
+   {
+    "_": "VarDecl",
+    "region": [15, 9, 15, 16],
+    "name": "reading",
+    "type_name": "int",
+    "value": {
+     "_": "MethodCall",
+     "region": [15, 24, 15, 27],
+     "obj": {
+      "_": "VarRef",
+      "region": [15, 24, 15, 27],
+      "name": "pot"
+     },
+     "method": "read",
+     "args": []
+    },
+    "mutable": true,
+    "shared": false,
+    "needs_lifting": false
+   },
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "MethodCall",
+     "region": [16, 5, 16, 10],
+     "obj": {
+      "_": "VarRef",
+      "region": [16, 5, 16, 10],
+      "name": "motor"
+     },
+     "method": "write",
+     "args": [
+      {
+       "_": "IntLiteral",
+       "region": [16, 17, 16, 20],
+       "value": 128
+      }
+     ]
+    }
+   },
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "MethodCall",
+     "region": [17, 5, 17, 8],
+     "obj": {
+      "_": "VarRef",
+      "region": [17, 5, 17, 8],
+      "name": "arm"
+     },
+     "method": "move",
+     "args": [
+      {
+       "_": "IntLiteral",
+       "region": [17, 14, 17, 16],
+       "value": 90
+      }
+     ]
+    }
+   },
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "MethodCall",
+     "region": [18, 5, 18, 10],
+     "obj": {
+      "_": "VarRef",
+      "region": [18, 5, 18, 10],
+      "name": "audio"
+     },
+     "method": "write",
+     "args": [
+      {
+       "_": "IntLiteral",
+       "region": [18, 17, 18, 20],
+       "value": 128
+      }
+     ]
+    }
+   },
+   {
+    "_": "VarDecl",
+    "region": [19, 9, 19, 16],
+    "name": "touched",
+    "type_name": "bool",
+    "value": {
+     "_": "MethodCall",
+     "region": [19, 25, 19, 28],
+     "obj": {
+      "_": "VarRef",
+      "region": [19, 25, 19, 28],
+      "name": "pad"
+     },
+     "method": "is_touched",
+     "args": []
+    },
+    "mutable": true,
+    "shared": false,
+    "needs_lifting": false
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

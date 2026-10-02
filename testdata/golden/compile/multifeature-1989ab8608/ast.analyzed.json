@@ -1,0 +1,223 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [4, 9, 6, 14],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [4, 9, 4, 12],
+    "name": "red",
+    "mode": "Output",
+    "gpio": 2
+   },
+   {
+    "_": "PinDecl",
+    "region": [5, 9, 5, 15],
+    "name": "yellow",
+    "mode": "Output",
+    "gpio": 4
+   },
+   {
+    "_": "PinDecl",
+    "region": [6, 9, 6, 14],
+    "name": "green",
+    "mode": "Output",
+    "gpio": 5
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [
+  {
+   "_": "EnumDecl",
+   "region": [9, 6, 9, 11],
+   "name": "Light",
+   "variants": [
+    "off",
+    "red",
+    "yellow",
+    "green"
+   ]
+  }
+ ],
+ "functions": [
+  {
+   "_": "FuncDecl",
+   "region": [11, 6, 11, 13],
+   "name": "all_off",
+   "params": [],
+   "return_type": null,
+   "body": [
+    {
+     "_": "ExprStmt",
+     "region": [0, 0, 0, 0],
+     "expr": {
+      "_": "MethodCall",
+      "region": [12, 5, 12, 8],
+      "obj": {
+       "_": "VarRef",
+       "region": [12, 5, 12, 8],
+       "name": "red"
+      },
+      "method": "off",
+      "args": []
+     }
+    },
+    {
+     "_": "ExprStmt",
+     "region": [0, 0, 0, 0],
+     "expr": {
+      "_": "MethodCall",
+      "region": [13, 5, 13, 11],
+      "obj": {
+       "_": "VarRef",
+       "region": [13, 5, 13, 11],
+       "name": "yellow"
+      },
+      "method": "off",
+      "args": []
+     }
+    },
+    {
+     "_": "ExprStmt",
+     "region": [0, 0, 0, 0],
+     "expr": {
+      "_": "MethodCall",
+      "region": [14, 5, 14, 10],
+      "obj": {
+       "_": "VarRef",
+       "region": [14, 5, 14, 10],
+       "name": "green"
+      },
+      "method": "off",
+      "args": []
+     }
+    }
+   ],
+   "contains_yield": false
+  }
+ ],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "VarDecl",
+    "region": [18, 9, 18, 16],
+    "name": "current",
+    "type_name": "Light",
+    "value": {
+     "_": "DotAccess",
+     "region": [18, 26, 18, 31],
+     "obj": {
+      "_": "VarRef",
+      "region": [18, 26, 18, 31],
+      "name": "Light"
+     },
+     "field_name": "red"
+    },
+    "mutable": true,
+    "shared": false,
+    "needs_lifting": false
+   },
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "FuncCall",
+     "region": [19, 5, 19, 12],
+     "name": "all_off",
+     "args": []
+    }
+   },
+   {
+    "_": "MatchStmt",
+    "region": [20, 11, 20, 18],
+    "expr": {
+     "_": "VarRef",
+     "region": [20, 11, 20, 18],
+     "name": "current"
+    },
+    "arms": [
+     {
+      "_": "MatchArm",
+      "region": [0, 0, 0, 0],
+      "pattern": "red",
+      "body": {
+       "_": "MethodCall",
+       "region": [21, 17, 21, 20],
+       "obj": {
+        "_": "VarRef",
+        "region": [21, 17, 21, 20],
+        "name": "red"
+       },
+       "method": "on",
+       "args": []
+      }
+     },
+     {
+      "_": "MatchArm",
+      "region": [0, 0, 0, 0],
+      "pattern": "yellow",
+      "body": {
+       "_": "MethodCall",
+       "region": [22, 20, 22, 26],
+       "obj": {
+        "_": "VarRef",
+        "region": [22, 20, 22, 26],
+        "name": "yellow"
+       },
+       "method": "on",
+       "args": []
+      }
+     },
+     {
+      "_": "MatchArm",
+      "region": [0, 0, 0, 0],
+      "pattern": "green",
+      "body": {
+       "_": "MethodCall",
+       "region": [23, 19, 23, 24],
+       "obj": {
+        "_": "VarRef",
+        "region": [23, 19, 23, 24],
+        "name": "green"
+       },
+       "method": "on",
+       "args": []
+      }
+     },
+     {
+      "_": "MatchArm",
+      "region": [0, 0, 0, 0],
+      "pattern": "_",
+      "body": {
+       "_": "FuncCall",
+       "region": [24, 14, 24, 21],
+       "name": "all_off",
+       "args": []
+      }
+     }
+    ]
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

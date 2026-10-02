@@ -1,0 +1,31 @@
+
+[yellow bold]-- DEPRECATION -- main.volt:1[/yellow bold]
+
+Move `chip esp32` to volt.toml: chip = "esp32"
+
+ [dim]1 |[/dim] chip esp32
+ [dim]  |[/dim] [yellow]     ^^^^^[/yellow]
+
+[cyan]Hint: The chip declaration will move to volt.toml in a future version.[/cyan]
+
+
+[yellow bold]-- TASK WARNING -- main.volt:3[/yellow bold]
+
+Critical task `t` estimated at ~100010 cycles (~416us at 240MHz), may exceed ISR time budget. Top costs: wifi.connect()(~100000 cycles)
+
+ [dim]2 |[/dim] hardware { pin led: Output = 4 }
+ [dim]3 |[/dim] task t {
+ [dim]  |[/dim] [yellow]     ^[/yellow]
+
+[cyan]Hint: Keep critical tasks under ~20us. Move heavy work to a Background task.[/cyan]
+
+
+[red bold]-- TASK ERROR -- main.volt:6[/red bold]
+
+Critical task `t` calls `wifi.connect()` which is not safe in ISR context (may block on I2C/SPI/UART).
+
+ [dim]5 |[/dim]         led.toggle()
+ [dim]6 |[/dim]         wifi.connect("s", "p")
+ [dim]  |[/dim] [red]        ^^^^[/red]
+
+[cyan]Hint: Move this to a Background or Priority task. Share data with the critical task via a volatile variable.[/cyan]

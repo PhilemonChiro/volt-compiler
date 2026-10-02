@@ -1,0 +1,3 @@
+[project]
+name = "door-lock"
+chip = "esp32"

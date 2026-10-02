@@ -1,0 +1,184 @@
+{
+ "compile_full": {
+  "diagnostics": [],
+  "pins": [],
+  "devices": [],
+  "buses": [],
+  "tasks": [],
+  "machines": [
+   {
+    "name": "Conn",
+    "states": [
+     "disconnected",
+     "connected"
+    ],
+    "line": 2
+   }
+  ],
+  "channels": [],
+  "enums": [],
+  "chip": ""
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "machine Conn {\n    initial state disconnected {\n        on connect_event() -> connected\n    }\n\n    state connected {\n        on disconnect_event() -> disconnected\n    }\n}\n",
+ "find_symbols": [
+  {
+   "name": "Conn",
+   "kind": "machine",
+   "def_line": 2,
+   "def_col": 9,
+   "refs": []
+  },
+  {
+   "name": "disconnected",
+   "kind": "state",
+   "def_line": 5,
+   "def_col": 19,
+   "refs": []
+  },
+  {
+   "name": "connected",
+   "kind": "state",
+   "def_line": 10,
+   "def_col": 11,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": [
+   {
+    "name": "Conn",
+    "mermaid": "stateDiagram-v2\n    [*] --> disconnected\n    disconnected --> connected : connect_event\n    connected --> disconnected : disconnect_event",
+    "states": [
+     {
+      "name": "disconnected",
+      "line": 5
+     },
+     {
+      "name": "connected",
+      "line": 10
+     }
+    ]
+   }
+  ]
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_Conn[[\"Conn\"]]\n    s_connect_event{{\"connect_event\"}}\n    s_disconnect_event{{\"disconnect_event\"}}\n    u_Conn -->|connect_event| s_connect_event\n    u_Conn -->|disconnect_event| s_disconnect_event\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_Conn machine;\n    class s_connect_event service;\n    class s_disconnect_event service;",
+  "units": [
+   {
+    "id": "u_Conn",
+    "name": "Conn",
+    "line": 2
+   }
+  ],
+  "loops": [],
+  "edges": [
+   {
+    "drive": "machine",
+    "src": "u_Conn",
+    "dst": "s_connect_event"
+   },
+   {
+    "drive": "machine",
+    "src": "u_Conn",
+    "dst": "s_disconnect_event"
+   }
+  ],
+  "nodes": {
+   "u_Conn": {
+    "kind": "machine",
+    "label": "Conn",
+    "line": 2,
+    "detail": "2 states"
+   },
+   "s_connect_event": {
+    "kind": "service",
+    "label": "connect_event",
+    "line": null,
+    "detail": "connect_event"
+   },
+   "s_disconnect_event": {
+    "kind": "service",
+    "label": "disconnect_event",
+    "line": null,
+    "detail": "disconnect_event"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_Conn[[\"Conn\"]]\n    s_connect_event{{\"connect_event\"}}\n    s_disconnect_event{{\"disconnect_event\"}}\n    u_Conn -->|connect_event| s_connect_event\n    u_Conn -->|disconnect_event| s_disconnect_event\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_Conn machine;\n    class s_connect_event service;\n    class s_disconnect_event service;",
+  "units": [
+   {
+    "id": "u_Conn",
+    "name": "Conn",
+    "line": 2
+   }
+  ],
+  "loops": [],
+  "edges": [
+   {
+    "drive": "machine",
+    "src": "u_Conn",
+    "dst": "s_connect_event"
+   },
+   {
+    "drive": "machine",
+    "src": "u_Conn",
+    "dst": "s_disconnect_event"
+   }
+  ],
+  "nodes": {
+   "u_Conn": {
+    "kind": "machine",
+    "label": "Conn",
+    "line": 2,
+    "detail": "2 states"
+   },
+   "s_connect_event": {
+    "kind": "service",
+    "label": "connect_event",
+    "line": null,
+    "detail": "connect_event"
+   },
+   "s_disconnect_event": {
+    "kind": "service",
+    "label": "disconnect_event",
+    "line": null,
+    "detail": "disconnect_event"
+   }
+  }
+ }
+}

@@ -1,0 +1,69 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [3, 16, 3, 19],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [3, 16, 3, 19],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "OrExpr",
+     "region": [5, 5, 5, 8],
+     "expr": {
+      "_": "MethodCall",
+      "region": [5, 5, 5, 8],
+      "obj": {
+       "_": "VarRef",
+       "region": [5, 5, 5, 8],
+       "name": "ble"
+      },
+      "method": "advertise",
+      "args": [
+       {
+        "_": "StringLiteral",
+        "region": [5, 19, 5, 31],
+        "value": "VoltDevice"
+       }
+      ]
+     },
+     "fallback": null,
+     "kind": "skip"
+    }
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

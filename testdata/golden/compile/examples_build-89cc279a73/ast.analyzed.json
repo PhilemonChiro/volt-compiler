@@ -1,0 +1,116 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [3, 16, 3, 19],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [3, 16, 3, 19],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [5, 6, 5, 11],
+   "name": "check",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [6, 11, 6, 13],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [6, 11, 6, 13],
+      "microseconds": 2000000,
+      "original": "2s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "AssignExpr",
+       "region": [7, 9, 7, 14],
+       "target": {
+        "_": "VarRef",
+        "region": [7, 9, 7, 14],
+        "name": "ready"
+       },
+       "value": {
+        "_": "BinaryExpr",
+        "region": [7, 17, 7, 21],
+        "left": {
+         "_": "MethodCall",
+         "region": [7, 17, 7, 21],
+         "obj": {
+          "_": "VarRef",
+          "region": [7, 17, 7, 21],
+          "name": "wifi"
+         },
+         "method": "is_connected",
+         "args": []
+        },
+        "op": "&&",
+        "right": {
+         "_": "MethodCall",
+         "region": [7, 40, 7, 43],
+         "obj": {
+          "_": "VarRef",
+          "region": [7, 40, 7, 43],
+          "name": "ble"
+         },
+         "method": "is_connected",
+         "args": []
+        },
+        "result_type": "bool"
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [
+  {
+   "_": "VarDecl",
+   "region": [4, 12, 4, 17],
+   "name": "ready",
+   "type_name": "bool",
+   "value": {
+    "_": "BoolLiteral",
+    "region": [0, 0, 0, 0],
+    "value": false
+   },
+   "mutable": true,
+   "shared": true,
+   "needs_lifting": false
+  }
+ ],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

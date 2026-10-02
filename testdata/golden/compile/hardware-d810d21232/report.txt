@@ -1,0 +1,8 @@
+
+[yellow bold]-- HARDWARE WARNING -- main.volt:2[/yellow bold]
+
+GPIO 0: GPIO 0 is a strapping pin. LOW at boot = download mode. Ensure pull-up (internal or external) for normal boot.
+
+ [dim]1 |[/dim] hardware {
+ [dim]2 |[/dim]     pin x: Output = 0
+ [dim]  |[/dim] [yellow]        ^[/yellow]

@@ -1,0 +1,68 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [
+  {
+   "_": "FuncDecl",
+   "region": [6, 6, 6, 16],
+   "name": "init_stuff",
+   "params": [],
+   "return_type": null,
+   "body": [
+    {
+     "_": "ExprStmt",
+     "region": [0, 0, 0, 0],
+     "expr": {
+      "_": "FuncCall",
+      "region": [7, 5, 7, 8],
+      "name": "log",
+      "args": [
+       {
+        "_": "StringLiteral",
+        "region": [7, 9, 7, 15],
+        "value": "done"
+       }
+      ]
+     }
+    }
+   ],
+   "contains_yield": false
+  }
+ ],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [2, 6, 2, 13],
+   "name": "startup",
+   "body": [
+    {
+     "_": "ExprStmt",
+     "region": [0, 0, 0, 0],
+     "expr": {
+      "_": "FuncCall",
+      "region": [3, 5, 3, 15],
+      "name": "init_stuff",
+      "args": []
+     }
+    }
+   ],
+   "tier": "",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

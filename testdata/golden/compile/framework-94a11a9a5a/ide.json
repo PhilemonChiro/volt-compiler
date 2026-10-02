@@ -1,0 +1,194 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 2,
+    "col": 6,
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "severity": "warning",
+    "hint": "The chip declaration will move to volt.toml in a future version."
+   },
+   {
+    "line": 4,
+    "col": 9,
+    "message": "Strapping pin: GPIO 2 must be LOW during boot for flash programming.",
+    "severity": "warning",
+    "hint": ""
+   }
+  ],
+  "pins": [
+   {
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   }
+  ],
+  "devices": [
+   {
+    "name": "dht_sensor",
+    "type": "DHT11",
+    "bus": "gpio4",
+    "address": 4
+   }
+  ],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "read_dht",
+    "tier": "background",
+    "line": 7
+   }
+  ],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": "esp32"
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n    device dht_sensor: DHT11 on gpio4 at 0x04\n}\n\ntask read_dht {\n    every 2s {\n        var t: float = dht_sensor.temperature()\n        var h: float = dht_sensor.humidity()\n    }\n}\n",
+ "find_symbols": [
+  {
+   "name": "led",
+   "kind": "pin",
+   "def_line": 4,
+   "def_col": 9,
+   "refs": []
+  },
+  {
+   "name": "dht_sensor",
+   "kind": "sensor",
+   "def_line": 5,
+   "def_col": 12,
+   "refs": [
+    {
+     "line": 9,
+     "col": 24
+    },
+    {
+     "line": 10,
+     "col": 24
+    }
+   ]
+  },
+  {
+   "name": "read_dht",
+   "kind": "task",
+   "def_line": 7,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "t",
+   "kind": "var",
+   "def_line": 9,
+   "def_col": 13,
+   "refs": []
+  },
+  {
+   "name": "h",
+   "kind": "var",
+   "def_line": 10,
+   "def_col": 13,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_read_dht((\"read_dht<br>↻ 2s\"))\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_read_dht timer;",
+  "units": [
+   {
+    "id": "u_read_dht",
+    "name": "read_dht<br>↻ 2s",
+    "line": 7
+   }
+  ],
+  "loops": [
+   "u_read_dht"
+  ],
+  "edges": [],
+  "nodes": {
+   "u_read_dht": {
+    "kind": "timer",
+    "label": "read_dht<br>↻ 2s",
+    "line": 7,
+    "detail": "every 2s"
+   },
+   "s_dht_sensor": {
+    "kind": "service",
+    "label": "dht_sensor",
+    "line": null,
+    "detail": "humidity, temperature"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    s_dht_sensor{{\"dht_sensor\"}}\n    u_read_dht((\"read_dht<br>↻ 2s\"))\n    u_read_dht -->|humidity, temperature| s_dht_sensor\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_read_dht timer;\n    class s_dht_sensor service;",
+  "units": [
+   {
+    "id": "u_read_dht",
+    "name": "read_dht<br>↻ 2s",
+    "line": 7
+   }
+  ],
+  "loops": [
+   "u_read_dht"
+  ],
+  "edges": [
+   {
+    "drive": "timer",
+    "src": "u_read_dht",
+    "dst": "s_dht_sensor",
+    "rate_ms": 2000.0
+   }
+  ],
+  "nodes": {
+   "u_read_dht": {
+    "kind": "timer",
+    "label": "read_dht<br>↻ 2s",
+    "line": 7,
+    "detail": "every 2s"
+   },
+   "s_dht_sensor": {
+    "kind": "service",
+    "label": "dht_sensor",
+    "line": null,
+    "detail": "humidity, temperature"
+   }
+  }
+ }
+}

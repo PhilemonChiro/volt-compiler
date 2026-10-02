@@ -1,0 +1,8 @@
+
+[red bold]-- STATE MACHINE ERROR -- invalid_target.volt:4[/red bold]
+
+Transition target `nonexistent` does not exist. Available states: a.
+
+ [dim]3 |[/dim]     initial state a {
+ [dim]4 |[/dim]         on x() -> nonexistent
+ [dim]  |[/dim] [red]           ^[/red]

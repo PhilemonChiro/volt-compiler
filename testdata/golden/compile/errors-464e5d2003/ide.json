@@ -1,0 +1,190 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 2,
+    "col": 6,
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "severity": "warning",
+    "hint": "The chip declaration will move to volt.toml in a future version."
+   }
+  ],
+  "pins": [],
+  "devices": [],
+  "buses": [],
+  "tasks": [],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": "esp32"
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "chip esp32\n\nfunc add(a: int, b: int) -> int {\n    return a + b\n}\n\nsetup {\n    var x: int = add(1, 2)\n}\n",
+ "find_symbols": [
+  {
+   "name": "add",
+   "kind": "func",
+   "def_line": 3,
+   "def_col": 6,
+   "refs": [
+    {
+     "line": 7,
+     "col": 18
+    }
+   ]
+  },
+  {
+   "name": "a",
+   "kind": "param",
+   "def_line": 3,
+   "def_col": 10,
+   "refs": [
+    {
+     "line": 4,
+     "col": 12
+    }
+   ]
+  },
+  {
+   "name": "b",
+   "kind": "param",
+   "def_line": 3,
+   "def_col": 18,
+   "refs": [
+    {
+     "line": 4,
+     "col": 16
+    }
+   ]
+  },
+  {
+   "name": "x",
+   "kind": "var",
+   "def_line": 7,
+   "def_col": 9,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    f_add(\"add()\")\n    u_add(\"add()\")\n    u_setup -->|call| f_add\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class f_add func;\n    class u_add func;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_add",
+    "name": "add()",
+    "line": 3
+   }
+  ],
+  "loops": [],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "f_add"
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "f_add": {
+    "kind": "func",
+    "label": "add()",
+    "line": 3,
+    "detail": "function"
+   },
+   "u_add": {
+    "kind": "func",
+    "label": "add()",
+    "line": 3,
+    "detail": "function"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    f_add(\"add()\")\n    u_add(\"add()\")\n    u_setup -->|call| f_add\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class f_add func;\n    class u_add func;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_add",
+    "name": "add()",
+    "line": 3
+   }
+  ],
+  "loops": [],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "f_add"
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "f_add": {
+    "kind": "func",
+    "label": "add()",
+    "line": 3,
+    "detail": "function"
+   },
+   "u_add": {
+    "kind": "func",
+    "label": "add()",
+    "line": 3,
+    "detail": "function"
+   }
+  }
+ }
+}

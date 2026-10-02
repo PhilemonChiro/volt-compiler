@@ -1,0 +1,21 @@
+
+[red bold]-- NAME ERROR -- main.volt:3[/red bold]
+
+Unknown name `led`.
+
+ [dim]2 |[/dim] setup {
+ [dim]3 |[/dim]     led.toggle()
+ [dim]  |[/dim] [red]    ^^^[/red]
+
+[cyan]Hint: Did you mean `ble`?[/cyan]
+
+
+[red bold]-- NAME ERROR -- main.volt:5[/red bold]
+
+Unknown name `a`.
+
+ [dim]4 |[/dim]     wifi.connect("net", "pass")
+ [dim]5 |[/dim]     a.b.c()
+ [dim]  |[/dim] [red]    ^[/red]
+
+[cyan]Hint: Did you mean `ota`?[/cyan]

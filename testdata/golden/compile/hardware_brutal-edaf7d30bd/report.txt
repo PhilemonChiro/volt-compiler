@@ -1,0 +1,7 @@
+
+[red bold]-- SYNTAX ERROR -- main.volt:1[/red bold]
+
+Unexpected token Token('NAME', 'wifi') at line 3, column 25.
+
+ [dim]1 |[/dim] chip rp2040
+ [dim]  |[/dim] [red]^[/red]

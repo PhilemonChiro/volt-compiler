@@ -1,0 +1,84 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [3, 16, 3, 19],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [3, 16, 3, 19],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "ForStmt",
+    "region": [5, 9, 5, 10],
+    "var_name": "i",
+    "start": {
+     "_": "IntLiteral",
+     "region": [5, 14, 5, 16],
+     "value": 10
+    },
+    "end": {
+     "_": "IntLiteral",
+     "region": [5, 18, 5, 19],
+     "value": 0
+    },
+    "body": [
+     {
+      "_": "ExprStmt",
+      "region": [0, 0, 0, 0],
+      "expr": {
+       "_": "MethodCall",
+       "region": [6, 9, 6, 12],
+       "obj": {
+        "_": "VarRef",
+        "region": [6, 9, 6, 12],
+        "name": "led"
+       },
+       "method": "toggle",
+       "args": []
+      }
+     }
+    ],
+    "step": {
+     "_": "UnaryExpr",
+     "region": [5, 26, 5, 27],
+     "op": "-",
+     "operand": {
+      "_": "IntLiteral",
+      "region": [5, 26, 5, 27],
+      "value": 2
+     }
+    }
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

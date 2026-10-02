@@ -1,0 +1,113 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 4,
+    "col": 9,
+    "message": "Unknown name `led`.",
+    "severity": "error",
+    "hint": "Did you mean `ble`?"
+   }
+  ],
+  "pins": [],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "blink",
+    "tier": "background",
+    "line": 2
+   }
+  ],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": ""
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ]
+ ],
+ "format_code": "task blink {\n    every 500ms { led.toggle() }\n}\n",
+ "find_symbols": [
+  {
+   "name": "blink",
+   "kind": "task",
+   "def_line": 2,
+   "def_col": 6,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_blink((\"blink<br>↻ 500ms\"))\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_blink timer;",
+  "units": [
+   {
+    "id": "u_blink",
+    "name": "blink<br>↻ 500ms",
+    "line": 2
+   }
+  ],
+  "loops": [
+   "u_blink"
+  ],
+  "edges": [],
+  "nodes": {
+   "u_blink": {
+    "kind": "timer",
+    "label": "blink<br>↻ 500ms",
+    "line": 2,
+    "detail": "every 500ms"
+   },
+   "s_led": {
+    "kind": "service",
+    "label": "led",
+    "line": null,
+    "detail": "toggle"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    s_led{{\"led\"}}\n    u_blink((\"blink<br>↻ 500ms\"))\n    u_blink -->|toggle| s_led\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_blink timer;\n    class s_led service;",
+  "units": [
+   {
+    "id": "u_blink",
+    "name": "blink<br>↻ 500ms",
+    "line": 2
+   }
+  ],
+  "loops": [
+   "u_blink"
+  ],
+  "edges": [
+   {
+    "drive": "timer",
+    "src": "u_blink",
+    "dst": "s_led",
+    "rate_ms": 500.0
+   }
+  ],
+  "nodes": {
+   "u_blink": {
+    "kind": "timer",
+    "label": "blink<br>↻ 500ms",
+    "line": 2,
+    "detail": "every 500ms"
+   },
+   "s_led": {
+    "kind": "service",
+    "label": "led",
+    "line": null,
+    "detail": "toggle"
+   }
+  }
+ }
+}

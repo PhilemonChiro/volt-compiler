@@ -1,0 +1,10 @@
+
+[red bold]-- NAME ERROR -- duplicate_pin.volt:4[/red bold]
+
+Name `led` is already declared.
+
+ [dim]3 |[/dim]     pin led: Output = 2
+ [dim]4 |[/dim]     pin led: Output = 4
+ [dim]  |[/dim] [red]        ^^^[/red]
+
+[cyan]Hint: First declared at line 3.[/cyan]

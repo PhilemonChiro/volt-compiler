@@ -1,0 +1,101 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [3, 16, 3, 19],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [3, 16, 3, 19],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [
+  {
+   "_": "FuncDecl",
+   "region": [4, 6, 4, 12],
+   "name": "helper",
+   "params": [
+    {
+     "_": "Param",
+     "region": [4, 13, 4, 14],
+     "name": "n",
+     "type_name": "int"
+    }
+   ],
+   "return_type": "int",
+   "body": [
+    {
+     "_": "ReturnStmt",
+     "region": [0, 0, 0, 0],
+     "value": {
+      "_": "BinaryExpr",
+      "region": [5, 12, 5, 13],
+      "left": {
+       "_": "VarRef",
+       "region": [5, 12, 5, 13],
+       "name": "n"
+      },
+      "op": "+",
+      "right": {
+       "_": "IntLiteral",
+       "region": [5, 16, 5, 17],
+       "value": 1
+      },
+      "result_type": null
+     }
+    }
+   ],
+   "contains_yield": false
+  }
+ ],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "VarDecl",
+    "region": [8, 9, 8, 10],
+    "name": "x",
+    "type_name": "int",
+    "value": {
+     "_": "FuncCall",
+     "region": [8, 18, 8, 24],
+     "name": "helper",
+     "args": [
+      {
+       "_": "IntLiteral",
+       "region": [8, 25, 8, 26],
+       "value": 5
+      }
+     ]
+    },
+    "mutable": true,
+    "shared": false,
+    "needs_lifting": false
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

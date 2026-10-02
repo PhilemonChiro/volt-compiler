@@ -1,0 +1,189 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [8, 6, 8, 12],
+   "name": "update",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [9, 11, 9, 13],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [9, 11, 9, 13],
+      "microseconds": 5000000,
+      "original": "5s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [10, 9, 10, 12],
+        "obj": {
+         "_": "VarRef",
+         "region": [10, 9, 10, 12],
+         "name": "ble"
+        },
+        "method": "update_int",
+        "args": [
+         {
+          "_": "IntLiteral",
+          "region": [10, 24, 10, 25],
+          "value": 0
+         },
+         {
+          "_": "IntLiteral",
+          "region": [10, 27, 10, 29],
+          "value": 25
+         }
+        ]
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [11, 9, 11, 12],
+        "obj": {
+         "_": "VarRef",
+         "region": [11, 9, 11, 12],
+         "name": "ble"
+        },
+        "method": "update_float",
+        "args": [
+         {
+          "_": "IntLiteral",
+          "region": [11, 26, 11, 27],
+          "value": 1
+         },
+         {
+          "_": "FloatLiteral",
+          "region": [11, 29, 11, 33],
+          "value": 65.5
+         }
+        ]
+       }
+      }
+     ],
+     "yield_label": 1
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "MethodCall",
+     "region": [4, 5, 4, 8],
+     "obj": {
+      "_": "VarRef",
+      "region": [4, 5, 4, 8],
+      "name": "ble"
+     },
+     "method": "advertise",
+     "args": [
+      {
+       "_": "StringLiteral",
+       "region": [4, 19, 4, 32],
+       "value": "Volt Sensor"
+      }
+     ]
+    }
+   },
+   {
+    "_": "VarDecl",
+    "region": [5, 9, 5, 16],
+    "name": "temp_id",
+    "type_name": "int",
+    "value": {
+     "_": "MethodCall",
+     "region": [5, 24, 5, 27],
+     "obj": {
+      "_": "VarRef",
+      "region": [5, 24, 5, 27],
+      "name": "ble"
+     },
+     "method": "expose_int",
+     "args": [
+      {
+       "_": "StringLiteral",
+       "region": [5, 39, 5, 52],
+       "value": "temperature"
+      },
+      {
+       "_": "IntLiteral",
+       "region": [5, 54, 5, 55],
+       "value": 0
+      }
+     ]
+    },
+    "mutable": true,
+    "shared": false,
+    "needs_lifting": false
+   },
+   {
+    "_": "VarDecl",
+    "region": [6, 9, 6, 15],
+    "name": "hum_id",
+    "type_name": "int",
+    "value": {
+     "_": "MethodCall",
+     "region": [6, 23, 6, 26],
+     "obj": {
+      "_": "VarRef",
+      "region": [6, 23, 6, 26],
+      "name": "ble"
+     },
+     "method": "expose_float",
+     "args": [
+      {
+       "_": "StringLiteral",
+       "region": [6, 40, 6, 50],
+       "value": "humidity"
+      },
+      {
+       "_": "FloatLiteral",
+       "region": [6, 52, 6, 55],
+       "value": 0.0
+      }
+     ]
+    },
+    "mutable": true,
+    "shared": false,
+    "needs_lifting": false
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

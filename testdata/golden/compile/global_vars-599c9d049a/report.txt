@@ -1,0 +1,7 @@
+
+[yellow bold]-- CONCURRENCY -- global_var_via_assignment.volt:0[/yellow bold]
+
+Variable `x` is shared between critical task (isr, isr) and task (bg, bg, bg). The compiler will mark it `volatile` in generated C.
+
+
+[cyan]Hint: For multi-word values, consider using atomic operations.[/cyan]

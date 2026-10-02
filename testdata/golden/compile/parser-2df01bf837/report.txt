@@ -1,0 +1,26 @@
+
+[red bold]-- NAME ERROR -- main.volt:3[/red bold]
+
+Unknown name `x`.
+
+ [dim]2 |[/dim] setup {
+ [dim]3 |[/dim]     if x > 0 {
+ [dim]  |[/dim] [red]       ^[/red]
+
+
+[red bold]-- NAME ERROR -- main.volt:8[/red bold]
+
+Unknown name `running`.
+
+ [dim]7 |[/dim]     }
+ [dim]8 |[/dim]     while running {
+ [dim]  |[/dim] [red]          ^^^^^^^[/red]
+
+
+[red bold]-- NAME ERROR -- main.volt:9[/red bold]
+
+Unknown function `tick`.
+
+ [dim]8 |[/dim]     while running {
+ [dim]9 |[/dim]         tick()
+ [dim]  |[/dim] [red]        ^^^^[/red]

@@ -1,0 +1,157 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [3, 16, 3, 19],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [3, 16, 3, 19],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [5, 6, 5, 14],
+   "name": "producer",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [6, 11, 6, 13],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [6, 11, 6, 13],
+      "microseconds": 1000000,
+      "original": "1s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [6, 16, 6, 21],
+        "obj": {
+         "_": "VarRef",
+         "region": [6, 16, 6, 21],
+         "name": "queue"
+        },
+        "method": "send",
+        "args": [
+         {
+          "_": "IntLiteral",
+          "region": [6, 27, 6, 29],
+          "value": 42
+         }
+        ]
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  },
+  {
+   "_": "TaskDecl",
+   "region": [8, 6, 8, 14],
+   "name": "consumer",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [9, 11, 9, 16],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [9, 11, 9, 16],
+      "microseconds": 100000,
+      "original": "100ms"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "IfStmt",
+       "region": [10, 12, 10, 17],
+       "condition": {
+        "_": "MethodCall",
+        "region": [10, 12, 10, 17],
+        "obj": {
+         "_": "VarRef",
+         "region": [10, 12, 10, 17],
+         "name": "queue"
+        },
+        "method": "has_data",
+        "args": []
+       },
+       "then_body": [
+        {
+         "_": "VarDecl",
+         "region": [11, 17, 11, 20],
+         "name": "val",
+         "type_name": "int",
+         "value": {
+          "_": "MethodCall",
+          "region": [11, 28, 11, 33],
+          "obj": {
+           "_": "VarRef",
+           "region": [11, 28, 11, 33],
+           "name": "queue"
+          },
+          "method": "receive",
+          "args": []
+         },
+         "mutable": true,
+         "shared": false,
+         "needs_lifting": false
+        }
+       ],
+       "else_body": null
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [
+  {
+   "_": "ChannelDecl",
+   "region": [4, 9, 4, 14],
+   "name": "queue",
+   "elem_type": "int",
+   "capacity": 8
+  }
+ ],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

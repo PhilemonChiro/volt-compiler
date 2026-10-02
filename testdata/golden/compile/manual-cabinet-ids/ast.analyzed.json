@@ -1,0 +1,3213 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [0, 0, 0, 0],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [13, 9, 22, 15],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [13, 9, 13, 12],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   },
+   {
+    "_": "PinDecl",
+    "region": [14, 9, 14, 13],
+    "name": "door",
+    "mode": "PullUpInput",
+    "gpio": 27
+   }
+  ],
+  "buses": [
+   {
+    "_": "BusDecl",
+    "region": [16, 9, 16, 13],
+    "bus_type": "i2c",
+    "name": "i2c0",
+    "params": {
+     "sda": {
+      "_": "IntLiteral",
+      "region": [16, 24, 16, 26],
+      "value": 21
+     },
+     "scl": {
+      "_": "IntLiteral",
+      "region": [16, 33, 16, 35],
+      "value": 22
+     }
+    }
+   },
+   {
+    "_": "BusDecl",
+    "region": [17, 9, 17, 17],
+    "bus_type": "uart",
+    "name": "gsm_uart",
+    "params": {
+     "tx": {
+      "_": "IntLiteral",
+      "region": [17, 28, 17, 30],
+      "value": 17
+     },
+     "rx": {
+      "_": "IntLiteral",
+      "region": [17, 36, 17, 38],
+      "value": 16
+     },
+     "baud": {
+      "_": "IntLiteral",
+      "region": [17, 46, 17, 50],
+      "value": 9600
+     }
+    }
+   }
+  ],
+  "sensors": [
+   {
+    "_": "SensorDecl",
+    "region": [19, 12, 19, 15],
+    "name": "lcd",
+    "sensor_type": "LCD16x2",
+    "bus_name": "i2c0",
+    "address": 39,
+    "pin_params": {}
+   },
+   {
+    "_": "SensorDecl",
+    "region": [20, 12, 20, 17],
+    "name": "accel",
+    "sensor_type": "ADXL345",
+    "bus_name": "i2c0",
+    "address": 83,
+    "pin_params": {}
+   },
+   {
+    "_": "SensorDecl",
+    "region": [21, 12, 21, 16],
+    "name": "gyro",
+    "sensor_type": "ITG3205",
+    "bus_name": "i2c0",
+    "address": 104,
+    "pin_params": {}
+   },
+   {
+    "_": "SensorDecl",
+    "region": [22, 12, 22, 15],
+    "name": "gsm",
+    "sensor_type": "SIM800L",
+    "bus_name": "gsm_uart",
+    "address": 0,
+    "pin_params": {}
+   }
+  ]
+ },
+ "power": null,
+ "structs": [],
+ "enums": [
+  {
+   "_": "EnumDecl",
+   "region": [25, 6, 25, 11],
+   "name": "Alarm",
+   "variants": [
+    "armed",
+    "intrusion",
+    "tamper",
+    "cooldown"
+   ]
+  }
+ ],
+ "functions": [
+  {
+   "_": "FuncDecl",
+   "region": [126, 6, 126, 14],
+   "name": "csq_bars",
+   "params": [
+    {
+     "_": "Param",
+     "region": [126, 15, 126, 18],
+     "name": "csq",
+     "type_name": "int"
+    },
+    {
+     "_": "Param",
+     "region": [126, 25, 126, 28],
+     "name": "reg",
+     "type_name": "int"
+    }
+   ],
+   "return_type": "int",
+   "body": [
+    {
+     "_": "IfStmt",
+     "region": [127, 8, 127, 11],
+     "condition": {
+      "_": "BinaryExpr",
+      "region": [127, 8, 127, 11],
+      "left": {
+       "_": "BinaryExpr",
+       "region": [127, 8, 127, 11],
+       "left": {
+        "_": "VarRef",
+        "region": [127, 8, 127, 11],
+        "name": "reg"
+       },
+       "op": "==",
+       "right": {
+        "_": "IntLiteral",
+        "region": [127, 15, 127, 16],
+        "value": 0
+       },
+       "result_type": "bool"
+      },
+      "op": "||",
+      "right": {
+       "_": "BinaryExpr",
+       "region": [127, 20, 127, 23],
+       "left": {
+        "_": "VarRef",
+        "region": [127, 20, 127, 23],
+        "name": "csq"
+       },
+       "op": "==",
+       "right": {
+        "_": "IntLiteral",
+        "region": [127, 27, 127, 29],
+        "value": 99
+       },
+       "result_type": "bool"
+      },
+      "result_type": "bool"
+     },
+     "then_body": [
+      {
+       "_": "ReturnStmt",
+       "region": [0, 0, 0, 0],
+       "value": {
+        "_": "UnaryExpr",
+        "region": [127, 40, 127, 41],
+        "op": "-",
+        "operand": {
+         "_": "IntLiteral",
+         "region": [127, 40, 127, 41],
+         "value": 1
+        }
+       }
+      }
+     ],
+     "else_body": null
+    },
+    {
+     "_": "IfStmt",
+     "region": [128, 8, 128, 11],
+     "condition": {
+      "_": "BinaryExpr",
+      "region": [128, 8, 128, 11],
+      "left": {
+       "_": "VarRef",
+       "region": [128, 8, 128, 11],
+       "name": "csq"
+      },
+      "op": "<",
+      "right": {
+       "_": "IntLiteral",
+       "region": [128, 14, 128, 15],
+       "value": 2
+      },
+      "result_type": "bool"
+     },
+     "then_body": [
+      {
+       "_": "ReturnStmt",
+       "region": [0, 0, 0, 0],
+       "value": {
+        "_": "IntLiteral",
+        "region": [128, 25, 128, 26],
+        "value": 0
+       }
+      }
+     ],
+     "else_body": null
+    },
+    {
+     "_": "IfStmt",
+     "region": [129, 8, 129, 11],
+     "condition": {
+      "_": "BinaryExpr",
+      "region": [129, 8, 129, 11],
+      "left": {
+       "_": "VarRef",
+       "region": [129, 8, 129, 11],
+       "name": "csq"
+      },
+      "op": "<",
+      "right": {
+       "_": "IntLiteral",
+       "region": [129, 14, 129, 16],
+       "value": 10
+      },
+      "result_type": "bool"
+     },
+     "then_body": [
+      {
+       "_": "ReturnStmt",
+       "region": [0, 0, 0, 0],
+       "value": {
+        "_": "IntLiteral",
+        "region": [129, 26, 129, 27],
+        "value": 1
+       }
+      }
+     ],
+     "else_body": null
+    },
+    {
+     "_": "IfStmt",
+     "region": [130, 8, 130, 11],
+     "condition": {
+      "_": "BinaryExpr",
+      "region": [130, 8, 130, 11],
+      "left": {
+       "_": "VarRef",
+       "region": [130, 8, 130, 11],
+       "name": "csq"
+      },
+      "op": "<",
+      "right": {
+       "_": "IntLiteral",
+       "region": [130, 14, 130, 16],
+       "value": 15
+      },
+      "result_type": "bool"
+     },
+     "then_body": [
+      {
+       "_": "ReturnStmt",
+       "region": [0, 0, 0, 0],
+       "value": {
+        "_": "IntLiteral",
+        "region": [130, 26, 130, 27],
+        "value": 2
+       }
+      }
+     ],
+     "else_body": null
+    },
+    {
+     "_": "IfStmt",
+     "region": [131, 8, 131, 11],
+     "condition": {
+      "_": "BinaryExpr",
+      "region": [131, 8, 131, 11],
+      "left": {
+       "_": "VarRef",
+       "region": [131, 8, 131, 11],
+       "name": "csq"
+      },
+      "op": "<",
+      "right": {
+       "_": "IntLiteral",
+       "region": [131, 14, 131, 16],
+       "value": 20
+      },
+      "result_type": "bool"
+     },
+     "then_body": [
+      {
+       "_": "ReturnStmt",
+       "region": [0, 0, 0, 0],
+       "value": {
+        "_": "IntLiteral",
+        "region": [131, 26, 131, 27],
+        "value": 3
+       }
+      }
+     ],
+     "else_body": null
+    },
+    {
+     "_": "ReturnStmt",
+     "region": [0, 0, 0, 0],
+     "value": {
+      "_": "IntLiteral",
+      "region": [132, 12, 132, 13],
+      "value": 4
+     }
+    }
+   ],
+   "contains_yield": false
+  },
+  {
+   "_": "FuncDecl",
+   "region": [136, 6, 136, 12],
+   "name": "bar_px",
+   "params": [
+    {
+     "_": "Param",
+     "region": [136, 13, 136, 14],
+     "name": "r",
+     "type_name": "int"
+    },
+    {
+     "_": "Param",
+     "region": [136, 21, 136, 24],
+     "name": "lvl",
+     "type_name": "int"
+    },
+    {
+     "_": "Param",
+     "region": [136, 31, 136, 34],
+     "name": "bar",
+     "type_name": "int"
+    },
+    {
+     "_": "Param",
+     "region": [136, 41, 136, 45],
+     "name": "bits",
+     "type_name": "int"
+    }
+   ],
+   "return_type": "int",
+   "body": [
+    {
+     "_": "IfStmt",
+     "region": [137, 8, 137, 11],
+     "condition": {
+      "_": "BinaryExpr",
+      "region": [137, 8, 137, 11],
+      "left": {
+       "_": "BinaryExpr",
+       "region": [137, 8, 137, 11],
+       "left": {
+        "_": "VarRef",
+        "region": [137, 8, 137, 11],
+        "name": "lvl"
+       },
+       "op": ">=",
+       "right": {
+        "_": "VarRef",
+        "region": [137, 15, 137, 18],
+        "name": "bar"
+       },
+       "result_type": "bool"
+      },
+      "op": "&&",
+      "right": {
+       "_": "BinaryExpr",
+       "region": [137, 22, 137, 23],
+       "left": {
+        "_": "VarRef",
+        "region": [137, 22, 137, 23],
+        "name": "r"
+       },
+       "op": ">=",
+       "right": {
+        "_": "BinaryExpr",
+        "region": [137, 27, 137, 28],
+        "left": {
+         "_": "IntLiteral",
+         "region": [137, 27, 137, 28],
+         "value": 8
+        },
+        "op": "-",
+        "right": {
+         "_": "BinaryExpr",
+         "region": [137, 31, 137, 34],
+         "left": {
+          "_": "VarRef",
+          "region": [137, 31, 137, 34],
+          "name": "bar"
+         },
+         "op": "*",
+         "right": {
+          "_": "IntLiteral",
+          "region": [137, 37, 137, 38],
+          "value": 2
+         },
+         "result_type": "int"
+        },
+        "result_type": "int"
+       },
+       "result_type": "bool"
+      },
+      "result_type": "bool"
+     },
+     "then_body": [
+      {
+       "_": "ReturnStmt",
+       "region": [0, 0, 0, 0],
+       "value": {
+        "_": "VarRef",
+        "region": [137, 48, 137, 52],
+        "name": "bits"
+       }
+      }
+     ],
+     "else_body": null
+    },
+    {
+     "_": "IfStmt",
+     "region": [138, 8, 138, 9],
+     "condition": {
+      "_": "BinaryExpr",
+      "region": [138, 8, 138, 9],
+      "left": {
+       "_": "VarRef",
+       "region": [138, 8, 138, 9],
+       "name": "r"
+      },
+      "op": "==",
+      "right": {
+       "_": "IntLiteral",
+       "region": [138, 13, 138, 14],
+       "value": 7
+      },
+      "result_type": "bool"
+     },
+     "then_body": [
+      {
+       "_": "ReturnStmt",
+       "region": [0, 0, 0, 0],
+       "value": {
+        "_": "VarRef",
+        "region": [138, 24, 138, 28],
+        "name": "bits"
+       }
+      }
+     ],
+     "else_body": null
+    },
+    {
+     "_": "ReturnStmt",
+     "region": [0, 0, 0, 0],
+     "value": {
+      "_": "IntLiteral",
+      "region": [139, 12, 139, 13],
+      "value": 0
+     }
+    }
+   ],
+   "contains_yield": false
+  },
+  {
+   "_": "FuncDecl",
+   "region": [143, 6, 143, 17],
+   "name": "antenna_row",
+   "params": [
+    {
+     "_": "Param",
+     "region": [143, 18, 143, 19],
+     "name": "r",
+     "type_name": "int"
+    }
+   ],
+   "return_type": "int",
+   "body": [
+    {
+     "_": "IfStmt",
+     "region": [144, 8, 144, 9],
+     "condition": {
+      "_": "BinaryExpr",
+      "region": [144, 8, 144, 9],
+      "left": {
+       "_": "VarRef",
+       "region": [144, 8, 144, 9],
+       "name": "r"
+      },
+      "op": "==",
+      "right": {
+       "_": "IntLiteral",
+       "region": [144, 13, 144, 14],
+       "value": 0
+      },
+      "result_type": "bool"
+     },
+     "then_body": [
+      {
+       "_": "ReturnStmt",
+       "region": [0, 0, 0, 0],
+       "value": {
+        "_": "IntLiteral",
+        "region": [144, 24, 144, 26],
+        "value": 20
+       }
+      }
+     ],
+     "else_body": null
+    },
+    {
+     "_": "IfStmt",
+     "region": [145, 8, 145, 9],
+     "condition": {
+      "_": "BinaryExpr",
+      "region": [145, 8, 145, 9],
+      "left": {
+       "_": "VarRef",
+       "region": [145, 8, 145, 9],
+       "name": "r"
+      },
+      "op": "==",
+      "right": {
+       "_": "IntLiteral",
+       "region": [145, 13, 145, 14],
+       "value": 1
+      },
+      "result_type": "bool"
+     },
+     "then_body": [
+      {
+       "_": "ReturnStmt",
+       "region": [0, 0, 0, 0],
+       "value": {
+        "_": "IntLiteral",
+        "region": [145, 24, 145, 26],
+        "value": 28
+       }
+      }
+     ],
+     "else_body": null
+    },
+    {
+     "_": "ReturnStmt",
+     "region": [0, 0, 0, 0],
+     "value": {
+      "_": "IntLiteral",
+      "region": [146, 12, 146, 13],
+      "value": 8
+     }
+    }
+   ],
+   "contains_yield": false
+  },
+  {
+   "_": "FuncDecl",
+   "region": [150, 6, 150, 11],
+   "name": "x_row",
+   "params": [
+    {
+     "_": "Param",
+     "region": [150, 12, 150, 13],
+     "name": "r",
+     "type_name": "int"
+    }
+   ],
+   "return_type": "int",
+   "body": [
+    {
+     "_": "IfStmt",
+     "region": [151, 8, 151, 9],
+     "condition": {
+      "_": "BinaryExpr",
+      "region": [151, 8, 151, 9],
+      "left": {
+       "_": "BinaryExpr",
+       "region": [151, 8, 151, 9],
+       "left": {
+        "_": "VarRef",
+        "region": [151, 8, 151, 9],
+        "name": "r"
+       },
+       "op": "==",
+       "right": {
+        "_": "IntLiteral",
+        "region": [151, 13, 151, 14],
+        "value": 3
+       },
+       "result_type": "bool"
+      },
+      "op": "||",
+      "right": {
+       "_": "BinaryExpr",
+       "region": [151, 18, 151, 19],
+       "left": {
+        "_": "VarRef",
+        "region": [151, 18, 151, 19],
+        "name": "r"
+       },
+       "op": "==",
+       "right": {
+        "_": "IntLiteral",
+        "region": [151, 23, 151, 24],
+        "value": 7
+       },
+       "result_type": "bool"
+      },
+      "result_type": "bool"
+     },
+     "then_body": [
+      {
+       "_": "ReturnStmt",
+       "region": [0, 0, 0, 0],
+       "value": {
+        "_": "IntLiteral",
+        "region": [151, 34, 151, 36],
+        "value": 17
+       }
+      }
+     ],
+     "else_body": null
+    },
+    {
+     "_": "IfStmt",
+     "region": [152, 8, 152, 9],
+     "condition": {
+      "_": "BinaryExpr",
+      "region": [152, 8, 152, 9],
+      "left": {
+       "_": "BinaryExpr",
+       "region": [152, 8, 152, 9],
+       "left": {
+        "_": "VarRef",
+        "region": [152, 8, 152, 9],
+        "name": "r"
+       },
+       "op": "==",
+       "right": {
+        "_": "IntLiteral",
+        "region": [152, 13, 152, 14],
+        "value": 4
+       },
+       "result_type": "bool"
+      },
+      "op": "||",
+      "right": {
+       "_": "BinaryExpr",
+       "region": [152, 18, 152, 19],
+       "left": {
+        "_": "VarRef",
+        "region": [152, 18, 152, 19],
+        "name": "r"
+       },
+       "op": "==",
+       "right": {
+        "_": "IntLiteral",
+        "region": [152, 23, 152, 24],
+        "value": 6
+       },
+       "result_type": "bool"
+      },
+      "result_type": "bool"
+     },
+     "then_body": [
+      {
+       "_": "ReturnStmt",
+       "region": [0, 0, 0, 0],
+       "value": {
+        "_": "IntLiteral",
+        "region": [152, 34, 152, 36],
+        "value": 10
+       }
+      }
+     ],
+     "else_body": null
+    },
+    {
+     "_": "IfStmt",
+     "region": [153, 8, 153, 9],
+     "condition": {
+      "_": "BinaryExpr",
+      "region": [153, 8, 153, 9],
+      "left": {
+       "_": "VarRef",
+       "region": [153, 8, 153, 9],
+       "name": "r"
+      },
+      "op": "==",
+      "right": {
+       "_": "IntLiteral",
+       "region": [153, 13, 153, 14],
+       "value": 5
+      },
+      "result_type": "bool"
+     },
+     "then_body": [
+      {
+       "_": "ReturnStmt",
+       "region": [0, 0, 0, 0],
+       "value": {
+        "_": "IntLiteral",
+        "region": [153, 24, 153, 25],
+        "value": 4
+       }
+      }
+     ],
+     "else_body": null
+    },
+    {
+     "_": "ReturnStmt",
+     "region": [0, 0, 0, 0],
+     "value": {
+      "_": "IntLiteral",
+      "region": [154, 12, 154, 13],
+      "value": 0
+     }
+    }
+   ],
+   "contains_yield": false
+  },
+  {
+   "_": "FuncDecl",
+   "region": [157, 6, 157, 14],
+   "name": "cell_row",
+   "params": [
+    {
+     "_": "Param",
+     "region": [157, 15, 157, 16],
+     "name": "r",
+     "type_name": "int"
+    },
+    {
+     "_": "Param",
+     "region": [157, 23, 157, 26],
+     "name": "lvl",
+     "type_name": "int"
+    },
+    {
+     "_": "Param",
+     "region": [157, 33, 157, 37],
+     "name": "cell",
+     "type_name": "int"
+    }
+   ],
+   "return_type": "int",
+   "body": [
+    {
+     "_": "IfStmt",
+     "region": [158, 8, 158, 12],
+     "condition": {
+      "_": "BinaryExpr",
+      "region": [158, 8, 158, 12],
+      "left": {
+       "_": "VarRef",
+       "region": [158, 8, 158, 12],
+       "name": "cell"
+      },
+      "op": "==",
+      "right": {
+       "_": "IntLiteral",
+       "region": [158, 16, 158, 17],
+       "value": 1
+      },
+      "result_type": "bool"
+     },
+     "then_body": [
+      {
+       "_": "IfStmt",
+       "region": [159, 12, 159, 15],
+       "condition": {
+        "_": "BinaryExpr",
+        "region": [159, 12, 159, 15],
+        "left": {
+         "_": "VarRef",
+         "region": [159, 12, 159, 15],
+         "name": "lvl"
+        },
+        "op": "<",
+        "right": {
+         "_": "IntLiteral",
+         "region": [159, 18, 159, 19],
+         "value": 0
+        },
+        "result_type": "bool"
+       },
+       "then_body": [
+        {
+         "_": "ReturnStmt",
+         "region": [0, 0, 0, 0],
+         "value": {
+          "_": "FuncCall",
+          "region": [159, 29, 159, 40],
+          "name": "antenna_row",
+          "args": [
+           {
+            "_": "VarRef",
+            "region": [159, 41, 159, 42],
+            "name": "r"
+           }
+          ]
+         }
+        }
+       ],
+       "else_body": null
+      },
+      {
+       "_": "ReturnStmt",
+       "region": [0, 0, 0, 0],
+       "value": {
+        "_": "BinaryExpr",
+        "region": [160, 16, 160, 27],
+        "left": {
+         "_": "FuncCall",
+         "region": [160, 16, 160, 27],
+         "name": "antenna_row",
+         "args": [
+          {
+           "_": "VarRef",
+           "region": [160, 28, 160, 29],
+           "name": "r"
+          }
+         ]
+        },
+        "op": "+",
+        "right": {
+         "_": "FuncCall",
+         "region": [160, 33, 160, 39],
+         "name": "bar_px",
+         "args": [
+          {
+           "_": "VarRef",
+           "region": [160, 40, 160, 41],
+           "name": "r"
+          },
+          {
+           "_": "VarRef",
+           "region": [160, 43, 160, 46],
+           "name": "lvl"
+          },
+          {
+           "_": "IntLiteral",
+           "region": [160, 48, 160, 49],
+           "value": 1
+          },
+          {
+           "_": "IntLiteral",
+           "region": [160, 51, 160, 52],
+           "value": 1
+          }
+         ]
+        },
+        "result_type": "int"
+       }
+      }
+     ],
+     "else_body": null
+    },
+    {
+     "_": "IfStmt",
+     "region": [162, 8, 162, 11],
+     "condition": {
+      "_": "BinaryExpr",
+      "region": [162, 8, 162, 11],
+      "left": {
+       "_": "VarRef",
+       "region": [162, 8, 162, 11],
+       "name": "lvl"
+      },
+      "op": "<",
+      "right": {
+       "_": "IntLiteral",
+       "region": [162, 14, 162, 15],
+       "value": 0
+      },
+      "result_type": "bool"
+     },
+     "then_body": [
+      {
+       "_": "ReturnStmt",
+       "region": [0, 0, 0, 0],
+       "value": {
+        "_": "FuncCall",
+        "region": [162, 25, 162, 30],
+        "name": "x_row",
+        "args": [
+         {
+          "_": "VarRef",
+          "region": [162, 31, 162, 32],
+          "name": "r"
+         }
+        ]
+       }
+      }
+     ],
+     "else_body": null
+    },
+    {
+     "_": "ReturnStmt",
+     "region": [0, 0, 0, 0],
+     "value": {
+      "_": "BinaryExpr",
+      "region": [163, 12, 163, 18],
+      "left": {
+       "_": "BinaryExpr",
+       "region": [163, 12, 163, 18],
+       "left": {
+        "_": "FuncCall",
+        "region": [163, 12, 163, 18],
+        "name": "bar_px",
+        "args": [
+         {
+          "_": "VarRef",
+          "region": [163, 19, 163, 20],
+          "name": "r"
+         },
+         {
+          "_": "VarRef",
+          "region": [163, 22, 163, 25],
+          "name": "lvl"
+         },
+         {
+          "_": "IntLiteral",
+          "region": [163, 27, 163, 28],
+          "value": 2
+         },
+         {
+          "_": "IntLiteral",
+          "region": [163, 30, 163, 32],
+          "value": 16
+         }
+        ]
+       },
+       "op": "+",
+       "right": {
+        "_": "FuncCall",
+        "region": [163, 36, 163, 42],
+        "name": "bar_px",
+        "args": [
+         {
+          "_": "VarRef",
+          "region": [163, 43, 163, 44],
+          "name": "r"
+         },
+         {
+          "_": "VarRef",
+          "region": [163, 46, 163, 49],
+          "name": "lvl"
+         },
+         {
+          "_": "IntLiteral",
+          "region": [163, 51, 163, 52],
+          "value": 3
+         },
+         {
+          "_": "IntLiteral",
+          "region": [163, 54, 163, 55],
+          "value": 4
+         }
+        ]
+       },
+       "result_type": "int"
+      },
+      "op": "+",
+      "right": {
+       "_": "FuncCall",
+       "region": [163, 59, 163, 65],
+       "name": "bar_px",
+       "args": [
+        {
+         "_": "VarRef",
+         "region": [163, 66, 163, 67],
+         "name": "r"
+        },
+        {
+         "_": "VarRef",
+         "region": [163, 69, 163, 72],
+         "name": "lvl"
+        },
+        {
+         "_": "IntLiteral",
+         "region": [163, 74, 163, 75],
+         "value": 4
+        },
+        {
+         "_": "IntLiteral",
+         "region": [163, 77, 163, 78],
+         "value": 1
+        }
+       ]
+      },
+      "result_type": "int"
+     }
+    }
+   ],
+   "contains_yield": false
+  }
+ ],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [38, 6, 38, 13],
+   "name": "sensing",
+   "body": [
+    {
+     "_": "VarDecl",
+     "region": [39, 9, 39, 13],
+     "name": "tick",
+     "type_name": "int",
+     "value": {
+      "_": "IntLiteral",
+      "region": [39, 21, 39, 22],
+      "value": 0
+     },
+     "mutable": true,
+     "shared": false,
+     "needs_lifting": true
+    },
+    {
+     "_": "EveryBlock",
+     "region": [41, 11, 41, 15],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [41, 11, 41, 15],
+      "microseconds": 50000,
+      "original": "50ms"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "AssignExpr",
+       "region": [42, 9, 42, 18],
+       "target": {
+        "_": "VarRef",
+        "region": [42, 9, 42, 18],
+        "name": "door_open"
+       },
+       "value": {
+        "_": "MethodCall",
+        "region": [42, 21, 42, 25],
+        "obj": {
+         "_": "VarRef",
+         "region": [42, 21, 42, 25],
+         "name": "door"
+        },
+        "method": "read",
+        "args": []
+       }
+      },
+      {
+       "_": "VarDecl",
+       "region": [44, 13, 44, 14],
+       "name": "m",
+       "type_name": "float",
+       "value": {
+        "_": "MethodCall",
+        "region": [44, 24, 44, 29],
+        "obj": {
+         "_": "VarRef",
+         "region": [44, 24, 44, 29],
+         "name": "accel"
+        },
+        "method": "magnitude",
+        "args": []
+       },
+       "mutable": false,
+       "shared": false,
+       "needs_lifting": false
+      },
+      {
+       "_": "VarDecl",
+       "region": [45, 13, 45, 16],
+       "name": "dev",
+       "type_name": "float",
+       "value": {
+        "_": "BinaryExpr",
+        "region": [45, 26, 45, 27],
+        "left": {
+         "_": "VarRef",
+         "region": [45, 26, 45, 27],
+         "name": "m"
+        },
+        "op": "-",
+        "right": {
+         "_": "FloatLiteral",
+         "region": [45, 30, 45, 33],
+         "value": 1.0
+        },
+        "result_type": "float"
+       },
+       "mutable": true,
+       "shared": false,
+       "needs_lifting": false
+      },
+      {
+       "_": "IfStmt",
+       "region": [46, 12, 46, 15],
+       "condition": {
+        "_": "BinaryExpr",
+        "region": [46, 12, 46, 15],
+        "left": {
+         "_": "VarRef",
+         "region": [46, 12, 46, 15],
+         "name": "dev"
+        },
+        "op": "<",
+        "right": {
+         "_": "FloatLiteral",
+         "region": [46, 18, 46, 21],
+         "value": 0.0
+        },
+        "result_type": "bool"
+       },
+       "then_body": [
+        {
+         "_": "AssignExpr",
+         "region": [46, 24, 46, 27],
+         "target": {
+          "_": "VarRef",
+          "region": [46, 24, 46, 27],
+          "name": "dev"
+         },
+         "value": {
+          "_": "BinaryExpr",
+          "region": [46, 30, 46, 33],
+          "left": {
+           "_": "FloatLiteral",
+           "region": [46, 30, 46, 33],
+           "value": 0.0
+          },
+          "op": "-",
+          "right": {
+           "_": "VarRef",
+           "region": [46, 36, 46, 39],
+           "name": "dev"
+          },
+          "result_type": "float"
+         }
+        }
+       ],
+       "else_body": null
+      },
+      {
+       "_": "VarDecl",
+       "region": [47, 13, 47, 14],
+       "name": "s",
+       "type_name": "int",
+       "value": {
+        "_": "FuncCall",
+        "region": [47, 22, 47, 25],
+        "name": "int",
+        "args": [
+         {
+          "_": "BinaryExpr",
+          "region": [47, 26, 47, 29],
+          "left": {
+           "_": "VarRef",
+           "region": [47, 26, 47, 29],
+           "name": "dev"
+          },
+          "op": "*",
+          "right": {
+           "_": "FloatLiteral",
+           "region": [47, 32, 47, 37],
+           "value": 100.0
+          },
+          "result_type": "float"
+         }
+        ]
+       },
+       "mutable": false,
+       "shared": false,
+       "needs_lifting": false
+      },
+      {
+       "_": "IfStmt",
+       "region": [48, 12, 48, 13],
+       "condition": {
+        "_": "BinaryExpr",
+        "region": [48, 12, 48, 13],
+        "left": {
+         "_": "VarRef",
+         "region": [48, 12, 48, 13],
+         "name": "s"
+        },
+        "op": ">",
+        "right": {
+         "_": "VarRef",
+         "region": [48, 16, 48, 21],
+         "name": "shock"
+        },
+        "result_type": "bool"
+       },
+       "then_body": [
+        {
+         "_": "AssignExpr",
+         "region": [48, 24, 48, 29],
+         "target": {
+          "_": "VarRef",
+          "region": [48, 24, 48, 29],
+          "name": "shock"
+         },
+         "value": {
+          "_": "VarRef",
+          "region": [48, 32, 48, 33],
+          "name": "s"
+         }
+        }
+       ],
+       "else_body": null
+      },
+      {
+       "_": "VarDecl",
+       "region": [50, 13, 50, 14],
+       "name": "g",
+       "type_name": "int",
+       "value": {
+        "_": "FuncCall",
+        "region": [50, 22, 50, 25],
+        "name": "int",
+        "args": [
+         {
+          "_": "MethodCall",
+          "region": [50, 26, 50, 30],
+          "obj": {
+           "_": "VarRef",
+           "region": [50, 26, 50, 30],
+           "name": "gyro"
+          },
+          "method": "magnitude",
+          "args": []
+         }
+        ]
+       },
+       "mutable": false,
+       "shared": false,
+       "needs_lifting": false
+      },
+      {
+       "_": "IfStmt",
+       "region": [51, 12, 51, 13],
+       "condition": {
+        "_": "BinaryExpr",
+        "region": [51, 12, 51, 13],
+        "left": {
+         "_": "VarRef",
+         "region": [51, 12, 51, 13],
+         "name": "g"
+        },
+        "op": ">",
+        "right": {
+         "_": "VarRef",
+         "region": [51, 16, 51, 20],
+         "name": "spin"
+        },
+        "result_type": "bool"
+       },
+       "then_body": [
+        {
+         "_": "AssignExpr",
+         "region": [51, 23, 51, 27],
+         "target": {
+          "_": "VarRef",
+          "region": [51, 23, 51, 27],
+          "name": "spin"
+         },
+         "value": {
+          "_": "VarRef",
+          "region": [51, 30, 51, 31],
+          "name": "g"
+         }
+        }
+       ],
+       "else_body": null
+      },
+      {
+       "_": "CompoundAssign",
+       "region": [53, 9, 53, 13],
+       "target": {
+        "_": "VarRef",
+        "region": [53, 9, 53, 13],
+        "name": "tick"
+       },
+       "op": "+=",
+       "value": {
+        "_": "IntLiteral",
+        "region": [53, 17, 53, 18],
+        "value": 1
+       }
+      },
+      {
+       "_": "IfStmt",
+       "region": [54, 12, 54, 16],
+       "condition": {
+        "_": "BinaryExpr",
+        "region": [54, 12, 54, 16],
+        "left": {
+         "_": "VarRef",
+         "region": [54, 12, 54, 16],
+         "name": "tick"
+        },
+        "op": ">=",
+        "right": {
+         "_": "IntLiteral",
+         "region": [54, 20, 54, 22],
+         "value": 40
+        },
+        "result_type": "bool"
+       },
+       "then_body": [
+        {
+         "_": "AssignExpr",
+         "region": [55, 13, 55, 17],
+         "target": {
+          "_": "VarRef",
+          "region": [55, 13, 55, 17],
+          "name": "tick"
+         },
+         "value": {
+          "_": "IntLiteral",
+          "region": [55, 20, 55, 21],
+          "value": 0
+         }
+        },
+        {
+         "_": "AssignExpr",
+         "region": [56, 13, 56, 18],
+         "target": {
+          "_": "VarRef",
+          "region": [56, 13, 56, 18],
+          "name": "shock"
+         },
+         "value": {
+          "_": "BinaryExpr",
+          "region": [56, 21, 56, 26],
+          "left": {
+           "_": "BinaryExpr",
+           "region": [56, 21, 56, 26],
+           "left": {
+            "_": "VarRef",
+            "region": [56, 21, 56, 26],
+            "name": "shock"
+           },
+           "op": "*",
+           "right": {
+            "_": "IntLiteral",
+            "region": [56, 29, 56, 30],
+            "value": 7
+           },
+           "result_type": "int"
+          },
+          "op": "/",
+          "right": {
+           "_": "IntLiteral",
+           "region": [56, 33, 56, 35],
+           "value": 10
+          },
+          "result_type": "int"
+         }
+        },
+        {
+         "_": "AssignExpr",
+         "region": [57, 13, 57, 17],
+         "target": {
+          "_": "VarRef",
+          "region": [57, 13, 57, 17],
+          "name": "spin"
+         },
+         "value": {
+          "_": "BinaryExpr",
+          "region": [57, 20, 57, 24],
+          "left": {
+           "_": "BinaryExpr",
+           "region": [57, 20, 57, 24],
+           "left": {
+            "_": "VarRef",
+            "region": [57, 20, 57, 24],
+            "name": "spin"
+           },
+           "op": "*",
+           "right": {
+            "_": "IntLiteral",
+            "region": [57, 27, 57, 28],
+            "value": 7
+           },
+           "result_type": "int"
+          },
+          "op": "/",
+          "right": {
+           "_": "IntLiteral",
+           "region": [57, 31, 57, 33],
+           "value": 10
+          },
+          "result_type": "int"
+         }
+        }
+       ],
+       "else_body": null
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [
+    "tick"
+   ],
+   "has_strict": false,
+   "_annotations": []
+  },
+  {
+   "_": "TaskDecl",
+   "region": [111, 7, 111, 10],
+   "name": "_rule0",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [111, 7, 111, 10],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [111, 7, 111, 10],
+      "microseconds": 30000000,
+      "original": "30s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "AssignExpr",
+       "region": [112, 5, 112, 11],
+       "target": {
+        "_": "VarRef",
+        "region": [112, 5, 112, 11],
+        "name": "net_ok"
+       },
+       "value": {
+        "_": "IntLiteral",
+        "region": [112, 14, 112, 15],
+        "value": 0
+       }
+      },
+      {
+       "_": "IfStmt",
+       "region": [113, 8, 113, 11],
+       "condition": {
+        "_": "MethodCall",
+        "region": [113, 8, 113, 11],
+        "obj": {
+         "_": "VarRef",
+         "region": [113, 8, 113, 11],
+         "name": "gsm"
+        },
+        "method": "registered",
+        "args": []
+       },
+       "then_body": [
+        {
+         "_": "AssignExpr",
+         "region": [113, 27, 113, 33],
+         "target": {
+          "_": "VarRef",
+          "region": [113, 27, 113, 33],
+          "name": "net_ok"
+         },
+         "value": {
+          "_": "IntLiteral",
+          "region": [113, 36, 113, 37],
+          "value": 1
+         }
+        }
+       ],
+       "else_body": null
+      },
+      {
+       "_": "AssignExpr",
+       "region": [114, 5, 114, 8],
+       "target": {
+        "_": "VarRef",
+        "region": [114, 5, 114, 8],
+        "name": "sig"
+       },
+       "value": {
+        "_": "MethodCall",
+        "region": [114, 11, 114, 14],
+        "obj": {
+         "_": "VarRef",
+         "region": [114, 11, 114, 14],
+         "name": "gsm"
+        },
+        "method": "signal",
+        "args": []
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [115, 5, 115, 8],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [115, 9, 115, 14],
+          "value": "gsm"
+         },
+         {
+          "_": "StringLiteral",
+          "region": [115, 16, 115, 47],
+          "value": "registered={net_ok} csq={sig}"
+         }
+        ]
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false
+  },
+  {
+   "_": "TaskDecl",
+   "region": [167, 7, 167, 9],
+   "name": "_rule1",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [167, 7, 167, 9],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [167, 7, 167, 9],
+      "microseconds": 1000000,
+      "original": "1s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "VarDecl",
+       "region": [168, 9, 168, 13],
+       "name": "bars",
+       "type_name": "int",
+       "value": {
+        "_": "FuncCall",
+        "region": [168, 21, 168, 29],
+        "name": "csq_bars",
+        "args": [
+         {
+          "_": "VarRef",
+          "region": [168, 30, 168, 33],
+          "name": "sig"
+         },
+         {
+          "_": "VarRef",
+          "region": [168, 35, 168, 41],
+          "name": "net_ok"
+         }
+        ]
+       },
+       "mutable": false,
+       "shared": false,
+       "needs_lifting": false
+      },
+      {
+       "_": "IfStmt",
+       "region": [169, 8, 169, 12],
+       "condition": {
+        "_": "BinaryExpr",
+        "region": [169, 8, 169, 12],
+        "left": {
+         "_": "VarRef",
+         "region": [169, 8, 169, 12],
+         "name": "bars"
+        },
+        "op": "!=",
+        "right": {
+         "_": "VarRef",
+         "region": [169, 16, 169, 26],
+         "name": "bars_shown"
+        },
+        "result_type": "bool"
+       },
+       "then_body": [
+        {
+         "_": "ExprStmt",
+         "region": [0, 0, 0, 0],
+         "expr": {
+          "_": "MethodCall",
+          "region": [170, 9, 170, 12],
+          "obj": {
+           "_": "VarRef",
+           "region": [170, 9, 170, 12],
+           "name": "lcd"
+          },
+          "method": "create_char",
+          "args": [
+           {
+            "_": "IntLiteral",
+            "region": [170, 25, 170, 26],
+            "value": 1
+           },
+           {
+            "_": "FuncCall",
+            "region": [170, 28, 170, 36],
+            "name": "cell_row",
+            "args": [
+             {
+              "_": "IntLiteral",
+              "region": [170, 37, 170, 38],
+              "value": 0
+             },
+             {
+              "_": "VarRef",
+              "region": [170, 40, 170, 44],
+              "name": "bars"
+             },
+             {
+              "_": "IntLiteral",
+              "region": [170, 46, 170, 47],
+              "value": 1
+             }
+            ]
+           },
+           {
+            "_": "FuncCall",
+            "region": [170, 50, 170, 58],
+            "name": "cell_row",
+            "args": [
+             {
+              "_": "IntLiteral",
+              "region": [170, 59, 170, 60],
+              "value": 1
+             },
+             {
+              "_": "VarRef",
+              "region": [170, 62, 170, 66],
+              "name": "bars"
+             },
+             {
+              "_": "IntLiteral",
+              "region": [170, 68, 170, 69],
+              "value": 1
+             }
+            ]
+           },
+           {
+            "_": "FuncCall",
+            "region": [170, 72, 170, 80],
+            "name": "cell_row",
+            "args": [
+             {
+              "_": "IntLiteral",
+              "region": [170, 81, 170, 82],
+              "value": 2
+             },
+             {
+              "_": "VarRef",
+              "region": [170, 84, 170, 88],
+              "name": "bars"
+             },
+             {
+              "_": "IntLiteral",
+              "region": [170, 90, 170, 91],
+              "value": 1
+             }
+            ]
+           },
+           {
+            "_": "FuncCall",
+            "region": [170, 94, 170, 102],
+            "name": "cell_row",
+            "args": [
+             {
+              "_": "IntLiteral",
+              "region": [170, 103, 170, 104],
+              "value": 3
+             },
+             {
+              "_": "VarRef",
+              "region": [170, 106, 170, 110],
+              "name": "bars"
+             },
+             {
+              "_": "IntLiteral",
+              "region": [170, 112, 170, 113],
+              "value": 1
+             }
+            ]
+           },
+           {
+            "_": "FuncCall",
+            "region": [170, 116, 170, 124],
+            "name": "cell_row",
+            "args": [
+             {
+              "_": "IntLiteral",
+              "region": [170, 125, 170, 126],
+              "value": 4
+             },
+             {
+              "_": "VarRef",
+              "region": [170, 128, 170, 132],
+              "name": "bars"
+             },
+             {
+              "_": "IntLiteral",
+              "region": [170, 134, 170, 135],
+              "value": 1
+             }
+            ]
+           },
+           {
+            "_": "FuncCall",
+            "region": [170, 138, 170, 146],
+            "name": "cell_row",
+            "args": [
+             {
+              "_": "IntLiteral",
+              "region": [170, 147, 170, 148],
+              "value": 5
+             },
+             {
+              "_": "VarRef",
+              "region": [170, 150, 170, 154],
+              "name": "bars"
+             },
+             {
+              "_": "IntLiteral",
+              "region": [170, 156, 170, 157],
+              "value": 1
+             }
+            ]
+           },
+           {
+            "_": "FuncCall",
+            "region": [170, 160, 170, 168],
+            "name": "cell_row",
+            "args": [
+             {
+              "_": "IntLiteral",
+              "region": [170, 169, 170, 170],
+              "value": 6
+             },
+             {
+              "_": "VarRef",
+              "region": [170, 172, 170, 176],
+              "name": "bars"
+             },
+             {
+              "_": "IntLiteral",
+              "region": [170, 178, 170, 179],
+              "value": 1
+             }
+            ]
+           },
+           {
+            "_": "FuncCall",
+            "region": [170, 182, 170, 190],
+            "name": "cell_row",
+            "args": [
+             {
+              "_": "IntLiteral",
+              "region": [170, 191, 170, 192],
+              "value": 7
+             },
+             {
+              "_": "VarRef",
+              "region": [170, 194, 170, 198],
+              "name": "bars"
+             },
+             {
+              "_": "IntLiteral",
+              "region": [170, 200, 170, 201],
+              "value": 1
+             }
+            ]
+           }
+          ]
+         }
+        },
+        {
+         "_": "ExprStmt",
+         "region": [0, 0, 0, 0],
+         "expr": {
+          "_": "MethodCall",
+          "region": [171, 9, 171, 12],
+          "obj": {
+           "_": "VarRef",
+           "region": [171, 9, 171, 12],
+           "name": "lcd"
+          },
+          "method": "create_char",
+          "args": [
+           {
+            "_": "IntLiteral",
+            "region": [171, 25, 171, 26],
+            "value": 2
+           },
+           {
+            "_": "FuncCall",
+            "region": [171, 28, 171, 36],
+            "name": "cell_row",
+            "args": [
+             {
+              "_": "IntLiteral",
+              "region": [171, 37, 171, 38],
+              "value": 0
+             },
+             {
+              "_": "VarRef",
+              "region": [171, 40, 171, 44],
+              "name": "bars"
+             },
+             {
+              "_": "IntLiteral",
+              "region": [171, 46, 171, 47],
+              "value": 2
+             }
+            ]
+           },
+           {
+            "_": "FuncCall",
+            "region": [171, 50, 171, 58],
+            "name": "cell_row",
+            "args": [
+             {
+              "_": "IntLiteral",
+              "region": [171, 59, 171, 60],
+              "value": 1
+             },
+             {
+              "_": "VarRef",
+              "region": [171, 62, 171, 66],
+              "name": "bars"
+             },
+             {
+              "_": "IntLiteral",
+              "region": [171, 68, 171, 69],
+              "value": 2
+             }
+            ]
+           },
+           {
+            "_": "FuncCall",
+            "region": [171, 72, 171, 80],
+            "name": "cell_row",
+            "args": [
+             {
+              "_": "IntLiteral",
+              "region": [171, 81, 171, 82],
+              "value": 2
+             },
+             {
+              "_": "VarRef",
+              "region": [171, 84, 171, 88],
+              "name": "bars"
+             },
+             {
+              "_": "IntLiteral",
+              "region": [171, 90, 171, 91],
+              "value": 2
+             }
+            ]
+           },
+           {
+            "_": "FuncCall",
+            "region": [171, 94, 171, 102],
+            "name": "cell_row",
+            "args": [
+             {
+              "_": "IntLiteral",
+              "region": [171, 103, 171, 104],
+              "value": 3
+             },
+             {
+              "_": "VarRef",
+              "region": [171, 106, 171, 110],
+              "name": "bars"
+             },
+             {
+              "_": "IntLiteral",
+              "region": [171, 112, 171, 113],
+              "value": 2
+             }
+            ]
+           },
+           {
+            "_": "FuncCall",
+            "region": [171, 116, 171, 124],
+            "name": "cell_row",
+            "args": [
+             {
+              "_": "IntLiteral",
+              "region": [171, 125, 171, 126],
+              "value": 4
+             },
+             {
+              "_": "VarRef",
+              "region": [171, 128, 171, 132],
+              "name": "bars"
+             },
+             {
+              "_": "IntLiteral",
+              "region": [171, 134, 171, 135],
+              "value": 2
+             }
+            ]
+           },
+           {
+            "_": "FuncCall",
+            "region": [171, 138, 171, 146],
+            "name": "cell_row",
+            "args": [
+             {
+              "_": "IntLiteral",
+              "region": [171, 147, 171, 148],
+              "value": 5
+             },
+             {
+              "_": "VarRef",
+              "region": [171, 150, 171, 154],
+              "name": "bars"
+             },
+             {
+              "_": "IntLiteral",
+              "region": [171, 156, 171, 157],
+              "value": 2
+             }
+            ]
+           },
+           {
+            "_": "FuncCall",
+            "region": [171, 160, 171, 168],
+            "name": "cell_row",
+            "args": [
+             {
+              "_": "IntLiteral",
+              "region": [171, 169, 171, 170],
+              "value": 6
+             },
+             {
+              "_": "VarRef",
+              "region": [171, 172, 171, 176],
+              "name": "bars"
+             },
+             {
+              "_": "IntLiteral",
+              "region": [171, 178, 171, 179],
+              "value": 2
+             }
+            ]
+           },
+           {
+            "_": "FuncCall",
+            "region": [171, 182, 171, 190],
+            "name": "cell_row",
+            "args": [
+             {
+              "_": "IntLiteral",
+              "region": [171, 191, 171, 192],
+              "value": 7
+             },
+             {
+              "_": "VarRef",
+              "region": [171, 194, 171, 198],
+              "name": "bars"
+             },
+             {
+              "_": "IntLiteral",
+              "region": [171, 200, 171, 201],
+              "value": 2
+             }
+            ]
+           }
+          ]
+         }
+        },
+        {
+         "_": "AssignExpr",
+         "region": [172, 9, 172, 19],
+         "target": {
+          "_": "VarRef",
+          "region": [172, 9, 172, 19],
+          "name": "bars_shown"
+         },
+         "value": {
+          "_": "VarRef",
+          "region": [172, 22, 172, 26],
+          "name": "bars"
+         }
+        }
+       ],
+       "else_body": null
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [175, 5, 175, 8],
+        "obj": {
+         "_": "VarRef",
+         "region": [175, 5, 175, 8],
+         "name": "lcd"
+        },
+        "method": "set_cursor",
+        "args": [
+         {
+          "_": "IntLiteral",
+          "region": [175, 20, 175, 21],
+          "value": 0
+         },
+         {
+          "_": "IntLiteral",
+          "region": [175, 23, 175, 24],
+          "value": 0
+         }
+        ]
+       }
+      },
+      {
+       "_": "IfStmt",
+       "region": [176, 8, 176, 17],
+       "condition": {
+        "_": "BinaryExpr",
+        "region": [176, 8, 176, 17],
+        "left": {
+         "_": "VarRef",
+         "region": [176, 8, 176, 17],
+         "name": "door_open"
+        },
+        "op": "==",
+        "right": {
+         "_": "IntLiteral",
+         "region": [176, 21, 176, 22],
+         "value": 1
+        },
+        "result_type": "bool"
+       },
+       "then_body": [
+        {
+         "_": "ExprStmt",
+         "region": [0, 0, 0, 0],
+         "expr": {
+          "_": "MethodCall",
+          "region": [177, 9, 177, 12],
+          "obj": {
+           "_": "VarRef",
+           "region": [177, 9, 177, 12],
+           "name": "lcd"
+          },
+          "method": "print",
+          "args": [
+           {
+            "_": "StringLiteral",
+            "region": [177, 19, 177, 35],
+            "value": "Door OPEN     "
+           }
+          ]
+         }
+        }
+       ],
+       "else_body": [
+        {
+         "_": "ExprStmt",
+         "region": [0, 0, 0, 0],
+         "expr": {
+          "_": "MethodCall",
+          "region": [179, 9, 179, 12],
+          "obj": {
+           "_": "VarRef",
+           "region": [179, 9, 179, 12],
+           "name": "lcd"
+          },
+          "method": "print",
+          "args": [
+           {
+            "_": "StringLiteral",
+            "region": [179, 19, 179, 35],
+            "value": "Door closed   "
+           }
+          ]
+         }
+        }
+       ]
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [181, 5, 181, 8],
+        "obj": {
+         "_": "VarRef",
+         "region": [181, 5, 181, 8],
+         "name": "lcd"
+        },
+        "method": "write_char",
+        "args": [
+         {
+          "_": "IntLiteral",
+          "region": [181, 20, 181, 21],
+          "value": 1
+         }
+        ]
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [182, 5, 182, 8],
+        "obj": {
+         "_": "VarRef",
+         "region": [182, 5, 182, 8],
+         "name": "lcd"
+        },
+        "method": "write_char",
+        "args": [
+         {
+          "_": "IntLiteral",
+          "region": [182, 20, 182, 21],
+          "value": 2
+         }
+        ]
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [183, 5, 183, 8],
+        "obj": {
+         "_": "VarRef",
+         "region": [183, 5, 183, 8],
+         "name": "lcd"
+        },
+        "method": "set_cursor",
+        "args": [
+         {
+          "_": "IntLiteral",
+          "region": [183, 20, 183, 21],
+          "value": 0
+         },
+         {
+          "_": "IntLiteral",
+          "region": [183, 23, 183, 24],
+          "value": 1
+         }
+        ]
+       }
+      },
+      {
+       "_": "IfStmt",
+       "region": [184, 8, 184, 13],
+       "condition": {
+        "_": "BinaryExpr",
+        "region": [184, 8, 184, 13],
+        "left": {
+         "_": "VarRef",
+         "region": [184, 8, 184, 13],
+         "name": "alarm"
+        },
+        "op": "==",
+        "right": {
+         "_": "DotAccess",
+         "region": [184, 17, 184, 22],
+         "obj": {
+          "_": "VarRef",
+          "region": [184, 17, 184, 22],
+          "name": "Alarm"
+         },
+         "field_name": "armed"
+        },
+        "result_type": "bool"
+       },
+       "then_body": [
+        {
+         "_": "ExprStmt",
+         "region": [0, 0, 0, 0],
+         "expr": {
+          "_": "MethodCall",
+          "region": [184, 34, 184, 37],
+          "obj": {
+           "_": "VarRef",
+           "region": [184, 34, 184, 37],
+           "name": "lcd"
+          },
+          "method": "print",
+          "args": [
+           {
+            "_": "StringLiteral",
+            "region": [184, 44, 184, 67],
+            "value": "ARMED   v{shock}     "
+           }
+          ]
+         }
+        }
+       ],
+       "else_body": null
+      },
+      {
+       "_": "IfStmt",
+       "region": [185, 8, 185, 13],
+       "condition": {
+        "_": "BinaryExpr",
+        "region": [185, 8, 185, 13],
+        "left": {
+         "_": "VarRef",
+         "region": [185, 8, 185, 13],
+         "name": "alarm"
+        },
+        "op": "==",
+        "right": {
+         "_": "DotAccess",
+         "region": [185, 17, 185, 22],
+         "obj": {
+          "_": "VarRef",
+          "region": [185, 17, 185, 22],
+          "name": "Alarm"
+         },
+         "field_name": "intrusion"
+        },
+        "result_type": "bool"
+       },
+       "then_body": [
+        {
+         "_": "ExprStmt",
+         "region": [0, 0, 0, 0],
+         "expr": {
+          "_": "MethodCall",
+          "region": [185, 35, 185, 38],
+          "obj": {
+           "_": "VarRef",
+           "region": [185, 35, 185, 38],
+           "name": "lcd"
+          },
+          "method": "print",
+          "args": [
+           {
+            "_": "StringLiteral",
+            "region": [185, 45, 185, 63],
+            "value": "!INTRUSION!     "
+           }
+          ]
+         }
+        }
+       ],
+       "else_body": null
+      },
+      {
+       "_": "IfStmt",
+       "region": [186, 8, 186, 13],
+       "condition": {
+        "_": "BinaryExpr",
+        "region": [186, 8, 186, 13],
+        "left": {
+         "_": "VarRef",
+         "region": [186, 8, 186, 13],
+         "name": "alarm"
+        },
+        "op": "==",
+        "right": {
+         "_": "DotAccess",
+         "region": [186, 17, 186, 22],
+         "obj": {
+          "_": "VarRef",
+          "region": [186, 17, 186, 22],
+          "name": "Alarm"
+         },
+         "field_name": "tamper"
+        },
+        "result_type": "bool"
+       },
+       "then_body": [
+        {
+         "_": "ExprStmt",
+         "region": [0, 0, 0, 0],
+         "expr": {
+          "_": "MethodCall",
+          "region": [186, 34, 186, 37],
+          "obj": {
+           "_": "VarRef",
+           "region": [186, 34, 186, 37],
+           "name": "lcd"
+          },
+          "method": "print",
+          "args": [
+           {
+            "_": "StringLiteral",
+            "region": [186, 44, 186, 62],
+            "value": "!TAMPER!        "
+           }
+          ]
+         }
+        }
+       ],
+       "else_body": null
+      },
+      {
+       "_": "IfStmt",
+       "region": [187, 8, 187, 13],
+       "condition": {
+        "_": "BinaryExpr",
+        "region": [187, 8, 187, 13],
+        "left": {
+         "_": "VarRef",
+         "region": [187, 8, 187, 13],
+         "name": "alarm"
+        },
+        "op": "==",
+        "right": {
+         "_": "DotAccess",
+         "region": [187, 17, 187, 22],
+         "obj": {
+          "_": "VarRef",
+          "region": [187, 17, 187, 22],
+          "name": "Alarm"
+         },
+         "field_name": "cooldown"
+        },
+        "result_type": "bool"
+       },
+       "then_body": [
+        {
+         "_": "ExprStmt",
+         "region": [0, 0, 0, 0],
+         "expr": {
+          "_": "MethodCall",
+          "region": [187, 34, 187, 37],
+          "obj": {
+           "_": "VarRef",
+           "region": [187, 34, 187, 37],
+           "name": "lcd"
+          },
+          "method": "print",
+          "args": [
+           {
+            "_": "StringLiteral",
+            "region": [187, 44, 187, 62],
+            "value": "cooldown        "
+           }
+          ]
+         }
+        }
+       ],
+       "else_body": null
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false
+  },
+  {
+   "_": "TaskDecl",
+   "region": [190, 7, 190, 10],
+   "name": "_rule2",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [190, 7, 190, 10],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [190, 7, 190, 10],
+      "microseconds": 60000000,
+      "original": "60s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "VarDecl",
+       "region": [191, 9, 191, 13],
+       "name": "heap",
+       "type_name": "int",
+       "value": {
+        "_": "MethodCall",
+        "region": [191, 21, 191, 27],
+        "obj": {
+         "_": "VarRef",
+         "region": [191, 21, 191, 27],
+         "name": "system"
+        },
+        "method": "free_heap",
+        "args": []
+       },
+       "mutable": false,
+       "shared": false,
+       "needs_lifting": false
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [192, 5, 192, 8],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [192, 9, 192, 17],
+          "value": "health"
+         },
+         {
+          "_": "StringLiteral",
+          "region": [192, 19, 192, 53],
+          "value": "heap={heap} alerts={alert_count}"
+         }
+        ]
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false
+  }
+ ],
+ "machines": [
+  {
+   "_": "MachineDecl",
+   "region": [63, 9, 63, 17],
+   "name": "detector",
+   "states": [
+    {
+     "_": "StateDecl",
+     "region": [64, 11, 64, 16],
+     "name": "armed",
+     "is_initial": true,
+     "enter_body": [
+      {
+       "_": "AssignExpr",
+       "region": [66, 13, 66, 18],
+       "target": {
+        "_": "VarRef",
+        "region": [66, 13, 66, 18],
+        "name": "alarm"
+       },
+       "value": {
+        "_": "DotAccess",
+        "region": [66, 21, 66, 26],
+        "obj": {
+         "_": "VarRef",
+         "region": [66, 21, 66, 26],
+         "name": "Alarm"
+        },
+        "field_name": "armed"
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [67, 13, 67, 16],
+        "obj": {
+         "_": "VarRef",
+         "region": [67, 13, 67, 16],
+         "name": "led"
+        },
+        "method": "off",
+        "args": []
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [68, 13, 68, 16],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [68, 17, 68, 22],
+          "value": "ids"
+         },
+         {
+          "_": "StringLiteral",
+          "region": [68, 24, 68, 31],
+          "value": "ARMED"
+         }
+        ]
+       }
+      }
+     ],
+     "exit_body": [],
+     "transitions": [
+      {
+       "_": "StateTransition",
+       "region": [70, 12, 70, 21],
+       "event": {
+        "_": "BinaryExpr",
+        "region": [70, 12, 70, 21],
+        "left": {
+         "_": "VarRef",
+         "region": [70, 12, 70, 21],
+         "name": "door_open"
+        },
+        "op": "==",
+        "right": {
+         "_": "IntLiteral",
+         "region": [70, 25, 70, 26],
+         "value": 1
+        },
+        "result_type": null
+       },
+       "target_state": "intrusion",
+       "guard": null,
+       "action": []
+      },
+      {
+       "_": "StateTransition",
+       "region": [71, 12, 71, 17],
+       "event": {
+        "_": "BinaryExpr",
+        "region": [71, 12, 71, 17],
+        "left": {
+         "_": "VarRef",
+         "region": [71, 12, 71, 17],
+         "name": "shock"
+        },
+        "op": ">",
+        "right": {
+         "_": "IntLiteral",
+         "region": [71, 20, 71, 22],
+         "value": 60
+        },
+        "result_type": null
+       },
+       "target_state": "tamper",
+       "guard": null,
+       "action": []
+      },
+      {
+       "_": "StateTransition",
+       "region": [72, 12, 72, 16],
+       "event": {
+        "_": "BinaryExpr",
+        "region": [72, 12, 72, 16],
+        "left": {
+         "_": "VarRef",
+         "region": [72, 12, 72, 16],
+         "name": "spin"
+        },
+        "op": ">",
+        "right": {
+         "_": "IntLiteral",
+         "region": [72, 19, 72, 21],
+         "value": 90
+        },
+        "result_type": null
+       },
+       "target_state": "tamper",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "timed_transitions": [],
+     "body": []
+    },
+    {
+     "_": "StateDecl",
+     "region": [75, 11, 75, 20],
+     "name": "intrusion",
+     "is_initial": false,
+     "enter_body": [
+      {
+       "_": "AssignExpr",
+       "region": [77, 13, 77, 18],
+       "target": {
+        "_": "VarRef",
+        "region": [77, 13, 77, 18],
+        "name": "alarm"
+       },
+       "value": {
+        "_": "DotAccess",
+        "region": [77, 21, 77, 26],
+        "obj": {
+         "_": "VarRef",
+         "region": [77, 21, 77, 26],
+         "name": "Alarm"
+        },
+        "field_name": "intrusion"
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [78, 13, 78, 16],
+        "obj": {
+         "_": "VarRef",
+         "region": [78, 13, 78, 16],
+         "name": "led"
+        },
+        "method": "on",
+        "args": []
+       }
+      },
+      {
+       "_": "CompoundAssign",
+       "region": [79, 13, 79, 24],
+       "target": {
+        "_": "VarRef",
+        "region": [79, 13, 79, 24],
+        "name": "alert_count"
+       },
+       "op": "+=",
+       "value": {
+        "_": "IntLiteral",
+        "region": [79, 28, 79, 29],
+        "value": 1
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [80, 13, 80, 20],
+        "obj": {
+         "_": "VarRef",
+         "region": [80, 13, 80, 20],
+         "name": "storage"
+        },
+        "method": "save",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [80, 26, 80, 39],
+          "value": "alert_count"
+         },
+         {
+          "_": "VarRef",
+          "region": [80, 41, 80, 52],
+          "name": "alert_count"
+         }
+        ]
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [81, 13, 81, 16],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [81, 17, 81, 22],
+          "value": "ids"
+         },
+         {
+          "_": "StringLiteral",
+          "region": [81, 24, 81, 69],
+          "value": "INTRUSION — door open, alert #{alert_count}"
+         }
+        ]
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [82, 13, 82, 16],
+        "obj": {
+         "_": "VarRef",
+         "region": [82, 13, 82, 16],
+         "name": "gsm"
+        },
+        "method": "send_sms",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [82, 26, 82, 41],
+          "value": "+263771234567"
+         },
+         {
+          "_": "StringLiteral",
+          "region": [82, 43, 82, 71],
+          "value": "CABINET ALERT: door opened"
+         }
+        ]
+       }
+      }
+     ],
+     "exit_body": [],
+     "transitions": [],
+     "timed_transitions": [
+      {
+       "_": "TimedTransition",
+       "region": [84, 15, 84, 17],
+       "duration": {
+        "_": "DurationLiteral",
+        "region": [84, 15, 84, 17],
+        "microseconds": 5000000,
+        "original": "5s"
+       },
+       "target_state": "cooldown",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "body": []
+    },
+    {
+     "_": "StateDecl",
+     "region": [87, 11, 87, 17],
+     "name": "tamper",
+     "is_initial": false,
+     "enter_body": [
+      {
+       "_": "AssignExpr",
+       "region": [89, 13, 89, 18],
+       "target": {
+        "_": "VarRef",
+        "region": [89, 13, 89, 18],
+        "name": "alarm"
+       },
+       "value": {
+        "_": "DotAccess",
+        "region": [89, 21, 89, 26],
+        "obj": {
+         "_": "VarRef",
+         "region": [89, 21, 89, 26],
+         "name": "Alarm"
+        },
+        "field_name": "tamper"
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [90, 13, 90, 16],
+        "obj": {
+         "_": "VarRef",
+         "region": [90, 13, 90, 16],
+         "name": "led"
+        },
+        "method": "on",
+        "args": []
+       }
+      },
+      {
+       "_": "CompoundAssign",
+       "region": [91, 13, 91, 24],
+       "target": {
+        "_": "VarRef",
+        "region": [91, 13, 91, 24],
+        "name": "alert_count"
+       },
+       "op": "+=",
+       "value": {
+        "_": "IntLiteral",
+        "region": [91, 28, 91, 29],
+        "value": 1
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [92, 13, 92, 20],
+        "obj": {
+         "_": "VarRef",
+         "region": [92, 13, 92, 20],
+         "name": "storage"
+        },
+        "method": "save",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [92, 26, 92, 39],
+          "value": "alert_count"
+         },
+         {
+          "_": "VarRef",
+          "region": [92, 41, 92, 52],
+          "name": "alert_count"
+         }
+        ]
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [93, 13, 93, 16],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [93, 17, 93, 22],
+          "value": "ids"
+         },
+         {
+          "_": "StringLiteral",
+          "region": [93, 24, 93, 82],
+          "value": "TAMPER — shock={shock} spin={spin}, alert #{alert_count}"
+         }
+        ]
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [94, 13, 94, 16],
+        "obj": {
+         "_": "VarRef",
+         "region": [94, 13, 94, 16],
+         "name": "gsm"
+        },
+        "method": "send_sms",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [94, 26, 94, 41],
+          "value": "+263771234567"
+         },
+         {
+          "_": "StringLiteral",
+          "region": [94, 43, 94, 78],
+          "value": "CABINET ALERT: tampering detected"
+         }
+        ]
+       }
+      }
+     ],
+     "exit_body": [],
+     "transitions": [],
+     "timed_transitions": [
+      {
+       "_": "TimedTransition",
+       "region": [96, 15, 96, 17],
+       "duration": {
+        "_": "DurationLiteral",
+        "region": [96, 15, 96, 17],
+        "microseconds": 5000000,
+        "original": "5s"
+       },
+       "target_state": "cooldown",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "body": []
+    },
+    {
+     "_": "StateDecl",
+     "region": [101, 11, 101, 19],
+     "name": "cooldown",
+     "is_initial": false,
+     "enter_body": [
+      {
+       "_": "AssignExpr",
+       "region": [103, 13, 103, 18],
+       "target": {
+        "_": "VarRef",
+        "region": [103, 13, 103, 18],
+        "name": "alarm"
+       },
+       "value": {
+        "_": "DotAccess",
+        "region": [103, 21, 103, 26],
+        "obj": {
+         "_": "VarRef",
+         "region": [103, 21, 103, 26],
+         "name": "Alarm"
+        },
+        "field_name": "cooldown"
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [104, 13, 104, 16],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [104, 17, 104, 22],
+          "value": "ids"
+         },
+         {
+          "_": "StringLiteral",
+          "region": [104, 24, 104, 34],
+          "value": "cooldown"
+         }
+        ]
+       }
+      }
+     ],
+     "exit_body": [],
+     "transitions": [
+      {
+       "_": "StateTransition",
+       "region": [106, 12, 106, 21],
+       "event": {
+        "_": "BinaryExpr",
+        "region": [106, 12, 106, 21],
+        "left": {
+         "_": "BinaryExpr",
+         "region": [106, 12, 106, 21],
+         "left": {
+          "_": "BinaryExpr",
+          "region": [106, 12, 106, 21],
+          "left": {
+           "_": "VarRef",
+           "region": [106, 12, 106, 21],
+           "name": "door_open"
+          },
+          "op": "==",
+          "right": {
+           "_": "IntLiteral",
+           "region": [106, 25, 106, 26],
+           "value": 0
+          },
+          "result_type": null
+         },
+         "op": "&&",
+         "right": {
+          "_": "BinaryExpr",
+          "region": [106, 30, 106, 35],
+          "left": {
+           "_": "VarRef",
+           "region": [106, 30, 106, 35],
+           "name": "shock"
+          },
+          "op": "<",
+          "right": {
+           "_": "IntLiteral",
+           "region": [106, 38, 106, 40],
+           "value": 20
+          },
+          "result_type": null
+         },
+         "result_type": null
+        },
+        "op": "&&",
+        "right": {
+         "_": "BinaryExpr",
+         "region": [106, 44, 106, 48],
+         "left": {
+          "_": "VarRef",
+          "region": [106, 44, 106, 48],
+          "name": "spin"
+         },
+         "op": "<",
+         "right": {
+          "_": "IntLiteral",
+          "region": [106, 51, 106, 53],
+          "value": 30
+         },
+         "result_type": null
+        },
+        "result_type": null
+       },
+       "target_state": "armed",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "timed_transitions": [],
+     "body": []
+    }
+   ],
+   "variables": []
+  }
+ ],
+ "storage_vars": [
+  {
+   "_": "StorageDecl",
+   "region": [27, 9, 27, 20],
+   "name": "alert_count",
+   "type_name": "int",
+   "default_value": {
+    "_": "IntLiteral",
+    "region": [27, 28, 27, 29],
+    "value": 0
+   }
+  }
+ ],
+ "global_vars": [
+  {
+   "_": "VarDecl",
+   "region": [29, 5, 29, 14],
+   "name": "door_open",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [29, 22, 29, 23],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  },
+  {
+   "_": "VarDecl",
+   "region": [30, 5, 30, 10],
+   "name": "shock",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [30, 18, 30, 19],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  },
+  {
+   "_": "VarDecl",
+   "region": [31, 5, 31, 9],
+   "name": "spin",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [31, 17, 31, 18],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  },
+  {
+   "_": "VarDecl",
+   "region": [32, 5, 32, 11],
+   "name": "net_ok",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [32, 19, 32, 20],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  },
+  {
+   "_": "VarDecl",
+   "region": [33, 5, 33, 8],
+   "name": "sig",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [33, 16, 33, 17],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  },
+  {
+   "_": "VarDecl",
+   "region": [34, 5, 34, 10],
+   "name": "alarm",
+   "type_name": "Alarm",
+   "value": {
+    "_": "DotAccess",
+    "region": [34, 20, 34, 25],
+    "obj": {
+     "_": "VarRef",
+     "region": [34, 20, 34, 25],
+     "name": "Alarm"
+    },
+    "field_name": "armed"
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  },
+  {
+   "_": "VarDecl",
+   "region": [124, 5, 124, 15],
+   "name": "bars_shown",
+   "type_name": "int",
+   "value": {
+    "_": "UnaryExpr",
+    "region": [124, 24, 124, 25],
+    "op": "-",
+    "operand": {
+     "_": "IntLiteral",
+     "region": [124, 24, 124, 25],
+     "value": 2
+    }
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  }
+ ],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "MethodCall",
+     "region": [196, 5, 196, 8],
+     "obj": {
+      "_": "VarRef",
+      "region": [196, 5, 196, 8],
+      "name": "lcd"
+     },
+     "method": "clear",
+     "args": []
+    }
+   },
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "MethodCall",
+     "region": [197, 5, 197, 8],
+     "obj": {
+      "_": "VarRef",
+      "region": [197, 5, 197, 8],
+      "name": "lcd"
+     },
+     "method": "print",
+     "args": [
+      {
+       "_": "StringLiteral",
+       "region": [197, 15, 197, 28],
+       "value": "cabinet-ids"
+      }
+     ]
+    }
+   },
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "FuncCall",
+     "region": [198, 5, 198, 8],
+     "name": "log",
+     "args": [
+      {
+       "_": "StringLiteral",
+       "region": [198, 9, 198, 15],
+       "value": "boot"
+      },
+      {
+       "_": "StringLiteral",
+       "region": [198, 17, 198, 65],
+       "value": "cabinet-ids node, alerts so far: {alert_count}"
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

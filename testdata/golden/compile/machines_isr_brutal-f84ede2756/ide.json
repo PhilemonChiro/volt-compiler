@@ -1,0 +1,231 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 1,
+    "col": 6,
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "severity": "warning",
+    "hint": "The chip declaration will move to volt.toml in a future version."
+   }
+  ],
+  "pins": [
+   {
+    "name": "led",
+    "mode": "Output",
+    "gpio": 4
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "tick",
+    "tier": "critical",
+    "line": 4
+   },
+   {
+    "name": "slow",
+    "tier": "background",
+    "line": 9
+   }
+  ],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": "esp32"
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 4\n}\n\nvar counter = 0\n\ntask tick {\n    every 1ms strict { counter = counter + 1 }\n}\n\ntask slow {\n    every 1s { led.toggle() }\n}\n",
+ "find_symbols": [
+  {
+   "name": "led",
+   "kind": "pin",
+   "def_line": 2,
+   "def_col": 16,
+   "refs": [
+    {
+     "line": 10,
+     "col": 16
+    }
+   ]
+  },
+  {
+   "name": "tick",
+   "kind": "task",
+   "def_line": 4,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "slow",
+   "kind": "task",
+   "def_line": 9,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "counter",
+   "kind": "var",
+   "def_line": 3,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 6,
+     "col": 9
+    },
+    {
+     "line": 6,
+     "col": 19
+    }
+   ]
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_tick((\"tick<br>↻ 1ms\"))\n    u_slow((\"slow<br>↻ 1s\"))\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_tick timer;\n    class u_slow timer;",
+  "units": [
+   {
+    "id": "u_tick",
+    "name": "tick<br>↻ 1ms",
+    "line": 4
+   },
+   {
+    "id": "u_slow",
+    "name": "slow<br>↻ 1s",
+    "line": 9
+   }
+  ],
+  "loops": [
+   "u_tick",
+   "u_slow"
+  ],
+  "edges": [],
+  "nodes": {
+   "u_tick": {
+    "kind": "timer",
+    "label": "tick<br>↻ 1ms",
+    "line": 4,
+    "detail": "every 1ms"
+   },
+   "v_counter": {
+    "kind": "var",
+    "label": "counter",
+    "line": 3,
+    "detail": ""
+   },
+   "u_slow": {
+    "kind": "timer",
+    "label": "slow<br>↻ 1s",
+    "line": 9,
+    "detail": "every 1s"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 2,
+    "detail": "Output · GPIO 4"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    v_counter(\"counter\")\n    p_led([\"led\"])\n    u_tick((\"tick<br>↻ 1ms\"))\n    u_slow((\"slow<br>↻ 1s\"))\n    u_tick -->|write| v_counter\n    v_counter -.->|read| u_tick\n    u_slow -->|toggle| p_led\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_tick timer;\n    class v_counter var;\n    class u_slow timer;\n    class p_led pin;",
+  "units": [
+   {
+    "id": "u_tick",
+    "name": "tick<br>↻ 1ms",
+    "line": 4
+   },
+   {
+    "id": "u_slow",
+    "name": "slow<br>↻ 1s",
+    "line": 9
+   }
+  ],
+  "loops": [
+   "u_tick",
+   "u_slow"
+  ],
+  "edges": [
+   {
+    "drive": "timer",
+    "src": "u_tick",
+    "dst": "v_counter",
+    "rate_ms": 1.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_counter",
+    "dst": "u_tick",
+    "rate_ms": 1.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_slow",
+    "dst": "p_led",
+    "rate_ms": 1000.0
+   }
+  ],
+  "nodes": {
+   "u_tick": {
+    "kind": "timer",
+    "label": "tick<br>↻ 1ms",
+    "line": 4,
+    "detail": "every 1ms"
+   },
+   "v_counter": {
+    "kind": "var",
+    "label": "counter",
+    "line": 3,
+    "detail": ""
+   },
+   "u_slow": {
+    "kind": "timer",
+    "label": "slow<br>↻ 1s",
+    "line": 9,
+    "detail": "every 1s"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 2,
+    "detail": "Output · GPIO 4"
+   }
+  }
+ }
+}

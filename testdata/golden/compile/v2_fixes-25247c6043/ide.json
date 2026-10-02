@@ -1,0 +1,204 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 1,
+    "col": 6,
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "severity": "warning",
+    "hint": "The chip declaration will move to volt.toml in a future version."
+   },
+   {
+    "line": 3,
+    "col": 9,
+    "message": "Strapping pin: GPIO 2 must be LOW during boot for flash programming.",
+    "severity": "warning",
+    "hint": ""
+   },
+   {
+    "line": 10,
+    "col": 11,
+    "message": "Code after `every`/`on` block in task `blinker` will never execute.",
+    "severity": "warning",
+    "hint": "Move this code before the `every` block, or into a separate task."
+   }
+  ],
+  "pins": [
+   {
+    "name": "led1",
+    "mode": "Output",
+    "gpio": 2
+   },
+   {
+    "name": "led2",
+    "mode": "Output",
+    "gpio": 4
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "blinker",
+    "tier": "background",
+    "line": 6
+   }
+  ],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": "esp32"
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "chip esp32\n\nhardware {\n    pin led1: Output = 2\n    pin led2: Output = 4\n}\n\ntask blinker {\n    every 1s { led1.toggle() }\n    every 100ms { led2.toggle() }\n}\n",
+ "find_symbols": [
+  {
+   "name": "led1",
+   "kind": "pin",
+   "def_line": 3,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 8,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "led2",
+   "kind": "pin",
+   "def_line": 4,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 11,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "blinker",
+   "kind": "task",
+   "def_line": 6,
+   "def_col": 6,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_blinker((\"blinker<br>↻ 1s\"))\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_blinker timer;",
+  "units": [
+   {
+    "id": "u_blinker",
+    "name": "blinker<br>↻ 1s",
+    "line": 6
+   }
+  ],
+  "loops": [
+   "u_blinker"
+  ],
+  "edges": [],
+  "nodes": {
+   "u_blinker": {
+    "kind": "timer",
+    "label": "blinker<br>↻ 1s",
+    "line": 6,
+    "detail": "every 1s"
+   },
+   "p_led1": {
+    "kind": "pin",
+    "label": "led1",
+    "line": 3,
+    "detail": "Output · GPIO 2"
+   },
+   "p_led2": {
+    "kind": "pin",
+    "label": "led2",
+    "line": 4,
+    "detail": "Output · GPIO 4"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    p_led1([\"led1\"])\n    p_led2([\"led2\"])\n    u_blinker((\"blinker<br>↻ 1s\"))\n    u_blinker -->|toggle| p_led1\n    u_blinker -->|toggle| p_led2\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_blinker timer;\n    class p_led1 pin;\n    class p_led2 pin;",
+  "units": [
+   {
+    "id": "u_blinker",
+    "name": "blinker<br>↻ 1s",
+    "line": 6
+   }
+  ],
+  "loops": [
+   "u_blinker"
+  ],
+  "edges": [
+   {
+    "drive": "timer",
+    "src": "u_blinker",
+    "dst": "p_led1",
+    "rate_ms": 1000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_blinker",
+    "dst": "p_led2",
+    "rate_ms": 1000.0
+   }
+  ],
+  "nodes": {
+   "u_blinker": {
+    "kind": "timer",
+    "label": "blinker<br>↻ 1s",
+    "line": 6,
+    "detail": "every 1s"
+   },
+   "p_led1": {
+    "kind": "pin",
+    "label": "led1",
+    "line": 3,
+    "detail": "Output · GPIO 2"
+   },
+   "p_led2": {
+    "kind": "pin",
+    "label": "led2",
+    "line": 4,
+    "detail": "Output · GPIO 4"
+   }
+  }
+ }
+}

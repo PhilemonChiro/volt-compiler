@@ -1,0 +1,10 @@
+
+[yellow bold]-- HARDWARE WARNING -- main.volt:3[/yellow bold]
+
+GPIO 4 is on ADC2, which is BLOCKED while WiFi is active. Analog reads will return errors or garbage.
+
+ [dim]2 |[/dim] hardware {
+ [dim]3 |[/dim]     pin sensor: Analog = 4
+ [dim]  |[/dim] [yellow]        ^^^^^^[/yellow]
+
+[cyan]Hint: Use ADC1 pins instead (GPIO 32-39) which work with WiFi.[/cyan]

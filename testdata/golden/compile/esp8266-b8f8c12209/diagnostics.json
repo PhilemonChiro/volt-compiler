@@ -1,0 +1,26 @@
+[
+  {
+    "severity": "warning",
+    "category": "DEPRECATION",
+    "message": "Move `chip esp8266` to volt.toml: chip = \"esp8266\"",
+    "hint": "The chip declaration will move to volt.toml in a future version.",
+    "region": [
+      2,
+      6,
+      2,
+      13
+    ]
+  },
+  {
+    "severity": "error",
+    "category": "HARDWARE ERROR",
+    "message": "GPIO 17 does not exist on ESP8266. ESP8266 has GPIO 0-16 only.",
+    "hint": "Available output pins: 4, 5, 12, 13, 14, 16",
+    "region": [
+      4,
+      9,
+      4,
+      12
+    ]
+  }
+]

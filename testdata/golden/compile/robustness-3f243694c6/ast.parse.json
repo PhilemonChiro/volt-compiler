@@ -1,0 +1,209 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [
+  {
+   "_": "FuncDecl",
+   "region": [3, 6, 3, 9],
+   "name": "max",
+   "params": [
+    {
+     "_": "Param",
+     "region": [3, 10, 3, 11],
+     "name": "a",
+     "type_name": "int"
+    },
+    {
+     "_": "Param",
+     "region": [3, 18, 3, 19],
+     "name": "b",
+     "type_name": "int"
+    }
+   ],
+   "return_type": "int",
+   "body": [
+    {
+     "_": "IfStmt",
+     "region": [4, 8, 4, 9],
+     "condition": {
+      "_": "BinaryExpr",
+      "region": [4, 8, 4, 9],
+      "left": {
+       "_": "VarRef",
+       "region": [4, 8, 4, 9],
+       "name": "a"
+      },
+      "op": ">",
+      "right": {
+       "_": "VarRef",
+       "region": [4, 12, 4, 13],
+       "name": "b"
+      },
+      "result_type": null
+     },
+     "then_body": [
+      {
+       "_": "ReturnStmt",
+       "region": [0, 0, 0, 0],
+       "value": {
+        "_": "VarRef",
+        "region": [5, 16, 5, 17],
+        "name": "a"
+       }
+      }
+     ],
+     "else_body": null
+    },
+    {
+     "_": "ReturnStmt",
+     "region": [0, 0, 0, 0],
+     "value": {
+      "_": "VarRef",
+      "region": [7, 12, 7, 13],
+      "name": "b"
+     }
+    }
+   ],
+   "contains_yield": false
+  },
+  {
+   "_": "FuncDecl",
+   "region": [10, 6, 10, 9],
+   "name": "min",
+   "params": [
+    {
+     "_": "Param",
+     "region": [10, 10, 10, 11],
+     "name": "a",
+     "type_name": "int"
+    },
+    {
+     "_": "Param",
+     "region": [10, 18, 10, 19],
+     "name": "b",
+     "type_name": "int"
+    }
+   ],
+   "return_type": "int",
+   "body": [
+    {
+     "_": "IfStmt",
+     "region": [11, 8, 11, 9],
+     "condition": {
+      "_": "BinaryExpr",
+      "region": [11, 8, 11, 9],
+      "left": {
+       "_": "VarRef",
+       "region": [11, 8, 11, 9],
+       "name": "a"
+      },
+      "op": "<",
+      "right": {
+       "_": "VarRef",
+       "region": [11, 12, 11, 13],
+       "name": "b"
+      },
+      "result_type": null
+     },
+     "then_body": [
+      {
+       "_": "ReturnStmt",
+       "region": [0, 0, 0, 0],
+       "value": {
+        "_": "VarRef",
+        "region": [12, 16, 12, 17],
+        "name": "a"
+       }
+      }
+     ],
+     "else_body": null
+    },
+    {
+     "_": "ReturnStmt",
+     "region": [0, 0, 0, 0],
+     "value": {
+      "_": "VarRef",
+      "region": [14, 12, 14, 13],
+      "name": "b"
+     }
+    }
+   ],
+   "contains_yield": false
+  }
+ ],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "VarDecl",
+    "region": [18, 9, 18, 12],
+    "name": "big",
+    "type_name": "int",
+    "value": {
+     "_": "FuncCall",
+     "region": [18, 20, 18, 23],
+     "name": "max",
+     "args": [
+      {
+       "_": "IntLiteral",
+       "region": [18, 24, 18, 26],
+       "value": 10
+      },
+      {
+       "_": "IntLiteral",
+       "region": [18, 28, 18, 30],
+       "value": 20
+      }
+     ]
+    },
+    "mutable": true,
+    "shared": false,
+    "needs_lifting": false
+   },
+   {
+    "_": "VarDecl",
+    "region": [19, 9, 19, 14],
+    "name": "small",
+    "type_name": "int",
+    "value": {
+     "_": "FuncCall",
+     "region": [19, 22, 19, 25],
+     "name": "min",
+     "args": [
+      {
+       "_": "IntLiteral",
+       "region": [19, 26, 19, 28],
+       "value": 10
+      },
+      {
+       "_": "IntLiteral",
+       "region": [19, 30, 19, 32],
+       "value": 20
+      }
+     ]
+    },
+    "mutable": true,
+    "shared": false,
+    "needs_lifting": false
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

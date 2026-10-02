@@ -1,0 +1,14 @@
+[
+  {
+    "severity": "error",
+    "category": "HARDWARE ERROR",
+    "message": "GPIO 50 does not exist on ESP32 (valid: 0-39).",
+    "hint": null,
+    "region": [
+      2,
+      9,
+      2,
+      10
+    ]
+  }
+]

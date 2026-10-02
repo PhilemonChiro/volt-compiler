@@ -1,0 +1,8 @@
+
+[yellow bold]-- STATE MACHINE WARNING -- main.volt:9[/yellow bold]
+
+State `orphan` in machine `Bad` is unreachable from initial state `a`.
+
+ [dim]8 |[/dim]     }
+ [dim]9 |[/dim]     state orphan {
+ [dim]  |[/dim] [yellow]          ^^^^^^[/yellow]

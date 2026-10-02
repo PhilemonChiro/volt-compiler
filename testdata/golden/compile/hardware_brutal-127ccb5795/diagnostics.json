@@ -1,0 +1,38 @@
+[
+  {
+    "severity": "warning",
+    "category": "DEPRECATION",
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "hint": "The chip declaration will move to volt.toml in a future version.",
+    "region": [
+      1,
+      6,
+      1,
+      11
+    ]
+  },
+  {
+    "severity": "warning",
+    "category": "HARDWARE WARNING",
+    "message": "Strapping pin: GPIO 2 must be LOW during boot for flash programming.",
+    "hint": null,
+    "region": [
+      3,
+      9,
+      3,
+      12
+    ]
+  },
+  {
+    "severity": "error",
+    "category": "HARDWARE ERROR",
+    "message": "I2C address 0x00 on bus `i2c0` is outside the 7-bit device range 0x08..0x77.",
+    "hint": "0x00..0x07 and 0x78..0x7F are reserved by the I\u00b2C spec. Check the device datasheet \u2014 most parts have a fixed address or an A0/A1 strap option.",
+    "region": [
+      5,
+      12,
+      5,
+      13
+    ]
+  }
+]

@@ -1,0 +1,1137 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [1, 6, 1, 13],
+  "target": "esp8266"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [4, 9, 6, 19],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [4, 9, 4, 12],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   },
+   {
+    "_": "PinDecl",
+    "region": [5, 9, 5, 14],
+    "name": "relay",
+    "mode": "Output",
+    "gpio": 4
+   },
+   {
+    "_": "PinDecl",
+    "region": [6, 9, 6, 19],
+    "name": "sensor_pin",
+    "mode": "Input",
+    "gpio": 5
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [15, 6, 15, 15],
+   "name": "heartbeat",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [16, 11, 16, 13],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [16, 11, 16, 13],
+      "microseconds": 1000000,
+      "original": "1s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [17, 9, 17, 12],
+        "obj": {
+         "_": "VarRef",
+         "region": [17, 9, 17, 12],
+         "name": "led"
+        },
+        "method": "toggle",
+        "args": []
+       }
+      },
+      {
+       "_": "CompoundAssign",
+       "region": [18, 9, 18, 24],
+       "target": {
+        "_": "VarRef",
+        "region": [18, 9, 18, 24],
+        "name": "heartbeat_count"
+       },
+       "op": "+=",
+       "value": {
+        "_": "IntLiteral",
+        "region": [18, 28, 18, 29],
+        "value": 1
+       }
+      },
+      {
+       "_": "IfStmt",
+       "region": [19, 12, 19, 27],
+       "condition": {
+        "_": "BinaryExpr",
+        "region": [19, 12, 19, 27],
+        "left": {
+         "_": "BinaryExpr",
+         "region": [19, 12, 19, 27],
+         "left": {
+          "_": "VarRef",
+          "region": [19, 12, 19, 27],
+          "name": "heartbeat_count"
+         },
+         "op": "%",
+         "right": {
+          "_": "IntLiteral",
+          "region": [19, 30, 19, 32],
+          "value": 10
+         },
+         "result_type": "int"
+        },
+        "op": "==",
+        "right": {
+         "_": "IntLiteral",
+         "region": [19, 36, 19, 37],
+         "value": 0
+        },
+        "result_type": "bool"
+       },
+       "then_body": [
+        {
+         "_": "ExprStmt",
+         "region": [0, 0, 0, 0],
+         "expr": {
+          "_": "FuncCall",
+          "region": [20, 13, 20, 16],
+          "name": "log",
+          "args": [
+           {
+            "_": "StringLiteral",
+            "region": [20, 17, 20, 28],
+            "value": "heartbeat"
+           },
+           {
+            "_": "BinaryExpr",
+            "region": [20, 30, 20, 33],
+            "left": {
+             "_": "BinaryExpr",
+             "region": [20, 30, 20, 33],
+             "left": {
+              "_": "BinaryExpr",
+              "region": [20, 30, 20, 33],
+              "left": {
+               "_": "StringLiteral",
+               "region": [20, 30, 20, 33],
+               "value": "#"
+              },
+              "op": "+",
+              "right": {
+               "_": "VarRef",
+               "region": [20, 36, 20, 51],
+               "name": "heartbeat_count"
+              },
+              "result_type": "string"
+             },
+             "op": "+",
+             "right": {
+              "_": "StringLiteral",
+              "region": [20, 54, 20, 62],
+              "value": " heap="
+             },
+             "result_type": "string"
+            },
+            "op": "+",
+            "right": {
+             "_": "MethodCall",
+             "region": [20, 65, 20, 71],
+             "obj": {
+              "_": "VarRef",
+              "region": [20, 65, 20, 71],
+              "name": "system"
+             },
+             "method": "free_heap",
+             "args": []
+            },
+            "result_type": "string"
+           }
+          ]
+         }
+        }
+       ],
+       "else_body": null
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  },
+  {
+   "_": "TaskDecl",
+   "region": [25, 6, 25, 18],
+   "name": "sensor_check",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [26, 11, 26, 13],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [26, 11, 26, 13],
+      "microseconds": 5000000,
+      "original": "5s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "VarDecl",
+       "region": [27, 13, 27, 16],
+       "name": "val",
+       "type_name": "int",
+       "value": {
+        "_": "MethodCall",
+        "region": [27, 19, 27, 29],
+        "obj": {
+         "_": "VarRef",
+         "region": [27, 19, 27, 29],
+         "name": "sensor_pin"
+        },
+        "method": "read",
+        "args": []
+       },
+       "mutable": false,
+       "shared": false,
+       "needs_lifting": false
+      },
+      {
+       "_": "CompoundAssign",
+       "region": [28, 9, 28, 21],
+       "target": {
+        "_": "VarRef",
+        "region": [28, 9, 28, 21],
+        "name": "sensor_reads"
+       },
+       "op": "+=",
+       "value": {
+        "_": "IntLiteral",
+        "region": [28, 25, 28, 26],
+        "value": 1
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [29, 9, 29, 12],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [29, 13, 29, 21],
+          "value": "sensor"
+         },
+         {
+          "_": "BinaryExpr",
+          "region": [29, 23, 29, 26],
+          "left": {
+           "_": "BinaryExpr",
+           "region": [29, 23, 29, 26],
+           "left": {
+            "_": "BinaryExpr",
+            "region": [29, 23, 29, 26],
+            "left": {
+             "_": "StringLiteral",
+             "region": [29, 23, 29, 26],
+             "value": "#"
+            },
+            "op": "+",
+            "right": {
+             "_": "VarRef",
+             "region": [29, 29, 29, 41],
+             "name": "sensor_reads"
+            },
+            "result_type": "string"
+           },
+           "op": "+",
+           "right": {
+            "_": "StringLiteral",
+            "region": [29, 44, 29, 53],
+            "value": " GPIO5="
+           },
+           "result_type": "string"
+          },
+          "op": "+",
+          "right": {
+           "_": "VarRef",
+           "region": [29, 56, 29, 59],
+           "name": "val"
+          },
+          "result_type": "string"
+         }
+        ]
+       }
+      },
+      {
+       "_": "IfStmt",
+       "region": [30, 12, 30, 15],
+       "condition": {
+        "_": "BinaryExpr",
+        "region": [30, 12, 30, 15],
+        "left": {
+         "_": "VarRef",
+         "region": [30, 12, 30, 15],
+         "name": "val"
+        },
+        "op": "==",
+        "right": {
+         "_": "IntLiteral",
+         "region": [30, 19, 30, 20],
+         "value": 1
+        },
+        "result_type": "bool"
+       },
+       "then_body": [
+        {
+         "_": "ExprStmt",
+         "region": [0, 0, 0, 0],
+         "expr": {
+          "_": "MethodCall",
+          "region": [31, 13, 31, 18],
+          "obj": {
+           "_": "VarRef",
+           "region": [31, 13, 31, 18],
+           "name": "relay"
+          },
+          "method": "on",
+          "args": []
+         }
+        }
+       ],
+       "else_body": [
+        {
+         "_": "ExprStmt",
+         "region": [0, 0, 0, 0],
+         "expr": {
+          "_": "MethodCall",
+          "region": [33, 13, 33, 18],
+          "obj": {
+           "_": "VarRef",
+           "region": [33, 13, 33, 18],
+           "name": "relay"
+          },
+          "method": "off",
+          "args": []
+         }
+        }
+       ]
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  },
+  {
+   "_": "TaskDecl",
+   "region": [38, 6, 38, 17],
+   "name": "mqtt_report",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [39, 11, 39, 14],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [39, 11, 39, 14],
+      "microseconds": 30000000,
+      "original": "30s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "CompoundAssign",
+       "region": [40, 9, 40, 19],
+       "target": {
+        "_": "VarRef",
+        "region": [40, 9, 40, 19],
+        "name": "mqtt_sends"
+       },
+       "op": "+=",
+       "value": {
+        "_": "IntLiteral",
+        "region": [40, 23, 40, 24],
+        "value": 1
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [41, 9, 41, 12],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [41, 13, 41, 19],
+          "value": "mqtt"
+         },
+         {
+          "_": "BinaryExpr",
+          "region": [41, 21, 41, 24],
+          "left": {
+           "_": "BinaryExpr",
+           "region": [41, 21, 41, 24],
+           "left": {
+            "_": "StringLiteral",
+            "region": [41, 21, 41, 24],
+            "value": "#"
+           },
+           "op": "+",
+           "right": {
+            "_": "VarRef",
+            "region": [41, 27, 41, 37],
+            "name": "mqtt_sends"
+           },
+           "result_type": "string"
+          },
+          "op": "+",
+          "right": {
+           "_": "StringLiteral",
+           "region": [41, 40, 41, 66],
+           "value": " sending status + sensor"
+          },
+          "result_type": "string"
+         }
+        ]
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [42, 9, 42, 13],
+        "obj": {
+         "_": "VarRef",
+         "region": [42, 9, 42, 13],
+         "name": "mqtt"
+        },
+        "method": "send_int",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [42, 23, 42, 39],
+          "value": "esp8266/status"
+         },
+         {
+          "_": "IntLiteral",
+          "region": [42, 41, 42, 42],
+          "value": 1
+         }
+        ]
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [43, 9, 43, 13],
+        "obj": {
+         "_": "VarRef",
+         "region": [43, 9, 43, 13],
+         "name": "mqtt"
+        },
+        "method": "send_int",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [43, 23, 43, 39],
+          "value": "esp8266/sensor"
+         },
+         {
+          "_": "MethodCall",
+          "region": [43, 41, 43, 51],
+          "obj": {
+           "_": "VarRef",
+           "region": [43, 41, 43, 51],
+           "name": "sensor_pin"
+          },
+          "method": "read",
+          "args": []
+         }
+        ]
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "priority",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  },
+  {
+   "_": "TaskDecl",
+   "region": [47, 6, 47, 17],
+   "name": "data_buffer",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [48, 11, 48, 14],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [48, 11, 48, 14],
+      "microseconds": 10000000,
+      "original": "10s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "CompoundAssign",
+       "region": [49, 9, 49, 19],
+       "target": {
+        "_": "VarRef",
+        "region": [49, 9, 49, 19],
+        "name": "push_count"
+       },
+       "op": "+=",
+       "value": {
+        "_": "IntLiteral",
+        "region": [49, 23, 49, 24],
+        "value": 1
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [50, 9, 50, 16],
+        "obj": {
+         "_": "VarRef",
+         "region": [50, 9, 50, 16],
+         "name": "storage"
+        },
+        "method": "push",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [50, 22, 50, 32],
+          "value": "readings"
+         },
+         {
+          "_": "MethodCall",
+          "region": [50, 34, 50, 44],
+          "obj": {
+           "_": "VarRef",
+           "region": [50, 34, 50, 44],
+           "name": "sensor_pin"
+          },
+          "method": "read",
+          "args": []
+         }
+        ]
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [51, 9, 51, 12],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [51, 13, 51, 22],
+          "value": "storage"
+         },
+         {
+          "_": "BinaryExpr",
+          "region": [51, 24, 51, 32],
+          "left": {
+           "_": "BinaryExpr",
+           "region": [51, 24, 51, 32],
+           "left": {
+            "_": "BinaryExpr",
+            "region": [51, 24, 51, 32],
+            "left": {
+             "_": "StringLiteral",
+             "region": [51, 24, 51, 32],
+             "value": "push #"
+            },
+            "op": "+",
+            "right": {
+             "_": "VarRef",
+             "region": [51, 35, 51, 45],
+             "name": "push_count"
+            },
+            "result_type": "string"
+           },
+           "op": "+",
+           "right": {
+            "_": "StringLiteral",
+            "region": [51, 48, 51, 62],
+            "value": " | buffered="
+           },
+           "result_type": "string"
+          },
+          "op": "+",
+          "right": {
+           "_": "MethodCall",
+           "region": [51, 65, 51, 72],
+           "obj": {
+            "_": "VarRef",
+            "region": [51, 65, 51, 72],
+            "name": "storage"
+           },
+           "method": "list_count",
+           "args": [
+            {
+             "_": "StringLiteral",
+             "region": [51, 84, 51, 94],
+             "value": "readings"
+            }
+           ]
+          },
+          "result_type": "string"
+         }
+        ]
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  },
+  {
+   "_": "TaskDecl",
+   "region": [55, 6, 55, 10],
+   "name": "sync",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [56, 11, 56, 14],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [56, 11, 56, 14],
+      "microseconds": 60000000,
+      "original": "60s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "IfStmt",
+       "region": [57, 12, 57, 16],
+       "condition": {
+        "_": "MethodCall",
+        "region": [57, 12, 57, 16],
+        "obj": {
+         "_": "VarRef",
+         "region": [57, 12, 57, 16],
+         "name": "wifi"
+        },
+        "method": "is_connected",
+        "args": []
+       },
+       "then_body": [
+        {
+         "_": "CompoundAssign",
+         "region": [58, 13, 58, 23],
+         "target": {
+          "_": "VarRef",
+          "region": [58, 13, 58, 23],
+          "name": "sync_count"
+         },
+         "op": "+=",
+         "value": {
+          "_": "IntLiteral",
+          "region": [58, 27, 58, 28],
+          "value": 1
+         }
+        },
+        {
+         "_": "ExprStmt",
+         "region": [0, 0, 0, 0],
+         "expr": {
+          "_": "FuncCall",
+          "region": [59, 13, 59, 16],
+          "name": "log",
+          "args": [
+           {
+            "_": "StringLiteral",
+            "region": [59, 17, 59, 23],
+            "value": "sync"
+           },
+           {
+            "_": "BinaryExpr",
+            "region": [59, 25, 59, 28],
+            "left": {
+             "_": "BinaryExpr",
+             "region": [59, 25, 59, 28],
+             "left": {
+              "_": "StringLiteral",
+              "region": [59, 25, 59, 28],
+              "value": "#"
+             },
+             "op": "+",
+             "right": {
+              "_": "VarRef",
+              "region": [59, 31, 59, 41],
+              "name": "sync_count"
+             },
+             "result_type": "string"
+            },
+            "op": "+",
+            "right": {
+             "_": "StringLiteral",
+             "region": [59, 44, 59, 70],
+             "value": " wifi connected, sending"
+            },
+            "result_type": "string"
+           }
+          ]
+         }
+        },
+        {
+         "_": "ExprStmt",
+         "region": [0, 0, 0, 0],
+         "expr": {
+          "_": "MethodCall",
+          "region": [60, 13, 60, 17],
+          "obj": {
+           "_": "VarRef",
+           "region": [60, 13, 60, 17],
+           "name": "mqtt"
+          },
+          "method": "send_int",
+          "args": [
+           {
+            "_": "StringLiteral",
+            "region": [60, 27, 60, 42],
+            "value": "esp8266/alive"
+           },
+           {
+            "_": "IntLiteral",
+            "region": [60, 44, 60, 45],
+            "value": 1
+           }
+          ]
+         }
+        }
+       ],
+       "else_body": [
+        {
+         "_": "ExprStmt",
+         "region": [0, 0, 0, 0],
+         "expr": {
+          "_": "FuncCall",
+          "region": [62, 13, 62, 16],
+          "name": "log",
+          "args": [
+           {
+            "_": "StringLiteral",
+            "region": [62, 17, 62, 23],
+            "value": "sync"
+           },
+           {
+            "_": "StringLiteral",
+            "region": [62, 25, 62, 54],
+            "value": "wifi disconnected, skipping"
+           }
+          ]
+         }
+        }
+       ]
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "priority",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  },
+  {
+   "_": "TaskDecl",
+   "region": [67, 6, 67, 12],
+   "name": "health",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [68, 11, 68, 14],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [68, 11, 68, 14],
+      "microseconds": 15000000,
+      "original": "15s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [69, 9, 69, 12],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [69, 13, 69, 21],
+          "value": "health"
+         },
+         {
+          "_": "BinaryExpr",
+          "region": [69, 23, 69, 36],
+          "left": {
+           "_": "BinaryExpr",
+           "region": [69, 23, 69, 36],
+           "left": {
+            "_": "BinaryExpr",
+            "region": [69, 23, 69, 36],
+            "left": {
+             "_": "BinaryExpr",
+             "region": [69, 23, 69, 36],
+             "left": {
+              "_": "BinaryExpr",
+              "region": [69, 23, 69, 36],
+              "left": {
+               "_": "BinaryExpr",
+               "region": [69, 23, 69, 36],
+               "left": {
+                "_": "BinaryExpr",
+                "region": [69, 23, 69, 36],
+                "left": {
+                 "_": "BinaryExpr",
+                 "region": [69, 23, 69, 36],
+                 "left": {
+                  "_": "BinaryExpr",
+                  "region": [69, 23, 69, 36],
+                  "left": {
+                   "_": "StringLiteral",
+                   "region": [69, 23, 69, 36],
+                   "value": "heartbeats="
+                  },
+                  "op": "+",
+                  "right": {
+                   "_": "VarRef",
+                   "region": [69, 39, 69, 54],
+                   "name": "heartbeat_count"
+                  },
+                  "result_type": "string"
+                 },
+                 "op": "+",
+                 "right": {
+                  "_": "StringLiteral",
+                  "region": [69, 57, 69, 73],
+                  "value": " sensor_reads="
+                 },
+                 "result_type": "string"
+                },
+                "op": "+",
+                "right": {
+                 "_": "VarRef",
+                 "region": [69, 76, 69, 88],
+                 "name": "sensor_reads"
+                },
+                "result_type": "string"
+               },
+               "op": "+",
+               "right": {
+                "_": "StringLiteral",
+                "region": [69, 91, 69, 99],
+                "value": " mqtt="
+               },
+               "result_type": "string"
+              },
+              "op": "+",
+              "right": {
+               "_": "VarRef",
+               "region": [69, 102, 69, 112],
+               "name": "mqtt_sends"
+              },
+              "result_type": "string"
+             },
+             "op": "+",
+             "right": {
+              "_": "StringLiteral",
+              "region": [69, 115, 69, 125],
+              "value": " pushes="
+             },
+             "result_type": "string"
+            },
+            "op": "+",
+            "right": {
+             "_": "VarRef",
+             "region": [69, 128, 69, 138],
+             "name": "push_count"
+            },
+            "result_type": "string"
+           },
+           "op": "+",
+           "right": {
+            "_": "StringLiteral",
+            "region": [69, 141, 69, 150],
+            "value": " syncs="
+           },
+           "result_type": "string"
+          },
+          "op": "+",
+          "right": {
+           "_": "VarRef",
+           "region": [69, 153, 69, 163],
+           "name": "sync_count"
+          },
+          "result_type": "string"
+         }
+        ]
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [70, 9, 70, 12],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [70, 13, 70, 21],
+          "value": "health"
+         },
+         {
+          "_": "BinaryExpr",
+          "region": [70, 23, 70, 30],
+          "left": {
+           "_": "BinaryExpr",
+           "region": [70, 23, 70, 30],
+           "left": {
+            "_": "BinaryExpr",
+            "region": [70, 23, 70, 30],
+            "left": {
+             "_": "StringLiteral",
+             "region": [70, 23, 70, 30],
+             "value": "wifi="
+            },
+            "op": "+",
+            "right": {
+             "_": "MethodCall",
+             "region": [70, 33, 70, 37],
+             "obj": {
+              "_": "VarRef",
+              "region": [70, 33, 70, 37],
+              "name": "wifi"
+             },
+             "method": "is_connected",
+             "args": []
+            },
+            "result_type": "string"
+           },
+           "op": "+",
+           "right": {
+            "_": "StringLiteral",
+            "region": [70, 55, 70, 63],
+            "value": " heap="
+           },
+           "result_type": "string"
+          },
+          "op": "+",
+          "right": {
+           "_": "MethodCall",
+           "region": [70, 66, 70, 72],
+           "obj": {
+            "_": "VarRef",
+            "region": [70, 66, 70, 72],
+            "name": "system"
+           },
+           "method": "free_heap",
+           "args": []
+          },
+          "result_type": "string"
+         }
+        ]
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [
+  {
+   "_": "VarDecl",
+   "region": [9, 5, 9, 20],
+   "name": "heartbeat_count",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [9, 28, 9, 29],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  },
+  {
+   "_": "VarDecl",
+   "region": [10, 5, 10, 17],
+   "name": "sensor_reads",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [10, 25, 10, 26],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  },
+  {
+   "_": "VarDecl",
+   "region": [11, 5, 11, 15],
+   "name": "mqtt_sends",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [11, 23, 11, 24],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  },
+  {
+   "_": "VarDecl",
+   "region": [12, 5, 12, 15],
+   "name": "push_count",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [12, 23, 12, 24],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  },
+  {
+   "_": "VarDecl",
+   "region": [13, 5, 13, 15],
+   "name": "sync_count",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [13, 23, 13, 24],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  }
+ ],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "MethodCall",
+     "region": [75, 5, 75, 9],
+     "obj": {
+      "_": "VarRef",
+      "region": [75, 5, 75, 9],
+      "name": "wifi"
+     },
+     "method": "connect",
+     "args": [
+      {
+       "_": "StringLiteral",
+       "region": [75, 18, 75, 27],
+       "value": "HomeNet"
+      },
+      {
+       "_": "StringLiteral",
+       "region": [75, 29, 75, 39],
+       "value": "password"
+      }
+     ]
+    }
+   },
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "MethodCall",
+     "region": [76, 5, 76, 9],
+     "obj": {
+      "_": "VarRef",
+      "region": [76, 5, 76, 9],
+      "name": "mqtt"
+     },
+     "method": "connect",
+     "args": [
+      {
+       "_": "StringLiteral",
+       "region": [76, 18, 76, 40],
+       "value": "mqtt://192.168.1.100"
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

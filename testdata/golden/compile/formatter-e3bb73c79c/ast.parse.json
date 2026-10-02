@@ -1,0 +1,130 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [3, 14, 3, 17],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [3, 14, 3, 17],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [
+  {
+   "_": "EnumDecl",
+   "region": [4, 6, 4, 10],
+   "name": "Mode",
+   "variants": [
+    "idle",
+    "running"
+   ]
+  }
+ ],
+ "functions": [],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "VarDecl",
+    "region": [6, 5, 6, 6],
+    "name": "m",
+    "type_name": "Mode",
+    "value": {
+     "_": "DotAccess",
+     "region": [6, 12, 6, 16],
+     "obj": {
+      "_": "VarRef",
+      "region": [6, 12, 6, 16],
+      "name": "Mode"
+     },
+     "field_name": "idle"
+    },
+    "mutable": true,
+    "shared": false,
+    "needs_lifting": false
+   },
+   {
+    "_": "MatchStmt",
+    "region": [7, 7, 7, 8],
+    "expr": {
+     "_": "VarRef",
+     "region": [7, 7, 7, 8],
+     "name": "m"
+    },
+    "arms": [
+     {
+      "_": "MatchArm",
+      "region": [0, 0, 0, 0],
+      "pattern": "idle",
+      "body": {
+       "_": "MethodCall",
+       "region": [8, 8, 8, 11],
+       "obj": {
+        "_": "VarRef",
+        "region": [8, 8, 8, 11],
+        "name": "led"
+       },
+       "method": "off",
+       "args": []
+      }
+     },
+     {
+      "_": "MatchArm",
+      "region": [0, 0, 0, 0],
+      "pattern": "running",
+      "body": {
+       "_": "MethodCall",
+       "region": [9, 11, 9, 14],
+       "obj": {
+        "_": "VarRef",
+        "region": [9, 11, 9, 14],
+        "name": "led"
+       },
+       "method": "on",
+       "args": []
+      }
+     },
+     {
+      "_": "MatchArm",
+      "region": [0, 0, 0, 0],
+      "pattern": "_",
+      "body": {
+       "_": "MethodCall",
+       "region": [10, 4, 10, 7],
+       "obj": {
+        "_": "VarRef",
+        "region": [10, 4, 10, 7],
+        "name": "led"
+       },
+       "method": "toggle",
+       "args": []
+      }
+     }
+    ]
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

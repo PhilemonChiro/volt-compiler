@@ -1,0 +1,105 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [4, 9, 4, 12],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [4, 9, 4, 12],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [
+  {
+   "_": "StorageDecl",
+   "region": [6, 9, 6, 19],
+   "name": "boot_count",
+   "type_name": "int",
+   "default_value": {
+    "_": "IntLiteral",
+    "region": [6, 27, 6, 28],
+    "value": 0
+   }
+  }
+ ],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "AssignExpr",
+    "region": [8, 5, 8, 15],
+    "target": {
+     "_": "VarRef",
+     "region": [8, 5, 8, 15],
+     "name": "boot_count"
+    },
+    "value": {
+     "_": "BinaryExpr",
+     "region": [8, 18, 8, 28],
+     "left": {
+      "_": "VarRef",
+      "region": [8, 18, 8, 28],
+      "name": "boot_count"
+     },
+     "op": "+",
+     "right": {
+      "_": "IntLiteral",
+      "region": [8, 31, 8, 32],
+      "value": 1
+     },
+     "result_type": null
+    }
+   },
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "MethodCall",
+     "region": [9, 5, 9, 12],
+     "obj": {
+      "_": "VarRef",
+      "region": [9, 5, 9, 12],
+      "name": "storage"
+     },
+     "method": "save",
+     "args": [
+      {
+       "_": "StringLiteral",
+       "region": [9, 18, 9, 25],
+       "value": "boots"
+      },
+      {
+       "_": "VarRef",
+       "region": [9, 27, 9, 37],
+       "name": "boot_count"
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

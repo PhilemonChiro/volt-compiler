@@ -1,0 +1,7 @@
+
+[red bold]-- SYNTAX ERROR -- main.volt:1[/red bold]
+
+Error trying to process rule "try_block":
+
+ [dim]1 |[/dim] chip esp32
+ [dim]  |[/dim] [red]^[/red]

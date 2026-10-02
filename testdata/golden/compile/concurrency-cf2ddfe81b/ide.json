@@ -1,0 +1,318 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 2,
+    "col": 6,
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "severity": "warning",
+    "hint": "The chip declaration will move to volt.toml in a future version."
+   },
+   {
+    "line": 5,
+    "col": 9,
+    "message": "Strapping pin: GPIO 2 must be LOW during boot for flash programming.",
+    "severity": "warning",
+    "hint": ""
+   }
+  ],
+  "pins": [
+   {
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   },
+   {
+    "name": "motor",
+    "mode": "PWM",
+    "gpio": 4
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "critical_reader",
+    "tier": "critical",
+    "line": 11
+   },
+   {
+    "name": "background_reader",
+    "tier": "background",
+    "line": 17
+   }
+  ],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": "esp32"
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n    pin motor: PWM = 4\n}\n\nvar read_only_cfg = 100\n\ntask critical_reader {\n    every 1ms strict { motor.set_pwm(read_only_cfg) }\n}\n\ntask background_reader {\n    every 500ms { led.toggle() }\n}\n\nsetup {\n    run(critical_reader, background_reader)\n}\n",
+ "find_symbols": [
+  {
+   "name": "led",
+   "kind": "pin",
+   "def_line": 5,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 19,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "motor",
+   "kind": "pin",
+   "def_line": 6,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 13,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "critical_reader",
+   "kind": "task",
+   "def_line": 11,
+   "def_col": 6,
+   "refs": [
+    {
+     "line": 24,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "background_reader",
+   "kind": "task",
+   "def_line": 17,
+   "def_col": 6,
+   "refs": [
+    {
+     "line": 24,
+     "col": 26
+    }
+   ]
+  },
+  {
+   "name": "read_only_cfg",
+   "kind": "var",
+   "def_line": 9,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 13,
+     "col": 23
+    }
+   ]
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_run{{\"run\"}}\n    u_critical_reader((\"critical_reader<br>↻ 1ms\"))\n    u_background_reader((\"background_reader<br>↻ 500ms\"))\n    u_setup -->|run| s_run\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_run service;\n    class u_critical_reader timer;\n    class u_background_reader timer;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_critical_reader",
+    "name": "critical_reader<br>↻ 1ms",
+    "line": 11
+   },
+   {
+    "id": "u_background_reader",
+    "name": "background_reader<br>↻ 500ms",
+    "line": 17
+   }
+  ],
+  "loops": [
+   "u_critical_reader",
+   "u_background_reader"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_run"
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_run": {
+    "kind": "service",
+    "label": "run",
+    "line": null,
+    "detail": "run"
+   },
+   "u_critical_reader": {
+    "kind": "timer",
+    "label": "critical_reader<br>↻ 1ms",
+    "line": 11,
+    "detail": "every 1ms"
+   },
+   "p_motor": {
+    "kind": "pin",
+    "label": "motor",
+    "line": 6,
+    "detail": "PWM · GPIO 4"
+   },
+   "v_read_only_cfg": {
+    "kind": "var",
+    "label": "read_only_cfg",
+    "line": 9,
+    "detail": ""
+   },
+   "u_background_reader": {
+    "kind": "timer",
+    "label": "background_reader<br>↻ 500ms",
+    "line": 17,
+    "detail": "every 500ms"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 5,
+    "detail": "Output · GPIO 2"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_run{{\"run\"}}\n    p_motor([\"motor\"])\n    v_read_only_cfg(\"read_only_cfg\")\n    p_led([\"led\"])\n    u_critical_reader((\"critical_reader<br>↻ 1ms\"))\n    u_background_reader((\"background_reader<br>↻ 500ms\"))\n    u_setup -->|run| s_run\n    u_critical_reader -->|set_pwm| p_motor\n    v_read_only_cfg -.->|read| u_critical_reader\n    u_background_reader -->|toggle| p_led\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_run service;\n    class u_critical_reader timer;\n    class p_motor pin;\n    class v_read_only_cfg var;\n    class u_background_reader timer;\n    class p_led pin;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_critical_reader",
+    "name": "critical_reader<br>↻ 1ms",
+    "line": 11
+   },
+   {
+    "id": "u_background_reader",
+    "name": "background_reader<br>↻ 500ms",
+    "line": 17
+   }
+  ],
+  "loops": [
+   "u_critical_reader",
+   "u_background_reader"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_run"
+   },
+   {
+    "drive": "timer",
+    "src": "u_critical_reader",
+    "dst": "p_motor",
+    "rate_ms": 1.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_read_only_cfg",
+    "dst": "u_critical_reader",
+    "rate_ms": 1.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_background_reader",
+    "dst": "p_led",
+    "rate_ms": 500.0
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_run": {
+    "kind": "service",
+    "label": "run",
+    "line": null,
+    "detail": "run"
+   },
+   "u_critical_reader": {
+    "kind": "timer",
+    "label": "critical_reader<br>↻ 1ms",
+    "line": 11,
+    "detail": "every 1ms"
+   },
+   "p_motor": {
+    "kind": "pin",
+    "label": "motor",
+    "line": 6,
+    "detail": "PWM · GPIO 4"
+   },
+   "v_read_only_cfg": {
+    "kind": "var",
+    "label": "read_only_cfg",
+    "line": 9,
+    "detail": ""
+   },
+   "u_background_reader": {
+    "kind": "timer",
+    "label": "background_reader<br>↻ 500ms",
+    "line": 17,
+    "detail": "every 500ms"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 5,
+    "detail": "Output · GPIO 2"
+   }
+  }
+ }
+}

@@ -1,0 +1,103 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [1, 6, 1, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [2, 16, 2, 19],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [2, 16, 2, 19],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 4
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [
+  {
+   "_": "MachineDecl",
+   "region": [3, 9, 3, 10],
+   "name": "m",
+   "states": [
+    {
+     "_": "StateDecl",
+     "region": [4, 11, 4, 12],
+     "name": "a",
+     "is_initial": true,
+     "enter_body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [5, 17, 5, 20],
+        "obj": {
+         "_": "VarRef",
+         "region": [5, 17, 5, 20],
+         "name": "led"
+        },
+        "method": "on",
+        "args": []
+       }
+      }
+     ],
+     "exit_body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [6, 16, 6, 19],
+        "obj": {
+         "_": "VarRef",
+         "region": [6, 16, 6, 19],
+         "name": "led"
+        },
+        "method": "off",
+        "args": []
+       }
+      }
+     ],
+     "transitions": [],
+     "timed_transitions": [
+      {
+       "_": "TimedTransition",
+       "region": [7, 15, 7, 20],
+       "duration": {
+        "_": "DurationLiteral",
+        "region": [7, 15, 7, 20],
+        "microseconds": 500000,
+        "original": "500ms"
+       },
+       "target_state": "a",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "body": []
+    }
+   ],
+   "variables": []
+  }
+ ],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

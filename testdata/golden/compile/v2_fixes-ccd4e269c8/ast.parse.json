@@ -1,0 +1,162 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [1, 6, 1, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [3, 9, 3, 12],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [3, 9, 3, 12],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "FuncCall",
+     "region": [6, 5, 6, 8],
+     "name": "log",
+     "args": [
+      {
+       "_": "StringLiteral",
+       "region": [6, 9, 6, 15],
+       "value": "test"
+      },
+      {
+       "_": "BinaryExpr",
+       "region": [6, 17, 6, 20],
+       "left": {
+        "_": "BinaryExpr",
+        "region": [6, 17, 6, 20],
+        "left": {
+         "_": "BinaryExpr",
+         "region": [6, 17, 6, 20],
+         "left": {
+          "_": "BinaryExpr",
+          "region": [6, 17, 6, 20],
+          "left": {
+           "_": "BinaryExpr",
+           "region": [6, 17, 6, 20],
+           "left": {
+            "_": "BinaryExpr",
+            "region": [6, 17, 6, 20],
+            "left": {
+             "_": "BinaryExpr",
+             "region": [6, 17, 6, 20],
+             "left": {
+              "_": "BinaryExpr",
+              "region": [6, 17, 6, 20],
+              "left": {
+               "_": "BinaryExpr",
+               "region": [6, 17, 6, 20],
+               "left": {
+                "_": "StringLiteral",
+                "region": [6, 17, 6, 20],
+                "value": "a"
+               },
+               "op": "+",
+               "right": {
+                "_": "IntLiteral",
+                "region": [6, 23, 6, 24],
+                "value": 1
+               },
+               "result_type": null
+              },
+              "op": "+",
+              "right": {
+               "_": "StringLiteral",
+               "region": [6, 27, 6, 30],
+               "value": "b"
+              },
+              "result_type": null
+             },
+             "op": "+",
+             "right": {
+              "_": "IntLiteral",
+              "region": [6, 33, 6, 34],
+              "value": 2
+             },
+             "result_type": null
+            },
+            "op": "+",
+            "right": {
+             "_": "StringLiteral",
+             "region": [6, 37, 6, 40],
+             "value": "c"
+            },
+            "result_type": null
+           },
+           "op": "+",
+           "right": {
+            "_": "IntLiteral",
+            "region": [6, 43, 6, 44],
+            "value": 3
+           },
+           "result_type": null
+          },
+          "op": "+",
+          "right": {
+           "_": "StringLiteral",
+           "region": [6, 47, 6, 50],
+           "value": "d"
+          },
+          "result_type": null
+         },
+         "op": "+",
+         "right": {
+          "_": "IntLiteral",
+          "region": [6, 53, 6, 54],
+          "value": 4
+         },
+         "result_type": null
+        },
+        "op": "+",
+        "right": {
+         "_": "StringLiteral",
+         "region": [6, 57, 6, 60],
+         "value": "e"
+        },
+        "result_type": null
+       },
+       "op": "+",
+       "right": {
+        "_": "IntLiteral",
+        "region": [6, 63, 6, 64],
+        "value": 5
+       },
+       "result_type": null
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

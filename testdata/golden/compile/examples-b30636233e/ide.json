@@ -1,0 +1,321 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 4,
+    "col": 9,
+    "message": "GPIO 2: GPIO 2 is a strapping pin. Must be LOW or floating for download mode.",
+    "severity": "warning",
+    "hint": ""
+   }
+  ],
+  "pins": [
+   {
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "_rule0",
+    "tier": "background",
+    "line": 32
+   },
+   {
+    "name": "status",
+    "tier": "background",
+    "line": 34
+   }
+  ],
+  "machines": [
+   {
+    "name": "pattern",
+    "states": [
+     "fast",
+     "slow",
+     "pulse"
+    ],
+    "line": 7
+   }
+  ],
+  "channels": [],
+  "enums": [],
+  "chip": ""
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "/* Multiple state machines + tasks */\n\nhardware {\n    pin led = 2\n}\n\nmachine pattern {\n    var cycle: int = 0\n\n    state fast {\n        enter {\n            log(\"mode\", \"fast\")\n        }\n        after 3s -> slow\n    }\n\n    state slow {\n        enter {\n            log(\"mode\", \"slow\")\n        }\n        after 5s -> pulse\n    }\n\n    state pulse {\n        enter {\n            log(\"mode\", \"pulse\")\n        }\n        after 2s -> fast\n    }\n}\n\nevery 200ms { led.toggle() }\n\ntask status {\n    var tick: int = 0\n    every 1s {\n        tick = tick + 1\n        log(\"health\", \"alive\")\n    }\n}\n",
+ "find_symbols": [
+  {
+   "name": "led",
+   "kind": "pin",
+   "def_line": 4,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 32,
+     "col": 15
+    }
+   ]
+  },
+  {
+   "name": "_rule0",
+   "kind": "task",
+   "def_line": 32,
+   "def_col": 7,
+   "refs": []
+  },
+  {
+   "name": "status",
+   "kind": "task",
+   "def_line": 34,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "pattern",
+   "kind": "machine",
+   "def_line": 7,
+   "def_col": 9,
+   "refs": []
+  },
+  {
+   "name": "fast",
+   "kind": "state",
+   "def_line": 10,
+   "def_col": 11,
+   "refs": []
+  },
+  {
+   "name": "slow",
+   "kind": "state",
+   "def_line": 17,
+   "def_col": 11,
+   "refs": []
+  },
+  {
+   "name": "pulse",
+   "kind": "state",
+   "def_line": 24,
+   "def_col": 11,
+   "refs": []
+  },
+  {
+   "name": "tick",
+   "kind": "var",
+   "def_line": 35,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 37,
+     "col": 9
+    },
+    {
+     "line": 37,
+     "col": 16
+    }
+   ]
+  }
+ ],
+ "state_diagram": {
+  "machines": [
+   {
+    "name": "pattern",
+    "mermaid": "stateDiagram-v2\n    [*] --> fast\n    fast --> slow : after 3s\n    slow --> pulse : after 5s\n    pulse --> fast : after 2s",
+    "states": [
+     {
+      "name": "fast",
+      "line": 10
+     },
+     {
+      "name": "slow",
+      "line": 17
+     },
+     {
+      "name": "pulse",
+      "line": 24
+     }
+    ]
+   }
+  ]
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    s_log{{\"log\"}}\n    u_pattern[[\"pattern\"]]\n    u__rule0((\"↻ 200ms\"))\n    u_status((\"status<br>↻ 1s\"))\n    u_status -->|log| s_log\n    u_pattern -->|log| s_log\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u__rule0 timer;\n    class u_status timer;\n    class s_log service;\n    class u_pattern machine;",
+  "units": [
+   {
+    "id": "u__rule0",
+    "name": "↻ 200ms",
+    "line": 32
+   },
+   {
+    "id": "u_status",
+    "name": "status<br>↻ 1s",
+    "line": 34
+   },
+   {
+    "id": "u_pattern",
+    "name": "pattern",
+    "line": 7
+   }
+  ],
+  "loops": [
+   "u__rule0",
+   "u_status"
+  ],
+  "edges": [
+   {
+    "drive": "timer",
+    "src": "u_status",
+    "dst": "s_log",
+    "rate_ms": 1000.0
+   },
+   {
+    "drive": "machine",
+    "src": "u_pattern",
+    "dst": "s_log"
+   }
+  ],
+  "nodes": {
+   "u__rule0": {
+    "kind": "timer",
+    "label": "↻ 200ms",
+    "line": 32,
+    "detail": "every 200ms"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 4,
+    "detail": "GPIO 2"
+   },
+   "u_status": {
+    "kind": "timer",
+    "label": "status<br>↻ 1s",
+    "line": 34,
+    "detail": "every 1s"
+   },
+   "s_log": {
+    "kind": "service",
+    "label": "log",
+    "line": null,
+    "detail": "log"
+   },
+   "u_pattern": {
+    "kind": "machine",
+    "label": "pattern",
+    "line": 7,
+    "detail": "3 states"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    p_led([\"led\"])\n    s_log{{\"log\"}}\n    u_pattern[[\"pattern\"]]\n    u__rule0((\"↻ 200ms\"))\n    u_status((\"status<br>↻ 1s\"))\n    u__rule0 -->|toggle| p_led\n    u_status -->|log| s_log\n    u_pattern -->|log| s_log\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u__rule0 timer;\n    class p_led pin;\n    class u_status timer;\n    class s_log service;\n    class u_pattern machine;",
+  "units": [
+   {
+    "id": "u__rule0",
+    "name": "↻ 200ms",
+    "line": 32
+   },
+   {
+    "id": "u_status",
+    "name": "status<br>↻ 1s",
+    "line": 34
+   },
+   {
+    "id": "u_pattern",
+    "name": "pattern",
+    "line": 7
+   }
+  ],
+  "loops": [
+   "u__rule0",
+   "u_status"
+  ],
+  "edges": [
+   {
+    "drive": "timer",
+    "src": "u__rule0",
+    "dst": "p_led",
+    "rate_ms": 200.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_status",
+    "dst": "s_log",
+    "rate_ms": 1000.0
+   },
+   {
+    "drive": "machine",
+    "src": "u_pattern",
+    "dst": "s_log"
+   }
+  ],
+  "nodes": {
+   "u__rule0": {
+    "kind": "timer",
+    "label": "↻ 200ms",
+    "line": 32,
+    "detail": "every 200ms"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 4,
+    "detail": "GPIO 2"
+   },
+   "u_status": {
+    "kind": "timer",
+    "label": "status<br>↻ 1s",
+    "line": 34,
+    "detail": "every 1s"
+   },
+   "s_log": {
+    "kind": "service",
+    "label": "log",
+    "line": null,
+    "detail": "log"
+   },
+   "u_pattern": {
+    "kind": "machine",
+    "label": "pattern",
+    "line": 7,
+    "detail": "3 states"
+   }
+  }
+ }
+}

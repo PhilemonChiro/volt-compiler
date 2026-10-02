@@ -1,0 +1,264 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 2,
+    "col": 16,
+    "message": "GPIO 2: GPIO 2 is a strapping pin. Must be LOW or floating for download mode.",
+    "severity": "warning",
+    "hint": ""
+   }
+  ],
+  "pins": [
+   {
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "_rule0",
+    "tier": "background",
+    "line": 3
+   },
+   {
+    "name": "_rule1",
+    "tier": "background",
+    "line": 4
+   },
+   {
+    "name": "_rule2",
+    "tier": "background",
+    "line": 5
+   }
+  ],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": ""
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "hardware {\n    pin led = 2\n}\n\nevery 100ms { led.toggle() }\n\nevery 5s { log(\"health\", \"alive\") }\n\nevery 30s { log(\"stats\", \"ok\") }\n",
+ "find_symbols": [
+  {
+   "name": "led",
+   "kind": "pin",
+   "def_line": 2,
+   "def_col": 16,
+   "refs": [
+    {
+     "line": 3,
+     "col": 15
+    }
+   ]
+  },
+  {
+   "name": "_rule0",
+   "kind": "task",
+   "def_line": 3,
+   "def_col": 7,
+   "refs": []
+  },
+  {
+   "name": "_rule1",
+   "kind": "task",
+   "def_line": 4,
+   "def_col": 7,
+   "refs": []
+  },
+  {
+   "name": "_rule2",
+   "kind": "task",
+   "def_line": 5,
+   "def_col": 7,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    s_log{{\"log\"}}\n    u__rule0((\"↻ 100ms\"))\n    u__rule1((\"↻ 5s\"))\n    u__rule2((\"↻ 30s\"))\n    u__rule1 -->|log| s_log\n    u__rule2 -->|log| s_log\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u__rule0 timer;\n    class u__rule1 timer;\n    class s_log service;\n    class u__rule2 timer;",
+  "units": [
+   {
+    "id": "u__rule0",
+    "name": "↻ 100ms",
+    "line": 3
+   },
+   {
+    "id": "u__rule1",
+    "name": "↻ 5s",
+    "line": 4
+   },
+   {
+    "id": "u__rule2",
+    "name": "↻ 30s",
+    "line": 5
+   }
+  ],
+  "loops": [
+   "u__rule0",
+   "u__rule1",
+   "u__rule2"
+  ],
+  "edges": [
+   {
+    "drive": "timer",
+    "src": "u__rule1",
+    "dst": "s_log",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule2",
+    "dst": "s_log",
+    "rate_ms": 30000.0
+   }
+  ],
+  "nodes": {
+   "u__rule0": {
+    "kind": "timer",
+    "label": "↻ 100ms",
+    "line": 3,
+    "detail": "every 100ms"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 2,
+    "detail": "GPIO 2"
+   },
+   "u__rule1": {
+    "kind": "timer",
+    "label": "↻ 5s",
+    "line": 4,
+    "detail": "every 5s"
+   },
+   "s_log": {
+    "kind": "service",
+    "label": "log",
+    "line": null,
+    "detail": "log"
+   },
+   "u__rule2": {
+    "kind": "timer",
+    "label": "↻ 30s",
+    "line": 5,
+    "detail": "every 30s"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    p_led([\"led\"])\n    s_log{{\"log\"}}\n    u__rule0((\"↻ 100ms\"))\n    u__rule1((\"↻ 5s\"))\n    u__rule2((\"↻ 30s\"))\n    u__rule0 -->|toggle| p_led\n    u__rule1 -->|log| s_log\n    u__rule2 -->|log| s_log\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u__rule0 timer;\n    class p_led pin;\n    class u__rule1 timer;\n    class s_log service;\n    class u__rule2 timer;",
+  "units": [
+   {
+    "id": "u__rule0",
+    "name": "↻ 100ms",
+    "line": 3
+   },
+   {
+    "id": "u__rule1",
+    "name": "↻ 5s",
+    "line": 4
+   },
+   {
+    "id": "u__rule2",
+    "name": "↻ 30s",
+    "line": 5
+   }
+  ],
+  "loops": [
+   "u__rule0",
+   "u__rule1",
+   "u__rule2"
+  ],
+  "edges": [
+   {
+    "drive": "timer",
+    "src": "u__rule0",
+    "dst": "p_led",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule1",
+    "dst": "s_log",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule2",
+    "dst": "s_log",
+    "rate_ms": 30000.0
+   }
+  ],
+  "nodes": {
+   "u__rule0": {
+    "kind": "timer",
+    "label": "↻ 100ms",
+    "line": 3,
+    "detail": "every 100ms"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 2,
+    "detail": "GPIO 2"
+   },
+   "u__rule1": {
+    "kind": "timer",
+    "label": "↻ 5s",
+    "line": 4,
+    "detail": "every 5s"
+   },
+   "s_log": {
+    "kind": "service",
+    "label": "log",
+    "line": null,
+    "detail": "log"
+   },
+   "u__rule2": {
+    "kind": "timer",
+    "label": "↻ 30s",
+    "line": 5,
+    "detail": "every 30s"
+   }
+  }
+ }
+}

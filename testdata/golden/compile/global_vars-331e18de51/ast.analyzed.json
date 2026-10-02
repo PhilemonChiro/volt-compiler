@@ -1,0 +1,146 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [5, 6, 5, 15],
+   "name": "expr_task",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [6, 11, 6, 14],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [6, 11, 6, 14],
+      "microseconds": 1000,
+      "original": "1ms"
+     },
+     "strict": true,
+     "guard": null,
+     "body": [
+      {
+       "_": "AssignExpr",
+       "region": [7, 9, 7, 10],
+       "target": {
+        "_": "VarRef",
+        "region": [7, 9, 7, 10],
+        "name": "x"
+       },
+       "value": {
+        "_": "BinaryExpr",
+        "region": [7, 13, 7, 14],
+        "left": {
+         "_": "VarRef",
+         "region": [7, 13, 7, 14],
+         "name": "x"
+        },
+        "op": "+",
+        "right": {
+         "_": "BinaryExpr",
+         "region": [7, 17, 7, 18],
+         "left": {
+          "_": "VarRef",
+          "region": [7, 17, 7, 18],
+          "name": "y"
+         },
+         "op": "*",
+         "right": {
+          "_": "VarRef",
+          "region": [7, 21, 7, 22],
+          "name": "z"
+         },
+         "result_type": "int"
+        },
+        "result_type": "int"
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "critical",
+   "crossing_vars": [],
+   "has_strict": true,
+   "_annotations": []
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [
+  {
+   "_": "VarDecl",
+   "region": [2, 5, 2, 6],
+   "name": "x",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [2, 14, 2, 15],
+    "value": 1
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  },
+  {
+   "_": "VarDecl",
+   "region": [3, 5, 3, 6],
+   "name": "y",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [3, 14, 3, 15],
+    "value": 2
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  },
+  {
+   "_": "VarDecl",
+   "region": [4, 5, 4, 6],
+   "name": "z",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [4, 14, 4, 15],
+    "value": 3
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  }
+ ],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "FuncCall",
+     "region": [11, 5, 11, 8],
+     "name": "run",
+     "args": [
+      {
+       "_": "VarRef",
+       "region": [11, 9, 11, 18],
+       "name": "expr_task"
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

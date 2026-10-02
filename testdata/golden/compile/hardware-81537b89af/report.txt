@@ -1,0 +1,10 @@
+
+[red bold]-- HARDWARE ERROR -- main.volt:2[/red bold]
+
+GPIO 34 has no internal pull-up resistor (input-only pins 34-39).
+
+ [dim]1 |[/dim] hardware {
+ [dim]2 |[/dim]     pin btn: PullUpInput = 34
+ [dim]  |[/dim] [red]        ^^^[/red]
+
+[cyan]Hint: Use an external pull-up resistor, or use a different pin.[/cyan]

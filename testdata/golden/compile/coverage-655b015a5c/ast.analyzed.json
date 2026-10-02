@@ -1,0 +1,143 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [5, 6, 5, 14],
+   "name": "producer",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [6, 11, 6, 13],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [6, 11, 6, 13],
+      "microseconds": 1000000,
+      "original": "1s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [7, 9, 7, 17],
+        "obj": {
+         "_": "VarRef",
+         "region": [7, 9, 7, 17],
+         "name": "readings"
+        },
+        "method": "send",
+        "args": [
+         {
+          "_": "IntLiteral",
+          "region": [7, 23, 7, 25],
+          "value": 42
+         }
+        ]
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  },
+  {
+   "_": "TaskDecl",
+   "region": [11, 6, 11, 14],
+   "name": "consumer",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [12, 11, 12, 16],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [12, 11, 12, 16],
+      "microseconds": 500000,
+      "original": "500ms"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "IfStmt",
+       "region": [13, 12, 13, 20],
+       "condition": {
+        "_": "MethodCall",
+        "region": [13, 12, 13, 20],
+        "obj": {
+         "_": "VarRef",
+         "region": [13, 12, 13, 20],
+         "name": "readings"
+        },
+        "method": "has_data",
+        "args": []
+       },
+       "then_body": [
+        {
+         "_": "VarDecl",
+         "region": [14, 17, 14, 20],
+         "name": "val",
+         "type_name": "int",
+         "value": {
+          "_": "MethodCall",
+          "region": [14, 28, 14, 36],
+          "obj": {
+           "_": "VarRef",
+           "region": [14, 28, 14, 36],
+           "name": "readings"
+          },
+          "method": "receive",
+          "args": []
+         },
+         "mutable": true,
+         "shared": false,
+         "needs_lifting": false
+        }
+       ],
+       "else_body": null
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [
+  {
+   "_": "ChannelDecl",
+   "region": [3, 9, 3, 17],
+   "name": "readings",
+   "elem_type": "int",
+   "capacity": 16
+  }
+ ],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

@@ -1,0 +1,101 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [2, 6, 2, 13],
+   "name": "monitor",
+   "body": [
+    {
+     "_": "VarDecl",
+     "region": [3, 9, 3, 14],
+     "name": "count",
+     "type_name": null,
+     "value": {
+      "_": "IntLiteral",
+      "region": [3, 17, 3, 18],
+      "value": 0
+     },
+     "mutable": true,
+     "shared": false,
+     "needs_lifting": false
+    },
+    {
+     "_": "EveryBlock",
+     "region": [4, 11, 4, 19],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [4, 11, 4, 19],
+      "microseconds": 1000000,
+      "original": "1seconds"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "AssignExpr",
+       "region": [5, 9, 5, 14],
+       "target": {
+        "_": "VarRef",
+        "region": [5, 9, 5, 14],
+        "name": "count"
+       },
+       "value": {
+        "_": "BinaryExpr",
+        "region": [5, 17, 5, 22],
+        "left": {
+         "_": "VarRef",
+         "region": [5, 17, 5, 22],
+         "name": "count"
+        },
+        "op": "+",
+        "right": {
+         "_": "IntLiteral",
+         "region": [5, 25, 5, 26],
+         "value": 1
+        },
+        "result_type": null
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [6, 9, 6, 12],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [6, 13, 6, 19],
+          "value": "tick"
+         }
+        ]
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

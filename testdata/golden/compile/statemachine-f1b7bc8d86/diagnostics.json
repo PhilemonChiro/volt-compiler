@@ -1,0 +1,14 @@
+[
+  {
+    "severity": "error",
+    "category": "STATE MACHINE ERROR",
+    "message": "Transition target `nonexistent` does not exist. Available states: a.",
+    "hint": null,
+    "region": [
+      4,
+      12,
+      4,
+      13
+    ]
+  }
+]

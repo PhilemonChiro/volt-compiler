@@ -1,0 +1,14 @@
+[
+  {
+    "severity": "error",
+    "category": "TYPE MISMATCH",
+    "message": "Condition must be `bool`, got `int`.",
+    "hint": "Use a comparison like `x > 0` or a boolean function.",
+    "region": [
+      3,
+      8,
+      3,
+      10
+    ]
+  }
+]

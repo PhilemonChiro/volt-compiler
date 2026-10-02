@@ -1,0 +1,47 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [2, 6, 2, 13],
+   "name": "onetime",
+   "body": [
+    {
+     "_": "ExprStmt",
+     "region": [0, 0, 0, 0],
+     "expr": {
+      "_": "FuncCall",
+      "region": [3, 5, 3, 8],
+      "name": "log",
+      "args": [
+       {
+        "_": "StringLiteral",
+        "region": [3, 9, 3, 16],
+        "value": "hello"
+       }
+      ]
+     }
+    }
+   ],
+   "tier": "",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

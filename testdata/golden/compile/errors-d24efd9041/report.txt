@@ -1,0 +1,19 @@
+
+[yellow bold]-- DEPRECATION -- wrong_arg_count.volt:2[/yellow bold]
+
+Move `chip esp32` to volt.toml: chip = "esp32"
+
+ [dim]1 |[/dim] 
+ [dim]2 |[/dim] chip esp32
+ [dim]  |[/dim] [yellow]     ^^^^^[/yellow]
+
+[cyan]Hint: The chip declaration will move to volt.toml in a future version.[/cyan]
+
+
+[red bold]-- ARGUMENT ERROR -- wrong_arg_count.volt:7[/red bold]
+
+`write` expects 1 argument, got 3.
+
+ [dim]6 |[/dim] setup {
+ [dim]7 |[/dim]     led.write(1, 2, 3)
+ [dim]  |[/dim] [red]    ^^^[/red]

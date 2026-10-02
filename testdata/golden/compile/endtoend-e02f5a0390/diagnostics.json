@@ -1,0 +1,14 @@
+[
+  {
+    "severity": "error",
+    "category": "TASK ERROR",
+    "message": "Function `retry` contains a yield (sleep/every/on) and calls itself recursively. Recursive yielding functions cannot be inlined into protothreads.",
+    "hint": "Rewrite as a while loop instead of recursion.",
+    "region": [
+      2,
+      6,
+      2,
+      11
+    ]
+  }
+]

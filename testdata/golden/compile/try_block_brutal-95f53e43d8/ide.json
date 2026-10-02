@@ -1,0 +1,40 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 1,
+    "col": 1,
+    "message": "Unexpected token Token('RBRACE', '}') at line 4, column 96.",
+    "severity": "error",
+    "hint": ""
+   }
+  ],
+  "pins": [],
+  "devices": [],
+  "buses": [],
+  "tasks": [],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": ""
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ]
+ ],
+ "format_code": "chip esp32\nhardware { pin led: Output = 4 }\nmachine m {\n    state a { enter { try { wifi.connect(\"a\",\"b\") } or retry 3 times else skip } after 1s -> b }\n    state b { enter { led.on() } }\n}\n",
+ "find_symbols": [],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "",
+  "units": []
+ },
+ "system_graph_expanded": {
+  "mermaid": "",
+  "units": []
+ }
+}

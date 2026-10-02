@@ -1,0 +1,117 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [2, 6, 2, 13],
+   "name": "monitor",
+   "body": [
+    {
+     "_": "VarDecl",
+     "region": [3, 9, 3, 14],
+     "name": "count",
+     "type_name": "int",
+     "value": {
+      "_": "IntLiteral",
+      "region": [3, 17, 3, 18],
+      "value": 0
+     },
+     "mutable": true,
+     "shared": false,
+     "needs_lifting": true
+    },
+    {
+     "_": "EveryBlock",
+     "region": [4, 11, 4, 19],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [4, 11, 4, 19],
+      "microseconds": 5000000,
+      "original": "5seconds"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "AssignExpr",
+       "region": [5, 9, 5, 14],
+       "target": {
+        "_": "VarRef",
+        "region": [5, 9, 5, 14],
+        "name": "count"
+       },
+       "value": {
+        "_": "BinaryExpr",
+        "region": [5, 17, 5, 22],
+        "left": {
+         "_": "VarRef",
+         "region": [5, 17, 5, 22],
+         "name": "count"
+        },
+        "op": "+",
+        "right": {
+         "_": "IntLiteral",
+         "region": [5, 25, 5, 26],
+         "value": 1
+        },
+        "result_type": "int"
+       }
+      },
+      {
+       "_": "VarDecl",
+       "region": [6, 13, 6, 17],
+       "name": "temp",
+       "type_name": "int",
+       "value": {
+        "_": "IntLiteral",
+        "region": [6, 20, 6, 22],
+        "value": 23
+       },
+       "mutable": false,
+       "shared": false,
+       "needs_lifting": false
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [7, 9, 7, 12],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [7, 13, 7, 19],
+          "value": "done"
+         }
+        ]
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [
+    "count"
+   ],
+   "has_strict": false,
+   "_annotations": []
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

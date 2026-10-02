@@ -1,0 +1,622 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 1,
+    "col": 6,
+    "message": "Move `chip esp8266` to volt.toml: chip = \"esp8266\"",
+    "severity": "warning",
+    "hint": "The chip declaration will move to volt.toml in a future version."
+   },
+   {
+    "line": 4,
+    "col": 9,
+    "message": "Strapping pin: GPIO 2 must be HIGH at boot. Often connected to onboard LED.",
+    "severity": "warning",
+    "hint": ""
+   }
+  ],
+  "pins": [
+   {
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   },
+   {
+    "name": "relay",
+    "mode": "Output",
+    "gpio": 4
+   },
+   {
+    "name": "button",
+    "mode": "PullUpInput",
+    "gpio": 5
+   },
+   {
+    "name": "status",
+    "mode": "Output",
+    "gpio": 12
+   },
+   {
+    "name": "buzzer",
+    "mode": "Output",
+    "gpio": 14
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "blink",
+    "tier": "background",
+    "line": 15
+   },
+   {
+    "name": "read_button",
+    "tier": "background",
+    "line": 25
+   },
+   {
+    "name": "health",
+    "tier": "background",
+    "line": 43
+   }
+  ],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": "esp8266"
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "chip esp8266\n\nhardware {\n    pin led: Output = 2\n    pin relay: Output = 4\n    pin button: PullUpInput = 5\n    pin status: Output = 12\n    pin buzzer: Output = 14\n}\n\nvar blink_count: int = 0\n\nvar button_presses: int = 0\n\nvar last_button: int = 1\n\ntask blink {\n    every 500ms {\n        led.toggle()\n        blink_count += 1\n        if blink_count % 10 == 0 {\n            log(\"blink\", \"count=\" + blink_count)\n        }\n    }\n}\n\ntask read_button {\n    every 50ms {\n        let pressed = button.read()\n        if pressed == 0 {\n            if last_button == 1 {\n                button_presses += 1\n                log(\"button\", \"PRESSED #\" + button_presses)\n            }\n            relay.on()\n            status.on()\n        } else {\n            relay.off()\n            status.off()\n        }\n        last_button = pressed\n    }\n}\n\ntask health {\n    every 5s {\n        log(\"health\", \"blinks=\" + blink_count + \" presses=\" + button_presses + \" heap=\" + system.free_heap())\n    }\n}\n",
+ "find_symbols": [
+  {
+   "name": "led",
+   "kind": "pin",
+   "def_line": 4,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 17,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "relay",
+   "kind": "pin",
+   "def_line": 5,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 33,
+     "col": 13
+    },
+    {
+     "line": 36,
+     "col": 13
+    }
+   ]
+  },
+  {
+   "name": "button",
+   "kind": "pin",
+   "def_line": 6,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 27,
+     "col": 23
+    }
+   ]
+  },
+  {
+   "name": "status",
+   "kind": "pin",
+   "def_line": 7,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 34,
+     "col": 13
+    },
+    {
+     "line": 37,
+     "col": 13
+    }
+   ]
+  },
+  {
+   "name": "buzzer",
+   "kind": "pin",
+   "def_line": 8,
+   "def_col": 9,
+   "refs": []
+  },
+  {
+   "name": "blink",
+   "kind": "task",
+   "def_line": 15,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "read_button",
+   "kind": "task",
+   "def_line": 25,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "health",
+   "kind": "task",
+   "def_line": 43,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "blink_count",
+   "kind": "var",
+   "def_line": 11,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 18,
+     "col": 9
+    },
+    {
+     "line": 19,
+     "col": 12
+    },
+    {
+     "line": 20,
+     "col": 37
+    },
+    {
+     "line": 45,
+     "col": 35
+    }
+   ]
+  },
+  {
+   "name": "button_presses",
+   "kind": "var",
+   "def_line": 12,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 30,
+     "col": 17
+    },
+    {
+     "line": 31,
+     "col": 45
+    },
+    {
+     "line": 45,
+     "col": 63
+    }
+   ]
+  },
+  {
+   "name": "last_button",
+   "kind": "var",
+   "def_line": 13,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 29,
+     "col": 16
+    },
+    {
+     "line": 39,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "pressed",
+   "kind": "var",
+   "def_line": 27,
+   "def_col": 13,
+   "refs": [
+    {
+     "line": 28,
+     "col": 12
+    },
+    {
+     "line": 39,
+     "col": 23
+    }
+   ]
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    v_blink_count(\"blink_count\")\n    s_log{{\"log\"}}\n    v_button_presses(\"button_presses\")\n    u_blink((\"blink<br>↻ 500ms\"))\n    u_read_button((\"read_button<br>↻ 50ms\"))\n    u_health((\"health<br>↻ 5s\"))\n    u_blink -->|write| v_blink_count\n    v_blink_count -.->|read| u_blink\n    u_blink -->|log| s_log\n    u_read_button -->|write| v_button_presses\n    u_read_button -->|log| s_log\n    v_button_presses -.->|read| u_read_button\n    u_health -->|log| s_log\n    v_blink_count -.->|read| u_health\n    v_button_presses -.->|read| u_health\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_blink timer;\n    class v_blink_count shared;\n    class s_log service;\n    class u_read_button timer;\n    class v_button_presses shared;\n    class u_health timer;",
+  "units": [
+   {
+    "id": "u_blink",
+    "name": "blink<br>↻ 500ms",
+    "line": 15
+   },
+   {
+    "id": "u_read_button",
+    "name": "read_button<br>↻ 50ms",
+    "line": 25
+   },
+   {
+    "id": "u_health",
+    "name": "health<br>↻ 5s",
+    "line": 43
+   }
+  ],
+  "loops": [
+   "u_blink",
+   "u_read_button",
+   "u_health"
+  ],
+  "edges": [
+   {
+    "drive": "timer",
+    "src": "u_blink",
+    "dst": "v_blink_count",
+    "rate_ms": 500.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_blink_count",
+    "dst": "u_blink",
+    "rate_ms": 500.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_blink",
+    "dst": "s_log",
+    "rate_ms": 500.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_read_button",
+    "dst": "v_button_presses",
+    "rate_ms": 50.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_read_button",
+    "dst": "s_log",
+    "rate_ms": 50.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_button_presses",
+    "dst": "u_read_button",
+    "rate_ms": 50.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_health",
+    "dst": "s_log",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_blink_count",
+    "dst": "u_health",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_button_presses",
+    "dst": "u_health",
+    "rate_ms": 5000.0
+   }
+  ],
+  "nodes": {
+   "u_blink": {
+    "kind": "timer",
+    "label": "blink<br>↻ 500ms",
+    "line": 15,
+    "detail": "every 500ms"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 4,
+    "detail": "Output · GPIO 2"
+   },
+   "v_blink_count": {
+    "kind": "var",
+    "label": "blink_count",
+    "line": 11,
+    "detail": "int"
+   },
+   "s_log": {
+    "kind": "service",
+    "label": "log",
+    "line": null,
+    "detail": "log"
+   },
+   "u_read_button": {
+    "kind": "timer",
+    "label": "read_button<br>↻ 50ms",
+    "line": 25,
+    "detail": "every 50ms"
+   },
+   "p_button": {
+    "kind": "pin",
+    "label": "button",
+    "line": 6,
+    "detail": "PullUpInput · GPIO 5"
+   },
+   "v_last_button": {
+    "kind": "var",
+    "label": "last_button",
+    "line": 13,
+    "detail": "int"
+   },
+   "v_button_presses": {
+    "kind": "var",
+    "label": "button_presses",
+    "line": 12,
+    "detail": "int"
+   },
+   "p_relay": {
+    "kind": "pin",
+    "label": "relay",
+    "line": 5,
+    "detail": "Output · GPIO 4"
+   },
+   "p_status": {
+    "kind": "pin",
+    "label": "status",
+    "line": 7,
+    "detail": "Output · GPIO 12"
+   },
+   "u_health": {
+    "kind": "timer",
+    "label": "health<br>↻ 5s",
+    "line": 43,
+    "detail": "every 5s"
+   },
+   "s_system": {
+    "kind": "service",
+    "label": "system",
+    "line": null,
+    "detail": "free_heap"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    p_led([\"led\"])\n    v_blink_count(\"blink_count\")\n    s_log{{\"log\"}}\n    p_button([\"button\"])\n    v_last_button(\"last_button\")\n    v_button_presses(\"button_presses\")\n    p_relay([\"relay\"])\n    p_status([\"status\"])\n    s_system{{\"system\"}}\n    u_blink((\"blink<br>↻ 500ms\"))\n    u_read_button((\"read_button<br>↻ 50ms\"))\n    u_health((\"health<br>↻ 5s\"))\n    u_blink -->|toggle| p_led\n    u_blink -->|write| v_blink_count\n    v_blink_count -.->|read| u_blink\n    u_blink -->|log| s_log\n    p_button -.->|read| u_read_button\n    v_last_button -.->|read| u_read_button\n    u_read_button -->|write| v_button_presses\n    u_read_button -->|log| s_log\n    v_button_presses -.->|read| u_read_button\n    u_read_button -->|off, on| p_relay\n    u_read_button -->|off, on| p_status\n    u_read_button -->|write| v_last_button\n    u_health -->|log| s_log\n    v_blink_count -.->|read| u_health\n    v_button_presses -.->|read| u_health\n    u_health -->|free_heap| s_system\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_blink timer;\n    class p_led pin;\n    class v_blink_count shared;\n    class s_log service;\n    class u_read_button timer;\n    class p_button pin;\n    class v_last_button var;\n    class v_button_presses shared;\n    class p_relay pin;\n    class p_status pin;\n    class u_health timer;\n    class s_system service;",
+  "units": [
+   {
+    "id": "u_blink",
+    "name": "blink<br>↻ 500ms",
+    "line": 15
+   },
+   {
+    "id": "u_read_button",
+    "name": "read_button<br>↻ 50ms",
+    "line": 25
+   },
+   {
+    "id": "u_health",
+    "name": "health<br>↻ 5s",
+    "line": 43
+   }
+  ],
+  "loops": [
+   "u_blink",
+   "u_read_button",
+   "u_health"
+  ],
+  "edges": [
+   {
+    "drive": "timer",
+    "src": "u_blink",
+    "dst": "p_led",
+    "rate_ms": 500.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_blink",
+    "dst": "v_blink_count",
+    "rate_ms": 500.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_blink_count",
+    "dst": "u_blink",
+    "rate_ms": 500.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_blink",
+    "dst": "s_log",
+    "rate_ms": 500.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_button",
+    "dst": "u_read_button",
+    "rate_ms": 50.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_last_button",
+    "dst": "u_read_button",
+    "rate_ms": 50.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_read_button",
+    "dst": "v_button_presses",
+    "rate_ms": 50.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_read_button",
+    "dst": "s_log",
+    "rate_ms": 50.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_button_presses",
+    "dst": "u_read_button",
+    "rate_ms": 50.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_read_button",
+    "dst": "p_relay",
+    "rate_ms": 50.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_read_button",
+    "dst": "p_status",
+    "rate_ms": 50.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_read_button",
+    "dst": "v_last_button",
+    "rate_ms": 50.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_health",
+    "dst": "s_log",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_blink_count",
+    "dst": "u_health",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_button_presses",
+    "dst": "u_health",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_health",
+    "dst": "s_system",
+    "rate_ms": 5000.0
+   }
+  ],
+  "nodes": {
+   "u_blink": {
+    "kind": "timer",
+    "label": "blink<br>↻ 500ms",
+    "line": 15,
+    "detail": "every 500ms"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 4,
+    "detail": "Output · GPIO 2"
+   },
+   "v_blink_count": {
+    "kind": "var",
+    "label": "blink_count",
+    "line": 11,
+    "detail": "int"
+   },
+   "s_log": {
+    "kind": "service",
+    "label": "log",
+    "line": null,
+    "detail": "log"
+   },
+   "u_read_button": {
+    "kind": "timer",
+    "label": "read_button<br>↻ 50ms",
+    "line": 25,
+    "detail": "every 50ms"
+   },
+   "p_button": {
+    "kind": "pin",
+    "label": "button",
+    "line": 6,
+    "detail": "PullUpInput · GPIO 5"
+   },
+   "v_last_button": {
+    "kind": "var",
+    "label": "last_button",
+    "line": 13,
+    "detail": "int"
+   },
+   "v_button_presses": {
+    "kind": "var",
+    "label": "button_presses",
+    "line": 12,
+    "detail": "int"
+   },
+   "p_relay": {
+    "kind": "pin",
+    "label": "relay",
+    "line": 5,
+    "detail": "Output · GPIO 4"
+   },
+   "p_status": {
+    "kind": "pin",
+    "label": "status",
+    "line": 7,
+    "detail": "Output · GPIO 12"
+   },
+   "u_health": {
+    "kind": "timer",
+    "label": "health<br>↻ 5s",
+    "line": 43,
+    "detail": "every 5s"
+   },
+   "s_system": {
+    "kind": "service",
+    "label": "system",
+    "line": null,
+    "detail": "free_heap"
+   }
+  }
+ }
+}

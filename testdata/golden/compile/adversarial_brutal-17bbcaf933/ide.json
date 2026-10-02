@@ -1,0 +1,1555 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 1,
+    "col": 6,
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "severity": "warning",
+    "hint": "The chip declaration will move to volt.toml in a future version."
+   }
+  ],
+  "pins": [
+   {
+    "name": "led",
+    "mode": "Output",
+    "gpio": 4
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "_rule0",
+    "tier": "background",
+    "line": 203
+   }
+  ],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": "esp32"
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 4\n}\n\nvar v0 = 0\n\nvar v1 = 1\n\nvar v2 = 2\n\nvar v3 = 3\n\nvar v4 = 4\n\nvar v5 = 5\n\nvar v6 = 6\n\nvar v7 = 7\n\nvar v8 = 8\n\nvar v9 = 9\n\nvar v10 = 10\n\nvar v11 = 11\n\nvar v12 = 12\n\nvar v13 = 13\n\nvar v14 = 14\n\nvar v15 = 15\n\nvar v16 = 16\n\nvar v17 = 17\n\nvar v18 = 18\n\nvar v19 = 19\n\nvar v20 = 20\n\nvar v21 = 21\n\nvar v22 = 22\n\nvar v23 = 23\n\nvar v24 = 24\n\nvar v25 = 25\n\nvar v26 = 26\n\nvar v27 = 27\n\nvar v28 = 28\n\nvar v29 = 29\n\nvar v30 = 30\n\nvar v31 = 31\n\nvar v32 = 32\n\nvar v33 = 33\n\nvar v34 = 34\n\nvar v35 = 35\n\nvar v36 = 36\n\nvar v37 = 37\n\nvar v38 = 38\n\nvar v39 = 39\n\nvar v40 = 40\n\nvar v41 = 41\n\nvar v42 = 42\n\nvar v43 = 43\n\nvar v44 = 44\n\nvar v45 = 45\n\nvar v46 = 46\n\nvar v47 = 47\n\nvar v48 = 48\n\nvar v49 = 49\n\nvar v50 = 50\n\nvar v51 = 51\n\nvar v52 = 52\n\nvar v53 = 53\n\nvar v54 = 54\n\nvar v55 = 55\n\nvar v56 = 56\n\nvar v57 = 57\n\nvar v58 = 58\n\nvar v59 = 59\n\nvar v60 = 60\n\nvar v61 = 61\n\nvar v62 = 62\n\nvar v63 = 63\n\nvar v64 = 64\n\nvar v65 = 65\n\nvar v66 = 66\n\nvar v67 = 67\n\nvar v68 = 68\n\nvar v69 = 69\n\nvar v70 = 70\n\nvar v71 = 71\n\nvar v72 = 72\n\nvar v73 = 73\n\nvar v74 = 74\n\nvar v75 = 75\n\nvar v76 = 76\n\nvar v77 = 77\n\nvar v78 = 78\n\nvar v79 = 79\n\nvar v80 = 80\n\nvar v81 = 81\n\nvar v82 = 82\n\nvar v83 = 83\n\nvar v84 = 84\n\nvar v85 = 85\n\nvar v86 = 86\n\nvar v87 = 87\n\nvar v88 = 88\n\nvar v89 = 89\n\nvar v90 = 90\n\nvar v91 = 91\n\nvar v92 = 92\n\nvar v93 = 93\n\nvar v94 = 94\n\nvar v95 = 95\n\nvar v96 = 96\n\nvar v97 = 97\n\nvar v98 = 98\n\nvar v99 = 99\n\nvar v100 = 100\n\nvar v101 = 101\n\nvar v102 = 102\n\nvar v103 = 103\n\nvar v104 = 104\n\nvar v105 = 105\n\nvar v106 = 106\n\nvar v107 = 107\n\nvar v108 = 108\n\nvar v109 = 109\n\nvar v110 = 110\n\nvar v111 = 111\n\nvar v112 = 112\n\nvar v113 = 113\n\nvar v114 = 114\n\nvar v115 = 115\n\nvar v116 = 116\n\nvar v117 = 117\n\nvar v118 = 118\n\nvar v119 = 119\n\nvar v120 = 120\n\nvar v121 = 121\n\nvar v122 = 122\n\nvar v123 = 123\n\nvar v124 = 124\n\nvar v125 = 125\n\nvar v126 = 126\n\nvar v127 = 127\n\nvar v128 = 128\n\nvar v129 = 129\n\nvar v130 = 130\n\nvar v131 = 131\n\nvar v132 = 132\n\nvar v133 = 133\n\nvar v134 = 134\n\nvar v135 = 135\n\nvar v136 = 136\n\nvar v137 = 137\n\nvar v138 = 138\n\nvar v139 = 139\n\nvar v140 = 140\n\nvar v141 = 141\n\nvar v142 = 142\n\nvar v143 = 143\n\nvar v144 = 144\n\nvar v145 = 145\n\nvar v146 = 146\n\nvar v147 = 147\n\nvar v148 = 148\n\nvar v149 = 149\n\nvar v150 = 150\n\nvar v151 = 151\n\nvar v152 = 152\n\nvar v153 = 153\n\nvar v154 = 154\n\nvar v155 = 155\n\nvar v156 = 156\n\nvar v157 = 157\n\nvar v158 = 158\n\nvar v159 = 159\n\nvar v160 = 160\n\nvar v161 = 161\n\nvar v162 = 162\n\nvar v163 = 163\n\nvar v164 = 164\n\nvar v165 = 165\n\nvar v166 = 166\n\nvar v167 = 167\n\nvar v168 = 168\n\nvar v169 = 169\n\nvar v170 = 170\n\nvar v171 = 171\n\nvar v172 = 172\n\nvar v173 = 173\n\nvar v174 = 174\n\nvar v175 = 175\n\nvar v176 = 176\n\nvar v177 = 177\n\nvar v178 = 178\n\nvar v179 = 179\n\nvar v180 = 180\n\nvar v181 = 181\n\nvar v182 = 182\n\nvar v183 = 183\n\nvar v184 = 184\n\nvar v185 = 185\n\nvar v186 = 186\n\nvar v187 = 187\n\nvar v188 = 188\n\nvar v189 = 189\n\nvar v190 = 190\n\nvar v191 = 191\n\nvar v192 = 192\n\nvar v193 = 193\n\nvar v194 = 194\n\nvar v195 = 195\n\nvar v196 = 196\n\nvar v197 = 197\n\nvar v198 = 198\n\nvar v199 = 199\n\nevery 1s { led.toggle() }\n",
+ "find_symbols": [
+  {
+   "name": "led",
+   "kind": "pin",
+   "def_line": 2,
+   "def_col": 16,
+   "refs": [
+    {
+     "line": 203,
+     "col": 12
+    }
+   ]
+  },
+  {
+   "name": "_rule0",
+   "kind": "task",
+   "def_line": 203,
+   "def_col": 7,
+   "refs": []
+  },
+  {
+   "name": "v0",
+   "kind": "var",
+   "def_line": 3,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v1",
+   "kind": "var",
+   "def_line": 4,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v2",
+   "kind": "var",
+   "def_line": 5,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v3",
+   "kind": "var",
+   "def_line": 6,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v4",
+   "kind": "var",
+   "def_line": 7,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v5",
+   "kind": "var",
+   "def_line": 8,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v6",
+   "kind": "var",
+   "def_line": 9,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v7",
+   "kind": "var",
+   "def_line": 10,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v8",
+   "kind": "var",
+   "def_line": 11,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v9",
+   "kind": "var",
+   "def_line": 12,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v10",
+   "kind": "var",
+   "def_line": 13,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v11",
+   "kind": "var",
+   "def_line": 14,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v12",
+   "kind": "var",
+   "def_line": 15,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v13",
+   "kind": "var",
+   "def_line": 16,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v14",
+   "kind": "var",
+   "def_line": 17,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v15",
+   "kind": "var",
+   "def_line": 18,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v16",
+   "kind": "var",
+   "def_line": 19,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v17",
+   "kind": "var",
+   "def_line": 20,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v18",
+   "kind": "var",
+   "def_line": 21,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v19",
+   "kind": "var",
+   "def_line": 22,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v20",
+   "kind": "var",
+   "def_line": 23,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v21",
+   "kind": "var",
+   "def_line": 24,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v22",
+   "kind": "var",
+   "def_line": 25,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v23",
+   "kind": "var",
+   "def_line": 26,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v24",
+   "kind": "var",
+   "def_line": 27,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v25",
+   "kind": "var",
+   "def_line": 28,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v26",
+   "kind": "var",
+   "def_line": 29,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v27",
+   "kind": "var",
+   "def_line": 30,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v28",
+   "kind": "var",
+   "def_line": 31,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v29",
+   "kind": "var",
+   "def_line": 32,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v30",
+   "kind": "var",
+   "def_line": 33,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v31",
+   "kind": "var",
+   "def_line": 34,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v32",
+   "kind": "var",
+   "def_line": 35,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v33",
+   "kind": "var",
+   "def_line": 36,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v34",
+   "kind": "var",
+   "def_line": 37,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v35",
+   "kind": "var",
+   "def_line": 38,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v36",
+   "kind": "var",
+   "def_line": 39,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v37",
+   "kind": "var",
+   "def_line": 40,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v38",
+   "kind": "var",
+   "def_line": 41,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v39",
+   "kind": "var",
+   "def_line": 42,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v40",
+   "kind": "var",
+   "def_line": 43,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v41",
+   "kind": "var",
+   "def_line": 44,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v42",
+   "kind": "var",
+   "def_line": 45,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v43",
+   "kind": "var",
+   "def_line": 46,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v44",
+   "kind": "var",
+   "def_line": 47,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v45",
+   "kind": "var",
+   "def_line": 48,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v46",
+   "kind": "var",
+   "def_line": 49,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v47",
+   "kind": "var",
+   "def_line": 50,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v48",
+   "kind": "var",
+   "def_line": 51,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v49",
+   "kind": "var",
+   "def_line": 52,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v50",
+   "kind": "var",
+   "def_line": 53,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v51",
+   "kind": "var",
+   "def_line": 54,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v52",
+   "kind": "var",
+   "def_line": 55,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v53",
+   "kind": "var",
+   "def_line": 56,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v54",
+   "kind": "var",
+   "def_line": 57,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v55",
+   "kind": "var",
+   "def_line": 58,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v56",
+   "kind": "var",
+   "def_line": 59,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v57",
+   "kind": "var",
+   "def_line": 60,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v58",
+   "kind": "var",
+   "def_line": 61,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v59",
+   "kind": "var",
+   "def_line": 62,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v60",
+   "kind": "var",
+   "def_line": 63,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v61",
+   "kind": "var",
+   "def_line": 64,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v62",
+   "kind": "var",
+   "def_line": 65,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v63",
+   "kind": "var",
+   "def_line": 66,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v64",
+   "kind": "var",
+   "def_line": 67,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v65",
+   "kind": "var",
+   "def_line": 68,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v66",
+   "kind": "var",
+   "def_line": 69,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v67",
+   "kind": "var",
+   "def_line": 70,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v68",
+   "kind": "var",
+   "def_line": 71,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v69",
+   "kind": "var",
+   "def_line": 72,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v70",
+   "kind": "var",
+   "def_line": 73,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v71",
+   "kind": "var",
+   "def_line": 74,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v72",
+   "kind": "var",
+   "def_line": 75,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v73",
+   "kind": "var",
+   "def_line": 76,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v74",
+   "kind": "var",
+   "def_line": 77,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v75",
+   "kind": "var",
+   "def_line": 78,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v76",
+   "kind": "var",
+   "def_line": 79,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v77",
+   "kind": "var",
+   "def_line": 80,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v78",
+   "kind": "var",
+   "def_line": 81,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v79",
+   "kind": "var",
+   "def_line": 82,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v80",
+   "kind": "var",
+   "def_line": 83,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v81",
+   "kind": "var",
+   "def_line": 84,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v82",
+   "kind": "var",
+   "def_line": 85,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v83",
+   "kind": "var",
+   "def_line": 86,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v84",
+   "kind": "var",
+   "def_line": 87,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v85",
+   "kind": "var",
+   "def_line": 88,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v86",
+   "kind": "var",
+   "def_line": 89,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v87",
+   "kind": "var",
+   "def_line": 90,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v88",
+   "kind": "var",
+   "def_line": 91,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v89",
+   "kind": "var",
+   "def_line": 92,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v90",
+   "kind": "var",
+   "def_line": 93,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v91",
+   "kind": "var",
+   "def_line": 94,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v92",
+   "kind": "var",
+   "def_line": 95,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v93",
+   "kind": "var",
+   "def_line": 96,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v94",
+   "kind": "var",
+   "def_line": 97,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v95",
+   "kind": "var",
+   "def_line": 98,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v96",
+   "kind": "var",
+   "def_line": 99,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v97",
+   "kind": "var",
+   "def_line": 100,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v98",
+   "kind": "var",
+   "def_line": 101,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v99",
+   "kind": "var",
+   "def_line": 102,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v100",
+   "kind": "var",
+   "def_line": 103,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v101",
+   "kind": "var",
+   "def_line": 104,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v102",
+   "kind": "var",
+   "def_line": 105,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v103",
+   "kind": "var",
+   "def_line": 106,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v104",
+   "kind": "var",
+   "def_line": 107,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v105",
+   "kind": "var",
+   "def_line": 108,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v106",
+   "kind": "var",
+   "def_line": 109,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v107",
+   "kind": "var",
+   "def_line": 110,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v108",
+   "kind": "var",
+   "def_line": 111,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v109",
+   "kind": "var",
+   "def_line": 112,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v110",
+   "kind": "var",
+   "def_line": 113,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v111",
+   "kind": "var",
+   "def_line": 114,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v112",
+   "kind": "var",
+   "def_line": 115,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v113",
+   "kind": "var",
+   "def_line": 116,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v114",
+   "kind": "var",
+   "def_line": 117,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v115",
+   "kind": "var",
+   "def_line": 118,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v116",
+   "kind": "var",
+   "def_line": 119,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v117",
+   "kind": "var",
+   "def_line": 120,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v118",
+   "kind": "var",
+   "def_line": 121,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v119",
+   "kind": "var",
+   "def_line": 122,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v120",
+   "kind": "var",
+   "def_line": 123,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v121",
+   "kind": "var",
+   "def_line": 124,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v122",
+   "kind": "var",
+   "def_line": 125,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v123",
+   "kind": "var",
+   "def_line": 126,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v124",
+   "kind": "var",
+   "def_line": 127,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v125",
+   "kind": "var",
+   "def_line": 128,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v126",
+   "kind": "var",
+   "def_line": 129,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v127",
+   "kind": "var",
+   "def_line": 130,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v128",
+   "kind": "var",
+   "def_line": 131,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v129",
+   "kind": "var",
+   "def_line": 132,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v130",
+   "kind": "var",
+   "def_line": 133,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v131",
+   "kind": "var",
+   "def_line": 134,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v132",
+   "kind": "var",
+   "def_line": 135,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v133",
+   "kind": "var",
+   "def_line": 136,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v134",
+   "kind": "var",
+   "def_line": 137,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v135",
+   "kind": "var",
+   "def_line": 138,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v136",
+   "kind": "var",
+   "def_line": 139,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v137",
+   "kind": "var",
+   "def_line": 140,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v138",
+   "kind": "var",
+   "def_line": 141,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v139",
+   "kind": "var",
+   "def_line": 142,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v140",
+   "kind": "var",
+   "def_line": 143,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v141",
+   "kind": "var",
+   "def_line": 144,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v142",
+   "kind": "var",
+   "def_line": 145,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v143",
+   "kind": "var",
+   "def_line": 146,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v144",
+   "kind": "var",
+   "def_line": 147,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v145",
+   "kind": "var",
+   "def_line": 148,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v146",
+   "kind": "var",
+   "def_line": 149,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v147",
+   "kind": "var",
+   "def_line": 150,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v148",
+   "kind": "var",
+   "def_line": 151,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v149",
+   "kind": "var",
+   "def_line": 152,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v150",
+   "kind": "var",
+   "def_line": 153,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v151",
+   "kind": "var",
+   "def_line": 154,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v152",
+   "kind": "var",
+   "def_line": 155,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v153",
+   "kind": "var",
+   "def_line": 156,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v154",
+   "kind": "var",
+   "def_line": 157,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v155",
+   "kind": "var",
+   "def_line": 158,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v156",
+   "kind": "var",
+   "def_line": 159,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v157",
+   "kind": "var",
+   "def_line": 160,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v158",
+   "kind": "var",
+   "def_line": 161,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v159",
+   "kind": "var",
+   "def_line": 162,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v160",
+   "kind": "var",
+   "def_line": 163,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v161",
+   "kind": "var",
+   "def_line": 164,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v162",
+   "kind": "var",
+   "def_line": 165,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v163",
+   "kind": "var",
+   "def_line": 166,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v164",
+   "kind": "var",
+   "def_line": 167,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v165",
+   "kind": "var",
+   "def_line": 168,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v166",
+   "kind": "var",
+   "def_line": 169,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v167",
+   "kind": "var",
+   "def_line": 170,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v168",
+   "kind": "var",
+   "def_line": 171,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v169",
+   "kind": "var",
+   "def_line": 172,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v170",
+   "kind": "var",
+   "def_line": 173,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v171",
+   "kind": "var",
+   "def_line": 174,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v172",
+   "kind": "var",
+   "def_line": 175,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v173",
+   "kind": "var",
+   "def_line": 176,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v174",
+   "kind": "var",
+   "def_line": 177,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v175",
+   "kind": "var",
+   "def_line": 178,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v176",
+   "kind": "var",
+   "def_line": 179,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v177",
+   "kind": "var",
+   "def_line": 180,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v178",
+   "kind": "var",
+   "def_line": 181,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v179",
+   "kind": "var",
+   "def_line": 182,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v180",
+   "kind": "var",
+   "def_line": 183,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v181",
+   "kind": "var",
+   "def_line": 184,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v182",
+   "kind": "var",
+   "def_line": 185,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v183",
+   "kind": "var",
+   "def_line": 186,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v184",
+   "kind": "var",
+   "def_line": 187,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v185",
+   "kind": "var",
+   "def_line": 188,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v186",
+   "kind": "var",
+   "def_line": 189,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v187",
+   "kind": "var",
+   "def_line": 190,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v188",
+   "kind": "var",
+   "def_line": 191,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v189",
+   "kind": "var",
+   "def_line": 192,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v190",
+   "kind": "var",
+   "def_line": 193,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v191",
+   "kind": "var",
+   "def_line": 194,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v192",
+   "kind": "var",
+   "def_line": 195,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v193",
+   "kind": "var",
+   "def_line": 196,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v194",
+   "kind": "var",
+   "def_line": 197,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v195",
+   "kind": "var",
+   "def_line": 198,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v196",
+   "kind": "var",
+   "def_line": 199,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v197",
+   "kind": "var",
+   "def_line": 200,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v198",
+   "kind": "var",
+   "def_line": 201,
+   "def_col": 5,
+   "refs": []
+  },
+  {
+   "name": "v199",
+   "kind": "var",
+   "def_line": 202,
+   "def_col": 5,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u__rule0((\"↻ 1s\"))\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u__rule0 timer;",
+  "units": [
+   {
+    "id": "u__rule0",
+    "name": "↻ 1s",
+    "line": 203
+   }
+  ],
+  "loops": [
+   "u__rule0"
+  ],
+  "edges": [],
+  "nodes": {
+   "u__rule0": {
+    "kind": "timer",
+    "label": "↻ 1s",
+    "line": 203,
+    "detail": "every 1s"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 2,
+    "detail": "Output · GPIO 4"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    p_led([\"led\"])\n    u__rule0((\"↻ 1s\"))\n    u__rule0 -->|toggle| p_led\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u__rule0 timer;\n    class p_led pin;",
+  "units": [
+   {
+    "id": "u__rule0",
+    "name": "↻ 1s",
+    "line": 203
+   }
+  ],
+  "loops": [
+   "u__rule0"
+  ],
+  "edges": [
+   {
+    "drive": "timer",
+    "src": "u__rule0",
+    "dst": "p_led",
+    "rate_ms": 1000.0
+   }
+  ],
+  "nodes": {
+   "u__rule0": {
+    "kind": "timer",
+    "label": "↻ 1s",
+    "line": 203,
+    "detail": "every 1s"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 2,
+    "detail": "Output · GPIO 4"
+   }
+  }
+ }
+}

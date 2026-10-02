@@ -1,0 +1,7 @@
+
+[red bold]-- SYNTAX ERROR -- main.volt:1[/red bold]
+
+Unexpected token Token('RBRACE', '}') at line 4, column 96.
+
+ [dim]1 |[/dim] chip esp32
+ [dim]  |[/dim] [red]^[/red]

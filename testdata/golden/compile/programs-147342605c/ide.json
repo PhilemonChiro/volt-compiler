@@ -1,0 +1,387 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 1,
+    "col": 6,
+    "message": "Move `chip esp8266` to volt.toml: chip = \"esp8266\"",
+    "severity": "warning",
+    "hint": "The chip declaration will move to volt.toml in a future version."
+   },
+   {
+    "line": 4,
+    "col": 9,
+    "message": "Strapping pin: GPIO 2 must be HIGH at boot. Often connected to onboard LED.",
+    "severity": "warning",
+    "hint": ""
+   }
+  ],
+  "pins": [
+   {
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   },
+   {
+    "name": "relay",
+    "mode": "Output",
+    "gpio": 4
+   },
+   {
+    "name": "button",
+    "mode": "PullUpInput",
+    "gpio": 5
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "blink",
+    "tier": "background",
+    "line": 9
+   },
+   {
+    "name": "check_button",
+    "tier": "background",
+    "line": 15
+   },
+   {
+    "name": "report",
+    "tier": "priority",
+    "line": 25
+   }
+  ],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": "esp8266"
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "chip esp8266\n\nhardware {\n    pin led: Output = 2\n    pin relay: Output = 4\n    pin button: PullUpInput = 5\n}\n\ntask blink {\n    every 500ms { led.toggle() }\n}\n\ntask check_button {\n    every 50ms {\n        if button.read() == 0 {\n            relay.on()\n        } else {\n            relay.off()\n        }\n    }\n}\n\ntask report {\n    every 30s { mqtt.send_int(\"device/status\", 1) }\n}\n\nsetup {\n    wifi.connect(\"TestNet\", \"password\")\n    mqtt.connect(\"mqtt://broker.local\")\n}\n",
+ "find_symbols": [
+  {
+   "name": "led",
+   "kind": "pin",
+   "def_line": 4,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 11,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "relay",
+   "kind": "pin",
+   "def_line": 5,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 18,
+     "col": 13
+    },
+    {
+     "line": 20,
+     "col": 13
+    }
+   ]
+  },
+  {
+   "name": "button",
+   "kind": "pin",
+   "def_line": 6,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 17,
+     "col": 12
+    }
+   ]
+  },
+  {
+   "name": "blink",
+   "kind": "task",
+   "def_line": 9,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "check_button",
+   "kind": "task",
+   "def_line": 15,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "report",
+   "kind": "task",
+   "def_line": 25,
+   "def_col": 6,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_wifi{{\"wifi\"}}\n    s_mqtt{{\"mqtt\"}}\n    u_blink((\"blink<br>↻ 500ms\"))\n    u_check_button((\"check_button<br>↻ 50ms\"))\n    u_report((\"report<br>↻ 30s\"))\n    u_setup -->|connect| s_wifi\n    u_setup -->|connect| s_mqtt\n    u_report -->|send_int| s_mqtt\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_wifi service;\n    class s_mqtt service;\n    class u_blink timer;\n    class u_check_button timer;\n    class u_report timer;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_blink",
+    "name": "blink<br>↻ 500ms",
+    "line": 9
+   },
+   {
+    "id": "u_check_button",
+    "name": "check_button<br>↻ 50ms",
+    "line": 15
+   },
+   {
+    "id": "u_report",
+    "name": "report<br>↻ 30s",
+    "line": 25
+   }
+  ],
+  "loops": [
+   "u_blink",
+   "u_check_button",
+   "u_report"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_wifi"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_mqtt"
+   },
+   {
+    "drive": "timer",
+    "src": "u_report",
+    "dst": "s_mqtt",
+    "rate_ms": 30000.0
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_wifi": {
+    "kind": "service",
+    "label": "wifi",
+    "line": null,
+    "detail": "connect"
+   },
+   "s_mqtt": {
+    "kind": "service",
+    "label": "mqtt",
+    "line": null,
+    "detail": "connect, send_int"
+   },
+   "u_blink": {
+    "kind": "timer",
+    "label": "blink<br>↻ 500ms",
+    "line": 9,
+    "detail": "every 500ms"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 4,
+    "detail": "Output · GPIO 2"
+   },
+   "u_check_button": {
+    "kind": "timer",
+    "label": "check_button<br>↻ 50ms",
+    "line": 15,
+    "detail": "every 50ms"
+   },
+   "p_button": {
+    "kind": "pin",
+    "label": "button",
+    "line": 6,
+    "detail": "PullUpInput · GPIO 5"
+   },
+   "p_relay": {
+    "kind": "pin",
+    "label": "relay",
+    "line": 5,
+    "detail": "Output · GPIO 4"
+   },
+   "u_report": {
+    "kind": "timer",
+    "label": "report<br>↻ 30s",
+    "line": 25,
+    "detail": "every 30s"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_wifi{{\"wifi\"}}\n    s_mqtt{{\"mqtt\"}}\n    p_led([\"led\"])\n    p_button([\"button\"])\n    p_relay([\"relay\"])\n    u_blink((\"blink<br>↻ 500ms\"))\n    u_check_button((\"check_button<br>↻ 50ms\"))\n    u_report((\"report<br>↻ 30s\"))\n    u_setup -->|connect| s_wifi\n    u_setup -->|connect| s_mqtt\n    u_blink -->|toggle| p_led\n    p_button -.->|read| u_check_button\n    u_check_button -->|off, on| p_relay\n    u_report -->|send_int| s_mqtt\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_wifi service;\n    class s_mqtt service;\n    class u_blink timer;\n    class p_led pin;\n    class u_check_button timer;\n    class p_button pin;\n    class p_relay pin;\n    class u_report timer;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_blink",
+    "name": "blink<br>↻ 500ms",
+    "line": 9
+   },
+   {
+    "id": "u_check_button",
+    "name": "check_button<br>↻ 50ms",
+    "line": 15
+   },
+   {
+    "id": "u_report",
+    "name": "report<br>↻ 30s",
+    "line": 25
+   }
+  ],
+  "loops": [
+   "u_blink",
+   "u_check_button",
+   "u_report"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_wifi"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_mqtt"
+   },
+   {
+    "drive": "timer",
+    "src": "u_blink",
+    "dst": "p_led",
+    "rate_ms": 500.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_button",
+    "dst": "u_check_button",
+    "rate_ms": 50.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_check_button",
+    "dst": "p_relay",
+    "rate_ms": 50.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_report",
+    "dst": "s_mqtt",
+    "rate_ms": 30000.0
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_wifi": {
+    "kind": "service",
+    "label": "wifi",
+    "line": null,
+    "detail": "connect"
+   },
+   "s_mqtt": {
+    "kind": "service",
+    "label": "mqtt",
+    "line": null,
+    "detail": "connect, send_int"
+   },
+   "u_blink": {
+    "kind": "timer",
+    "label": "blink<br>↻ 500ms",
+    "line": 9,
+    "detail": "every 500ms"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 4,
+    "detail": "Output · GPIO 2"
+   },
+   "u_check_button": {
+    "kind": "timer",
+    "label": "check_button<br>↻ 50ms",
+    "line": 15,
+    "detail": "every 50ms"
+   },
+   "p_button": {
+    "kind": "pin",
+    "label": "button",
+    "line": 6,
+    "detail": "PullUpInput · GPIO 5"
+   },
+   "p_relay": {
+    "kind": "pin",
+    "label": "relay",
+    "line": 5,
+    "detail": "Output · GPIO 4"
+   },
+   "u_report": {
+    "kind": "timer",
+    "label": "report<br>↻ 30s",
+    "line": 25,
+    "detail": "every 30s"
+   }
+  }
+ }
+}

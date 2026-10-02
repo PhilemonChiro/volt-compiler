@@ -1,0 +1,19 @@
+
+[yellow bold]-- DEPRECATION -- float_step.volt:2[/yellow bold]
+
+Move `chip esp32` to volt.toml: chip = "esp32"
+
+ [dim]1 |[/dim] 
+ [dim]2 |[/dim] chip esp32
+ [dim]  |[/dim] [yellow]     ^^^^^[/yellow]
+
+[cyan]Hint: The chip declaration will move to volt.toml in a future version.[/cyan]
+
+
+[red bold]-- TYPE MISMATCH -- float_step.volt:4[/red bold]
+
+For step must be `int`, got `float`.
+
+ [dim]3 |[/dim] setup {
+ [dim]4 |[/dim]     for i in 0..10 step 1.5 {
+ [dim]  |[/dim] [red]                        ^^^[/red]

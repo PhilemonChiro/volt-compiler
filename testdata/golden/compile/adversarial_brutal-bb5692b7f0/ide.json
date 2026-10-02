@@ -1,0 +1,40 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 1,
+    "col": 1,
+    "message": "No terminal matches '@' in the current parser context, at line 2 col 1",
+    "severity": "error",
+    "hint": ""
+   }
+  ],
+  "pins": [],
+  "devices": [],
+  "buses": [],
+  "tasks": [],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": ""
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ]
+ ],
+ "format_code": "chip esp32\n@#$%^&*()_+={}[]|\\:\"'<>,.?/~`\n",
+ "find_symbols": [],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "",
+  "units": []
+ },
+ "system_graph_expanded": {
+  "mermaid": "",
+  "units": []
+ }
+}

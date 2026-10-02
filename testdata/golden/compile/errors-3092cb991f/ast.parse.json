@@ -1,0 +1,42 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "AssignExpr",
+    "region": [4, 5, 4, 7],
+    "target": {
+     "_": "IntLiteral",
+     "region": [4, 5, 4, 7],
+     "value": 42
+    },
+    "value": {
+     "_": "IntLiteral",
+     "region": [4, 10, 4, 12],
+     "value": 10
+    }
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

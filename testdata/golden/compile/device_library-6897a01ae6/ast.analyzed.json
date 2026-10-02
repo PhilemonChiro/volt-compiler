@@ -1,0 +1,112 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [1, 6, 1, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [3, 9, 5, 20],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [3, 9, 3, 12],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   }
+  ],
+  "buses": [
+   {
+    "_": "BusDecl",
+    "region": [4, 9, 4, 13],
+    "bus_type": "spi",
+    "name": "spi0",
+    "params": {
+     "sck": {
+      "_": "IntLiteral",
+      "region": [4, 24, 4, 26],
+      "value": 18
+     },
+     "mosi": {
+      "_": "IntLiteral",
+      "region": [4, 34, 4, 36],
+      "value": 23
+     },
+     "miso": {
+      "_": "IntLiteral",
+      "region": [4, 44, 4, 46],
+      "value": 19
+     }
+    }
+   }
+  ],
+  "sensors": [
+   {
+    "_": "SensorDecl",
+    "region": [5, 12, 5, 20],
+    "name": "nrf24l01",
+    "sensor_type": "NRF24L01",
+    "bus_name": "spi0",
+    "address": 5,
+    "pin_params": {}
+   }
+  ]
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [7, 7, 7, 9],
+   "name": "_rule0",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [7, 7, 7, 9],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [7, 7, 7, 9],
+      "microseconds": 1000000,
+      "original": "1s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [8, 5, 8, 8],
+        "obj": {
+         "_": "VarRef",
+         "region": [8, 5, 8, 8],
+         "name": "led"
+        },
+        "method": "toggle",
+        "args": []
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

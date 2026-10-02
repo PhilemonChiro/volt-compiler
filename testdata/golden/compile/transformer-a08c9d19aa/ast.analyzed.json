@@ -1,0 +1,116 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [4, 9, 5, 13],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [4, 9, 4, 13],
+    "name": "led1",
+    "mode": "Output",
+    "gpio": 2
+   },
+   {
+    "_": "PinDecl",
+    "region": [5, 9, 5, 13],
+    "name": "led2",
+    "mode": "Output",
+    "gpio": 4
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [7, 6, 7, 13],
+   "name": "blinker",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [8, 11, 8, 16],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [8, 11, 8, 16],
+      "microseconds": 500000,
+      "original": "500ms"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [9, 9, 9, 13],
+        "obj": {
+         "_": "VarRef",
+         "region": [9, 9, 9, 13],
+         "name": "led1"
+        },
+        "method": "toggle",
+        "args": []
+       }
+      }
+     ],
+     "yield_label": 0
+    },
+    {
+     "_": "EveryBlock",
+     "region": [11, 11, 11, 16],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [11, 11, 11, 16],
+      "microseconds": 100000,
+      "original": "100ms"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [12, 9, 12, 13],
+        "obj": {
+         "_": "VarRef",
+         "region": [12, 9, 12, 13],
+         "name": "led2"
+        },
+        "method": "toggle",
+        "args": []
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

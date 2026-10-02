@@ -1,0 +1,176 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 2,
+    "col": 6,
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "severity": "warning",
+    "hint": "The chip declaration will move to volt.toml in a future version."
+   }
+  ],
+  "pins": [
+   {
+    "name": "buzzer",
+    "mode": "PWM",
+    "gpio": 25
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "monitor",
+    "tier": "background",
+    "line": 11
+   }
+  ],
+  "machines": [],
+  "channels": [],
+  "enums": [
+   {
+    "name": "AlertLevel",
+    "variants": [
+     "normal",
+     "warning",
+     "critical"
+    ]
+   }
+  ],
+  "chip": "esp32"
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "chip esp32\n\nhardware {\n    pin buzzer: PWM = 25\n}\n\nenum AlertLevel { normal, warning, critical }\n\ntask monitor {\n    every 5s {\n        var level: AlertLevel = AlertLevel.normal\n        if level == AlertLevel.critical {\n            buzzer.beep_alarm()\n        }\n    }\n}\n",
+ "find_symbols": [
+  {
+   "name": "buzzer",
+   "kind": "pin",
+   "def_line": 9,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 15,
+     "col": 13
+    }
+   ]
+  },
+  {
+   "name": "monitor",
+   "kind": "task",
+   "def_line": 11,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "level",
+   "kind": "var",
+   "def_line": 13,
+   "def_col": 13,
+   "refs": [
+    {
+     "line": 14,
+     "col": 12
+    }
+   ]
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_monitor((\"monitor<br>↻ 5s\"))\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_monitor timer;",
+  "units": [
+   {
+    "id": "u_monitor",
+    "name": "monitor<br>↻ 5s",
+    "line": 11
+   }
+  ],
+  "loops": [
+   "u_monitor"
+  ],
+  "edges": [],
+  "nodes": {
+   "u_monitor": {
+    "kind": "timer",
+    "label": "monitor<br>↻ 5s",
+    "line": 11,
+    "detail": "every 5s"
+   },
+   "p_buzzer": {
+    "kind": "pin",
+    "label": "buzzer",
+    "line": 9,
+    "detail": "PWM · GPIO 25"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    p_buzzer([\"buzzer\"])\n    u_monitor((\"monitor<br>↻ 5s\"))\n    u_monitor -->|beep_alarm| p_buzzer\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_monitor timer;\n    class p_buzzer pin;",
+  "units": [
+   {
+    "id": "u_monitor",
+    "name": "monitor<br>↻ 5s",
+    "line": 11
+   }
+  ],
+  "loops": [
+   "u_monitor"
+  ],
+  "edges": [
+   {
+    "drive": "timer",
+    "src": "u_monitor",
+    "dst": "p_buzzer",
+    "rate_ms": 5000.0
+   }
+  ],
+  "nodes": {
+   "u_monitor": {
+    "kind": "timer",
+    "label": "monitor<br>↻ 5s",
+    "line": 11,
+    "detail": "every 5s"
+   },
+   "p_buzzer": {
+    "kind": "pin",
+    "label": "buzzer",
+    "line": 9,
+    "detail": "PWM · GPIO 25"
+   }
+  }
+ }
+}

@@ -1,0 +1,248 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 2,
+    "col": 6,
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "severity": "warning",
+    "hint": "The chip declaration will move to volt.toml in a future version."
+   },
+   {
+    "line": 4,
+    "col": 9,
+    "message": "Strapping pin: GPIO 2 must be LOW during boot for flash programming.",
+    "severity": "warning",
+    "hint": ""
+   },
+   {
+    "line": 5,
+    "col": 9,
+    "message": "Strapping pin: GPIO 5 controls boot debug output. Usually safe for general use.",
+    "severity": "warning",
+    "hint": ""
+   }
+  ],
+  "pins": [
+   {
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   },
+   {
+    "name": "buzzer",
+    "mode": "PWM",
+    "gpio": 5
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "heartbeat",
+    "tier": "background",
+    "line": 8
+   },
+   {
+    "name": "alert",
+    "tier": "background",
+    "line": 14
+   }
+  ],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": "esp32"
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n    pin buzzer: PWM = 5\n}\n\ntask heartbeat {\n    every 1s { led.toggle() or skip }\n}\n\ntask alert {\n    every 5s {\n        buzzer.set_pwm(128) or retry(3)\n        sleep(200ms)\n        buzzer.set_pwm(0) or skip\n    }\n}\n",
+ "find_symbols": [
+  {
+   "name": "led",
+   "kind": "pin",
+   "def_line": 4,
+   "def_col": 9,
+   "refs": []
+  },
+  {
+   "name": "buzzer",
+   "kind": "pin",
+   "def_line": 5,
+   "def_col": 9,
+   "refs": []
+  },
+  {
+   "name": "heartbeat",
+   "kind": "task",
+   "def_line": 8,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "alert",
+   "kind": "task",
+   "def_line": 14,
+   "def_col": 6,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_heartbeat((\"heartbeat<br>↻ 1s\"))\n    u_alert((\"alert<br>↻ 5s\"))\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_heartbeat timer;\n    class u_alert timer;",
+  "units": [
+   {
+    "id": "u_heartbeat",
+    "name": "heartbeat<br>↻ 1s",
+    "line": 8
+   },
+   {
+    "id": "u_alert",
+    "name": "alert<br>↻ 5s",
+    "line": 14
+   }
+  ],
+  "loops": [
+   "u_heartbeat",
+   "u_alert"
+  ],
+  "edges": [],
+  "nodes": {
+   "u_heartbeat": {
+    "kind": "timer",
+    "label": "heartbeat<br>↻ 1s",
+    "line": 8,
+    "detail": "every 1s"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 4,
+    "detail": "Output · GPIO 2"
+   },
+   "u_alert": {
+    "kind": "timer",
+    "label": "alert<br>↻ 5s",
+    "line": 14,
+    "detail": "every 5s"
+   },
+   "p_buzzer": {
+    "kind": "pin",
+    "label": "buzzer",
+    "line": 5,
+    "detail": "PWM · GPIO 5"
+   },
+   "s_sleep": {
+    "kind": "service",
+    "label": "sleep",
+    "line": null,
+    "detail": "sleep"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    p_led([\"led\"])\n    p_buzzer([\"buzzer\"])\n    s_sleep{{\"sleep\"}}\n    u_heartbeat((\"heartbeat<br>↻ 1s\"))\n    u_alert((\"alert<br>↻ 5s\"))\n    u_heartbeat -->|toggle| p_led\n    u_alert -->|set_pwm| p_buzzer\n    u_alert -->|sleep| s_sleep\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_heartbeat timer;\n    class p_led pin;\n    class u_alert timer;\n    class p_buzzer pin;\n    class s_sleep service;",
+  "units": [
+   {
+    "id": "u_heartbeat",
+    "name": "heartbeat<br>↻ 1s",
+    "line": 8
+   },
+   {
+    "id": "u_alert",
+    "name": "alert<br>↻ 5s",
+    "line": 14
+   }
+  ],
+  "loops": [
+   "u_heartbeat",
+   "u_alert"
+  ],
+  "edges": [
+   {
+    "drive": "timer",
+    "src": "u_heartbeat",
+    "dst": "p_led",
+    "rate_ms": 1000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_alert",
+    "dst": "p_buzzer",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_alert",
+    "dst": "s_sleep",
+    "rate_ms": 5000.0
+   }
+  ],
+  "nodes": {
+   "u_heartbeat": {
+    "kind": "timer",
+    "label": "heartbeat<br>↻ 1s",
+    "line": 8,
+    "detail": "every 1s"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 4,
+    "detail": "Output · GPIO 2"
+   },
+   "u_alert": {
+    "kind": "timer",
+    "label": "alert<br>↻ 5s",
+    "line": 14,
+    "detail": "every 5s"
+   },
+   "p_buzzer": {
+    "kind": "pin",
+    "label": "buzzer",
+    "line": 5,
+    "detail": "PWM · GPIO 5"
+   },
+   "s_sleep": {
+    "kind": "service",
+    "label": "sleep",
+    "line": null,
+    "detail": "sleep"
+   }
+  }
+ }
+}

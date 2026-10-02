@@ -1,0 +1,443 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 2,
+    "col": 6,
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "severity": "warning",
+    "hint": "The chip declaration will move to volt.toml in a future version."
+   },
+   {
+    "line": 5,
+    "col": 9,
+    "message": "Strapping pin: GPIO 2 must be LOW during boot for flash programming.",
+    "severity": "warning",
+    "hint": ""
+   },
+   {
+    "line": 0,
+    "col": 0,
+    "message": "Variable `mixed_val` is shared between critical task (isr_task) and task (bg_task, bg_task, bg_task). The compiler will mark it `volatile` in generated C.",
+    "severity": "warning",
+    "hint": "For multi-word values, consider using atomic operations."
+   }
+  ],
+  "pins": [
+   {
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   },
+   {
+    "name": "motor",
+    "mode": "PWM",
+    "gpio": 4
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "isr_task",
+    "tier": "critical",
+    "line": 13
+   },
+   {
+    "name": "bg_task",
+    "tier": "background",
+    "line": 20
+   }
+  ],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": "esp32"
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n    pin motor: PWM = 4\n}\n\nvar mixed_val = 0\n\nvar private_a = 10\n\nvar private_b = 20\n\ntask isr_task {\n    every 1ms strict {\n        motor.set_pwm(mixed_val)\n        private_a = private_a + 1\n    }\n}\n\ntask bg_task {\n    every 500ms {\n        mixed_val = mixed_val + 1\n        private_b = private_b + 1\n        led.toggle()\n    }\n}\n\nsetup {\n    run(isr_task, bg_task)\n}\n",
+ "find_symbols": [
+  {
+   "name": "led",
+   "kind": "pin",
+   "def_line": 5,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 24,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "motor",
+   "kind": "pin",
+   "def_line": 6,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 15,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "isr_task",
+   "kind": "task",
+   "def_line": 13,
+   "def_col": 6,
+   "refs": [
+    {
+     "line": 29,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "bg_task",
+   "kind": "task",
+   "def_line": 20,
+   "def_col": 6,
+   "refs": [
+    {
+     "line": 29,
+     "col": 19
+    }
+   ]
+  },
+  {
+   "name": "mixed_val",
+   "kind": "var",
+   "def_line": 9,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 15,
+     "col": 23
+    },
+    {
+     "line": 22,
+     "col": 9
+    },
+    {
+     "line": 22,
+     "col": 21
+    }
+   ]
+  },
+  {
+   "name": "private_a",
+   "kind": "var",
+   "def_line": 10,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 16,
+     "col": 9
+    },
+    {
+     "line": 16,
+     "col": 21
+    }
+   ]
+  },
+  {
+   "name": "private_b",
+   "kind": "var",
+   "def_line": 11,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 23,
+     "col": 9
+    },
+    {
+     "line": 23,
+     "col": 21
+    }
+   ]
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_run{{\"run\"}}\n    v_mixed_val(\"mixed_val\")\n    u_isr_task((\"isr_task<br>↻ 1ms\"))\n    u_bg_task((\"bg_task<br>↻ 500ms\"))\n    u_setup -->|run| s_run\n    v_mixed_val -.->|read| u_isr_task\n    u_bg_task -->|write| v_mixed_val\n    v_mixed_val -.->|read| u_bg_task\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_run service;\n    class u_isr_task timer;\n    class v_mixed_val shared;\n    class u_bg_task timer;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_isr_task",
+    "name": "isr_task<br>↻ 1ms",
+    "line": 13
+   },
+   {
+    "id": "u_bg_task",
+    "name": "bg_task<br>↻ 500ms",
+    "line": 20
+   }
+  ],
+  "loops": [
+   "u_isr_task",
+   "u_bg_task"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_run"
+   },
+   {
+    "drive": "timer",
+    "src": "v_mixed_val",
+    "dst": "u_isr_task",
+    "rate_ms": 1.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_bg_task",
+    "dst": "v_mixed_val",
+    "rate_ms": 500.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_mixed_val",
+    "dst": "u_bg_task",
+    "rate_ms": 500.0
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_run": {
+    "kind": "service",
+    "label": "run",
+    "line": null,
+    "detail": "run"
+   },
+   "u_isr_task": {
+    "kind": "timer",
+    "label": "isr_task<br>↻ 1ms",
+    "line": 13,
+    "detail": "every 1ms"
+   },
+   "p_motor": {
+    "kind": "pin",
+    "label": "motor",
+    "line": 6,
+    "detail": "PWM · GPIO 4"
+   },
+   "v_mixed_val": {
+    "kind": "var",
+    "label": "mixed_val",
+    "line": 9,
+    "detail": ""
+   },
+   "v_private_a": {
+    "kind": "var",
+    "label": "private_a",
+    "line": 10,
+    "detail": ""
+   },
+   "u_bg_task": {
+    "kind": "timer",
+    "label": "bg_task<br>↻ 500ms",
+    "line": 20,
+    "detail": "every 500ms"
+   },
+   "v_private_b": {
+    "kind": "var",
+    "label": "private_b",
+    "line": 11,
+    "detail": ""
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 5,
+    "detail": "Output · GPIO 2"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_run{{\"run\"}}\n    p_motor([\"motor\"])\n    v_mixed_val(\"mixed_val\")\n    v_private_a(\"private_a\")\n    v_private_b(\"private_b\")\n    p_led([\"led\"])\n    u_isr_task((\"isr_task<br>↻ 1ms\"))\n    u_bg_task((\"bg_task<br>↻ 500ms\"))\n    u_setup -->|run| s_run\n    u_isr_task -->|set_pwm| p_motor\n    v_mixed_val -.->|read| u_isr_task\n    u_isr_task -->|write| v_private_a\n    v_private_a -.->|read| u_isr_task\n    u_bg_task -->|write| v_mixed_val\n    v_mixed_val -.->|read| u_bg_task\n    u_bg_task -->|write| v_private_b\n    v_private_b -.->|read| u_bg_task\n    u_bg_task -->|toggle| p_led\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_run service;\n    class u_isr_task timer;\n    class p_motor pin;\n    class v_mixed_val shared;\n    class v_private_a var;\n    class u_bg_task timer;\n    class v_private_b var;\n    class p_led pin;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_isr_task",
+    "name": "isr_task<br>↻ 1ms",
+    "line": 13
+   },
+   {
+    "id": "u_bg_task",
+    "name": "bg_task<br>↻ 500ms",
+    "line": 20
+   }
+  ],
+  "loops": [
+   "u_isr_task",
+   "u_bg_task"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_run"
+   },
+   {
+    "drive": "timer",
+    "src": "u_isr_task",
+    "dst": "p_motor",
+    "rate_ms": 1.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_mixed_val",
+    "dst": "u_isr_task",
+    "rate_ms": 1.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_isr_task",
+    "dst": "v_private_a",
+    "rate_ms": 1.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_private_a",
+    "dst": "u_isr_task",
+    "rate_ms": 1.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_bg_task",
+    "dst": "v_mixed_val",
+    "rate_ms": 500.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_mixed_val",
+    "dst": "u_bg_task",
+    "rate_ms": 500.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_bg_task",
+    "dst": "v_private_b",
+    "rate_ms": 500.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_private_b",
+    "dst": "u_bg_task",
+    "rate_ms": 500.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_bg_task",
+    "dst": "p_led",
+    "rate_ms": 500.0
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_run": {
+    "kind": "service",
+    "label": "run",
+    "line": null,
+    "detail": "run"
+   },
+   "u_isr_task": {
+    "kind": "timer",
+    "label": "isr_task<br>↻ 1ms",
+    "line": 13,
+    "detail": "every 1ms"
+   },
+   "p_motor": {
+    "kind": "pin",
+    "label": "motor",
+    "line": 6,
+    "detail": "PWM · GPIO 4"
+   },
+   "v_mixed_val": {
+    "kind": "var",
+    "label": "mixed_val",
+    "line": 9,
+    "detail": ""
+   },
+   "v_private_a": {
+    "kind": "var",
+    "label": "private_a",
+    "line": 10,
+    "detail": ""
+   },
+   "u_bg_task": {
+    "kind": "timer",
+    "label": "bg_task<br>↻ 500ms",
+    "line": 20,
+    "detail": "every 500ms"
+   },
+   "v_private_b": {
+    "kind": "var",
+    "label": "private_b",
+    "line": 11,
+    "detail": ""
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 5,
+    "detail": "Output · GPIO 2"
+   }
+  }
+ }
+}

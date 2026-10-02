@@ -1,0 +1,20 @@
+
+[yellow bold]-- DEPRECATION -- main.volt:1[/yellow bold]
+
+Move `chip esp32` to volt.toml: chip = "esp32"
+
+ [dim]1 |[/dim] chip esp32
+ [dim]  |[/dim] [yellow]     ^^^^^[/yellow]
+
+[cyan]Hint: The chip declaration will move to volt.toml in a future version.[/cyan]
+
+
+[red bold]-- TASK ERROR -- main.volt:6[/red bold]
+
+Critical task `t` calls `sleep()` which is not safe in ISR context (hardware timer interrupt).
+
+ [dim]5 |[/dim]         led.toggle()
+ [dim]6 |[/dim]         sleep(10ms)
+ [dim]  |[/dim] [red]        ^^^^^[/red]
+
+[cyan]Hint: Remove `sleep()` from this task, or remove `strict` to make it a Background task.[/cyan]

@@ -1,0 +1,118 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [5, 9, 5, 12],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [5, 9, 5, 12],
+    "name": "arm",
+    "mode": "Servo",
+    "gpio": 13
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [8, 6, 8, 11],
+   "name": "waver",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [9, 11, 9, 13],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [9, 11, 9, 13],
+      "microseconds": 2000000,
+      "original": "2s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [10, 9, 10, 12],
+        "obj": {
+         "_": "VarRef",
+         "region": [10, 9, 10, 12],
+         "name": "arm"
+        },
+        "method": "ease_to",
+        "args": [
+         {
+          "_": "IntLiteral",
+          "region": [10, 21, 10, 22],
+          "value": 0
+         },
+         {
+          "_": "DurationLiteral",
+          "region": [10, 24, 10, 29],
+          "microseconds": 500000,
+          "original": "500ms"
+         }
+        ]
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [11, 9, 11, 12],
+        "obj": {
+         "_": "VarRef",
+         "region": [11, 9, 11, 12],
+         "name": "arm"
+        },
+        "method": "ease_to",
+        "args": [
+         {
+          "_": "IntLiteral",
+          "region": [11, 21, 11, 24],
+          "value": 180
+         },
+         {
+          "_": "DurationLiteral",
+          "region": [11, 26, 11, 31],
+          "microseconds": 500000,
+          "original": "500ms"
+         }
+        ]
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

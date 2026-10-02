@@ -1,0 +1,90 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [3, 16, 3, 19],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [3, 16, 3, 19],
+    "name": "btn",
+    "mode": "Input",
+    "gpio": 4
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [4, 6, 4, 12],
+   "name": "reader",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [5, 11, 5, 13],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [5, 11, 5, 13],
+      "microseconds": 2000000,
+      "original": "2s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "VarDecl",
+       "region": [6, 13, 6, 16],
+       "name": "val",
+       "type_name": "int",
+       "value": {
+        "_": "OrExpr",
+        "region": [6, 24, 6, 27],
+        "expr": {
+         "_": "MethodCall",
+         "region": [6, 24, 6, 27],
+         "obj": {
+          "_": "VarRef",
+          "region": [6, 24, 6, 27],
+          "name": "btn"
+         },
+         "method": "read",
+         "args": []
+        },
+        "fallback": null,
+        "kind": "skip"
+       },
+       "mutable": true,
+       "shared": false,
+       "needs_lifting": false
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

@@ -1,0 +1,137 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [1, 6, 1, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [2, 16, 2, 19],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [2, 16, 2, 19],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 4
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [
+  {
+   "_": "MachineDecl",
+   "region": [3, 9, 3, 10],
+   "name": "m",
+   "states": [
+    {
+     "_": "StateDecl",
+     "region": [4, 11, 4, 12],
+     "name": "a",
+     "is_initial": true,
+     "enter_body": [
+      {
+       "_": "TryBlock",
+       "region": [0, 0, 0, 0],
+       "body": [
+        {
+         "_": "ExprStmt",
+         "region": [0, 0, 0, 0],
+         "expr": {
+          "_": "MethodCall",
+          "region": [5, 23, 5, 27],
+          "obj": {
+           "_": "VarRef",
+           "region": [5, 23, 5, 27],
+           "name": "wifi"
+          },
+          "method": "connect",
+          "args": [
+           {
+            "_": "StringLiteral",
+            "region": [5, 36, 5, 39],
+            "value": "a"
+           },
+           {
+            "_": "StringLiteral",
+            "region": [5, 40, 5, 43],
+            "value": "b"
+           }
+          ]
+         }
+        }
+       ],
+       "policy": "retry",
+       "retry_limit": 3,
+       "terminal": "skip",
+       "try_id": 1,
+       "needs_context_lift": true,
+       "is_yield_point": true
+      }
+     ],
+     "exit_body": [],
+     "transitions": [],
+     "timed_transitions": [
+      {
+       "_": "TimedTransition",
+       "region": [6, 15, 6, 17],
+       "duration": {
+        "_": "DurationLiteral",
+        "region": [6, 15, 6, 17],
+        "microseconds": 1000000,
+        "original": "1s"
+       },
+       "target_state": "b",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "body": []
+    },
+    {
+     "_": "StateDecl",
+     "region": [8, 11, 8, 12],
+     "name": "b",
+     "is_initial": false,
+     "enter_body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [8, 23, 8, 26],
+        "obj": {
+         "_": "VarRef",
+         "region": [8, 23, 8, 26],
+         "name": "led"
+        },
+        "method": "on",
+        "args": []
+       }
+      }
+     ],
+     "exit_body": [],
+     "transitions": [],
+     "timed_transitions": [],
+     "body": []
+    }
+   ],
+   "variables": []
+  }
+ ],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

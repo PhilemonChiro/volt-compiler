@@ -1,0 +1,187 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 2,
+    "col": 6,
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "severity": "warning",
+    "hint": "The chip declaration will move to volt.toml in a future version."
+   },
+   {
+    "line": 3,
+    "col": 16,
+    "message": "Strapping pin: GPIO 2 must be LOW during boot for flash programming.",
+    "severity": "warning",
+    "hint": ""
+   },
+   {
+    "line": 0,
+    "col": 0,
+    "message": "Code after `every`/`on` block in task `multi_yield` will never execute.",
+    "severity": "warning",
+    "hint": "Move this code before the `every` block, or into a separate task."
+   }
+  ],
+  "pins": [
+   {
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "multi_yield",
+    "tier": "background",
+    "line": 4
+   }
+  ],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": "esp32"
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n}\n\ntask multi_yield {\n    every 500ms { led.on() }\n    sleep(100ms)\n}\n",
+ "find_symbols": [
+  {
+   "name": "led",
+   "kind": "pin",
+   "def_line": 3,
+   "def_col": 16,
+   "refs": [
+    {
+     "line": 6,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "multi_yield",
+   "kind": "task",
+   "def_line": 4,
+   "def_col": 6,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_multi_yield((\"multi_yield<br>↻ 500ms\"))\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_multi_yield timer;",
+  "units": [
+   {
+    "id": "u_multi_yield",
+    "name": "multi_yield<br>↻ 500ms",
+    "line": 4
+   }
+  ],
+  "loops": [
+   "u_multi_yield"
+  ],
+  "edges": [],
+  "nodes": {
+   "u_multi_yield": {
+    "kind": "timer",
+    "label": "multi_yield<br>↻ 500ms",
+    "line": 4,
+    "detail": "every 500ms"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 3,
+    "detail": "Output · GPIO 2"
+   },
+   "s_sleep": {
+    "kind": "service",
+    "label": "sleep",
+    "line": null,
+    "detail": "sleep"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    p_led([\"led\"])\n    s_sleep{{\"sleep\"}}\n    u_multi_yield((\"multi_yield<br>↻ 500ms\"))\n    u_multi_yield -->|on| p_led\n    u_multi_yield -->|sleep| s_sleep\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_multi_yield timer;\n    class p_led pin;\n    class s_sleep service;",
+  "units": [
+   {
+    "id": "u_multi_yield",
+    "name": "multi_yield<br>↻ 500ms",
+    "line": 4
+   }
+  ],
+  "loops": [
+   "u_multi_yield"
+  ],
+  "edges": [
+   {
+    "drive": "timer",
+    "src": "u_multi_yield",
+    "dst": "p_led",
+    "rate_ms": 500.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_multi_yield",
+    "dst": "s_sleep",
+    "rate_ms": 500.0
+   }
+  ],
+  "nodes": {
+   "u_multi_yield": {
+    "kind": "timer",
+    "label": "multi_yield<br>↻ 500ms",
+    "line": 4,
+    "detail": "every 500ms"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 3,
+    "detail": "Output · GPIO 2"
+   },
+   "s_sleep": {
+    "kind": "service",
+    "label": "sleep",
+    "line": null,
+    "detail": "sleep"
+   }
+  }
+ }
+}

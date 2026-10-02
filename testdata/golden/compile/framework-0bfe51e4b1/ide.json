@@ -1,0 +1,253 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 2,
+    "col": 6,
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "severity": "warning",
+    "hint": "The chip declaration will move to volt.toml in a future version."
+   },
+   {
+    "line": 4,
+    "col": 9,
+    "message": "Strapping pin: GPIO 2 must be LOW during boot for flash programming.",
+    "severity": "warning",
+    "hint": ""
+   }
+  ],
+  "pins": [
+   {
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "producer",
+    "tier": "background",
+    "line": 7
+   },
+   {
+    "name": "consumer",
+    "tier": "background",
+    "line": 12
+   }
+  ],
+  "machines": [],
+  "channels": [
+   {
+    "name": "data",
+    "elem_type": "int",
+    "capacity": 8
+   }
+  ],
+  "enums": [],
+  "chip": "esp32"
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n}\n\nchannel data: int[8]\n\ntask producer {\n    every 1s { data.send(42) }\n}\n\ntask consumer {\n    every 100ms {\n        var val: int = data.receive()\n        if val > 0 {\n            led.on()\n        }\n    }\n}\n",
+ "find_symbols": [
+  {
+   "name": "led",
+   "kind": "pin",
+   "def_line": 4,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 16,
+     "col": 13
+    }
+   ]
+  },
+  {
+   "name": "producer",
+   "kind": "task",
+   "def_line": 7,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "consumer",
+   "kind": "task",
+   "def_line": 12,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "val",
+   "kind": "var",
+   "def_line": 14,
+   "def_col": 13,
+   "refs": [
+    {
+     "line": 15,
+     "col": 12
+    }
+   ]
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    c_data[/\"data\"/]\n    u_producer((\"producer<br>↻ 1s\"))\n    u_consumer((\"consumer<br>↻ 100ms\"))\n    u_producer -->|send| c_data\n    c_data -.->|receive| u_consumer\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_producer timer;\n    class c_data shared;\n    class u_consumer timer;",
+  "units": [
+   {
+    "id": "u_producer",
+    "name": "producer<br>↻ 1s",
+    "line": 7
+   },
+   {
+    "id": "u_consumer",
+    "name": "consumer<br>↻ 100ms",
+    "line": 12
+   }
+  ],
+  "loops": [
+   "u_producer",
+   "u_consumer"
+  ],
+  "edges": [
+   {
+    "drive": "timer",
+    "src": "u_producer",
+    "dst": "c_data",
+    "rate_ms": 1000.0
+   },
+   {
+    "drive": "timer",
+    "src": "c_data",
+    "dst": "u_consumer",
+    "rate_ms": 100.0
+   }
+  ],
+  "nodes": {
+   "u_producer": {
+    "kind": "timer",
+    "label": "producer<br>↻ 1s",
+    "line": 7,
+    "detail": "every 1s"
+   },
+   "c_data": {
+    "kind": "channel",
+    "label": "data",
+    "line": 6,
+    "detail": "int[8]"
+   },
+   "u_consumer": {
+    "kind": "timer",
+    "label": "consumer<br>↻ 100ms",
+    "line": 12,
+    "detail": "every 100ms"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 4,
+    "detail": "Output · GPIO 2"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    c_data[/\"data\"/]\n    p_led([\"led\"])\n    u_producer((\"producer<br>↻ 1s\"))\n    u_consumer((\"consumer<br>↻ 100ms\"))\n    u_producer -->|send| c_data\n    c_data -.->|receive| u_consumer\n    u_consumer -->|on| p_led\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_producer timer;\n    class c_data shared;\n    class u_consumer timer;\n    class p_led pin;",
+  "units": [
+   {
+    "id": "u_producer",
+    "name": "producer<br>↻ 1s",
+    "line": 7
+   },
+   {
+    "id": "u_consumer",
+    "name": "consumer<br>↻ 100ms",
+    "line": 12
+   }
+  ],
+  "loops": [
+   "u_producer",
+   "u_consumer"
+  ],
+  "edges": [
+   {
+    "drive": "timer",
+    "src": "u_producer",
+    "dst": "c_data",
+    "rate_ms": 1000.0
+   },
+   {
+    "drive": "timer",
+    "src": "c_data",
+    "dst": "u_consumer",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_consumer",
+    "dst": "p_led",
+    "rate_ms": 100.0
+   }
+  ],
+  "nodes": {
+   "u_producer": {
+    "kind": "timer",
+    "label": "producer<br>↻ 1s",
+    "line": 7,
+    "detail": "every 1s"
+   },
+   "c_data": {
+    "kind": "channel",
+    "label": "data",
+    "line": 6,
+    "detail": "int[8]"
+   },
+   "u_consumer": {
+    "kind": "timer",
+    "label": "consumer<br>↻ 100ms",
+    "line": 12,
+    "detail": "every 100ms"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 4,
+    "detail": "Output · GPIO 2"
+   }
+  }
+ }
+}

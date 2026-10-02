@@ -1,0 +1,40 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 1,
+    "col": 1,
+    "message": "Unexpected token Token('NAME', 'state_machine') at line 3, column 1.",
+    "severity": "error",
+    "hint": ""
+   }
+  ],
+  "pins": [],
+  "devices": [],
+  "buses": [],
+  "tasks": [],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": ""
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ]
+ ],
+ "format_code": "chip esp32\nhardware { pin led: Output = 2 }\nstate_machine door {\n    state closed {\n        on event { -> totally_made_up_state }\n    }\n}\nevery 1s { led.toggle() }\n",
+ "find_symbols": [],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "",
+  "units": []
+ },
+ "system_graph_expanded": {
+  "mermaid": "",
+  "units": []
+ }
+}

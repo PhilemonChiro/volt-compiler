@@ -1,0 +1,261 @@
+{
+ "compile_full": {
+  "diagnostics": [],
+  "pins": [],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "expr_task",
+    "tier": "critical",
+    "line": 5
+   }
+  ],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": ""
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "var x: int = 1\n\nvar y: int = 2\n\nvar z: int = 3\n\ntask expr_task {\n    every 1ms strict { x = x + y * z }\n}\n\nsetup {\n    run(expr_task)\n}\n",
+ "find_symbols": [
+  {
+   "name": "expr_task",
+   "kind": "task",
+   "def_line": 5,
+   "def_col": 6,
+   "refs": [
+    {
+     "line": 11,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "x",
+   "kind": "var",
+   "def_line": 2,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 7,
+     "col": 9
+    },
+    {
+     "line": 7,
+     "col": 13
+    }
+   ]
+  },
+  {
+   "name": "y",
+   "kind": "var",
+   "def_line": 3,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 7,
+     "col": 17
+    }
+   ]
+  },
+  {
+   "name": "z",
+   "kind": "var",
+   "def_line": 4,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 7,
+     "col": 21
+    }
+   ]
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_run{{\"run\"}}\n    u_expr_task((\"expr_task<br>↻ 1ms\"))\n    u_setup -->|run| s_run\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_run service;\n    class u_expr_task timer;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_expr_task",
+    "name": "expr_task<br>↻ 1ms",
+    "line": 5
+   }
+  ],
+  "loops": [
+   "u_expr_task"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_run"
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_run": {
+    "kind": "service",
+    "label": "run",
+    "line": null,
+    "detail": "run"
+   },
+   "u_expr_task": {
+    "kind": "timer",
+    "label": "expr_task<br>↻ 1ms",
+    "line": 5,
+    "detail": "every 1ms"
+   },
+   "v_x": {
+    "kind": "var",
+    "label": "x",
+    "line": 2,
+    "detail": "int"
+   },
+   "v_y": {
+    "kind": "var",
+    "label": "y",
+    "line": 3,
+    "detail": "int"
+   },
+   "v_z": {
+    "kind": "var",
+    "label": "z",
+    "line": 4,
+    "detail": "int"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_run{{\"run\"}}\n    v_x(\"x\")\n    v_y(\"y\")\n    v_z(\"z\")\n    u_expr_task((\"expr_task<br>↻ 1ms\"))\n    u_setup -->|run| s_run\n    u_expr_task -->|write| v_x\n    v_x -.->|read| u_expr_task\n    v_y -.->|read| u_expr_task\n    v_z -.->|read| u_expr_task\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_run service;\n    class u_expr_task timer;\n    class v_x var;\n    class v_y var;\n    class v_z var;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_expr_task",
+    "name": "expr_task<br>↻ 1ms",
+    "line": 5
+   }
+  ],
+  "loops": [
+   "u_expr_task"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_run"
+   },
+   {
+    "drive": "timer",
+    "src": "u_expr_task",
+    "dst": "v_x",
+    "rate_ms": 1.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_x",
+    "dst": "u_expr_task",
+    "rate_ms": 1.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_y",
+    "dst": "u_expr_task",
+    "rate_ms": 1.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_z",
+    "dst": "u_expr_task",
+    "rate_ms": 1.0
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_run": {
+    "kind": "service",
+    "label": "run",
+    "line": null,
+    "detail": "run"
+   },
+   "u_expr_task": {
+    "kind": "timer",
+    "label": "expr_task<br>↻ 1ms",
+    "line": 5,
+    "detail": "every 1ms"
+   },
+   "v_x": {
+    "kind": "var",
+    "label": "x",
+    "line": 2,
+    "detail": "int"
+   },
+   "v_y": {
+    "kind": "var",
+    "label": "y",
+    "line": 3,
+    "detail": "int"
+   },
+   "v_z": {
+    "kind": "var",
+    "label": "z",
+    "line": 4,
+    "detail": "int"
+   }
+  }
+ }
+}

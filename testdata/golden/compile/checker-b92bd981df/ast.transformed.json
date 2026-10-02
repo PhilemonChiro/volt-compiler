@@ -1,0 +1,117 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "MethodCall",
+     "region": [3, 5, 3, 9],
+     "obj": {
+      "_": "VarRef",
+      "region": [3, 5, 3, 9],
+      "name": "wifi"
+     },
+     "method": "connect",
+     "args": [
+      {
+       "_": "StringLiteral",
+       "region": [3, 18, 3, 23],
+       "value": "net"
+      },
+      {
+       "_": "StringLiteral",
+       "region": [3, 25, 3, 31],
+       "value": "pass"
+      }
+     ]
+    }
+   },
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "MethodCall",
+     "region": [4, 5, 4, 9],
+     "obj": {
+      "_": "VarRef",
+      "region": [4, 5, 4, 9],
+      "name": "mqtt"
+     },
+     "method": "connect",
+     "args": [
+      {
+       "_": "StringLiteral",
+       "region": [4, 18, 4, 36],
+       "value": "mqtt://localhost"
+      }
+     ]
+    }
+   },
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "MethodCall",
+     "region": [5, 5, 5, 9],
+     "obj": {
+      "_": "VarRef",
+      "region": [5, 5, 5, 9],
+      "name": "mqtt"
+     },
+     "method": "send",
+     "args": [
+      {
+       "_": "StringLiteral",
+       "region": [5, 15, 5, 22],
+       "value": "topic"
+      },
+      {
+       "_": "StringLiteral",
+       "region": [5, 24, 5, 30],
+       "value": "data"
+      }
+     ]
+    }
+   },
+   {
+    "_": "VarDecl",
+    "region": [6, 9, 6, 18],
+    "name": "connected",
+    "type_name": "bool",
+    "value": {
+     "_": "MethodCall",
+     "region": [6, 21, 6, 25],
+     "obj": {
+      "_": "VarRef",
+      "region": [6, 21, 6, 25],
+      "name": "wifi"
+     },
+     "method": "is_connected",
+     "args": []
+    },
+    "mutable": false,
+    "shared": false,
+    "needs_lifting": false
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

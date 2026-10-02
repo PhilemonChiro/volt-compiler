@@ -1,0 +1,4 @@
+
+task onetime {
+    log("hello")
+}

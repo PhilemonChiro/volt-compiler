@@ -1,0 +1,10 @@
+
+[red bold]-- TASK ERROR -- log_in_critical.volt:4[/red bold]
+
+Critical task `pid` calls `log()` which is not safe in ISR context (hardware timer interrupt).
+
+ [dim]3 |[/dim]     every 1ms strict {
+ [dim]4 |[/dim]         log("tick")
+ [dim]  |[/dim] [red]        ^^^[/red]
+
+[cyan]Hint: Remove `log()` from this task, or remove `strict` to make it a Background task.[/cyan]

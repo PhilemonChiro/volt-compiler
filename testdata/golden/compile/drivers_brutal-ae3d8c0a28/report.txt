@@ -1,0 +1,27 @@
+
+[yellow bold]-- DEPRECATION -- main.volt:1[/yellow bold]
+
+Move `chip esp32` to volt.toml: chip = "esp32"
+
+ [dim]1 |[/dim] chip esp32
+ [dim]  |[/dim] [yellow]     ^^^^^[/yellow]
+
+[cyan]Hint: The chip declaration will move to volt.toml in a future version.[/cyan]
+
+
+[yellow bold]-- HARDWARE WARNING -- main.volt:3[/yellow bold]
+
+Strapping pin: GPIO 2 must be LOW during boot for flash programming.
+
+ [dim]2 |[/dim] hardware {
+ [dim]3 |[/dim]     pin led: Output = 2
+ [dim]  |[/dim] [yellow]        ^^^[/yellow]
+
+
+[yellow bold]-- HARDWARE WARNING -- main.volt:4[/yellow bold]
+
+Strapping pin: GPIO 5 controls boot debug output. Usually safe for general use.
+
+ [dim]3 |[/dim]     pin led: Output = 2
+ [dim]4 |[/dim]     pin sig: Input = 5
+ [dim]  |[/dim] [yellow]        ^^^[/yellow]

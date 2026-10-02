@@ -1,0 +1,621 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [1, 6, 1, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [4, 9, 8, 15],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [4, 9, 4, 12],
+    "name": "red",
+    "mode": "Output",
+    "gpio": 23
+   },
+   {
+    "_": "PinDecl",
+    "region": [5, 9, 5, 14],
+    "name": "green",
+    "mode": "Output",
+    "gpio": 22
+   },
+   {
+    "_": "PinDecl",
+    "region": [6, 9, 6, 15],
+    "name": "yellow",
+    "mode": "Output",
+    "gpio": 21
+   },
+   {
+    "_": "PinDecl",
+    "region": [7, 9, 7, 15],
+    "name": "button",
+    "mode": "PullUpInput",
+    "gpio": 4
+   },
+   {
+    "_": "PinDecl",
+    "region": [8, 9, 8, 15],
+    "name": "sensor",
+    "mode": "Analog",
+    "gpio": 36
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [16, 6, 16, 15],
+   "name": "blink_red",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [17, 11, 17, 16],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [17, 11, 17, 16],
+      "microseconds": 100000,
+      "original": "100ms"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [18, 9, 18, 12],
+        "obj": {
+         "_": "VarRef",
+         "region": [18, 9, 18, 12],
+         "name": "red"
+        },
+        "method": "toggle",
+        "args": []
+       }
+      },
+      {
+       "_": "CompoundAssign",
+       "region": [19, 9, 19, 18],
+       "target": {
+        "_": "VarRef",
+        "region": [19, 9, 19, 18],
+        "name": "red_count"
+       },
+       "op": "+=",
+       "value": {
+        "_": "IntLiteral",
+        "region": [19, 22, 19, 23],
+        "value": 1
+       }
+      },
+      {
+       "_": "IfStmt",
+       "region": [20, 12, 20, 21],
+       "condition": {
+        "_": "BinaryExpr",
+        "region": [20, 12, 20, 21],
+        "left": {
+         "_": "BinaryExpr",
+         "region": [20, 12, 20, 21],
+         "left": {
+          "_": "VarRef",
+          "region": [20, 12, 20, 21],
+          "name": "red_count"
+         },
+         "op": "%",
+         "right": {
+          "_": "IntLiteral",
+          "region": [20, 24, 20, 26],
+          "value": 10
+         },
+         "result_type": "int"
+        },
+        "op": "==",
+        "right": {
+         "_": "IntLiteral",
+         "region": [20, 30, 20, 31],
+         "value": 0
+        },
+        "result_type": "bool"
+       },
+       "then_body": [
+        {
+         "_": "ExprStmt",
+         "region": [0, 0, 0, 0],
+         "expr": {
+          "_": "FuncCall",
+          "region": [21, 13, 21, 16],
+          "name": "log",
+          "args": [
+           {
+            "_": "StringLiteral",
+            "region": [21, 17, 21, 22],
+            "value": "red"
+           },
+           {
+            "_": "BinaryExpr",
+            "region": [21, 24, 21, 34],
+            "left": {
+             "_": "StringLiteral",
+             "region": [21, 24, 21, 34],
+             "value": "toggles="
+            },
+            "op": "+",
+            "right": {
+             "_": "VarRef",
+             "region": [21, 37, 21, 46],
+             "name": "red_count"
+            },
+            "result_type": "string"
+           }
+          ]
+         }
+        }
+       ],
+       "else_body": null
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  },
+  {
+   "_": "TaskDecl",
+   "region": [26, 6, 26, 17],
+   "name": "blink_green",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [27, 11, 27, 16],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [27, 11, 27, 16],
+      "microseconds": 400000,
+      "original": "400ms"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [28, 9, 28, 14],
+        "obj": {
+         "_": "VarRef",
+         "region": [28, 9, 28, 14],
+         "name": "green"
+        },
+        "method": "toggle",
+        "args": []
+       }
+      },
+      {
+       "_": "CompoundAssign",
+       "region": [29, 9, 29, 20],
+       "target": {
+        "_": "VarRef",
+        "region": [29, 9, 29, 20],
+        "name": "green_count"
+       },
+       "op": "+=",
+       "value": {
+        "_": "IntLiteral",
+        "region": [29, 24, 29, 25],
+        "value": 1
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [30, 9, 30, 12],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [30, 13, 30, 20],
+          "value": "green"
+         },
+         {
+          "_": "BinaryExpr",
+          "region": [30, 22, 30, 32],
+          "left": {
+           "_": "StringLiteral",
+           "region": [30, 22, 30, 32],
+           "value": "toggle #"
+          },
+          "op": "+",
+          "right": {
+           "_": "VarRef",
+           "region": [30, 35, 30, 46],
+           "name": "green_count"
+          },
+          "result_type": "string"
+         }
+        ]
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  },
+  {
+   "_": "TaskDecl",
+   "region": [34, 6, 34, 17],
+   "name": "read_button",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [35, 11, 35, 15],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [35, 11, 35, 15],
+      "microseconds": 50000,
+      "original": "50ms"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "VarDecl",
+       "region": [36, 13, 36, 18],
+       "name": "state",
+       "type_name": "int",
+       "value": {
+        "_": "MethodCall",
+        "region": [36, 21, 36, 27],
+        "obj": {
+         "_": "VarRef",
+         "region": [36, 21, 36, 27],
+         "name": "button"
+        },
+        "method": "read",
+        "args": []
+       },
+       "mutable": false,
+       "shared": false,
+       "needs_lifting": false
+      },
+      {
+       "_": "IfStmt",
+       "region": [37, 12, 37, 17],
+       "condition": {
+        "_": "BinaryExpr",
+        "region": [37, 12, 37, 17],
+        "left": {
+         "_": "VarRef",
+         "region": [37, 12, 37, 17],
+         "name": "state"
+        },
+        "op": "==",
+        "right": {
+         "_": "IntLiteral",
+         "region": [37, 21, 37, 22],
+         "value": 0
+        },
+        "result_type": "bool"
+       },
+       "then_body": [
+        {
+         "_": "IfStmt",
+         "region": [38, 16, 38, 27],
+         "condition": {
+          "_": "BinaryExpr",
+          "region": [38, 16, 38, 27],
+          "left": {
+           "_": "VarRef",
+           "region": [38, 16, 38, 27],
+           "name": "last_button"
+          },
+          "op": "==",
+          "right": {
+           "_": "IntLiteral",
+           "region": [38, 31, 38, 32],
+           "value": 1
+          },
+          "result_type": "bool"
+         },
+         "then_body": [
+          {
+           "_": "CompoundAssign",
+           "region": [39, 17, 39, 31],
+           "target": {
+            "_": "VarRef",
+            "region": [39, 17, 39, 31],
+            "name": "button_presses"
+           },
+           "op": "+=",
+           "value": {
+            "_": "IntLiteral",
+            "region": [39, 35, 39, 36],
+            "value": 1
+           }
+          },
+          {
+           "_": "ExprStmt",
+           "region": [0, 0, 0, 0],
+           "expr": {
+            "_": "FuncCall",
+            "region": [40, 17, 40, 20],
+            "name": "log",
+            "args": [
+             {
+              "_": "StringLiteral",
+              "region": [40, 21, 40, 29],
+              "value": "button"
+             },
+             {
+              "_": "BinaryExpr",
+              "region": [40, 31, 40, 42],
+              "left": {
+               "_": "StringLiteral",
+               "region": [40, 31, 40, 42],
+               "value": "PRESSED #"
+              },
+              "op": "+",
+              "right": {
+               "_": "VarRef",
+               "region": [40, 45, 40, 59],
+               "name": "button_presses"
+              },
+              "result_type": "string"
+             }
+            ]
+           }
+          }
+         ],
+         "else_body": null
+        },
+        {
+         "_": "ExprStmt",
+         "region": [0, 0, 0, 0],
+         "expr": {
+          "_": "MethodCall",
+          "region": [42, 13, 42, 19],
+          "obj": {
+           "_": "VarRef",
+           "region": [42, 13, 42, 19],
+           "name": "yellow"
+          },
+          "method": "on",
+          "args": []
+         }
+        }
+       ],
+       "else_body": [
+        {
+         "_": "ExprStmt",
+         "region": [0, 0, 0, 0],
+         "expr": {
+          "_": "MethodCall",
+          "region": [44, 13, 44, 19],
+          "obj": {
+           "_": "VarRef",
+           "region": [44, 13, 44, 19],
+           "name": "yellow"
+          },
+          "method": "off",
+          "args": []
+         }
+        }
+       ]
+      },
+      {
+       "_": "AssignExpr",
+       "region": [46, 9, 46, 20],
+       "target": {
+        "_": "VarRef",
+        "region": [46, 9, 46, 20],
+        "name": "last_button"
+       },
+       "value": {
+        "_": "VarRef",
+        "region": [46, 23, 46, 28],
+        "name": "state"
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  },
+  {
+   "_": "TaskDecl",
+   "region": [50, 6, 50, 17],
+   "name": "adc_monitor",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [51, 11, 51, 13],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [51, 11, 51, 13],
+      "microseconds": 2000000,
+      "original": "2s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "VarDecl",
+       "region": [52, 13, 52, 16],
+       "name": "val",
+       "type_name": "int",
+       "value": {
+        "_": "MethodCall",
+        "region": [52, 19, 52, 25],
+        "obj": {
+         "_": "VarRef",
+         "region": [52, 19, 52, 25],
+         "name": "sensor"
+        },
+        "method": "read",
+        "args": []
+       },
+       "mutable": false,
+       "shared": false,
+       "needs_lifting": false
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [53, 9, 53, 12],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [53, 13, 53, 18],
+          "value": "adc"
+         },
+         {
+          "_": "BinaryExpr",
+          "region": [53, 20, 53, 42],
+          "left": {
+           "_": "StringLiteral",
+           "region": [53, 20, 53, 42],
+           "value": "GPIO36 ADC1_CH0 raw="
+          },
+          "op": "+",
+          "right": {
+           "_": "VarRef",
+           "region": [53, 45, 53, 48],
+           "name": "val"
+          },
+          "result_type": "string"
+         }
+        ]
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [
+  {
+   "_": "VarDecl",
+   "region": [11, 5, 11, 14],
+   "name": "red_count",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [11, 22, 11, 23],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  },
+  {
+   "_": "VarDecl",
+   "region": [12, 5, 12, 16],
+   "name": "green_count",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [12, 24, 12, 25],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  },
+  {
+   "_": "VarDecl",
+   "region": [13, 5, 13, 19],
+   "name": "button_presses",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [13, 27, 13, 28],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  },
+  {
+   "_": "VarDecl",
+   "region": [14, 5, 14, 16],
+   "name": "last_button",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [14, 24, 14, 25],
+    "value": 1
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  }
+ ],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "FuncCall",
+     "region": [58, 5, 58, 8],
+     "name": "log",
+     "args": [
+      {
+       "_": "StringLiteral",
+       "region": [58, 9, 58, 17],
+       "value": "system"
+      },
+      {
+       "_": "StringLiteral",
+       "region": [58, 19, 58, 82],
+       "value": "multi-pin demo: red=23, green=22, yellow=21, button=4, adc=36"
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

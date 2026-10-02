@@ -1,0 +1,29 @@
+
+[yellow bold]-- DEPRECATION -- main.volt:1[/yellow bold]
+
+Move `chip esp32` to volt.toml: chip = "esp32"
+
+ [dim]1 |[/dim] chip esp32
+ [dim]  |[/dim] [yellow]     ^^^^^[/yellow]
+
+[cyan]Hint: The chip declaration will move to volt.toml in a future version.[/cyan]
+
+
+[red bold]-- TASK ERROR -- main.volt:3[/red bold]
+
+Function `go` contains a yield (sleep/every/on) and calls itself recursively. Recursive yielding functions cannot be inlined into protothreads.
+
+ [dim]2 |[/dim] hardware { pin led: Output = 4 }
+ [dim]3 |[/dim] func go() {
+ [dim]  |[/dim] [red]     ^^[/red]
+
+[cyan]Hint: Rewrite as a while loop instead of recursion.[/cyan]
+
+
+[yellow bold]-- TASK WARNING -- main.volt:7[/yellow bold]
+
+Task `t` has no yield points (no every/on/sleep). It will run once and complete.
+
+ [dim]6 |[/dim] }
+ [dim]7 |[/dim] task t { go() }
+ [dim]  |[/dim] [yellow]     ^[/yellow]

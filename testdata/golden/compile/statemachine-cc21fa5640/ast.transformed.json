@@ -1,0 +1,136 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [
+  {
+   "_": "MachineDecl",
+   "region": [2, 9, 2, 10],
+   "name": "A",
+   "states": [
+    {
+     "_": "StateDecl",
+     "region": [3, 19, 3, 20],
+     "name": "x",
+     "is_initial": true,
+     "enter_body": [],
+     "exit_body": [],
+     "transitions": [
+      {
+       "_": "StateTransition",
+       "region": [4, 12, 4, 14],
+       "event": {
+        "_": "FuncCall",
+        "region": [4, 12, 4, 14],
+        "name": "go",
+        "args": []
+       },
+       "target_state": "y",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "timed_transitions": [],
+     "body": []
+    },
+    {
+     "_": "StateDecl",
+     "region": [6, 11, 6, 12],
+     "name": "y",
+     "is_initial": false,
+     "enter_body": [],
+     "exit_body": [],
+     "transitions": [
+      {
+       "_": "StateTransition",
+       "region": [7, 12, 7, 16],
+       "event": {
+        "_": "FuncCall",
+        "region": [7, 12, 7, 16],
+        "name": "back",
+        "args": []
+       },
+       "target_state": "x",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "timed_transitions": [],
+     "body": []
+    }
+   ],
+   "variables": []
+  },
+  {
+   "_": "MachineDecl",
+   "region": [10, 9, 10, 10],
+   "name": "B",
+   "states": [
+    {
+     "_": "StateDecl",
+     "region": [11, 19, 11, 20],
+     "name": "p",
+     "is_initial": true,
+     "enter_body": [],
+     "exit_body": [],
+     "transitions": [
+      {
+       "_": "StateTransition",
+       "region": [12, 12, 12, 14],
+       "event": {
+        "_": "FuncCall",
+        "region": [12, 12, 12, 14],
+        "name": "go",
+        "args": []
+       },
+       "target_state": "q",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "timed_transitions": [],
+     "body": []
+    },
+    {
+     "_": "StateDecl",
+     "region": [14, 11, 14, 12],
+     "name": "q",
+     "is_initial": false,
+     "enter_body": [],
+     "exit_body": [],
+     "transitions": [
+      {
+       "_": "StateTransition",
+       "region": [15, 12, 15, 16],
+       "event": {
+        "_": "FuncCall",
+        "region": [15, 12, 15, 16],
+        "name": "back",
+        "args": []
+       },
+       "target_state": "p",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "timed_transitions": [],
+     "body": []
+    }
+   ],
+   "variables": []
+  }
+ ],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

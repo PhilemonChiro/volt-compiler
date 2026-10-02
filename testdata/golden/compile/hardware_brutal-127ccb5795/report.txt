@@ -1,0 +1,29 @@
+
+[yellow bold]-- DEPRECATION -- main.volt:1[/yellow bold]
+
+Move `chip esp32` to volt.toml: chip = "esp32"
+
+ [dim]1 |[/dim] chip esp32
+ [dim]  |[/dim] [yellow]     ^^^^^[/yellow]
+
+[cyan]Hint: The chip declaration will move to volt.toml in a future version.[/cyan]
+
+
+[yellow bold]-- HARDWARE WARNING -- main.volt:3[/yellow bold]
+
+Strapping pin: GPIO 2 must be LOW during boot for flash programming.
+
+ [dim]2 |[/dim] hardware {
+ [dim]3 |[/dim]     pin led: Output = 2
+ [dim]  |[/dim] [yellow]        ^^^[/yellow]
+
+
+[red bold]-- HARDWARE ERROR -- main.volt:5[/red bold]
+
+I2C address 0x00 on bus `i2c0` is outside the 7-bit device range 0x08..0x77.
+
+ [dim]4 |[/dim]     bus i2c0: I2C(sda: 21, scl: 22)
+ [dim]5 |[/dim]     device x: BME280 on i2c0 at 0x0
+ [dim]  |[/dim] [red]           ^[/red]
+
+[cyan]Hint: 0x00..0x07 and 0x78..0x7F are reserved by the I²C spec. Check the device datasheet — most parts have a fixed address or an A0/A1 strap option.[/cyan]

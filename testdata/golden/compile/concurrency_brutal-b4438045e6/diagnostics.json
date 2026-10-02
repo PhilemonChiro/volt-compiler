@@ -1,0 +1,14 @@
+[
+  {
+    "severity": "error",
+    "category": "SYNTAX ERROR",
+    "message": "Unexpected token Token('MINUS', '-') at line 3, column 16.",
+    "hint": null,
+    "region": [
+      1,
+      1,
+      1,
+      1
+    ]
+  }
+]

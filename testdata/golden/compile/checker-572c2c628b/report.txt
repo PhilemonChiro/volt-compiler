@@ -1,0 +1,10 @@
+
+[red bold]-- TYPE MISMATCH -- main.volt:3[/red bold]
+
+Variable `x` declared as `float` but assigned `bool`.
+
+ [dim]2 |[/dim] setup {
+ [dim]3 |[/dim]     let x: float = true
+ [dim]  |[/dim] [red]        ^[/red]
+
+[cyan]Hint: Change the type to `bool` or convert the value with `float(value)`.[/cyan]

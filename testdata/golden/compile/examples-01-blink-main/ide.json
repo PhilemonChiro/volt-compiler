@@ -1,0 +1,289 @@
+{
+ "compile_full": {
+  "diagnostics": [],
+  "pins": [
+   {
+    "name": "green",
+    "mode": "Output",
+    "gpio": 23
+   },
+   {
+    "name": "red",
+    "mode": "Output",
+    "gpio": 22
+   },
+   {
+    "name": "yellow",
+    "mode": "Output",
+    "gpio": 21
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "_rule0",
+    "tier": "background",
+    "line": 9
+   },
+   {
+    "name": "_rule1",
+    "tier": "background",
+    "line": 10
+   },
+   {
+    "name": "_rule2",
+    "tier": "background",
+    "line": 11
+   }
+  ],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": ""
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "/* Three LEDs blinking at different rates — simplest v3 program */\n\nhardware {\n    pin green = 23\n    pin red = 22\n    pin yellow = 21\n}\n\nevery 100ms { red.toggle() }\nevery 400ms { green.toggle() }\nevery 600ms { yellow.toggle() }\n",
+ "find_symbols": [
+  {
+   "name": "green",
+   "kind": "pin",
+   "def_line": 4,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 10,
+     "col": 15
+    }
+   ]
+  },
+  {
+   "name": "red",
+   "kind": "pin",
+   "def_line": 5,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 9,
+     "col": 15
+    }
+   ]
+  },
+  {
+   "name": "yellow",
+   "kind": "pin",
+   "def_line": 6,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 11,
+     "col": 15
+    }
+   ]
+  },
+  {
+   "name": "_rule0",
+   "kind": "task",
+   "def_line": 9,
+   "def_col": 7,
+   "refs": []
+  },
+  {
+   "name": "_rule1",
+   "kind": "task",
+   "def_line": 10,
+   "def_col": 7,
+   "refs": []
+  },
+  {
+   "name": "_rule2",
+   "kind": "task",
+   "def_line": 11,
+   "def_col": 7,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u__rule0((\"↻ 100ms\"))\n    u__rule1((\"↻ 400ms\"))\n    u__rule2((\"↻ 600ms\"))\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u__rule0 timer;\n    class u__rule1 timer;\n    class u__rule2 timer;",
+  "units": [
+   {
+    "id": "u__rule0",
+    "name": "↻ 100ms",
+    "line": 9
+   },
+   {
+    "id": "u__rule1",
+    "name": "↻ 400ms",
+    "line": 10
+   },
+   {
+    "id": "u__rule2",
+    "name": "↻ 600ms",
+    "line": 11
+   }
+  ],
+  "loops": [
+   "u__rule0",
+   "u__rule1",
+   "u__rule2"
+  ],
+  "edges": [],
+  "nodes": {
+   "u__rule0": {
+    "kind": "timer",
+    "label": "↻ 100ms",
+    "line": 9,
+    "detail": "every 100ms"
+   },
+   "p_red": {
+    "kind": "pin",
+    "label": "red",
+    "line": 5,
+    "detail": "GPIO 22"
+   },
+   "u__rule1": {
+    "kind": "timer",
+    "label": "↻ 400ms",
+    "line": 10,
+    "detail": "every 400ms"
+   },
+   "p_green": {
+    "kind": "pin",
+    "label": "green",
+    "line": 4,
+    "detail": "GPIO 23"
+   },
+   "u__rule2": {
+    "kind": "timer",
+    "label": "↻ 600ms",
+    "line": 11,
+    "detail": "every 600ms"
+   },
+   "p_yellow": {
+    "kind": "pin",
+    "label": "yellow",
+    "line": 6,
+    "detail": "GPIO 21"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    p_red([\"red\"])\n    p_green([\"green\"])\n    p_yellow([\"yellow\"])\n    u__rule0((\"↻ 100ms\"))\n    u__rule1((\"↻ 400ms\"))\n    u__rule2((\"↻ 600ms\"))\n    u__rule0 -->|toggle| p_red\n    u__rule1 -->|toggle| p_green\n    u__rule2 -->|toggle| p_yellow\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u__rule0 timer;\n    class p_red pin;\n    class u__rule1 timer;\n    class p_green pin;\n    class u__rule2 timer;\n    class p_yellow pin;",
+  "units": [
+   {
+    "id": "u__rule0",
+    "name": "↻ 100ms",
+    "line": 9
+   },
+   {
+    "id": "u__rule1",
+    "name": "↻ 400ms",
+    "line": 10
+   },
+   {
+    "id": "u__rule2",
+    "name": "↻ 600ms",
+    "line": 11
+   }
+  ],
+  "loops": [
+   "u__rule0",
+   "u__rule1",
+   "u__rule2"
+  ],
+  "edges": [
+   {
+    "drive": "timer",
+    "src": "u__rule0",
+    "dst": "p_red",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule1",
+    "dst": "p_green",
+    "rate_ms": 400.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule2",
+    "dst": "p_yellow",
+    "rate_ms": 600.0
+   }
+  ],
+  "nodes": {
+   "u__rule0": {
+    "kind": "timer",
+    "label": "↻ 100ms",
+    "line": 9,
+    "detail": "every 100ms"
+   },
+   "p_red": {
+    "kind": "pin",
+    "label": "red",
+    "line": 5,
+    "detail": "GPIO 22"
+   },
+   "u__rule1": {
+    "kind": "timer",
+    "label": "↻ 400ms",
+    "line": 10,
+    "detail": "every 400ms"
+   },
+   "p_green": {
+    "kind": "pin",
+    "label": "green",
+    "line": 4,
+    "detail": "GPIO 23"
+   },
+   "u__rule2": {
+    "kind": "timer",
+    "label": "↻ 600ms",
+    "line": 11,
+    "detail": "every 600ms"
+   },
+   "p_yellow": {
+    "kind": "pin",
+    "label": "yellow",
+    "line": 6,
+    "detail": "GPIO 21"
+   }
+  }
+ }
+}

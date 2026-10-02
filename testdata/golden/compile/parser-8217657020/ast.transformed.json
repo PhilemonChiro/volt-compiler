@@ -1,0 +1,42 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [
+  {
+   "_": "StorageDecl",
+   "region": [2, 9, 2, 19],
+   "name": "boot_count",
+   "type_name": "int",
+   "default_value": {
+    "_": "IntLiteral",
+    "region": [2, 27, 2, 28],
+    "value": 0
+   }
+  },
+  {
+   "_": "StorageDecl",
+   "region": [3, 9, 3, 18],
+   "name": "last_temp",
+   "type_name": "float",
+   "default_value": {
+    "_": "FloatLiteral",
+    "region": [3, 28, 3, 31],
+    "value": 0.0
+   }
+  }
+ ],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

@@ -1,0 +1,10 @@
+
+[red bold]-- NAME ERROR -- main.volt:8[/red bold]
+
+Unknown name `led`.
+
+ [dim]7 |[/dim]         enter {
+ [dim]8 |[/dim]             led.blink(200ms)
+ [dim]  |[/dim] [red]            ^^^[/red]
+
+[cyan]Hint: Did you mean `ble`?[/cyan]

@@ -1,0 +1,12 @@
+
+chip rp2040
+hardware {
+    pin led1: Output = 25
+    pin led2: Output = 15
+}
+task fast {
+    every 100ms { led1.toggle() }
+}
+task slow {
+    every 1s { led2.toggle() }
+}

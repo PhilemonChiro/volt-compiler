@@ -1,0 +1,74 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [
+  {
+   "_": "FuncDecl",
+   "region": [2, 6, 2, 11],
+   "name": "greet",
+   "params": [
+    {
+     "_": "Param",
+     "region": [2, 12, 2, 16],
+     "name": "name",
+     "type_name": "string"
+    }
+   ],
+   "return_type": null,
+   "body": [
+    {
+     "_": "ExprStmt",
+     "region": [0, 0, 0, 0],
+     "expr": {
+      "_": "FuncCall",
+      "region": [3, 5, 3, 8],
+      "name": "log",
+      "args": [
+       {
+        "_": "VarRef",
+        "region": [3, 9, 3, 13],
+        "name": "name"
+       }
+      ]
+     }
+    }
+   ],
+   "contains_yield": false
+  }
+ ],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "FuncCall",
+     "region": [6, 5, 6, 10],
+     "name": "greet",
+     "args": [
+      {
+       "_": "StringLiteral",
+       "region": [6, 11, 6, 18],
+       "value": "world"
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

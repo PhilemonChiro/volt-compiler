@@ -1,0 +1,38 @@
+[
+  {
+    "severity": "warning",
+    "category": "HARDWARE WARNING",
+    "message": "GPIO 2: GPIO 2 is a strapping pin. Must be LOW or floating for download mode.",
+    "hint": null,
+    "region": [
+      4,
+      9,
+      4,
+      12
+    ]
+  },
+  {
+    "severity": "warning",
+    "category": "HARDWARE WARNING",
+    "message": "GPIO 36 has a hardware errata: interrupts may fire spuriously during WiFi/BT light sleep. Use a different pin for interrupt-driven input.",
+    "hint": "GPIO 34, 35 do not have this errata.",
+    "region": [
+      6,
+      9,
+      6,
+      16
+    ]
+  },
+  {
+    "severity": "warning",
+    "category": "HARDWARE NOTE",
+    "message": "GPIO 36: Hardware errata: interrupts on GPIO 36 may fire spuriously during WiFi/BT light sleep.",
+    "hint": null,
+    "region": [
+      6,
+      9,
+      6,
+      16
+    ]
+  }
+]

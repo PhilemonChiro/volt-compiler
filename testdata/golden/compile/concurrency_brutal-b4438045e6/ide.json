@@ -1,0 +1,40 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 1,
+    "col": 1,
+    "message": "Unexpected token Token('MINUS', '-') at line 3, column 16.",
+    "severity": "error",
+    "hint": ""
+   }
+  ],
+  "pins": [],
+  "devices": [],
+  "buses": [],
+  "tasks": [],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": ""
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ]
+ ],
+ "format_code": "chip esp32\nhardware { pin led: Output = 4 }\nchannel q: int[-1]\nevery 1s { led.toggle() }\n",
+ "find_symbols": [],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "",
+  "units": []
+ },
+ "system_graph_expanded": {
+  "mermaid": "",
+  "units": []
+ }
+}

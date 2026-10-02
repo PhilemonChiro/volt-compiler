@@ -1,0 +1,26 @@
+
+[red bold]-- NAME ERROR -- main.volt:3[/red bold]
+
+Unknown name `unknown1`.
+
+ [dim]2 |[/dim] setup {
+ [dim]3 |[/dim]     let x = unknown1
+ [dim]  |[/dim] [red]            ^^^^^^^^[/red]
+
+
+[red bold]-- NAME ERROR -- main.volt:4[/red bold]
+
+Unknown name `unknown2`.
+
+ [dim]3 |[/dim]     let x = unknown1
+ [dim]4 |[/dim]     let y = unknown2
+ [dim]  |[/dim] [red]            ^^^^^^^^[/red]
+
+
+[red bold]-- NAME ERROR -- main.volt:5[/red bold]
+
+Unknown name `unknown3`.
+
+ [dim]4 |[/dim]     let y = unknown2
+ [dim]5 |[/dim]     let z = unknown3
+ [dim]  |[/dim] [red]            ^^^^^^^^[/red]

@@ -1,0 +1,170 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 6,
+    "col": 11,
+    "message": "State `dead` in machine `Bad` has no outgoing transitions (dead-end state).",
+    "severity": "warning",
+    "hint": "Add a transition or mark with @terminal if intentional."
+   }
+  ],
+  "pins": [],
+  "devices": [],
+  "buses": [],
+  "tasks": [],
+  "machines": [
+   {
+    "name": "Bad",
+    "states": [
+     "a",
+     "dead"
+    ],
+    "line": 2
+   }
+  ],
+  "channels": [],
+  "enums": [],
+  "chip": ""
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "machine Bad {\n    initial state a {\n        on x() -> dead\n    }\n\n    state dead {\n    }\n}\n",
+ "find_symbols": [
+  {
+   "name": "Bad",
+   "kind": "machine",
+   "def_line": 2,
+   "def_col": 9,
+   "refs": []
+  },
+  {
+   "name": "a",
+   "kind": "state",
+   "def_line": 3,
+   "def_col": 19,
+   "refs": []
+  },
+  {
+   "name": "dead",
+   "kind": "state",
+   "def_line": 6,
+   "def_col": 11,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": [
+   {
+    "name": "Bad",
+    "mermaid": "stateDiagram-v2\n    [*] --> a\n    a --> dead : x",
+    "states": [
+     {
+      "name": "a",
+      "line": 3
+     },
+     {
+      "name": "dead",
+      "line": 6
+     }
+    ]
+   }
+  ]
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_Bad[[\"Bad\"]]\n    s_x{{\"x\"}}\n    u_Bad -->|x| s_x\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_Bad machine;\n    class s_x service;",
+  "units": [
+   {
+    "id": "u_Bad",
+    "name": "Bad",
+    "line": 2
+   }
+  ],
+  "loops": [],
+  "edges": [
+   {
+    "drive": "machine",
+    "src": "u_Bad",
+    "dst": "s_x"
+   }
+  ],
+  "nodes": {
+   "u_Bad": {
+    "kind": "machine",
+    "label": "Bad",
+    "line": 2,
+    "detail": "2 states"
+   },
+   "s_x": {
+    "kind": "service",
+    "label": "x",
+    "line": null,
+    "detail": "x"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_Bad[[\"Bad\"]]\n    s_x{{\"x\"}}\n    u_Bad -->|x| s_x\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_Bad machine;\n    class s_x service;",
+  "units": [
+   {
+    "id": "u_Bad",
+    "name": "Bad",
+    "line": 2
+   }
+  ],
+  "loops": [],
+  "edges": [
+   {
+    "drive": "machine",
+    "src": "u_Bad",
+    "dst": "s_x"
+   }
+  ],
+  "nodes": {
+   "u_Bad": {
+    "kind": "machine",
+    "label": "Bad",
+    "line": 2,
+    "detail": "2 states"
+   },
+   "s_x": {
+    "kind": "service",
+    "label": "x",
+    "line": null,
+    "detail": "x"
+   }
+  }
+ }
+}

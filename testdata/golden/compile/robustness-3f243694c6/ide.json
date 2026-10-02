@@ -1,0 +1,277 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 2,
+    "col": 6,
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "severity": "warning",
+    "hint": "The chip declaration will move to volt.toml in a future version."
+   }
+  ],
+  "pins": [],
+  "devices": [],
+  "buses": [],
+  "tasks": [],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": "esp32"
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "chip esp32\n\nfunc max(a: int, b: int) -> int {\n    if a > b {\n        return a\n    }\n    return b\n}\n\nfunc min(a: int, b: int) -> int {\n    if a < b {\n        return a\n    }\n    return b\n}\n\nsetup {\n    var big: int = max(10, 20)\n    var small: int = min(10, 20)\n}\n",
+ "find_symbols": [
+  {
+   "name": "max",
+   "kind": "func",
+   "def_line": 3,
+   "def_col": 6,
+   "refs": [
+    {
+     "line": 18,
+     "col": 20
+    }
+   ]
+  },
+  {
+   "name": "a",
+   "kind": "param",
+   "def_line": 10,
+   "def_col": 10,
+   "refs": [
+    {
+     "line": 4,
+     "col": 8
+    },
+    {
+     "line": 5,
+     "col": 16
+    },
+    {
+     "line": 11,
+     "col": 8
+    },
+    {
+     "line": 12,
+     "col": 16
+    }
+   ]
+  },
+  {
+   "name": "b",
+   "kind": "param",
+   "def_line": 10,
+   "def_col": 18,
+   "refs": [
+    {
+     "line": 4,
+     "col": 12
+    },
+    {
+     "line": 7,
+     "col": 12
+    },
+    {
+     "line": 11,
+     "col": 12
+    },
+    {
+     "line": 14,
+     "col": 12
+    }
+   ]
+  },
+  {
+   "name": "min",
+   "kind": "func",
+   "def_line": 10,
+   "def_col": 6,
+   "refs": [
+    {
+     "line": 19,
+     "col": 22
+    }
+   ]
+  },
+  {
+   "name": "big",
+   "kind": "var",
+   "def_line": 18,
+   "def_col": 9,
+   "refs": []
+  },
+  {
+   "name": "small",
+   "kind": "var",
+   "def_line": 19,
+   "def_col": 9,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    f_max(\"max()\")\n    f_min(\"min()\")\n    u_max(\"max()\")\n    u_min(\"min()\")\n    u_setup -->|call| f_max\n    u_setup -->|call| f_min\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class f_max func;\n    class f_min func;\n    class u_max func;\n    class u_min func;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_max",
+    "name": "max()",
+    "line": 3
+   },
+   {
+    "id": "u_min",
+    "name": "min()",
+    "line": 10
+   }
+  ],
+  "loops": [],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "f_max"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "f_min"
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "f_max": {
+    "kind": "func",
+    "label": "max()",
+    "line": 3,
+    "detail": "function"
+   },
+   "f_min": {
+    "kind": "func",
+    "label": "min()",
+    "line": 10,
+    "detail": "function"
+   },
+   "u_max": {
+    "kind": "func",
+    "label": "max()",
+    "line": 3,
+    "detail": "function"
+   },
+   "u_min": {
+    "kind": "func",
+    "label": "min()",
+    "line": 10,
+    "detail": "function"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    f_max(\"max()\")\n    f_min(\"min()\")\n    u_max(\"max()\")\n    u_min(\"min()\")\n    u_setup -->|call| f_max\n    u_setup -->|call| f_min\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class f_max func;\n    class f_min func;\n    class u_max func;\n    class u_min func;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_max",
+    "name": "max()",
+    "line": 3
+   },
+   {
+    "id": "u_min",
+    "name": "min()",
+    "line": 10
+   }
+  ],
+  "loops": [],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "f_max"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "f_min"
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "f_max": {
+    "kind": "func",
+    "label": "max()",
+    "line": 3,
+    "detail": "function"
+   },
+   "f_min": {
+    "kind": "func",
+    "label": "min()",
+    "line": 10,
+    "detail": "function"
+   },
+   "u_max": {
+    "kind": "func",
+    "label": "max()",
+    "line": 3,
+    "detail": "function"
+   },
+   "u_min": {
+    "kind": "func",
+    "label": "min()",
+    "line": 10,
+    "detail": "function"
+   }
+  }
+ }
+}

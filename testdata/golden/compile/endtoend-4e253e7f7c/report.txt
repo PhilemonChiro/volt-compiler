@@ -1,0 +1,10 @@
+
+[red bold]-- HARDWARE ERROR -- non-analog_pin.volt:2[/red bold]
+
+GPIO 21 does not have an ADC channel — cannot be used as Analog.
+
+ [dim]1 |[/dim] hardware {
+ [dim]2 |[/dim]     pin x: Analog = 21
+ [dim]  |[/dim] [red]        ^[/red]
+
+[cyan]Hint: ADC1 (safe with WiFi): GPIO 32-39. ADC2 (blocked by WiFi): GPIO 0, 2, 4, 12-15, 25-27.[/cyan]

@@ -1,0 +1,620 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 1,
+    "col": 6,
+    "message": "Move `chip esp8266` to volt.toml: chip = \"esp8266\"",
+    "severity": "warning",
+    "hint": "The chip declaration will move to volt.toml in a future version."
+   },
+   {
+    "line": 4,
+    "col": 9,
+    "message": "Strapping pin: GPIO 2 must be HIGH at boot. Often connected to onboard LED.",
+    "severity": "warning",
+    "hint": ""
+   }
+  ],
+  "pins": [
+   {
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   },
+   {
+    "name": "relay",
+    "mode": "Output",
+    "gpio": 4
+   },
+   {
+    "name": "buzzer",
+    "mode": "Output",
+    "gpio": 14
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "status_blink",
+    "tier": "background",
+    "line": 34
+   },
+   {
+    "name": "health",
+    "tier": "background",
+    "line": 42
+   }
+  ],
+  "machines": [
+   {
+    "name": "DoorController",
+    "states": [
+     "locked",
+     "unlocked"
+    ],
+    "line": 12
+   }
+  ],
+  "channels": [],
+  "enums": [],
+  "chip": "esp8266"
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "chip esp8266\n\nhardware {\n    pin led: Output = 2\n    pin relay: Output = 4\n    pin buzzer: Output = 14\n}\n\nvar lock_toggles: int = 0\n\nvar blink_count: int = 0\n\ntask status_blink {\n    every 2s {\n        buzzer.toggle()\n        blink_count += 1\n        log(\"status\", \"blink #\" + blink_count + \" | lock_toggles=\" + lock_toggles)\n    }\n}\n\ntask health {\n    every 10s {\n        log(\"health\", \"lock_toggles=\" + lock_toggles + \" blinks=\" + blink_count + \" wifi=\" + wifi.is_connected() + \" heap=\" + system.free_heap())\n    }\n}\n\nmachine DoorController {\n    initial state locked {\n        enter {\n            relay.off()\n            led.off()\n            log(\"door\", \"STATE -> locked\")\n        }\n        on unlock_cmd -> unlocked\n    }\n\n    state unlocked {\n        enter {\n            relay.on()\n            led.on()\n            lock_toggles += 1\n            log(\"door\", \"STATE -> unlocked #\" + lock_toggles + \" | auto-lock in 10s\")\n        }\n        on lock_cmd -> locked\n        after 10s -> locked\n    }\n}\n\nsetup {\n    wifi.connect(\"DoorNet\", \"password\")\n}\n",
+ "find_symbols": [
+  {
+   "name": "led",
+   "kind": "pin",
+   "def_line": 4,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 16,
+     "col": 13
+    },
+    {
+     "line": 25,
+     "col": 13
+    }
+   ]
+  },
+  {
+   "name": "relay",
+   "kind": "pin",
+   "def_line": 5,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 15,
+     "col": 13
+    },
+    {
+     "line": 24,
+     "col": 13
+    }
+   ]
+  },
+  {
+   "name": "buzzer",
+   "kind": "pin",
+   "def_line": 6,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 36,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "status_blink",
+   "kind": "task",
+   "def_line": 34,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "health",
+   "kind": "task",
+   "def_line": 42,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "DoorController",
+   "kind": "machine",
+   "def_line": 12,
+   "def_col": 9,
+   "refs": []
+  },
+  {
+   "name": "locked",
+   "kind": "state",
+   "def_line": 13,
+   "def_col": 19,
+   "refs": []
+  },
+  {
+   "name": "unlocked",
+   "kind": "state",
+   "def_line": 22,
+   "def_col": 11,
+   "refs": []
+  },
+  {
+   "name": "lock_toggles",
+   "kind": "var",
+   "def_line": 9,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 38,
+     "col": 70
+    },
+    {
+     "line": 44,
+     "col": 41
+    },
+    {
+     "line": 26,
+     "col": 13
+    },
+    {
+     "line": 27,
+     "col": 49
+    }
+   ]
+  },
+  {
+   "name": "blink_count",
+   "kind": "var",
+   "def_line": 10,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 37,
+     "col": 9
+    },
+    {
+     "line": 38,
+     "col": 35
+    },
+    {
+     "line": 44,
+     "col": 69
+    }
+   ]
+  }
+ ],
+ "state_diagram": {
+  "machines": [
+   {
+    "name": "DoorController",
+    "mermaid": "stateDiagram-v2\n    [*] --> locked\n    locked --> unlocked : unlock_cmd\n    unlocked --> locked : lock_cmd\n    unlocked --> locked : after 10s",
+    "states": [
+     {
+      "name": "locked",
+      "line": 13
+     },
+     {
+      "name": "unlocked",
+      "line": 22
+     }
+    ]
+   }
+  ]
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_wifi{{\"wifi\"}}\n    v_blink_count(\"blink_count\")\n    s_log{{\"log\"}}\n    v_lock_toggles(\"lock_toggles\")\n    u_DoorController[[\"DoorController\"]]\n    p_relay([\"relay\"])\n    p_led([\"led\"])\n    u_status_blink((\"status_blink<br>↻ 2s\"))\n    u_health((\"health<br>↻ 10s\"))\n    u_setup -->|connect| s_wifi\n    u_status_blink -->|write| v_blink_count\n    u_status_blink -->|log| s_log\n    v_blink_count -.->|read| u_status_blink\n    v_lock_toggles -.->|read| u_status_blink\n    u_health -->|log| s_log\n    v_lock_toggles -.->|read| u_health\n    v_blink_count -.->|read| u_health\n    s_wifi -.->|is_connected| u_health\n    u_DoorController -->|off, on| p_relay\n    u_DoorController -->|off, on| p_led\n    u_DoorController -->|log| s_log\n    u_DoorController -->|write| v_lock_toggles\n    v_lock_toggles -.->|read| u_DoorController\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_wifi service;\n    class u_status_blink timer;\n    class v_blink_count shared;\n    class s_log service;\n    class v_lock_toggles shared;\n    class u_health timer;\n    class u_DoorController machine;\n    class p_relay pin;\n    class p_led pin;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_status_blink",
+    "name": "status_blink<br>↻ 2s",
+    "line": 34
+   },
+   {
+    "id": "u_health",
+    "name": "health<br>↻ 10s",
+    "line": 42
+   },
+   {
+    "id": "u_DoorController",
+    "name": "DoorController",
+    "line": 12
+   }
+  ],
+  "loops": [
+   "u_status_blink",
+   "u_health"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_wifi"
+   },
+   {
+    "drive": "timer",
+    "src": "u_status_blink",
+    "dst": "v_blink_count",
+    "rate_ms": 2000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_status_blink",
+    "dst": "s_log",
+    "rate_ms": 2000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_blink_count",
+    "dst": "u_status_blink",
+    "rate_ms": 2000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_lock_toggles",
+    "dst": "u_status_blink",
+    "rate_ms": 2000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_health",
+    "dst": "s_log",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_lock_toggles",
+    "dst": "u_health",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_blink_count",
+    "dst": "u_health",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "s_wifi",
+    "dst": "u_health",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "machine",
+    "src": "u_DoorController",
+    "dst": "p_relay"
+   },
+   {
+    "drive": "machine",
+    "src": "u_DoorController",
+    "dst": "p_led"
+   },
+   {
+    "drive": "machine",
+    "src": "u_DoorController",
+    "dst": "s_log"
+   },
+   {
+    "drive": "machine",
+    "src": "u_DoorController",
+    "dst": "v_lock_toggles"
+   },
+   {
+    "drive": "machine",
+    "src": "v_lock_toggles",
+    "dst": "u_DoorController"
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_wifi": {
+    "kind": "service",
+    "label": "wifi",
+    "line": null,
+    "detail": "connect, is_connected"
+   },
+   "u_status_blink": {
+    "kind": "timer",
+    "label": "status_blink<br>↻ 2s",
+    "line": 34,
+    "detail": "every 2s"
+   },
+   "p_buzzer": {
+    "kind": "pin",
+    "label": "buzzer",
+    "line": 6,
+    "detail": "Output · GPIO 14"
+   },
+   "v_blink_count": {
+    "kind": "var",
+    "label": "blink_count",
+    "line": 10,
+    "detail": "int"
+   },
+   "s_log": {
+    "kind": "service",
+    "label": "log",
+    "line": null,
+    "detail": "log"
+   },
+   "v_lock_toggles": {
+    "kind": "var",
+    "label": "lock_toggles",
+    "line": 9,
+    "detail": "int"
+   },
+   "u_health": {
+    "kind": "timer",
+    "label": "health<br>↻ 10s",
+    "line": 42,
+    "detail": "every 10s"
+   },
+   "s_system": {
+    "kind": "service",
+    "label": "system",
+    "line": null,
+    "detail": "free_heap"
+   },
+   "u_DoorController": {
+    "kind": "machine",
+    "label": "DoorController",
+    "line": 12,
+    "detail": "2 states"
+   },
+   "p_relay": {
+    "kind": "pin",
+    "label": "relay",
+    "line": 5,
+    "detail": "Output · GPIO 4"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 4,
+    "detail": "Output · GPIO 2"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_wifi{{\"wifi\"}}\n    p_buzzer([\"buzzer\"])\n    v_blink_count(\"blink_count\")\n    s_log{{\"log\"}}\n    v_lock_toggles(\"lock_toggles\")\n    s_system{{\"system\"}}\n    u_DoorController[[\"DoorController\"]]\n    p_relay([\"relay\"])\n    p_led([\"led\"])\n    u_status_blink((\"status_blink<br>↻ 2s\"))\n    u_health((\"health<br>↻ 10s\"))\n    u_setup -->|connect| s_wifi\n    u_status_blink -->|toggle| p_buzzer\n    u_status_blink -->|write| v_blink_count\n    u_status_blink -->|log| s_log\n    v_blink_count -.->|read| u_status_blink\n    v_lock_toggles -.->|read| u_status_blink\n    u_health -->|log| s_log\n    v_lock_toggles -.->|read| u_health\n    v_blink_count -.->|read| u_health\n    s_wifi -.->|is_connected| u_health\n    u_health -->|free_heap| s_system\n    u_DoorController -->|off, on| p_relay\n    u_DoorController -->|off, on| p_led\n    u_DoorController -->|log| s_log\n    u_DoorController -->|write| v_lock_toggles\n    v_lock_toggles -.->|read| u_DoorController\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_wifi service;\n    class u_status_blink timer;\n    class p_buzzer pin;\n    class v_blink_count shared;\n    class s_log service;\n    class v_lock_toggles shared;\n    class u_health timer;\n    class s_system service;\n    class u_DoorController machine;\n    class p_relay pin;\n    class p_led pin;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_status_blink",
+    "name": "status_blink<br>↻ 2s",
+    "line": 34
+   },
+   {
+    "id": "u_health",
+    "name": "health<br>↻ 10s",
+    "line": 42
+   },
+   {
+    "id": "u_DoorController",
+    "name": "DoorController",
+    "line": 12
+   }
+  ],
+  "loops": [
+   "u_status_blink",
+   "u_health"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_wifi"
+   },
+   {
+    "drive": "timer",
+    "src": "u_status_blink",
+    "dst": "p_buzzer",
+    "rate_ms": 2000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_status_blink",
+    "dst": "v_blink_count",
+    "rate_ms": 2000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_status_blink",
+    "dst": "s_log",
+    "rate_ms": 2000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_blink_count",
+    "dst": "u_status_blink",
+    "rate_ms": 2000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_lock_toggles",
+    "dst": "u_status_blink",
+    "rate_ms": 2000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_health",
+    "dst": "s_log",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_lock_toggles",
+    "dst": "u_health",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_blink_count",
+    "dst": "u_health",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "s_wifi",
+    "dst": "u_health",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_health",
+    "dst": "s_system",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "machine",
+    "src": "u_DoorController",
+    "dst": "p_relay"
+   },
+   {
+    "drive": "machine",
+    "src": "u_DoorController",
+    "dst": "p_led"
+   },
+   {
+    "drive": "machine",
+    "src": "u_DoorController",
+    "dst": "s_log"
+   },
+   {
+    "drive": "machine",
+    "src": "u_DoorController",
+    "dst": "v_lock_toggles"
+   },
+   {
+    "drive": "machine",
+    "src": "v_lock_toggles",
+    "dst": "u_DoorController"
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_wifi": {
+    "kind": "service",
+    "label": "wifi",
+    "line": null,
+    "detail": "connect, is_connected"
+   },
+   "u_status_blink": {
+    "kind": "timer",
+    "label": "status_blink<br>↻ 2s",
+    "line": 34,
+    "detail": "every 2s"
+   },
+   "p_buzzer": {
+    "kind": "pin",
+    "label": "buzzer",
+    "line": 6,
+    "detail": "Output · GPIO 14"
+   },
+   "v_blink_count": {
+    "kind": "var",
+    "label": "blink_count",
+    "line": 10,
+    "detail": "int"
+   },
+   "s_log": {
+    "kind": "service",
+    "label": "log",
+    "line": null,
+    "detail": "log"
+   },
+   "v_lock_toggles": {
+    "kind": "var",
+    "label": "lock_toggles",
+    "line": 9,
+    "detail": "int"
+   },
+   "u_health": {
+    "kind": "timer",
+    "label": "health<br>↻ 10s",
+    "line": 42,
+    "detail": "every 10s"
+   },
+   "s_system": {
+    "kind": "service",
+    "label": "system",
+    "line": null,
+    "detail": "free_heap"
+   },
+   "u_DoorController": {
+    "kind": "machine",
+    "label": "DoorController",
+    "line": 12,
+    "detail": "2 states"
+   },
+   "p_relay": {
+    "kind": "pin",
+    "label": "relay",
+    "line": 5,
+    "detail": "Output · GPIO 4"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 4,
+    "detail": "Output · GPIO 2"
+   }
+  }
+ }
+}

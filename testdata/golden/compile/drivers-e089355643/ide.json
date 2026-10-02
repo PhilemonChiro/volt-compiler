@@ -1,0 +1,227 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 2,
+    "col": 6,
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "severity": "warning",
+    "hint": "The chip declaration will move to volt.toml in a future version."
+   },
+   {
+    "line": 5,
+    "col": 9,
+    "message": "Strapping pin: GPIO 15 controls boot log output. If pulled LOW, boot messages are suppressed (usually harmless).",
+    "severity": "warning",
+    "hint": ""
+   }
+  ],
+  "pins": [
+   {
+    "name": "pad1",
+    "mode": "Touch",
+    "gpio": 4
+   },
+   {
+    "name": "pad2",
+    "mode": "Touch",
+    "gpio": 15
+   },
+   {
+    "name": "pad3",
+    "mode": "Touch",
+    "gpio": 27
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "sense",
+    "tier": "background",
+    "line": 8
+   }
+  ],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": "esp32"
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "chip esp32\n\nhardware {\n    pin pad1: Touch = 4\n    pin pad2: Touch = 15\n    pin pad3: Touch = 27\n}\n\ntask sense {\n    every 50ms {\n        if pad1.is_touched() {\n            log(\"touch\", \"pad1\")\n        }\n        if pad2.is_touched() {\n            log(\"touch\", \"pad2\")\n        }\n    }\n}\n",
+ "find_symbols": [
+  {
+   "name": "pad1",
+   "kind": "pin",
+   "def_line": 4,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 10,
+     "col": 12
+    }
+   ]
+  },
+  {
+   "name": "pad2",
+   "kind": "pin",
+   "def_line": 5,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 13,
+     "col": 12
+    }
+   ]
+  },
+  {
+   "name": "pad3",
+   "kind": "pin",
+   "def_line": 6,
+   "def_col": 9,
+   "refs": []
+  },
+  {
+   "name": "sense",
+   "kind": "task",
+   "def_line": 8,
+   "def_col": 6,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_sense((\"sense<br>↻ 50ms\"))\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_sense timer;",
+  "units": [
+   {
+    "id": "u_sense",
+    "name": "sense<br>↻ 50ms",
+    "line": 8
+   }
+  ],
+  "loops": [
+   "u_sense"
+  ],
+  "edges": [],
+  "nodes": {
+   "u_sense": {
+    "kind": "timer",
+    "label": "sense<br>↻ 50ms",
+    "line": 8,
+    "detail": "every 50ms"
+   },
+   "p_pad1": {
+    "kind": "pin",
+    "label": "pad1",
+    "line": 4,
+    "detail": "Touch · GPIO 4"
+   },
+   "s_log": {
+    "kind": "service",
+    "label": "log",
+    "line": null,
+    "detail": "log"
+   },
+   "p_pad2": {
+    "kind": "pin",
+    "label": "pad2",
+    "line": 5,
+    "detail": "Touch · GPIO 15"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    p_pad1([\"pad1\"])\n    s_log{{\"log\"}}\n    p_pad2([\"pad2\"])\n    u_sense((\"sense<br>↻ 50ms\"))\n    p_pad1 -.->|is_touched| u_sense\n    u_sense -->|log| s_log\n    p_pad2 -.->|is_touched| u_sense\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_sense timer;\n    class p_pad1 pin;\n    class s_log service;\n    class p_pad2 pin;",
+  "units": [
+   {
+    "id": "u_sense",
+    "name": "sense<br>↻ 50ms",
+    "line": 8
+   }
+  ],
+  "loops": [
+   "u_sense"
+  ],
+  "edges": [
+   {
+    "drive": "timer",
+    "src": "p_pad1",
+    "dst": "u_sense",
+    "rate_ms": 50.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_sense",
+    "dst": "s_log",
+    "rate_ms": 50.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_pad2",
+    "dst": "u_sense",
+    "rate_ms": 50.0
+   }
+  ],
+  "nodes": {
+   "u_sense": {
+    "kind": "timer",
+    "label": "sense<br>↻ 50ms",
+    "line": 8,
+    "detail": "every 50ms"
+   },
+   "p_pad1": {
+    "kind": "pin",
+    "label": "pad1",
+    "line": 4,
+    "detail": "Touch · GPIO 4"
+   },
+   "s_log": {
+    "kind": "service",
+    "label": "log",
+    "line": null,
+    "detail": "log"
+   },
+   "p_pad2": {
+    "kind": "pin",
+    "label": "pad2",
+    "line": 5,
+    "detail": "Touch · GPIO 15"
+   }
+  }
+ }
+}

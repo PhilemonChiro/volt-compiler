@@ -1,0 +1,102 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [5, 9, 5, 12],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [5, 9, 5, 12],
+    "name": "arm",
+    "mode": "Servo",
+    "gpio": 5
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "ForStmt",
+    "region": [9, 9, 9, 10],
+    "var_name": "i",
+    "start": {
+     "_": "IntLiteral",
+     "region": [9, 14, 9, 15],
+     "value": 0
+    },
+    "end": {
+     "_": "IntLiteral",
+     "region": [9, 17, 9, 20],
+     "value": 180
+    },
+    "body": [
+     {
+      "_": "ExprStmt",
+      "region": [0, 0, 0, 0],
+      "expr": {
+       "_": "MethodCall",
+       "region": [10, 9, 10, 12],
+       "obj": {
+        "_": "VarRef",
+        "region": [10, 9, 10, 12],
+        "name": "arm"
+       },
+       "method": "move",
+       "args": [
+        {
+         "_": "VarRef",
+         "region": [10, 18, 10, 19],
+         "name": "i"
+        }
+       ]
+      }
+     },
+     {
+      "_": "ExprStmt",
+      "region": [0, 0, 0, 0],
+      "expr": {
+       "_": "FuncCall",
+       "region": [11, 9, 11, 14],
+       "name": "sleep",
+       "args": [
+        {
+         "_": "DurationLiteral",
+         "region": [11, 15, 11, 20],
+         "microseconds": 100000,
+         "original": "100ms"
+        }
+       ]
+      }
+     }
+    ],
+    "step": {
+     "_": "IntLiteral",
+     "region": [9, 26, 9, 28],
+     "value": 10
+    }
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

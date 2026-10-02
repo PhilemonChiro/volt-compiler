@@ -1,0 +1,141 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [3, 9, 3, 12],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [3, 9, 3, 12],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [
+  {
+   "_": "MachineDecl",
+   "region": [5, 9, 5, 16],
+   "name": "Blinker",
+   "states": [
+    {
+     "_": "StateDecl",
+     "region": [6, 19, 6, 22],
+     "name": "off",
+     "is_initial": true,
+     "enter_body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [8, 13, 8, 16],
+        "obj": {
+         "_": "VarRef",
+         "region": [8, 13, 8, 16],
+         "name": "led"
+        },
+        "method": "off",
+        "args": []
+       }
+      }
+     ],
+     "exit_body": [],
+     "transitions": [
+      {
+       "_": "StateTransition",
+       "region": [10, 12, 10, 20],
+       "event": {
+        "_": "FuncCall",
+        "region": [10, 12, 10, 20],
+        "name": "activate",
+        "args": []
+       },
+       "target_state": "on",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "timed_transitions": [],
+     "body": []
+    },
+    {
+     "_": "StateDecl",
+     "region": [12, 11, 12, 13],
+     "name": "on",
+     "is_initial": false,
+     "enter_body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [14, 13, 14, 16],
+        "obj": {
+         "_": "VarRef",
+         "region": [14, 13, 14, 16],
+         "name": "led"
+        },
+        "method": "on",
+        "args": []
+       }
+      }
+     ],
+     "exit_body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [17, 13, 17, 16],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [17, 17, 17, 35],
+          "value": "leaving on state"
+         }
+        ]
+       }
+      }
+     ],
+     "transitions": [
+      {
+       "_": "StateTransition",
+       "region": [19, 12, 19, 22],
+       "event": {
+        "_": "FuncCall",
+        "region": [19, 12, 19, 22],
+        "name": "deactivate",
+        "args": []
+       },
+       "target_state": "off",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "timed_transitions": [],
+     "body": []
+    }
+   ],
+   "variables": []
+  }
+ ],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

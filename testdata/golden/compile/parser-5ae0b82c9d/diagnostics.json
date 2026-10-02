@@ -1,0 +1,26 @@
+[
+  {
+    "severity": "error",
+    "category": "NAME ERROR",
+    "message": "Unknown name `led`.",
+    "hint": "Did you mean `ble`?",
+    "region": [
+      3,
+      5,
+      3,
+      8
+    ]
+  },
+  {
+    "severity": "error",
+    "category": "NAME ERROR",
+    "message": "Unknown name `a`.",
+    "hint": "Did you mean `ota`?",
+    "region": [
+      5,
+      5,
+      5,
+      6
+    ]
+  }
+]

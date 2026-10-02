@@ -1,0 +1,2 @@
+
+storage count: int = "hello"

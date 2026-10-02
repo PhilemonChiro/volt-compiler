@@ -1,0 +1,208 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [3, 6, 3, 10],
+   "name": "deep",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [4, 11, 4, 16],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [4, 11, 4, 16],
+      "microseconds": 100000,
+      "original": "100ms"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "IfStmt",
+       "region": [5, 12, 5, 17],
+       "condition": {
+        "_": "BinaryExpr",
+        "region": [5, 12, 5, 17],
+        "left": {
+         "_": "VarRef",
+         "region": [5, 12, 5, 17],
+         "name": "depth"
+        },
+        "op": ">",
+        "right": {
+         "_": "IntLiteral",
+         "region": [5, 20, 5, 21],
+         "value": 0
+        },
+        "result_type": null
+       },
+       "then_body": [
+        {
+         "_": "WhileStmt",
+         "region": [6, 19, 6, 24],
+         "condition": {
+          "_": "BinaryExpr",
+          "region": [6, 19, 6, 24],
+          "left": {
+           "_": "VarRef",
+           "region": [6, 19, 6, 24],
+           "name": "depth"
+          },
+          "op": ">",
+          "right": {
+           "_": "IntLiteral",
+           "region": [6, 27, 6, 28],
+           "value": 0
+          },
+          "result_type": null
+         },
+         "body": [
+          {
+           "_": "AssignExpr",
+           "region": [7, 17, 7, 22],
+           "target": {
+            "_": "VarRef",
+            "region": [7, 17, 7, 22],
+            "name": "depth"
+           },
+           "value": {
+            "_": "BinaryExpr",
+            "region": [7, 25, 7, 30],
+            "left": {
+             "_": "VarRef",
+             "region": [7, 25, 7, 30],
+             "name": "depth"
+            },
+            "op": "-",
+            "right": {
+             "_": "IntLiteral",
+             "region": [7, 33, 7, 34],
+             "value": 1
+            },
+            "result_type": null
+           }
+          }
+         ]
+        }
+       ],
+       "else_body": null
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  },
+  {
+   "_": "TaskDecl",
+   "region": [12, 6, 12, 9],
+   "name": "isr",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [13, 11, 13, 14],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [13, 11, 13, 14],
+      "microseconds": 1000,
+      "original": "1ms"
+     },
+     "strict": true,
+     "guard": null,
+     "body": [
+      {
+       "_": "AssignExpr",
+       "region": [14, 9, 14, 14],
+       "target": {
+        "_": "VarRef",
+        "region": [14, 9, 14, 14],
+        "name": "depth"
+       },
+       "value": {
+        "_": "BinaryExpr",
+        "region": [14, 17, 14, 22],
+        "left": {
+         "_": "VarRef",
+         "region": [14, 17, 14, 22],
+         "name": "depth"
+        },
+        "op": "+",
+        "right": {
+         "_": "IntLiteral",
+         "region": [14, 25, 14, 26],
+         "value": 1
+        },
+        "result_type": null
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [
+  {
+   "_": "VarDecl",
+   "region": [2, 5, 2, 10],
+   "name": "depth",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [2, 18, 2, 19],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  }
+ ],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "FuncCall",
+     "region": [18, 5, 18, 8],
+     "name": "run",
+     "args": [
+      {
+       "_": "VarRef",
+       "region": [18, 9, 18, 13],
+       "name": "deep"
+      },
+      {
+       "_": "VarRef",
+       "region": [18, 15, 18, 18],
+       "name": "isr"
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

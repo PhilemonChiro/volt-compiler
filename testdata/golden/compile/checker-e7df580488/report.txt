@@ -1,0 +1,10 @@
+
+[red bold]-- TYPE MISMATCH -- main.volt:3[/red bold]
+
+Cannot use `-` between `string` and `int`.
+
+ [dim]2 |[/dim] setup {
+ [dim]3 |[/dim]     let x = "hello" - 5
+ [dim]  |[/dim] [red]            ^^^^^^^[/red]
+
+[cyan]Hint: Convert to string with string interpolation: "{value}".[/cyan]

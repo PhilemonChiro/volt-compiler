@@ -1,0 +1,152 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [3, 6, 3, 8],
+   "name": "bg",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [4, 11, 4, 16],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [4, 11, 4, 16],
+      "microseconds": 500000,
+      "original": "500ms"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "AssignExpr",
+       "region": [5, 9, 5, 10],
+       "target": {
+        "_": "VarRef",
+        "region": [5, 9, 5, 10],
+        "name": "x"
+       },
+       "value": {
+        "_": "BinaryExpr",
+        "region": [5, 13, 5, 14],
+        "left": {
+         "_": "VarRef",
+         "region": [5, 13, 5, 14],
+         "name": "x"
+        },
+        "op": "+",
+        "right": {
+         "_": "IntLiteral",
+         "region": [5, 17, 5, 18],
+         "value": 1
+        },
+        "result_type": "int"
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  },
+  {
+   "_": "TaskDecl",
+   "region": [8, 6, 8, 9],
+   "name": "isr",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [9, 11, 9, 14],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [9, 11, 9, 14],
+      "microseconds": 1000,
+      "original": "1ms"
+     },
+     "strict": true,
+     "guard": null,
+     "body": [
+      {
+       "_": "AssignExpr",
+       "region": [10, 9, 10, 10],
+       "target": {
+        "_": "VarRef",
+        "region": [10, 9, 10, 10],
+        "name": "x"
+       },
+       "value": {
+        "_": "IntLiteral",
+        "region": [10, 13, 10, 14],
+        "value": 0
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "critical",
+   "crossing_vars": [],
+   "has_strict": true,
+   "_annotations": []
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [
+  {
+   "_": "VarDecl",
+   "region": [2, 5, 2, 6],
+   "name": "x",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [2, 14, 2, 15],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  }
+ ],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "FuncCall",
+     "region": [14, 5, 14, 8],
+     "name": "run",
+     "args": [
+      {
+       "_": "VarRef",
+       "region": [14, 9, 14, 11],
+       "name": "bg"
+      },
+      {
+       "_": "VarRef",
+       "region": [14, 13, 14, 16],
+       "name": "isr"
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

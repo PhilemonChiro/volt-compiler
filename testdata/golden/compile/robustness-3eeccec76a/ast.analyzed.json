@@ -1,0 +1,167 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [4, 9, 5, 13],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [4, 9, 4, 12],
+    "name": "arm",
+    "mode": "Servo",
+    "gpio": 13
+   },
+   {
+    "_": "PinDecl",
+    "region": [5, 9, 5, 13],
+    "name": "base",
+    "mode": "Servo",
+    "gpio": 14
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [8, 6, 8, 10],
+   "name": "wave",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [9, 11, 9, 13],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [9, 11, 9, 13],
+      "microseconds": 3000000,
+      "original": "3s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [10, 9, 10, 12],
+        "obj": {
+         "_": "VarRef",
+         "region": [10, 9, 10, 12],
+         "name": "arm"
+        },
+        "method": "ease_to_with",
+        "args": [
+         {
+          "_": "IntLiteral",
+          "region": [10, 26, 10, 27],
+          "value": 0
+         },
+         {
+          "_": "DurationLiteral",
+          "region": [10, 29, 10, 31],
+          "microseconds": 1000000,
+          "original": "1s"
+         },
+         {
+          "_": "VarRef",
+          "region": [10, 33, 10, 41],
+          "name": "ease_out"
+         }
+        ]
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [11, 9, 11, 12],
+        "obj": {
+         "_": "VarRef",
+         "region": [11, 9, 11, 12],
+         "name": "arm"
+        },
+        "method": "ease_to_with",
+        "args": [
+         {
+          "_": "IntLiteral",
+          "region": [11, 26, 11, 29],
+          "value": 180
+         },
+         {
+          "_": "DurationLiteral",
+          "region": [11, 31, 11, 33],
+          "microseconds": 1000000,
+          "original": "1s"
+         },
+         {
+          "_": "VarRef",
+          "region": [11, 35, 11, 42],
+          "name": "ease_in"
+         }
+        ]
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [12, 9, 12, 13],
+        "obj": {
+         "_": "VarRef",
+         "region": [12, 9, 12, 13],
+         "name": "base"
+        },
+        "method": "sweep",
+        "args": [
+         {
+          "_": "IntLiteral",
+          "region": [12, 20, 12, 21],
+          "value": 0
+         },
+         {
+          "_": "IntLiteral",
+          "region": [12, 23, 12, 25],
+          "value": 90
+         },
+         {
+          "_": "DurationLiteral",
+          "region": [12, 27, 12, 29],
+          "microseconds": 2000000,
+          "original": "2s"
+         }
+        ]
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

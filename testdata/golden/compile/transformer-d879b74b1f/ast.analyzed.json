@@ -1,0 +1,146 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [3, 16, 3, 19],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [3, 16, 3, 19],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [4, 6, 4, 12],
+   "name": "worker",
+   "body": [
+    {
+     "_": "VarDecl",
+     "region": [5, 9, 5, 13],
+     "name": "flag",
+     "type_name": "bool",
+     "value": {
+      "_": "BoolLiteral",
+      "region": [0, 0, 0, 0],
+      "value": true
+     },
+     "mutable": true,
+     "shared": false,
+     "needs_lifting": false
+    },
+    {
+     "_": "IfStmt",
+     "region": [6, 8, 6, 12],
+     "condition": {
+      "_": "VarRef",
+      "region": [6, 8, 6, 12],
+      "name": "flag"
+     },
+     "then_body": [
+      {
+       "_": "VarDecl",
+       "region": [7, 13, 7, 19],
+       "name": "nested",
+       "type_name": "int",
+       "value": {
+        "_": "IntLiteral",
+        "region": [7, 27, 7, 28],
+        "value": 0
+       },
+       "mutable": true,
+       "shared": false,
+       "needs_lifting": true
+      },
+      {
+       "_": "EveryBlock",
+       "region": [8, 15, 8, 17],
+       "interval": {
+        "_": "DurationLiteral",
+        "region": [8, 15, 8, 17],
+        "microseconds": 1000000,
+        "original": "1s"
+       },
+       "strict": false,
+       "guard": null,
+       "body": [
+        {
+         "_": "AssignExpr",
+         "region": [9, 13, 9, 19],
+         "target": {
+          "_": "VarRef",
+          "region": [9, 13, 9, 19],
+          "name": "nested"
+         },
+         "value": {
+          "_": "BinaryExpr",
+          "region": [9, 22, 9, 28],
+          "left": {
+           "_": "VarRef",
+           "region": [9, 22, 9, 28],
+           "name": "nested"
+          },
+          "op": "+",
+          "right": {
+           "_": "IntLiteral",
+           "region": [9, 31, 9, 32],
+           "value": 1
+          },
+          "result_type": "int"
+         }
+        },
+        {
+         "_": "ExprStmt",
+         "region": [0, 0, 0, 0],
+         "expr": {
+          "_": "MethodCall",
+          "region": [10, 13, 10, 16],
+          "obj": {
+           "_": "VarRef",
+           "region": [10, 13, 10, 16],
+           "name": "led"
+          },
+          "method": "toggle",
+          "args": []
+         }
+        }
+       ],
+       "yield_label": 0
+      }
+     ],
+     "else_body": null
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [
+    "nested"
+   ],
+   "has_strict": false,
+   "_annotations": []
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

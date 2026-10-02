@@ -1,0 +1,244 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [11, 6, 11, 10],
+   "name": "main",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [12, 11, 12, 13],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [12, 11, 12, 13],
+      "microseconds": 5000000,
+      "original": "5s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [13, 9, 13, 15],
+        "obj": {
+         "_": "VarRef",
+         "region": [13, 9, 13, 15],
+         "name": "system"
+        },
+        "method": "watchdog_feed",
+        "args": []
+       }
+      },
+      {
+       "_": "IfStmt",
+       "region": [14, 12, 14, 15],
+       "condition": {
+        "_": "MethodCall",
+        "region": [14, 12, 14, 15],
+        "obj": {
+         "_": "VarRef",
+         "region": [14, 12, 14, 15],
+         "name": "ble"
+        },
+        "method": "is_connected",
+        "args": []
+       },
+       "then_body": [
+        {
+         "_": "ExprStmt",
+         "region": [0, 0, 0, 0],
+         "expr": {
+          "_": "MethodCall",
+          "region": [15, 13, 15, 16],
+          "obj": {
+           "_": "VarRef",
+           "region": [15, 13, 15, 16],
+           "name": "ble"
+          },
+          "method": "update_int",
+          "args": [
+           {
+            "_": "IntLiteral",
+            "region": [15, 28, 15, 29],
+            "value": 0
+           },
+           {
+            "_": "VarRef",
+            "region": [15, 31, 15, 36],
+            "name": "count"
+           }
+          ]
+         }
+        }
+       ],
+       "else_body": null
+      }
+     ],
+     "yield_label": 1
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false
+  }
+ ],
+ "machines": [],
+ "storage_vars": [
+  {
+   "_": "StorageDecl",
+   "region": [3, 9, 3, 14],
+   "name": "count",
+   "type_name": "int",
+   "default_value": {
+    "_": "IntLiteral",
+    "region": [3, 22, 3, 23],
+    "value": 0
+   }
+  }
+ ],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "AssignExpr",
+    "region": [5, 5, 5, 10],
+    "target": {
+     "_": "VarRef",
+     "region": [5, 5, 5, 10],
+     "name": "count"
+    },
+    "value": {
+     "_": "BinaryExpr",
+     "region": [5, 13, 5, 18],
+     "left": {
+      "_": "VarRef",
+      "region": [5, 13, 5, 18],
+      "name": "count"
+     },
+     "op": "+",
+     "right": {
+      "_": "IntLiteral",
+      "region": [5, 21, 5, 22],
+      "value": 1
+     },
+     "result_type": "int"
+    }
+   },
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "MethodCall",
+     "region": [6, 5, 6, 12],
+     "obj": {
+      "_": "VarRef",
+      "region": [6, 5, 6, 12],
+      "name": "storage"
+     },
+     "method": "save",
+     "args": [
+      {
+       "_": "StringLiteral",
+       "region": [6, 18, 6, 25],
+       "value": "count"
+      },
+      {
+       "_": "VarRef",
+       "region": [6, 27, 6, 32],
+       "name": "count"
+      }
+     ]
+    }
+   },
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "MethodCall",
+     "region": [7, 5, 7, 11],
+     "obj": {
+      "_": "VarRef",
+      "region": [7, 5, 7, 11],
+      "name": "system"
+     },
+     "method": "watchdog_enable",
+     "args": [
+      {
+       "_": "IntLiteral",
+       "region": [7, 28, 7, 33],
+       "value": 10000
+      }
+     ]
+    }
+   },
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "MethodCall",
+     "region": [8, 5, 8, 8],
+     "obj": {
+      "_": "VarRef",
+      "region": [8, 5, 8, 8],
+      "name": "ble"
+     },
+     "method": "advertise",
+     "args": [
+      {
+       "_": "StringLiteral",
+       "region": [8, 19, 8, 25],
+       "value": "Volt"
+      }
+     ]
+    }
+   },
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "MethodCall",
+     "region": [9, 5, 9, 9],
+     "obj": {
+      "_": "VarRef",
+      "region": [9, 5, 9, 9],
+      "name": "wifi"
+     },
+     "method": "connect",
+     "args": [
+      {
+       "_": "StringLiteral",
+       "region": [9, 18, 9, 24],
+       "value": "ssid"
+      },
+      {
+       "_": "StringLiteral",
+       "region": [9, 26, 9, 32],
+       "value": "pass"
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

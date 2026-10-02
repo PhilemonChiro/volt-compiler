@@ -1,0 +1,337 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 2,
+    "col": 6,
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "severity": "warning",
+    "hint": "The chip declaration will move to volt.toml in a future version."
+   },
+   {
+    "line": 4,
+    "col": 9,
+    "message": "Strapping pin: GPIO 2 must be LOW during boot for flash programming.",
+    "severity": "warning",
+    "hint": ""
+   }
+  ],
+  "pins": [
+   {
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "sampler",
+    "tier": "background",
+    "line": 10
+   },
+   {
+    "name": "processor",
+    "tier": "background",
+    "line": 17
+   },
+   {
+    "name": "monitor",
+    "tier": "background",
+    "line": 28
+   }
+  ],
+  "machines": [],
+  "channels": [
+   {
+    "name": "readings",
+    "elem_type": "int",
+    "capacity": 16
+   }
+  ],
+  "enums": [],
+  "chip": "esp32"
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n}\n\nchannel readings: int[16]\n\nshared var sample_count: int = 0\n\ntask sampler {\n    every 100ms {\n        readings.send(42)\n        sample_count += 1\n    }\n}\n\ntask processor {\n    every 50ms {\n        if readings.has_data() {\n            var val: int = readings.receive()\n            if val > 40 {\n                led.on()\n            }\n        }\n    }\n}\n\ntask monitor {\n    every 5s { log(\"stats\", \"samples={sample_count}\") }\n}\n",
+ "find_symbols": [
+  {
+   "name": "led",
+   "kind": "pin",
+   "def_line": 4,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 22,
+     "col": 17
+    }
+   ]
+  },
+  {
+   "name": "sampler",
+   "kind": "task",
+   "def_line": 10,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "processor",
+   "kind": "task",
+   "def_line": 17,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "monitor",
+   "kind": "task",
+   "def_line": 28,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "sample_count",
+   "kind": "var",
+   "def_line": 7,
+   "def_col": 12,
+   "refs": [
+    {
+     "line": 13,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "val",
+   "kind": "var",
+   "def_line": 20,
+   "def_col": 17,
+   "refs": [
+    {
+     "line": 21,
+     "col": 16
+    }
+   ]
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    c_readings[/\"readings\"/]\n    u_sampler((\"sampler<br>↻ 100ms\"))\n    u_processor((\"processor<br>↻ 50ms\"))\n    u_monitor((\"monitor<br>↻ 5s\"))\n    u_sampler -->|send| c_readings\n    c_readings -.->|has_data, receive| u_processor\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_sampler timer;\n    class c_readings shared;\n    class u_processor timer;\n    class u_monitor timer;",
+  "units": [
+   {
+    "id": "u_sampler",
+    "name": "sampler<br>↻ 100ms",
+    "line": 10
+   },
+   {
+    "id": "u_processor",
+    "name": "processor<br>↻ 50ms",
+    "line": 17
+   },
+   {
+    "id": "u_monitor",
+    "name": "monitor<br>↻ 5s",
+    "line": 28
+   }
+  ],
+  "loops": [
+   "u_sampler",
+   "u_processor",
+   "u_monitor"
+  ],
+  "edges": [
+   {
+    "drive": "timer",
+    "src": "u_sampler",
+    "dst": "c_readings",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "c_readings",
+    "dst": "u_processor",
+    "rate_ms": 50.0
+   }
+  ],
+  "nodes": {
+   "u_sampler": {
+    "kind": "timer",
+    "label": "sampler<br>↻ 100ms",
+    "line": 10,
+    "detail": "every 100ms"
+   },
+   "c_readings": {
+    "kind": "channel",
+    "label": "readings",
+    "line": 8,
+    "detail": "int[16]"
+   },
+   "v_sample_count": {
+    "kind": "var",
+    "label": "sample_count",
+    "line": 7,
+    "detail": "shared int"
+   },
+   "u_processor": {
+    "kind": "timer",
+    "label": "processor<br>↻ 50ms",
+    "line": 17,
+    "detail": "every 50ms"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 4,
+    "detail": "Output · GPIO 2"
+   },
+   "u_monitor": {
+    "kind": "timer",
+    "label": "monitor<br>↻ 5s",
+    "line": 28,
+    "detail": "every 5s"
+   },
+   "s_log": {
+    "kind": "service",
+    "label": "log",
+    "line": null,
+    "detail": "log"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    c_readings[/\"readings\"/]\n    v_sample_count(\"sample_count\")\n    p_led([\"led\"])\n    s_log{{\"log\"}}\n    u_sampler((\"sampler<br>↻ 100ms\"))\n    u_processor((\"processor<br>↻ 50ms\"))\n    u_monitor((\"monitor<br>↻ 5s\"))\n    u_sampler -->|send| c_readings\n    u_sampler -->|write| v_sample_count\n    c_readings -.->|has_data, receive| u_processor\n    u_processor -->|on| p_led\n    u_monitor -->|log| s_log\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_sampler timer;\n    class c_readings shared;\n    class v_sample_count var;\n    class u_processor timer;\n    class p_led pin;\n    class u_monitor timer;\n    class s_log service;",
+  "units": [
+   {
+    "id": "u_sampler",
+    "name": "sampler<br>↻ 100ms",
+    "line": 10
+   },
+   {
+    "id": "u_processor",
+    "name": "processor<br>↻ 50ms",
+    "line": 17
+   },
+   {
+    "id": "u_monitor",
+    "name": "monitor<br>↻ 5s",
+    "line": 28
+   }
+  ],
+  "loops": [
+   "u_sampler",
+   "u_processor",
+   "u_monitor"
+  ],
+  "edges": [
+   {
+    "drive": "timer",
+    "src": "u_sampler",
+    "dst": "c_readings",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_sampler",
+    "dst": "v_sample_count",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "c_readings",
+    "dst": "u_processor",
+    "rate_ms": 50.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_processor",
+    "dst": "p_led",
+    "rate_ms": 50.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_monitor",
+    "dst": "s_log",
+    "rate_ms": 5000.0
+   }
+  ],
+  "nodes": {
+   "u_sampler": {
+    "kind": "timer",
+    "label": "sampler<br>↻ 100ms",
+    "line": 10,
+    "detail": "every 100ms"
+   },
+   "c_readings": {
+    "kind": "channel",
+    "label": "readings",
+    "line": 8,
+    "detail": "int[16]"
+   },
+   "v_sample_count": {
+    "kind": "var",
+    "label": "sample_count",
+    "line": 7,
+    "detail": "shared int"
+   },
+   "u_processor": {
+    "kind": "timer",
+    "label": "processor<br>↻ 50ms",
+    "line": 17,
+    "detail": "every 50ms"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 4,
+    "detail": "Output · GPIO 2"
+   },
+   "u_monitor": {
+    "kind": "timer",
+    "label": "monitor<br>↻ 5s",
+    "line": 28,
+    "detail": "every 5s"
+   },
+   "s_log": {
+    "kind": "service",
+    "label": "log",
+    "line": null,
+    "detail": "log"
+   }
+  }
+ }
+}

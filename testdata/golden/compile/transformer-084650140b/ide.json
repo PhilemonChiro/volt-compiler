@@ -1,0 +1,246 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 2,
+    "col": 6,
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "severity": "warning",
+    "hint": "The chip declaration will move to volt.toml in a future version."
+   },
+   {
+    "line": 4,
+    "col": 9,
+    "message": "Strapping pin: GPIO 2 must be LOW during boot for flash programming.",
+    "severity": "warning",
+    "hint": ""
+   },
+   {
+    "line": 6,
+    "col": 9,
+    "message": "Strapping pin: GPIO 5 controls boot debug output. Usually safe for general use.",
+    "severity": "warning",
+    "hint": ""
+   },
+   {
+    "line": 10,
+    "col": 11,
+    "message": "Code after `every`/`on` block in task `triple` will never execute.",
+    "severity": "warning",
+    "hint": "Move this code before the `every` block, or into a separate task."
+   }
+  ],
+  "pins": [
+   {
+    "name": "a",
+    "mode": "Output",
+    "gpio": 2
+   },
+   {
+    "name": "b",
+    "mode": "Output",
+    "gpio": 4
+   },
+   {
+    "name": "c",
+    "mode": "Output",
+    "gpio": 5
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "triple",
+    "tier": "background",
+    "line": 8
+   }
+  ],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": "esp32"
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "chip esp32\n\nhardware {\n    pin a: Output = 2\n    pin b: Output = 4\n    pin c: Output = 5\n}\n\ntask triple {\n    every 100ms { a.toggle() }\n    every 200ms { b.toggle() }\n    every 500ms { c.toggle() }\n}\n",
+ "find_symbols": [
+  {
+   "name": "a",
+   "kind": "pin",
+   "def_line": 4,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 9,
+     "col": 19
+    }
+   ]
+  },
+  {
+   "name": "b",
+   "kind": "pin",
+   "def_line": 5,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 10,
+     "col": 19
+    }
+   ]
+  },
+  {
+   "name": "c",
+   "kind": "pin",
+   "def_line": 6,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 11,
+     "col": 19
+    }
+   ]
+  },
+  {
+   "name": "triple",
+   "kind": "task",
+   "def_line": 8,
+   "def_col": 6,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_triple((\"triple<br>↻ 100ms\"))\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_triple timer;",
+  "units": [
+   {
+    "id": "u_triple",
+    "name": "triple<br>↻ 100ms",
+    "line": 8
+   }
+  ],
+  "loops": [
+   "u_triple"
+  ],
+  "edges": [],
+  "nodes": {
+   "u_triple": {
+    "kind": "timer",
+    "label": "triple<br>↻ 100ms",
+    "line": 8,
+    "detail": "every 100ms"
+   },
+   "p_a": {
+    "kind": "pin",
+    "label": "a",
+    "line": 4,
+    "detail": "Output · GPIO 2"
+   },
+   "p_b": {
+    "kind": "pin",
+    "label": "b",
+    "line": 5,
+    "detail": "Output · GPIO 4"
+   },
+   "p_c": {
+    "kind": "pin",
+    "label": "c",
+    "line": 6,
+    "detail": "Output · GPIO 5"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    p_a([\"a\"])\n    p_b([\"b\"])\n    p_c([\"c\"])\n    u_triple((\"triple<br>↻ 100ms\"))\n    u_triple -->|toggle| p_a\n    u_triple -->|toggle| p_b\n    u_triple -->|toggle| p_c\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_triple timer;\n    class p_a pin;\n    class p_b pin;\n    class p_c pin;",
+  "units": [
+   {
+    "id": "u_triple",
+    "name": "triple<br>↻ 100ms",
+    "line": 8
+   }
+  ],
+  "loops": [
+   "u_triple"
+  ],
+  "edges": [
+   {
+    "drive": "timer",
+    "src": "u_triple",
+    "dst": "p_a",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_triple",
+    "dst": "p_b",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_triple",
+    "dst": "p_c",
+    "rate_ms": 100.0
+   }
+  ],
+  "nodes": {
+   "u_triple": {
+    "kind": "timer",
+    "label": "triple<br>↻ 100ms",
+    "line": 8,
+    "detail": "every 100ms"
+   },
+   "p_a": {
+    "kind": "pin",
+    "label": "a",
+    "line": 4,
+    "detail": "Output · GPIO 2"
+   },
+   "p_b": {
+    "kind": "pin",
+    "label": "b",
+    "line": 5,
+    "detail": "Output · GPIO 4"
+   },
+   "p_c": {
+    "kind": "pin",
+    "label": "c",
+    "line": 6,
+    "detail": "Output · GPIO 5"
+   }
+  }
+ }
+}

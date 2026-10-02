@@ -1,0 +1,26 @@
+[
+  {
+    "severity": "error",
+    "category": "INCLUDE ERROR",
+    "message": "Include path escapes project directory: ../../../etc/hostname",
+    "hint": "Includes must resolve within the project folder.",
+    "region": [
+      1,
+      1,
+      1,
+      1
+    ]
+  },
+  {
+    "severity": "warning",
+    "category": "DEPRECATION",
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "hint": "The chip declaration will move to volt.toml in a future version.",
+    "region": [
+      2,
+      6,
+      2,
+      11
+    ]
+  }
+]

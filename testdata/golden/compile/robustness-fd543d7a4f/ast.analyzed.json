@@ -1,0 +1,174 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "VarDecl",
+    "region": [4, 9, 4, 13],
+    "name": "temp",
+    "type_name": "float",
+    "value": {
+     "_": "FloatLiteral",
+     "region": [4, 23, 4, 27],
+     "value": 25.5
+    },
+    "mutable": true,
+    "shared": false,
+    "needs_lifting": false
+   },
+   {
+    "_": "IfStmt",
+    "region": [5, 8, 5, 12],
+    "condition": {
+     "_": "BinaryExpr",
+     "region": [5, 8, 5, 12],
+     "left": {
+      "_": "VarRef",
+      "region": [5, 8, 5, 12],
+      "name": "temp"
+     },
+     "op": ">",
+     "right": {
+      "_": "IntLiteral",
+      "region": [5, 15, 5, 17],
+      "value": 30
+     },
+     "result_type": "bool"
+    },
+    "then_body": [
+     {
+      "_": "ExprStmt",
+      "region": [0, 0, 0, 0],
+      "expr": {
+       "_": "FuncCall",
+       "region": [6, 9, 6, 12],
+       "name": "log",
+       "args": [
+        {
+         "_": "StringLiteral",
+         "region": [6, 13, 6, 18],
+         "value": "hot"
+        },
+        {
+         "_": "StringLiteral",
+         "region": [6, 20, 6, 25],
+         "value": "yes"
+        }
+       ]
+      }
+     }
+    ],
+    "else_body": null
+   },
+   {
+    "_": "IfStmt",
+    "region": [8, 8, 8, 12],
+    "condition": {
+     "_": "BinaryExpr",
+     "region": [8, 8, 8, 12],
+     "left": {
+      "_": "VarRef",
+      "region": [8, 8, 8, 12],
+      "name": "temp"
+     },
+     "op": "<=",
+     "right": {
+      "_": "IntLiteral",
+      "region": [8, 16, 8, 18],
+      "value": 20
+     },
+     "result_type": "bool"
+    },
+    "then_body": [
+     {
+      "_": "ExprStmt",
+      "region": [0, 0, 0, 0],
+      "expr": {
+       "_": "FuncCall",
+       "region": [9, 9, 9, 12],
+       "name": "log",
+       "args": [
+        {
+         "_": "StringLiteral",
+         "region": [9, 13, 9, 19],
+         "value": "cold"
+        },
+        {
+         "_": "StringLiteral",
+         "region": [9, 21, 9, 26],
+         "value": "yes"
+        }
+       ]
+      }
+     }
+    ],
+    "else_body": null
+   },
+   {
+    "_": "IfStmt",
+    "region": [11, 8, 11, 11],
+    "condition": {
+     "_": "BinaryExpr",
+     "region": [11, 8, 11, 11],
+     "left": {
+      "_": "IntLiteral",
+      "region": [11, 8, 11, 11],
+      "value": 100
+     },
+     "op": ">=",
+     "right": {
+      "_": "VarRef",
+      "region": [11, 15, 11, 19],
+      "name": "temp"
+     },
+     "result_type": "bool"
+    },
+    "then_body": [
+     {
+      "_": "ExprStmt",
+      "region": [0, 0, 0, 0],
+      "expr": {
+       "_": "FuncCall",
+       "region": [12, 9, 12, 12],
+       "name": "log",
+       "args": [
+        {
+         "_": "StringLiteral",
+         "region": [12, 13, 12, 21],
+         "value": "normal"
+        },
+        {
+         "_": "StringLiteral",
+         "region": [12, 23, 12, 28],
+         "value": "yes"
+        }
+       ]
+      }
+     }
+    ],
+    "else_body": null
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

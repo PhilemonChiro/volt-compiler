@@ -1,0 +1,38 @@
+[
+  {
+    "severity": "error",
+    "category": "NAME ERROR",
+    "message": "Unknown name `unknown1`.",
+    "hint": null,
+    "region": [
+      3,
+      13,
+      3,
+      21
+    ]
+  },
+  {
+    "severity": "error",
+    "category": "NAME ERROR",
+    "message": "Unknown name `unknown2`.",
+    "hint": null,
+    "region": [
+      4,
+      13,
+      4,
+      21
+    ]
+  },
+  {
+    "severity": "error",
+    "category": "NAME ERROR",
+    "message": "Unknown name `unknown3`.",
+    "hint": null,
+    "region": [
+      5,
+      13,
+      5,
+      21
+    ]
+  }
+]

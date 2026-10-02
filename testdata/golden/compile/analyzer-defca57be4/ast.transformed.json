@@ -1,0 +1,246 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [5, 9, 7, 15],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [5, 9, 5, 12],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   },
+   {
+    "_": "PinDecl",
+    "region": [6, 9, 6, 14],
+    "name": "motor",
+    "mode": "PWM",
+    "gpio": 4
+   },
+   {
+    "_": "PinDecl",
+    "region": [7, 9, 7, 15],
+    "name": "button",
+    "mode": "PullUpInput",
+    "gpio": 0
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [10, 6, 10, 11],
+   "name": "blink",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [11, 11, 11, 16],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [11, 11, 11, 16],
+      "microseconds": 500000,
+      "original": "500ms"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [12, 9, 12, 12],
+        "obj": {
+         "_": "VarRef",
+         "region": [12, 9, 12, 12],
+         "name": "led"
+        },
+        "method": "toggle",
+        "args": []
+       }
+      }
+     ],
+     "yield_label": 1
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false
+  },
+  {
+   "_": "TaskDecl",
+   "region": [16, 6, 16, 19],
+   "name": "motor_control",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [17, 11, 17, 14],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [17, 11, 17, 14],
+      "microseconds": 1000,
+      "original": "1ms"
+     },
+     "strict": true,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [18, 9, 18, 14],
+        "obj": {
+         "_": "VarRef",
+         "region": [18, 9, 18, 14],
+         "name": "motor"
+        },
+        "method": "set_pwm",
+        "args": [
+         {
+          "_": "IntLiteral",
+          "region": [18, 23, 18, 24],
+          "value": 0
+         }
+        ]
+       }
+      }
+     ],
+     "yield_label": 1
+    }
+   ],
+   "tier": "critical",
+   "crossing_vars": [],
+   "has_strict": true
+  },
+  {
+   "_": "TaskDecl",
+   "region": [22, 6, 22, 15],
+   "name": "telemetry",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [23, 11, 23, 18],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [23, 11, 23, 18],
+      "microseconds": 1000000,
+      "original": "1second"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [24, 9, 24, 13],
+        "obj": {
+         "_": "VarRef",
+         "region": [24, 9, 24, 13],
+         "name": "mqtt"
+        },
+        "method": "send_int",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [24, 23, 24, 37],
+          "value": "drone/status"
+         },
+         {
+          "_": "IntLiteral",
+          "region": [24, 39, 24, 40],
+          "value": 1
+         }
+        ]
+       }
+      }
+     ],
+     "yield_label": 1
+    }
+   ],
+   "tier": "priority",
+   "crossing_vars": [],
+   "has_strict": false
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "MethodCall",
+     "region": [29, 5, 29, 9],
+     "obj": {
+      "_": "VarRef",
+      "region": [29, 5, 29, 9],
+      "name": "wifi"
+     },
+     "method": "connect",
+     "args": [
+      {
+       "_": "StringLiteral",
+       "region": [29, 18, 29, 26],
+       "value": "ground"
+      },
+      {
+       "_": "StringLiteral",
+       "region": [29, 28, 29, 37],
+       "value": "station"
+      }
+     ]
+    }
+   },
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "FuncCall",
+     "region": [30, 5, 30, 8],
+     "name": "run",
+     "args": [
+      {
+       "_": "VarRef",
+       "region": [30, 9, 30, 14],
+       "name": "blink"
+      },
+      {
+       "_": "VarRef",
+       "region": [30, 16, 30, 29],
+       "name": "motor_control"
+      },
+      {
+       "_": "VarRef",
+       "region": [30, 31, 30, 40],
+       "name": "telemetry"
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

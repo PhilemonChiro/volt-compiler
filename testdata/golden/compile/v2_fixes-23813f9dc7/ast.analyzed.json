@@ -1,0 +1,120 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [1, 6, 1, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [3, 9, 3, 12],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [3, 9, 3, 12],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "VarDecl",
+    "region": [6, 9, 6, 10],
+    "name": "i",
+    "type_name": "int",
+    "value": {
+     "_": "IntLiteral",
+     "region": [6, 18, 6, 19],
+     "value": 0
+    },
+    "mutable": true,
+    "shared": false,
+    "needs_lifting": false
+   },
+   {
+    "_": "WhileStmt",
+    "region": [7, 11, 7, 12],
+    "condition": {
+     "_": "BinaryExpr",
+     "region": [7, 11, 7, 12],
+     "left": {
+      "_": "VarRef",
+      "region": [7, 11, 7, 12],
+      "name": "i"
+     },
+     "op": "<",
+     "right": {
+      "_": "IntLiteral",
+      "region": [7, 15, 7, 17],
+      "value": 10
+     },
+     "result_type": "bool"
+    },
+    "body": [
+     {
+      "_": "CompoundAssign",
+      "region": [8, 9, 8, 10],
+      "target": {
+       "_": "VarRef",
+       "region": [8, 9, 8, 10],
+       "name": "i"
+      },
+      "op": "+=",
+      "value": {
+       "_": "IntLiteral",
+       "region": [8, 14, 8, 15],
+       "value": 1
+      }
+     },
+     {
+      "_": "IfStmt",
+      "region": [9, 12, 9, 13],
+      "condition": {
+       "_": "BinaryExpr",
+       "region": [9, 12, 9, 13],
+       "left": {
+        "_": "VarRef",
+        "region": [9, 12, 9, 13],
+        "name": "i"
+       },
+       "op": "==",
+       "right": {
+        "_": "IntLiteral",
+        "region": [9, 17, 9, 18],
+        "value": 5
+       },
+       "result_type": "bool"
+      },
+      "then_body": [
+       {
+        "_": "ContinueStmt",
+        "region": [0, 0, 0, 0]
+       }
+      ],
+      "else_body": null
+     }
+    ]
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

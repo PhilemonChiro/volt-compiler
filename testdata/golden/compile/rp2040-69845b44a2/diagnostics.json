@@ -1,0 +1,26 @@
+[
+  {
+    "severity": "warning",
+    "category": "DEPRECATION",
+    "message": "Move `chip rp2040` to volt.toml: chip = \"rp2040\"",
+    "hint": "The chip declaration will move to volt.toml in a future version.",
+    "region": [
+      2,
+      6,
+      2,
+      12
+    ]
+  },
+  {
+    "severity": "warning",
+    "category": "HARDWARE WARNING",
+    "message": "GP25 is the onboard LED on Pico. On Pico W, GP25 is used for WiFi SPI \u2014 not available as GPIO.",
+    "hint": null,
+    "region": [
+      4,
+      9,
+      4,
+      13
+    ]
+  }
+]

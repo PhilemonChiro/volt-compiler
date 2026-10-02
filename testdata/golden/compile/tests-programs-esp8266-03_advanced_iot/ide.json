@@ -1,0 +1,1067 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 1,
+    "col": 6,
+    "message": "Move `chip esp8266` to volt.toml: chip = \"esp8266\"",
+    "severity": "warning",
+    "hint": "The chip declaration will move to volt.toml in a future version."
+   },
+   {
+    "line": 4,
+    "col": 9,
+    "message": "Strapping pin: GPIO 2 must be HIGH at boot. Often connected to onboard LED.",
+    "severity": "warning",
+    "hint": ""
+   }
+  ],
+  "pins": [
+   {
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   },
+   {
+    "name": "relay",
+    "mode": "Output",
+    "gpio": 4
+   },
+   {
+    "name": "sensor_pin",
+    "mode": "Input",
+    "gpio": 5
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "heartbeat",
+    "tier": "background",
+    "line": 15
+   },
+   {
+    "name": "sensor_check",
+    "tier": "background",
+    "line": 25
+   },
+   {
+    "name": "mqtt_report",
+    "tier": "priority",
+    "line": 38
+   },
+   {
+    "name": "data_buffer",
+    "tier": "background",
+    "line": 47
+   },
+   {
+    "name": "sync",
+    "tier": "priority",
+    "line": 55
+   },
+   {
+    "name": "health",
+    "tier": "background",
+    "line": 67
+   }
+  ],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": "esp8266"
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "chip esp8266\n\nhardware {\n    pin led: Output = 2\n    pin relay: Output = 4\n    pin sensor_pin: Input = 5\n}\n\nvar heartbeat_count: int = 0\n\nvar sensor_reads: int = 0\n\nvar mqtt_sends: int = 0\n\nvar push_count: int = 0\n\nvar sync_count: int = 0\n\ntask heartbeat {\n    every 1s {\n        led.toggle()\n        heartbeat_count += 1\n        if heartbeat_count % 10 == 0 {\n            log(\"heartbeat\", \"#\" + heartbeat_count + \" heap=\" + system.free_heap())\n        }\n    }\n}\n\ntask sensor_check {\n    every 5s {\n        let val = sensor_pin.read()\n        sensor_reads += 1\n        log(\"sensor\", \"#\" + sensor_reads + \" GPIO5=\" + val)\n        if val == 1 {\n            relay.on()\n        } else {\n            relay.off()\n        }\n    }\n}\n\ntask mqtt_report {\n    every 30s {\n        mqtt_sends += 1\n        log(\"mqtt\", \"#\" + mqtt_sends + \" sending status + sensor\")\n        mqtt.send_int(\"esp8266/status\", 1)\n        mqtt.send_int(\"esp8266/sensor\", sensor_pin.read())\n    }\n}\n\ntask data_buffer {\n    every 10s {\n        push_count += 1\n        storage.push(\"readings\", sensor_pin.read())\n        log(\"storage\", \"push #\" + push_count + \" | buffered=\" + storage.list_count(\"readings\"))\n    }\n}\n\ntask sync {\n    every 60s {\n        if wifi.is_connected() {\n            sync_count += 1\n            log(\"sync\", \"#\" + sync_count + \" wifi connected, sending\")\n            mqtt.send_int(\"esp8266/alive\", 1)\n        } else {\n            log(\"sync\", \"wifi disconnected, skipping\")\n        }\n    }\n}\n\ntask health {\n    every 15s {\n        log(\"health\", \"heartbeats=\" + heartbeat_count + \" sensor_reads=\" + sensor_reads + \" mqtt=\" + mqtt_sends + \" pushes=\" + push_count + \" syncs=\" + sync_count)\n        log(\"health\", \"wifi=\" + wifi.is_connected() + \" heap=\" + system.free_heap())\n    }\n}\n\nsetup {\n    wifi.connect(\"HomeNet\", \"password\")\n    mqtt.connect(\"mqtt://192.168.1.100\")\n}\n",
+ "find_symbols": [
+  {
+   "name": "led",
+   "kind": "pin",
+   "def_line": 4,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 17,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "relay",
+   "kind": "pin",
+   "def_line": 5,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 31,
+     "col": 13
+    },
+    {
+     "line": 33,
+     "col": 13
+    }
+   ]
+  },
+  {
+   "name": "sensor_pin",
+   "kind": "pin",
+   "def_line": 6,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 27,
+     "col": 19
+    },
+    {
+     "line": 43,
+     "col": 41
+    },
+    {
+     "line": 50,
+     "col": 34
+    }
+   ]
+  },
+  {
+   "name": "heartbeat",
+   "kind": "task",
+   "def_line": 15,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "sensor_check",
+   "kind": "task",
+   "def_line": 25,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "mqtt_report",
+   "kind": "task",
+   "def_line": 38,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "data_buffer",
+   "kind": "task",
+   "def_line": 47,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "sync",
+   "kind": "task",
+   "def_line": 55,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "health",
+   "kind": "task",
+   "def_line": 67,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "heartbeat_count",
+   "kind": "var",
+   "def_line": 9,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 18,
+     "col": 9
+    },
+    {
+     "line": 19,
+     "col": 12
+    },
+    {
+     "line": 20,
+     "col": 36
+    },
+    {
+     "line": 69,
+     "col": 39
+    }
+   ]
+  },
+  {
+   "name": "sensor_reads",
+   "kind": "var",
+   "def_line": 10,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 28,
+     "col": 9
+    },
+    {
+     "line": 29,
+     "col": 29
+    },
+    {
+     "line": 69,
+     "col": 76
+    }
+   ]
+  },
+  {
+   "name": "mqtt_sends",
+   "kind": "var",
+   "def_line": 11,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 40,
+     "col": 9
+    },
+    {
+     "line": 41,
+     "col": 27
+    },
+    {
+     "line": 69,
+     "col": 102
+    }
+   ]
+  },
+  {
+   "name": "push_count",
+   "kind": "var",
+   "def_line": 12,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 49,
+     "col": 9
+    },
+    {
+     "line": 51,
+     "col": 35
+    },
+    {
+     "line": 69,
+     "col": 128
+    }
+   ]
+  },
+  {
+   "name": "sync_count",
+   "kind": "var",
+   "def_line": 13,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 58,
+     "col": 13
+    },
+    {
+     "line": 59,
+     "col": 31
+    },
+    {
+     "line": 69,
+     "col": 153
+    }
+   ]
+  },
+  {
+   "name": "val",
+   "kind": "var",
+   "def_line": 27,
+   "def_col": 13,
+   "refs": [
+    {
+     "line": 29,
+     "col": 56
+    },
+    {
+     "line": 30,
+     "col": 12
+    }
+   ]
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_wifi{{\"wifi\"}}\n    s_mqtt{{\"mqtt\"}}\n    v_heartbeat_count(\"heartbeat_count\")\n    s_log{{\"log\"}}\n    s_system{{\"system\"}}\n    p_sensor_pin([\"sensor_pin\"])\n    v_sensor_reads(\"sensor_reads\")\n    v_mqtt_sends(\"mqtt_sends\")\n    v_push_count(\"push_count\")\n    v_sync_count(\"sync_count\")\n    u_heartbeat((\"heartbeat<br>↻ 1s\"))\n    u_sensor_check((\"sensor_check<br>↻ 5s\"))\n    u_mqtt_report((\"mqtt_report<br>↻ 30s\"))\n    u_data_buffer((\"data_buffer<br>↻ 10s\"))\n    u_sync((\"sync<br>↻ 60s\"))\n    u_health((\"health<br>↻ 15s\"))\n    u_setup -->|connect| s_wifi\n    u_setup -->|connect| s_mqtt\n    u_heartbeat -->|write| v_heartbeat_count\n    v_heartbeat_count -.->|read| u_heartbeat\n    u_heartbeat -->|log| s_log\n    u_heartbeat -->|free_heap| s_system\n    p_sensor_pin -.->|read| u_sensor_check\n    u_sensor_check -->|write| v_sensor_reads\n    u_sensor_check -->|log| s_log\n    v_sensor_reads -.->|read| u_sensor_check\n    u_mqtt_report -->|write| v_mqtt_sends\n    u_mqtt_report -->|log| s_log\n    v_mqtt_sends -.->|read| u_mqtt_report\n    u_mqtt_report -->|send_int| s_mqtt\n    p_sensor_pin -.->|read| u_mqtt_report\n    u_data_buffer -->|write| v_push_count\n    p_sensor_pin -.->|read| u_data_buffer\n    u_data_buffer -->|log| s_log\n    v_push_count -.->|read| u_data_buffer\n    s_wifi -.->|is_connected| u_sync\n    u_sync -->|write| v_sync_count\n    u_sync -->|log| s_log\n    v_sync_count -.->|read| u_sync\n    u_sync -->|send_int| s_mqtt\n    u_health -->|log| s_log\n    v_heartbeat_count -.->|read| u_health\n    v_sensor_reads -.->|read| u_health\n    v_mqtt_sends -.->|read| u_health\n    v_push_count -.->|read| u_health\n    v_sync_count -.->|read| u_health\n    s_wifi -.->|is_connected| u_health\n    u_health -->|free_heap| s_system\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_wifi service;\n    class s_mqtt service;\n    class u_heartbeat timer;\n    class v_heartbeat_count shared;\n    class s_log service;\n    class s_system service;\n    class u_sensor_check timer;\n    class p_sensor_pin shared;\n    class v_sensor_reads shared;\n    class u_mqtt_report timer;\n    class v_mqtt_sends shared;\n    class u_data_buffer timer;\n    class v_push_count shared;\n    class u_sync timer;\n    class v_sync_count shared;\n    class u_health timer;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_heartbeat",
+    "name": "heartbeat<br>↻ 1s",
+    "line": 15
+   },
+   {
+    "id": "u_sensor_check",
+    "name": "sensor_check<br>↻ 5s",
+    "line": 25
+   },
+   {
+    "id": "u_mqtt_report",
+    "name": "mqtt_report<br>↻ 30s",
+    "line": 38
+   },
+   {
+    "id": "u_data_buffer",
+    "name": "data_buffer<br>↻ 10s",
+    "line": 47
+   },
+   {
+    "id": "u_sync",
+    "name": "sync<br>↻ 60s",
+    "line": 55
+   },
+   {
+    "id": "u_health",
+    "name": "health<br>↻ 15s",
+    "line": 67
+   }
+  ],
+  "loops": [
+   "u_heartbeat",
+   "u_sensor_check",
+   "u_mqtt_report",
+   "u_data_buffer",
+   "u_sync",
+   "u_health"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_wifi"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_mqtt"
+   },
+   {
+    "drive": "timer",
+    "src": "u_heartbeat",
+    "dst": "v_heartbeat_count",
+    "rate_ms": 1000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_heartbeat_count",
+    "dst": "u_heartbeat",
+    "rate_ms": 1000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_heartbeat",
+    "dst": "s_log",
+    "rate_ms": 1000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_heartbeat",
+    "dst": "s_system",
+    "rate_ms": 1000.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_sensor_pin",
+    "dst": "u_sensor_check",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_sensor_check",
+    "dst": "v_sensor_reads",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_sensor_check",
+    "dst": "s_log",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_sensor_reads",
+    "dst": "u_sensor_check",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_mqtt_report",
+    "dst": "v_mqtt_sends",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_mqtt_report",
+    "dst": "s_log",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_mqtt_sends",
+    "dst": "u_mqtt_report",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_mqtt_report",
+    "dst": "s_mqtt",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_sensor_pin",
+    "dst": "u_mqtt_report",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_data_buffer",
+    "dst": "v_push_count",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_sensor_pin",
+    "dst": "u_data_buffer",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_data_buffer",
+    "dst": "s_log",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_push_count",
+    "dst": "u_data_buffer",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "s_wifi",
+    "dst": "u_sync",
+    "rate_ms": 60000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_sync",
+    "dst": "v_sync_count",
+    "rate_ms": 60000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_sync",
+    "dst": "s_log",
+    "rate_ms": 60000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_sync_count",
+    "dst": "u_sync",
+    "rate_ms": 60000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_sync",
+    "dst": "s_mqtt",
+    "rate_ms": 60000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_health",
+    "dst": "s_log",
+    "rate_ms": 15000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_heartbeat_count",
+    "dst": "u_health",
+    "rate_ms": 15000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_sensor_reads",
+    "dst": "u_health",
+    "rate_ms": 15000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_mqtt_sends",
+    "dst": "u_health",
+    "rate_ms": 15000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_push_count",
+    "dst": "u_health",
+    "rate_ms": 15000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_sync_count",
+    "dst": "u_health",
+    "rate_ms": 15000.0
+   },
+   {
+    "drive": "timer",
+    "src": "s_wifi",
+    "dst": "u_health",
+    "rate_ms": 15000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_health",
+    "dst": "s_system",
+    "rate_ms": 15000.0
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_wifi": {
+    "kind": "service",
+    "label": "wifi",
+    "line": null,
+    "detail": "connect, is_connected"
+   },
+   "s_mqtt": {
+    "kind": "service",
+    "label": "mqtt",
+    "line": null,
+    "detail": "connect, send_int"
+   },
+   "u_heartbeat": {
+    "kind": "timer",
+    "label": "heartbeat<br>↻ 1s",
+    "line": 15,
+    "detail": "every 1s"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 4,
+    "detail": "Output · GPIO 2"
+   },
+   "v_heartbeat_count": {
+    "kind": "var",
+    "label": "heartbeat_count",
+    "line": 9,
+    "detail": "int"
+   },
+   "s_log": {
+    "kind": "service",
+    "label": "log",
+    "line": null,
+    "detail": "log"
+   },
+   "s_system": {
+    "kind": "service",
+    "label": "system",
+    "line": null,
+    "detail": "free_heap"
+   },
+   "u_sensor_check": {
+    "kind": "timer",
+    "label": "sensor_check<br>↻ 5s",
+    "line": 25,
+    "detail": "every 5s"
+   },
+   "p_sensor_pin": {
+    "kind": "pin",
+    "label": "sensor_pin",
+    "line": 6,
+    "detail": "Input · GPIO 5"
+   },
+   "v_sensor_reads": {
+    "kind": "var",
+    "label": "sensor_reads",
+    "line": 10,
+    "detail": "int"
+   },
+   "p_relay": {
+    "kind": "pin",
+    "label": "relay",
+    "line": 5,
+    "detail": "Output · GPIO 4"
+   },
+   "u_mqtt_report": {
+    "kind": "timer",
+    "label": "mqtt_report<br>↻ 30s",
+    "line": 38,
+    "detail": "every 30s"
+   },
+   "v_mqtt_sends": {
+    "kind": "var",
+    "label": "mqtt_sends",
+    "line": 11,
+    "detail": "int"
+   },
+   "u_data_buffer": {
+    "kind": "timer",
+    "label": "data_buffer<br>↻ 10s",
+    "line": 47,
+    "detail": "every 10s"
+   },
+   "v_push_count": {
+    "kind": "var",
+    "label": "push_count",
+    "line": 12,
+    "detail": "int"
+   },
+   "s_storage": {
+    "kind": "service",
+    "label": "storage",
+    "line": null,
+    "detail": "list_count, push"
+   },
+   "u_sync": {
+    "kind": "timer",
+    "label": "sync<br>↻ 60s",
+    "line": 55,
+    "detail": "every 60s"
+   },
+   "v_sync_count": {
+    "kind": "var",
+    "label": "sync_count",
+    "line": 13,
+    "detail": "int"
+   },
+   "u_health": {
+    "kind": "timer",
+    "label": "health<br>↻ 15s",
+    "line": 67,
+    "detail": "every 15s"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_wifi{{\"wifi\"}}\n    s_mqtt{{\"mqtt\"}}\n    p_led([\"led\"])\n    v_heartbeat_count(\"heartbeat_count\")\n    s_log{{\"log\"}}\n    s_system{{\"system\"}}\n    p_sensor_pin([\"sensor_pin\"])\n    v_sensor_reads(\"sensor_reads\")\n    p_relay([\"relay\"])\n    v_mqtt_sends(\"mqtt_sends\")\n    v_push_count(\"push_count\")\n    s_storage{{\"storage\"}}\n    v_sync_count(\"sync_count\")\n    u_heartbeat((\"heartbeat<br>↻ 1s\"))\n    u_sensor_check((\"sensor_check<br>↻ 5s\"))\n    u_mqtt_report((\"mqtt_report<br>↻ 30s\"))\n    u_data_buffer((\"data_buffer<br>↻ 10s\"))\n    u_sync((\"sync<br>↻ 60s\"))\n    u_health((\"health<br>↻ 15s\"))\n    u_setup -->|connect| s_wifi\n    u_setup -->|connect| s_mqtt\n    u_heartbeat -->|toggle| p_led\n    u_heartbeat -->|write| v_heartbeat_count\n    v_heartbeat_count -.->|read| u_heartbeat\n    u_heartbeat -->|log| s_log\n    u_heartbeat -->|free_heap| s_system\n    p_sensor_pin -.->|read| u_sensor_check\n    u_sensor_check -->|write| v_sensor_reads\n    u_sensor_check -->|log| s_log\n    v_sensor_reads -.->|read| u_sensor_check\n    u_sensor_check -->|off, on| p_relay\n    u_mqtt_report -->|write| v_mqtt_sends\n    u_mqtt_report -->|log| s_log\n    v_mqtt_sends -.->|read| u_mqtt_report\n    u_mqtt_report -->|send_int| s_mqtt\n    p_sensor_pin -.->|read| u_mqtt_report\n    u_data_buffer -->|write| v_push_count\n    u_data_buffer -->|list_count, push| s_storage\n    p_sensor_pin -.->|read| u_data_buffer\n    u_data_buffer -->|log| s_log\n    v_push_count -.->|read| u_data_buffer\n    s_wifi -.->|is_connected| u_sync\n    u_sync -->|write| v_sync_count\n    u_sync -->|log| s_log\n    v_sync_count -.->|read| u_sync\n    u_sync -->|send_int| s_mqtt\n    u_health -->|log| s_log\n    v_heartbeat_count -.->|read| u_health\n    v_sensor_reads -.->|read| u_health\n    v_mqtt_sends -.->|read| u_health\n    v_push_count -.->|read| u_health\n    v_sync_count -.->|read| u_health\n    s_wifi -.->|is_connected| u_health\n    u_health -->|free_heap| s_system\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_wifi service;\n    class s_mqtt service;\n    class u_heartbeat timer;\n    class p_led pin;\n    class v_heartbeat_count shared;\n    class s_log service;\n    class s_system service;\n    class u_sensor_check timer;\n    class p_sensor_pin shared;\n    class v_sensor_reads shared;\n    class p_relay pin;\n    class u_mqtt_report timer;\n    class v_mqtt_sends shared;\n    class u_data_buffer timer;\n    class v_push_count shared;\n    class s_storage service;\n    class u_sync timer;\n    class v_sync_count shared;\n    class u_health timer;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_heartbeat",
+    "name": "heartbeat<br>↻ 1s",
+    "line": 15
+   },
+   {
+    "id": "u_sensor_check",
+    "name": "sensor_check<br>↻ 5s",
+    "line": 25
+   },
+   {
+    "id": "u_mqtt_report",
+    "name": "mqtt_report<br>↻ 30s",
+    "line": 38
+   },
+   {
+    "id": "u_data_buffer",
+    "name": "data_buffer<br>↻ 10s",
+    "line": 47
+   },
+   {
+    "id": "u_sync",
+    "name": "sync<br>↻ 60s",
+    "line": 55
+   },
+   {
+    "id": "u_health",
+    "name": "health<br>↻ 15s",
+    "line": 67
+   }
+  ],
+  "loops": [
+   "u_heartbeat",
+   "u_sensor_check",
+   "u_mqtt_report",
+   "u_data_buffer",
+   "u_sync",
+   "u_health"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_wifi"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_mqtt"
+   },
+   {
+    "drive": "timer",
+    "src": "u_heartbeat",
+    "dst": "p_led",
+    "rate_ms": 1000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_heartbeat",
+    "dst": "v_heartbeat_count",
+    "rate_ms": 1000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_heartbeat_count",
+    "dst": "u_heartbeat",
+    "rate_ms": 1000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_heartbeat",
+    "dst": "s_log",
+    "rate_ms": 1000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_heartbeat",
+    "dst": "s_system",
+    "rate_ms": 1000.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_sensor_pin",
+    "dst": "u_sensor_check",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_sensor_check",
+    "dst": "v_sensor_reads",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_sensor_check",
+    "dst": "s_log",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_sensor_reads",
+    "dst": "u_sensor_check",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_sensor_check",
+    "dst": "p_relay",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_mqtt_report",
+    "dst": "v_mqtt_sends",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_mqtt_report",
+    "dst": "s_log",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_mqtt_sends",
+    "dst": "u_mqtt_report",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_mqtt_report",
+    "dst": "s_mqtt",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_sensor_pin",
+    "dst": "u_mqtt_report",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_data_buffer",
+    "dst": "v_push_count",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_data_buffer",
+    "dst": "s_storage",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_sensor_pin",
+    "dst": "u_data_buffer",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_data_buffer",
+    "dst": "s_log",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_push_count",
+    "dst": "u_data_buffer",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "s_wifi",
+    "dst": "u_sync",
+    "rate_ms": 60000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_sync",
+    "dst": "v_sync_count",
+    "rate_ms": 60000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_sync",
+    "dst": "s_log",
+    "rate_ms": 60000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_sync_count",
+    "dst": "u_sync",
+    "rate_ms": 60000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_sync",
+    "dst": "s_mqtt",
+    "rate_ms": 60000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_health",
+    "dst": "s_log",
+    "rate_ms": 15000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_heartbeat_count",
+    "dst": "u_health",
+    "rate_ms": 15000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_sensor_reads",
+    "dst": "u_health",
+    "rate_ms": 15000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_mqtt_sends",
+    "dst": "u_health",
+    "rate_ms": 15000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_push_count",
+    "dst": "u_health",
+    "rate_ms": 15000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_sync_count",
+    "dst": "u_health",
+    "rate_ms": 15000.0
+   },
+   {
+    "drive": "timer",
+    "src": "s_wifi",
+    "dst": "u_health",
+    "rate_ms": 15000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_health",
+    "dst": "s_system",
+    "rate_ms": 15000.0
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_wifi": {
+    "kind": "service",
+    "label": "wifi",
+    "line": null,
+    "detail": "connect, is_connected"
+   },
+   "s_mqtt": {
+    "kind": "service",
+    "label": "mqtt",
+    "line": null,
+    "detail": "connect, send_int"
+   },
+   "u_heartbeat": {
+    "kind": "timer",
+    "label": "heartbeat<br>↻ 1s",
+    "line": 15,
+    "detail": "every 1s"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 4,
+    "detail": "Output · GPIO 2"
+   },
+   "v_heartbeat_count": {
+    "kind": "var",
+    "label": "heartbeat_count",
+    "line": 9,
+    "detail": "int"
+   },
+   "s_log": {
+    "kind": "service",
+    "label": "log",
+    "line": null,
+    "detail": "log"
+   },
+   "s_system": {
+    "kind": "service",
+    "label": "system",
+    "line": null,
+    "detail": "free_heap"
+   },
+   "u_sensor_check": {
+    "kind": "timer",
+    "label": "sensor_check<br>↻ 5s",
+    "line": 25,
+    "detail": "every 5s"
+   },
+   "p_sensor_pin": {
+    "kind": "pin",
+    "label": "sensor_pin",
+    "line": 6,
+    "detail": "Input · GPIO 5"
+   },
+   "v_sensor_reads": {
+    "kind": "var",
+    "label": "sensor_reads",
+    "line": 10,
+    "detail": "int"
+   },
+   "p_relay": {
+    "kind": "pin",
+    "label": "relay",
+    "line": 5,
+    "detail": "Output · GPIO 4"
+   },
+   "u_mqtt_report": {
+    "kind": "timer",
+    "label": "mqtt_report<br>↻ 30s",
+    "line": 38,
+    "detail": "every 30s"
+   },
+   "v_mqtt_sends": {
+    "kind": "var",
+    "label": "mqtt_sends",
+    "line": 11,
+    "detail": "int"
+   },
+   "u_data_buffer": {
+    "kind": "timer",
+    "label": "data_buffer<br>↻ 10s",
+    "line": 47,
+    "detail": "every 10s"
+   },
+   "v_push_count": {
+    "kind": "var",
+    "label": "push_count",
+    "line": 12,
+    "detail": "int"
+   },
+   "s_storage": {
+    "kind": "service",
+    "label": "storage",
+    "line": null,
+    "detail": "list_count, push"
+   },
+   "u_sync": {
+    "kind": "timer",
+    "label": "sync<br>↻ 60s",
+    "line": 55,
+    "detail": "every 60s"
+   },
+   "v_sync_count": {
+    "kind": "var",
+    "label": "sync_count",
+    "line": 13,
+    "detail": "int"
+   },
+   "u_health": {
+    "kind": "timer",
+    "label": "health<br>↻ 15s",
+    "line": 67,
+    "detail": "every 15s"
+   }
+  }
+ }
+}

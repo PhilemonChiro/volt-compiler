@@ -1,0 +1,1233 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [1, 6, 1, 13],
+  "target": "esp8266"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [4, 9, 12, 12],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [4, 9, 4, 11],
+    "name": "p0",
+    "mode": "Output",
+    "gpio": 0
+   },
+   {
+    "_": "PinDecl",
+    "region": [5, 9, 5, 11],
+    "name": "p2",
+    "mode": "Output",
+    "gpio": 2
+   },
+   {
+    "_": "PinDecl",
+    "region": [6, 9, 6, 11],
+    "name": "p4",
+    "mode": "Output",
+    "gpio": 4
+   },
+   {
+    "_": "PinDecl",
+    "region": [7, 9, 7, 11],
+    "name": "p5",
+    "mode": "Output",
+    "gpio": 5
+   },
+   {
+    "_": "PinDecl",
+    "region": [8, 9, 8, 12],
+    "name": "p12",
+    "mode": "Output",
+    "gpio": 12
+   },
+   {
+    "_": "PinDecl",
+    "region": [9, 9, 9, 12],
+    "name": "p13",
+    "mode": "Output",
+    "gpio": 13
+   },
+   {
+    "_": "PinDecl",
+    "region": [10, 9, 10, 12],
+    "name": "p14",
+    "mode": "Output",
+    "gpio": 14
+   },
+   {
+    "_": "PinDecl",
+    "region": [11, 9, 11, 12],
+    "name": "p15",
+    "mode": "Output",
+    "gpio": 15
+   },
+   {
+    "_": "PinDecl",
+    "region": [12, 9, 12, 12],
+    "name": "p16",
+    "mode": "Output",
+    "gpio": 16
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [26, 6, 26, 8],
+   "name": "t1",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [27, 11, 27, 16],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [27, 11, 27, 16],
+      "microseconds": 100000,
+      "original": "100ms"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [28, 9, 28, 11],
+        "obj": {
+         "_": "VarRef",
+         "region": [28, 9, 28, 11],
+         "name": "p0"
+        },
+        "method": "toggle",
+        "args": []
+       }
+      },
+      {
+       "_": "CompoundAssign",
+       "region": [29, 9, 29, 11],
+       "target": {
+        "_": "VarRef",
+        "region": [29, 9, 29, 11],
+        "name": "c0"
+       },
+       "op": "+=",
+       "value": {
+        "_": "IntLiteral",
+        "region": [29, 15, 29, 16],
+        "value": 1
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  },
+  {
+   "_": "TaskDecl",
+   "region": [33, 6, 33, 8],
+   "name": "t2",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [34, 11, 34, 16],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [34, 11, 34, 16],
+      "microseconds": 200000,
+      "original": "200ms"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [35, 9, 35, 11],
+        "obj": {
+         "_": "VarRef",
+         "region": [35, 9, 35, 11],
+         "name": "p2"
+        },
+        "method": "toggle",
+        "args": []
+       }
+      },
+      {
+       "_": "CompoundAssign",
+       "region": [36, 9, 36, 11],
+       "target": {
+        "_": "VarRef",
+        "region": [36, 9, 36, 11],
+        "name": "c2"
+       },
+       "op": "+=",
+       "value": {
+        "_": "IntLiteral",
+        "region": [36, 15, 36, 16],
+        "value": 1
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  },
+  {
+   "_": "TaskDecl",
+   "region": [40, 6, 40, 8],
+   "name": "t3",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [41, 11, 41, 16],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [41, 11, 41, 16],
+      "microseconds": 300000,
+      "original": "300ms"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [42, 9, 42, 11],
+        "obj": {
+         "_": "VarRef",
+         "region": [42, 9, 42, 11],
+         "name": "p4"
+        },
+        "method": "toggle",
+        "args": []
+       }
+      },
+      {
+       "_": "CompoundAssign",
+       "region": [43, 9, 43, 11],
+       "target": {
+        "_": "VarRef",
+        "region": [43, 9, 43, 11],
+        "name": "c4"
+       },
+       "op": "+=",
+       "value": {
+        "_": "IntLiteral",
+        "region": [43, 15, 43, 16],
+        "value": 1
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  },
+  {
+   "_": "TaskDecl",
+   "region": [47, 6, 47, 8],
+   "name": "t4",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [48, 11, 48, 16],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [48, 11, 48, 16],
+      "microseconds": 400000,
+      "original": "400ms"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [49, 9, 49, 11],
+        "obj": {
+         "_": "VarRef",
+         "region": [49, 9, 49, 11],
+         "name": "p5"
+        },
+        "method": "toggle",
+        "args": []
+       }
+      },
+      {
+       "_": "CompoundAssign",
+       "region": [50, 9, 50, 11],
+       "target": {
+        "_": "VarRef",
+        "region": [50, 9, 50, 11],
+        "name": "c5"
+       },
+       "op": "+=",
+       "value": {
+        "_": "IntLiteral",
+        "region": [50, 15, 50, 16],
+        "value": 1
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  },
+  {
+   "_": "TaskDecl",
+   "region": [54, 6, 54, 8],
+   "name": "t5",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [55, 11, 55, 16],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [55, 11, 55, 16],
+      "microseconds": 500000,
+      "original": "500ms"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [56, 9, 56, 12],
+        "obj": {
+         "_": "VarRef",
+         "region": [56, 9, 56, 12],
+         "name": "p12"
+        },
+        "method": "toggle",
+        "args": []
+       }
+      },
+      {
+       "_": "CompoundAssign",
+       "region": [57, 9, 57, 12],
+       "target": {
+        "_": "VarRef",
+        "region": [57, 9, 57, 12],
+        "name": "c12"
+       },
+       "op": "+=",
+       "value": {
+        "_": "IntLiteral",
+        "region": [57, 16, 57, 17],
+        "value": 1
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  },
+  {
+   "_": "TaskDecl",
+   "region": [61, 6, 61, 8],
+   "name": "t6",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [62, 11, 62, 16],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [62, 11, 62, 16],
+      "microseconds": 600000,
+      "original": "600ms"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [63, 9, 63, 12],
+        "obj": {
+         "_": "VarRef",
+         "region": [63, 9, 63, 12],
+         "name": "p13"
+        },
+        "method": "toggle",
+        "args": []
+       }
+      },
+      {
+       "_": "CompoundAssign",
+       "region": [64, 9, 64, 12],
+       "target": {
+        "_": "VarRef",
+        "region": [64, 9, 64, 12],
+        "name": "c13"
+       },
+       "op": "+=",
+       "value": {
+        "_": "IntLiteral",
+        "region": [64, 16, 64, 17],
+        "value": 1
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  },
+  {
+   "_": "TaskDecl",
+   "region": [68, 6, 68, 8],
+   "name": "t7",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [69, 11, 69, 16],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [69, 11, 69, 16],
+      "microseconds": 700000,
+      "original": "700ms"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [70, 9, 70, 12],
+        "obj": {
+         "_": "VarRef",
+         "region": [70, 9, 70, 12],
+         "name": "p14"
+        },
+        "method": "toggle",
+        "args": []
+       }
+      },
+      {
+       "_": "CompoundAssign",
+       "region": [71, 9, 71, 12],
+       "target": {
+        "_": "VarRef",
+        "region": [71, 9, 71, 12],
+        "name": "c14"
+       },
+       "op": "+=",
+       "value": {
+        "_": "IntLiteral",
+        "region": [71, 16, 71, 17],
+        "value": 1
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  },
+  {
+   "_": "TaskDecl",
+   "region": [75, 6, 75, 8],
+   "name": "t8",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [76, 11, 76, 16],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [76, 11, 76, 16],
+      "microseconds": 800000,
+      "original": "800ms"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [77, 9, 77, 12],
+        "obj": {
+         "_": "VarRef",
+         "region": [77, 9, 77, 12],
+         "name": "p15"
+        },
+        "method": "toggle",
+        "args": []
+       }
+      },
+      {
+       "_": "CompoundAssign",
+       "region": [78, 9, 78, 12],
+       "target": {
+        "_": "VarRef",
+        "region": [78, 9, 78, 12],
+        "name": "c15"
+       },
+       "op": "+=",
+       "value": {
+        "_": "IntLiteral",
+        "region": [78, 16, 78, 17],
+        "value": 1
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  },
+  {
+   "_": "TaskDecl",
+   "region": [82, 6, 82, 8],
+   "name": "t9",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [83, 11, 83, 16],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [83, 11, 83, 16],
+      "microseconds": 900000,
+      "original": "900ms"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [84, 9, 84, 12],
+        "obj": {
+         "_": "VarRef",
+         "region": [84, 9, 84, 12],
+         "name": "p16"
+        },
+        "method": "toggle",
+        "args": []
+       }
+      },
+      {
+       "_": "CompoundAssign",
+       "region": [85, 9, 85, 12],
+       "target": {
+        "_": "VarRef",
+        "region": [85, 9, 85, 12],
+        "name": "c16"
+       },
+       "op": "+=",
+       "value": {
+        "_": "IntLiteral",
+        "region": [85, 16, 85, 17],
+        "value": 1
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  },
+  {
+   "_": "TaskDecl",
+   "region": [89, 6, 89, 9],
+   "name": "net",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [90, 11, 90, 14],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [90, 11, 90, 14],
+      "microseconds": 10000000,
+      "original": "10s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "CompoundAssign",
+       "region": [91, 9, 91, 18],
+       "target": {
+        "_": "VarRef",
+        "region": [91, 9, 91, 18],
+        "name": "net_count"
+       },
+       "op": "+=",
+       "value": {
+        "_": "IntLiteral",
+        "region": [91, 22, 91, 23],
+        "value": 1
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [92, 9, 92, 13],
+        "obj": {
+         "_": "VarRef",
+         "region": [92, 9, 92, 13],
+         "name": "mqtt"
+        },
+        "method": "send_int",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [92, 23, 92, 37],
+          "value": "stress/alive"
+         },
+         {
+          "_": "VarRef",
+          "region": [92, 39, 92, 48],
+          "name": "net_count"
+         }
+        ]
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [93, 9, 93, 12],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [93, 13, 93, 18],
+          "value": "net"
+         },
+         {
+          "_": "BinaryExpr",
+          "region": [93, 20, 93, 23],
+          "left": {
+           "_": "BinaryExpr",
+           "region": [93, 20, 93, 23],
+           "left": {
+            "_": "StringLiteral",
+            "region": [93, 20, 93, 23],
+            "value": "#"
+           },
+           "op": "+",
+           "right": {
+            "_": "VarRef",
+            "region": [93, 26, 93, 35],
+            "name": "net_count"
+           },
+           "result_type": "string"
+          },
+          "op": "+",
+          "right": {
+           "_": "StringLiteral",
+           "region": [93, 38, 93, 50],
+           "value": " mqtt sent"
+          },
+          "result_type": "string"
+         }
+        ]
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "priority",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  },
+  {
+   "_": "TaskDecl",
+   "region": [97, 6, 97, 19],
+   "name": "stress_report",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [98, 11, 98, 13],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [98, 11, 98, 13],
+      "microseconds": 5000000,
+      "original": "5s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [99, 9, 99, 12],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [99, 13, 99, 21],
+          "value": "stress"
+         },
+         {
+          "_": "BinaryExpr",
+          "region": [99, 23, 99, 31],
+          "left": {
+           "_": "BinaryExpr",
+           "region": [99, 23, 99, 31],
+           "left": {
+            "_": "BinaryExpr",
+            "region": [99, 23, 99, 31],
+            "left": {
+             "_": "BinaryExpr",
+             "region": [99, 23, 99, 31],
+             "left": {
+              "_": "BinaryExpr",
+              "region": [99, 23, 99, 31],
+              "left": {
+               "_": "BinaryExpr",
+               "region": [99, 23, 99, 31],
+               "left": {
+                "_": "BinaryExpr",
+                "region": [99, 23, 99, 31],
+                "left": {
+                 "_": "StringLiteral",
+                 "region": [99, 23, 99, 31],
+                 "value": "GPIO0="
+                },
+                "op": "+",
+                "right": {
+                 "_": "VarRef",
+                 "region": [99, 34, 99, 36],
+                 "name": "c0"
+                },
+                "result_type": "string"
+               },
+               "op": "+",
+               "right": {
+                "_": "StringLiteral",
+                "region": [99, 39, 99, 48],
+                "value": " GPIO2="
+               },
+               "result_type": "string"
+              },
+              "op": "+",
+              "right": {
+               "_": "VarRef",
+               "region": [99, 51, 99, 53],
+               "name": "c2"
+              },
+              "result_type": "string"
+             },
+             "op": "+",
+             "right": {
+              "_": "StringLiteral",
+              "region": [99, 56, 99, 65],
+              "value": " GPIO4="
+             },
+             "result_type": "string"
+            },
+            "op": "+",
+            "right": {
+             "_": "VarRef",
+             "region": [99, 68, 99, 70],
+             "name": "c4"
+            },
+            "result_type": "string"
+           },
+           "op": "+",
+           "right": {
+            "_": "StringLiteral",
+            "region": [99, 73, 99, 82],
+            "value": " GPIO5="
+           },
+           "result_type": "string"
+          },
+          "op": "+",
+          "right": {
+           "_": "VarRef",
+           "region": [99, 85, 99, 87],
+           "name": "c5"
+          },
+          "result_type": "string"
+         }
+        ]
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [100, 9, 100, 12],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [100, 13, 100, 21],
+          "value": "stress"
+         },
+         {
+          "_": "BinaryExpr",
+          "region": [100, 23, 100, 32],
+          "left": {
+           "_": "BinaryExpr",
+           "region": [100, 23, 100, 32],
+           "left": {
+            "_": "BinaryExpr",
+            "region": [100, 23, 100, 32],
+            "left": {
+             "_": "BinaryExpr",
+             "region": [100, 23, 100, 32],
+             "left": {
+              "_": "BinaryExpr",
+              "region": [100, 23, 100, 32],
+              "left": {
+               "_": "BinaryExpr",
+               "region": [100, 23, 100, 32],
+               "left": {
+                "_": "BinaryExpr",
+                "region": [100, 23, 100, 32],
+                "left": {
+                 "_": "BinaryExpr",
+                 "region": [100, 23, 100, 32],
+                 "left": {
+                  "_": "BinaryExpr",
+                  "region": [100, 23, 100, 32],
+                  "left": {
+                   "_": "StringLiteral",
+                   "region": [100, 23, 100, 32],
+                   "value": "GPIO12="
+                  },
+                  "op": "+",
+                  "right": {
+                   "_": "VarRef",
+                   "region": [100, 35, 100, 38],
+                   "name": "c12"
+                  },
+                  "result_type": "string"
+                 },
+                 "op": "+",
+                 "right": {
+                  "_": "StringLiteral",
+                  "region": [100, 41, 100, 51],
+                  "value": " GPIO13="
+                 },
+                 "result_type": "string"
+                },
+                "op": "+",
+                "right": {
+                 "_": "VarRef",
+                 "region": [100, 54, 100, 57],
+                 "name": "c13"
+                },
+                "result_type": "string"
+               },
+               "op": "+",
+               "right": {
+                "_": "StringLiteral",
+                "region": [100, 60, 100, 70],
+                "value": " GPIO14="
+               },
+               "result_type": "string"
+              },
+              "op": "+",
+              "right": {
+               "_": "VarRef",
+               "region": [100, 73, 100, 76],
+               "name": "c14"
+              },
+              "result_type": "string"
+             },
+             "op": "+",
+             "right": {
+              "_": "StringLiteral",
+              "region": [100, 79, 100, 89],
+              "value": " GPIO15="
+             },
+             "result_type": "string"
+            },
+            "op": "+",
+            "right": {
+             "_": "VarRef",
+             "region": [100, 92, 100, 95],
+             "name": "c15"
+            },
+            "result_type": "string"
+           },
+           "op": "+",
+           "right": {
+            "_": "StringLiteral",
+            "region": [100, 98, 100, 108],
+            "value": " GPIO16="
+           },
+           "result_type": "string"
+          },
+          "op": "+",
+          "right": {
+           "_": "VarRef",
+           "region": [100, 111, 100, 114],
+           "name": "c16"
+          },
+          "result_type": "string"
+         }
+        ]
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [101, 9, 101, 12],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [101, 13, 101, 21],
+          "value": "stress"
+         },
+         {
+          "_": "BinaryExpr",
+          "region": [101, 23, 101, 29],
+          "left": {
+           "_": "BinaryExpr",
+           "region": [101, 23, 101, 29],
+           "left": {
+            "_": "BinaryExpr",
+            "region": [101, 23, 101, 29],
+            "left": {
+             "_": "BinaryExpr",
+             "region": [101, 23, 101, 29],
+             "left": {
+              "_": "BinaryExpr",
+              "region": [101, 23, 101, 29],
+              "left": {
+               "_": "StringLiteral",
+               "region": [101, 23, 101, 29],
+               "value": "net="
+              },
+              "op": "+",
+              "right": {
+               "_": "VarRef",
+               "region": [101, 32, 101, 41],
+               "name": "net_count"
+              },
+              "result_type": "string"
+             },
+             "op": "+",
+             "right": {
+              "_": "StringLiteral",
+              "region": [101, 44, 101, 52],
+              "value": " wifi="
+             },
+             "result_type": "string"
+            },
+            "op": "+",
+            "right": {
+             "_": "MethodCall",
+             "region": [101, 55, 101, 59],
+             "obj": {
+              "_": "VarRef",
+              "region": [101, 55, 101, 59],
+              "name": "wifi"
+             },
+             "method": "is_connected",
+             "args": []
+            },
+            "result_type": "string"
+           },
+           "op": "+",
+           "right": {
+            "_": "StringLiteral",
+            "region": [101, 77, 101, 85],
+            "value": " heap="
+           },
+           "result_type": "string"
+          },
+          "op": "+",
+          "right": {
+           "_": "MethodCall",
+           "region": [101, 88, 101, 94],
+           "obj": {
+            "_": "VarRef",
+            "region": [101, 88, 101, 94],
+            "name": "system"
+           },
+           "method": "free_heap",
+           "args": []
+          },
+          "result_type": "string"
+         }
+        ]
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [
+  {
+   "_": "VarDecl",
+   "region": [15, 5, 15, 7],
+   "name": "c0",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [15, 15, 15, 16],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  },
+  {
+   "_": "VarDecl",
+   "region": [16, 5, 16, 7],
+   "name": "c2",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [16, 15, 16, 16],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  },
+  {
+   "_": "VarDecl",
+   "region": [17, 5, 17, 7],
+   "name": "c4",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [17, 15, 17, 16],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  },
+  {
+   "_": "VarDecl",
+   "region": [18, 5, 18, 7],
+   "name": "c5",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [18, 15, 18, 16],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  },
+  {
+   "_": "VarDecl",
+   "region": [19, 5, 19, 8],
+   "name": "c12",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [19, 16, 19, 17],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  },
+  {
+   "_": "VarDecl",
+   "region": [20, 5, 20, 8],
+   "name": "c13",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [20, 16, 20, 17],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  },
+  {
+   "_": "VarDecl",
+   "region": [21, 5, 21, 8],
+   "name": "c14",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [21, 16, 21, 17],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  },
+  {
+   "_": "VarDecl",
+   "region": [22, 5, 22, 8],
+   "name": "c15",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [22, 16, 22, 17],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  },
+  {
+   "_": "VarDecl",
+   "region": [23, 5, 23, 8],
+   "name": "c16",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [23, 16, 23, 17],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  },
+  {
+   "_": "VarDecl",
+   "region": [24, 5, 24, 14],
+   "name": "net_count",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [24, 22, 24, 23],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  }
+ ],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "MethodCall",
+     "region": [106, 5, 106, 9],
+     "obj": {
+      "_": "VarRef",
+      "region": [106, 5, 106, 9],
+      "name": "wifi"
+     },
+     "method": "connect",
+     "args": [
+      {
+       "_": "StringLiteral",
+       "region": [106, 18, 106, 29],
+       "value": "StressNet"
+      },
+      {
+       "_": "StringLiteral",
+       "region": [106, 31, 106, 41],
+       "value": "password"
+      }
+     ]
+    }
+   },
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "MethodCall",
+     "region": [107, 5, 107, 9],
+     "obj": {
+      "_": "VarRef",
+      "region": [107, 5, 107, 9],
+      "name": "mqtt"
+     },
+     "method": "connect",
+     "args": [
+      {
+       "_": "StringLiteral",
+       "region": [107, 18, 107, 39],
+       "value": "mqtt://broker.local"
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

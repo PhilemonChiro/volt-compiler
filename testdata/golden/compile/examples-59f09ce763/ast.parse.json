@@ -1,0 +1,586 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [4, 9, 5, 14],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [4, 9, 4, 12],
+    "name": "led",
+    "mode": "",
+    "gpio": 2
+   },
+   {
+    "_": "PinDecl",
+    "region": [5, 9, 5, 14],
+    "name": "motor",
+    "mode": "PWM",
+    "gpio": 4
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [61, 7, 61, 10],
+   "name": "_rule0",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [61, 7, 61, 10],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [61, 7, 61, 10],
+      "microseconds": 1000,
+      "original": "1ms"
+     },
+     "strict": true,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [62, 5, 62, 10],
+        "obj": {
+         "_": "VarRef",
+         "region": [62, 5, 62, 10],
+         "name": "motor"
+        },
+        "method": "set_pwm",
+        "args": [
+         {
+          "_": "IntLiteral",
+          "region": [62, 19, 62, 20],
+          "value": 0
+         }
+        ]
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "",
+   "crossing_vars": [],
+   "has_strict": false
+  },
+  {
+   "_": "TaskDecl",
+   "region": [65, 7, 65, 12],
+   "name": "_rule1",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [65, 7, 65, 12],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [65, 7, 65, 12],
+      "microseconds": 500000,
+      "original": "500ms"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [66, 5, 66, 11],
+        "obj": {
+         "_": "VarRef",
+         "region": [66, 5, 66, 11],
+         "name": "system"
+        },
+        "method": "watchdog_feed",
+        "args": []
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [67, 5, 67, 8],
+        "obj": {
+         "_": "VarRef",
+         "region": [67, 5, 67, 8],
+         "name": "led"
+        },
+        "method": "toggle",
+        "args": []
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "",
+   "crossing_vars": [],
+   "has_strict": false
+  }
+ ],
+ "machines": [
+  {
+   "_": "MachineDecl",
+   "region": [12, 9, 12, 18],
+   "name": "sequencer",
+   "states": [
+    {
+     "_": "StateDecl",
+     "region": [16, 11, 16, 18],
+     "name": "phase_a",
+     "is_initial": true,
+     "enter_body": [
+      {
+       "_": "AssignExpr",
+       "region": [18, 13, 18, 17],
+       "target": {
+        "_": "VarRef",
+        "region": [18, 13, 18, 17],
+        "name": "step"
+       },
+       "value": {
+        "_": "IntLiteral",
+        "region": [18, 20, 18, 21],
+        "value": 0
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [19, 13, 19, 16],
+        "obj": {
+         "_": "VarRef",
+         "region": [19, 13, 19, 16],
+         "name": "led"
+        },
+        "method": "on",
+        "args": []
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [20, 13, 20, 16],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [20, 17, 20, 22],
+          "value": "seq"
+         },
+         {
+          "_": "StringLiteral",
+          "region": [20, 24, 20, 33],
+          "value": "phase A"
+         }
+        ]
+       }
+      }
+     ],
+     "exit_body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [23, 13, 23, 16],
+        "obj": {
+         "_": "VarRef",
+         "region": [23, 13, 23, 16],
+         "name": "led"
+        },
+        "method": "off",
+        "args": []
+       }
+      }
+     ],
+     "transitions": [],
+     "timed_transitions": [
+      {
+       "_": "TimedTransition",
+       "region": [25, 15, 25, 17],
+       "duration": {
+        "_": "DurationLiteral",
+        "region": [25, 15, 25, 17],
+        "microseconds": 1000000,
+        "original": "1s"
+       },
+       "target_state": "phase_b",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "body": []
+    },
+    {
+     "_": "StateDecl",
+     "region": [28, 11, 28, 18],
+     "name": "phase_b",
+     "is_initial": false,
+     "enter_body": [
+      {
+       "_": "AssignExpr",
+       "region": [30, 13, 30, 17],
+       "target": {
+        "_": "VarRef",
+        "region": [30, 13, 30, 17],
+        "name": "step"
+       },
+       "value": {
+        "_": "BinaryExpr",
+        "region": [30, 20, 30, 24],
+        "left": {
+         "_": "VarRef",
+         "region": [30, 20, 30, 24],
+         "name": "step"
+        },
+        "op": "+",
+        "right": {
+         "_": "IntLiteral",
+         "region": [30, 27, 30, 28],
+         "value": 1
+        },
+        "result_type": null
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [31, 13, 31, 16],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [31, 17, 31, 22],
+          "value": "seq"
+         },
+         {
+          "_": "StringLiteral",
+          "region": [31, 24, 31, 33],
+          "value": "phase B"
+         }
+        ]
+       }
+      }
+     ],
+     "exit_body": [],
+     "transitions": [],
+     "timed_transitions": [
+      {
+       "_": "TimedTransition",
+       "region": [33, 15, 33, 20],
+       "duration": {
+        "_": "DurationLiteral",
+        "region": [33, 15, 33, 20],
+        "microseconds": 800000,
+        "original": "800ms"
+       },
+       "target_state": "phase_c",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "body": []
+    },
+    {
+     "_": "StateDecl",
+     "region": [36, 11, 36, 18],
+     "name": "phase_c",
+     "is_initial": false,
+     "enter_body": [
+      {
+       "_": "AssignExpr",
+       "region": [38, 13, 38, 17],
+       "target": {
+        "_": "VarRef",
+        "region": [38, 13, 38, 17],
+        "name": "step"
+       },
+       "value": {
+        "_": "BinaryExpr",
+        "region": [38, 20, 38, 24],
+        "left": {
+         "_": "VarRef",
+         "region": [38, 20, 38, 24],
+         "name": "step"
+        },
+        "op": "+",
+        "right": {
+         "_": "IntLiteral",
+         "region": [38, 27, 38, 28],
+         "value": 1
+        },
+        "result_type": null
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [39, 13, 39, 16],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [39, 17, 39, 22],
+          "value": "seq"
+         },
+         {
+          "_": "StringLiteral",
+          "region": [39, 24, 39, 33],
+          "value": "phase C"
+         }
+        ]
+       }
+      }
+     ],
+     "exit_body": [],
+     "transitions": [],
+     "timed_transitions": [
+      {
+       "_": "TimedTransition",
+       "region": [41, 15, 41, 20],
+       "duration": {
+        "_": "DurationLiteral",
+        "region": [41, 15, 41, 20],
+        "microseconds": 600000,
+        "original": "600ms"
+       },
+       "target_state": "phase_d",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "body": []
+    },
+    {
+     "_": "StateDecl",
+     "region": [44, 11, 44, 18],
+     "name": "phase_d",
+     "is_initial": false,
+     "enter_body": [
+      {
+       "_": "AssignExpr",
+       "region": [46, 13, 46, 17],
+       "target": {
+        "_": "VarRef",
+        "region": [46, 13, 46, 17],
+        "name": "step"
+       },
+       "value": {
+        "_": "BinaryExpr",
+        "region": [46, 20, 46, 24],
+        "left": {
+         "_": "VarRef",
+         "region": [46, 20, 46, 24],
+         "name": "step"
+        },
+        "op": "+",
+        "right": {
+         "_": "IntLiteral",
+         "region": [46, 27, 46, 28],
+         "value": 1
+        },
+        "result_type": null
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [47, 13, 47, 16],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [47, 17, 47, 22],
+          "value": "seq"
+         },
+         {
+          "_": "StringLiteral",
+          "region": [47, 24, 47, 33],
+          "value": "phase D"
+         }
+        ]
+       }
+      }
+     ],
+     "exit_body": [],
+     "transitions": [],
+     "timed_transitions": [
+      {
+       "_": "TimedTransition",
+       "region": [49, 15, 49, 20],
+       "duration": {
+        "_": "DurationLiteral",
+        "region": [49, 15, 49, 20],
+        "microseconds": 400000,
+        "original": "400ms"
+       },
+       "target_state": "phase_e",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "body": []
+    },
+    {
+     "_": "StateDecl",
+     "region": [52, 11, 52, 18],
+     "name": "phase_e",
+     "is_initial": false,
+     "enter_body": [
+      {
+       "_": "AssignExpr",
+       "region": [54, 13, 54, 25],
+       "target": {
+        "_": "VarRef",
+        "region": [54, 13, 54, 25],
+        "name": "total_cycles"
+       },
+       "value": {
+        "_": "BinaryExpr",
+        "region": [54, 28, 54, 40],
+        "left": {
+         "_": "VarRef",
+         "region": [54, 28, 54, 40],
+         "name": "total_cycles"
+        },
+        "op": "+",
+        "right": {
+         "_": "IntLiteral",
+         "region": [54, 43, 54, 44],
+         "value": 1
+        },
+        "result_type": null
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [55, 13, 55, 16],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [55, 17, 55, 22],
+          "value": "seq"
+         },
+         {
+          "_": "StringLiteral",
+          "region": [55, 24, 55, 40],
+          "value": "cycle complete"
+         }
+        ]
+       }
+      }
+     ],
+     "exit_body": [],
+     "transitions": [],
+     "timed_transitions": [
+      {
+       "_": "TimedTransition",
+       "region": [57, 15, 57, 20],
+       "duration": {
+        "_": "DurationLiteral",
+        "region": [57, 15, 57, 20],
+        "microseconds": 200000,
+        "original": "200ms"
+       },
+       "target_state": "phase_a",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "body": []
+    }
+   ],
+   "variables": [
+    {
+     "_": "VarDecl",
+     "region": [13, 9, 13, 13],
+     "name": "step",
+     "type_name": "int",
+     "value": {
+      "_": "IntLiteral",
+      "region": [13, 21, 13, 22],
+      "value": 0
+     },
+     "mutable": true,
+     "shared": false,
+     "needs_lifting": false
+    },
+    {
+     "_": "VarDecl",
+     "region": [14, 9, 14, 21],
+     "name": "total_cycles",
+     "type_name": "int",
+     "value": {
+      "_": "IntLiteral",
+      "region": [14, 29, 14, 30],
+      "value": 0
+     },
+     "mutable": true,
+     "shared": false,
+     "needs_lifting": false
+    }
+   ]
+  }
+ ],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "MethodCall",
+     "region": [9, 5, 9, 11],
+     "obj": {
+      "_": "VarRef",
+      "region": [9, 5, 9, 11],
+      "name": "system"
+     },
+     "method": "watchdog_enable",
+     "args": [
+      {
+       "_": "IntLiteral",
+       "region": [9, 28, 9, 33],
+       "value": 15000
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

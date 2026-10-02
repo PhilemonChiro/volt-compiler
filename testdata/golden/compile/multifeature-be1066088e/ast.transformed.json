@@ -1,0 +1,269 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [4, 9, 4, 12],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [4, 9, 4, 12],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [10, 6, 10, 13],
+   "name": "sampler",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [11, 11, 11, 16],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [11, 11, 11, 16],
+      "microseconds": 100000,
+      "original": "100ms"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [12, 9, 12, 17],
+        "obj": {
+         "_": "VarRef",
+         "region": [12, 9, 12, 17],
+         "name": "readings"
+        },
+        "method": "send",
+        "args": [
+         {
+          "_": "IntLiteral",
+          "region": [12, 23, 12, 25],
+          "value": 42
+         }
+        ]
+       }
+      },
+      {
+       "_": "CompoundAssign",
+       "region": [13, 9, 13, 21],
+       "target": {
+        "_": "VarRef",
+        "region": [13, 9, 13, 21],
+        "name": "sample_count"
+       },
+       "op": "+=",
+       "value": {
+        "_": "IntLiteral",
+        "region": [13, 25, 13, 26],
+        "value": 1
+       }
+      }
+     ],
+     "yield_label": 1
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false
+  },
+  {
+   "_": "TaskDecl",
+   "region": [17, 6, 17, 15],
+   "name": "processor",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [18, 11, 18, 15],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [18, 11, 18, 15],
+      "microseconds": 50000,
+      "original": "50ms"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "IfStmt",
+       "region": [19, 12, 19, 20],
+       "condition": {
+        "_": "MethodCall",
+        "region": [19, 12, 19, 20],
+        "obj": {
+         "_": "VarRef",
+         "region": [19, 12, 19, 20],
+         "name": "readings"
+        },
+        "method": "has_data",
+        "args": []
+       },
+       "then_body": [
+        {
+         "_": "VarDecl",
+         "region": [20, 17, 20, 20],
+         "name": "val",
+         "type_name": "int",
+         "value": {
+          "_": "MethodCall",
+          "region": [20, 28, 20, 36],
+          "obj": {
+           "_": "VarRef",
+           "region": [20, 28, 20, 36],
+           "name": "readings"
+          },
+          "method": "receive",
+          "args": []
+         },
+         "mutable": true,
+         "shared": false,
+         "needs_lifting": false
+        },
+        {
+         "_": "IfStmt",
+         "region": [21, 16, 21, 19],
+         "condition": {
+          "_": "BinaryExpr",
+          "region": [21, 16, 21, 19],
+          "left": {
+           "_": "VarRef",
+           "region": [21, 16, 21, 19],
+           "name": "val"
+          },
+          "op": ">",
+          "right": {
+           "_": "IntLiteral",
+           "region": [21, 22, 21, 24],
+           "value": 40
+          },
+          "result_type": "bool"
+         },
+         "then_body": [
+          {
+           "_": "ExprStmt",
+           "region": [0, 0, 0, 0],
+           "expr": {
+            "_": "MethodCall",
+            "region": [22, 17, 22, 20],
+            "obj": {
+             "_": "VarRef",
+             "region": [22, 17, 22, 20],
+             "name": "led"
+            },
+            "method": "on",
+            "args": []
+           }
+          }
+         ],
+         "else_body": null
+        }
+       ],
+       "else_body": null
+      }
+     ],
+     "yield_label": 1
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false
+  },
+  {
+   "_": "TaskDecl",
+   "region": [28, 6, 28, 13],
+   "name": "monitor",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [29, 11, 29, 13],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [29, 11, 29, 13],
+      "microseconds": 5000000,
+      "original": "5s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [30, 9, 30, 12],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [30, 13, 30, 20],
+          "value": "stats"
+         },
+         {
+          "_": "StringLiteral",
+          "region": [30, 22, 30, 46],
+          "value": "samples={sample_count}"
+         }
+        ]
+       }
+      }
+     ],
+     "yield_label": 1
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [
+  {
+   "_": "VarDecl",
+   "region": [7, 12, 7, 24],
+   "name": "sample_count",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [7, 32, 7, 33],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": true,
+   "needs_lifting": false
+  }
+ ],
+ "channels": [
+  {
+   "_": "ChannelDecl",
+   "region": [8, 9, 8, 17],
+   "name": "readings",
+   "elem_type": "int",
+   "capacity": 16
+  }
+ ],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

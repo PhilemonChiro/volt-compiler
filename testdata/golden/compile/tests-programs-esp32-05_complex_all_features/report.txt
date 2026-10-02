@@ -1,0 +1,35 @@
+
+[yellow bold]-- CONCURRENCY -- 05_complex_all_features.volt:0[/yellow bold]
+
+Variable `motor_isr_count` is shared between critical task (pid_control) and task (health_report). The compiler will mark it `volatile` in generated C.
+
+
+[cyan]Hint: For multi-word values, consider using atomic operations.[/cyan]
+
+
+[yellow bold]-- DEPRECATION -- 05_complex_all_features.volt:1[/yellow bold]
+
+Move `chip esp32` to volt.toml: chip = "esp32"
+
+ [dim]1 |[/dim] chip esp32
+ [dim]  |[/dim] [yellow]     ^^^^^[/yellow]
+
+[cyan]Hint: The chip declaration will move to volt.toml in a future version.[/cyan]
+
+
+[yellow bold]-- HARDWARE WARNING -- 05_complex_all_features.volt:8[/yellow bold]
+
+Strapping pin: GPIO 5 controls boot debug output. Usually safe for general use.
+
+ [dim]7 |[/dim]     pin motor: PWM = 4
+ [dim]8 |[/dim]     pin fan: Output = 5
+ [dim]  |[/dim] [yellow]        ^^^[/yellow]
+
+
+[yellow bold]-- HARDWARE WARNING -- 05_complex_all_features.volt:9[/yellow bold]
+
+Strapping pin: GPIO 15 controls boot log output. If pulled LOW, boot messages are suppressed (usually harmless).
+
+ [dim]8 |[/dim]     pin fan: Output = 5
+ [dim]9 |[/dim]     pin button: PullUpInput = 15
+ [dim]  |[/dim] [yellow]        ^^^^^^[/yellow]

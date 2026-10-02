@@ -1,0 +1,7 @@
+
+[red bold]-- SYNTAX ERROR -- main.volt:1[/red bold]
+
+Unexpected token Token('NAME', 'this') at line 1, column 1.
+
+ [dim]1 |[/dim] this is { not valid } volt {code}
+ [dim]  |[/dim] [red]^[/red]

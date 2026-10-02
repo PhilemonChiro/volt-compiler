@@ -1,0 +1,236 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 3,
+    "col": 9,
+    "message": "GPIO 2: GPIO 2 is a strapping pin. Must be LOW or floating for download mode.",
+    "severity": "warning",
+    "hint": ""
+   },
+   {
+    "line": 4,
+    "col": 9,
+    "message": "GPIO 0: GPIO 0 is a strapping pin. LOW at boot = download mode. Ensure pull-up (internal or external) for normal boot.",
+    "severity": "warning",
+    "hint": ""
+   },
+   {
+    "line": 11,
+    "col": 11,
+    "message": "State `running` in machine `DeviceState` has no outgoing transitions (dead-end state).",
+    "severity": "warning",
+    "hint": "Add a transition or mark with @terminal if intentional."
+   }
+  ],
+  "pins": [
+   {
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   },
+   {
+    "name": "button",
+    "mode": "PullUpInput",
+    "gpio": 0
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [],
+  "machines": [
+   {
+    "name": "DeviceState",
+    "states": [
+     "idle",
+     "running"
+    ],
+    "line": 7
+   }
+  ],
+  "channels": [],
+  "enums": [],
+  "chip": ""
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "hardware {\n    pin led: Output = 2\n    pin button: PullUpInput = 0\n}\n\nmachine DeviceState {\n    initial state idle {\n        on button.press() -> running\n    }\n\n    state running {\n    }\n}\n",
+ "find_symbols": [
+  {
+   "name": "led",
+   "kind": "pin",
+   "def_line": 3,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 13,
+     "col": 13
+    }
+   ]
+  },
+  {
+   "name": "button",
+   "kind": "pin",
+   "def_line": 4,
+   "def_col": 9,
+   "refs": []
+  },
+  {
+   "name": "DeviceState",
+   "kind": "machine",
+   "def_line": 7,
+   "def_col": 9,
+   "refs": []
+  },
+  {
+   "name": "idle",
+   "kind": "state",
+   "def_line": 8,
+   "def_col": 11,
+   "refs": []
+  },
+  {
+   "name": "running",
+   "kind": "state",
+   "def_line": 11,
+   "def_col": 11,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": [
+   {
+    "name": "DeviceState",
+    "mermaid": "stateDiagram-v2\n    [*] --> idle\n    idle --> running : button",
+    "states": [
+     {
+      "name": "idle",
+      "line": 8
+     },
+     {
+      "name": "running",
+      "line": 11
+     }
+    ]
+   }
+  ]
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_DeviceState[[\"DeviceState\"]]\n    p_button([\"button\"])\n    p_led([\"led\"])\n    u_DeviceState -->|press| p_button\n    u_DeviceState -->|toggle| p_led\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_DeviceState machine;\n    class p_button pin;\n    class p_led pin;",
+  "units": [
+   {
+    "id": "u_DeviceState",
+    "name": "DeviceState",
+    "line": 7
+   }
+  ],
+  "loops": [],
+  "edges": [
+   {
+    "drive": "machine",
+    "src": "u_DeviceState",
+    "dst": "p_button"
+   },
+   {
+    "drive": "machine",
+    "src": "u_DeviceState",
+    "dst": "p_led"
+   }
+  ],
+  "nodes": {
+   "u_DeviceState": {
+    "kind": "machine",
+    "label": "DeviceState",
+    "line": 7,
+    "detail": "2 states"
+   },
+   "p_button": {
+    "kind": "pin",
+    "label": "button",
+    "line": 4,
+    "detail": "PullUpInput · GPIO 0"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 3,
+    "detail": "Output · GPIO 2"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_DeviceState[[\"DeviceState\"]]\n    p_button([\"button\"])\n    p_led([\"led\"])\n    u_DeviceState -->|press| p_button\n    u_DeviceState -->|toggle| p_led\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_DeviceState machine;\n    class p_button pin;\n    class p_led pin;",
+  "units": [
+   {
+    "id": "u_DeviceState",
+    "name": "DeviceState",
+    "line": 7
+   }
+  ],
+  "loops": [],
+  "edges": [
+   {
+    "drive": "machine",
+    "src": "u_DeviceState",
+    "dst": "p_button"
+   },
+   {
+    "drive": "machine",
+    "src": "u_DeviceState",
+    "dst": "p_led"
+   }
+  ],
+  "nodes": {
+   "u_DeviceState": {
+    "kind": "machine",
+    "label": "DeviceState",
+    "line": 7,
+    "detail": "2 states"
+   },
+   "p_button": {
+    "kind": "pin",
+    "label": "button",
+    "line": 4,
+    "detail": "PullUpInput · GPIO 0"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 3,
+    "detail": "Output · GPIO 2"
+   }
+  }
+ }
+}

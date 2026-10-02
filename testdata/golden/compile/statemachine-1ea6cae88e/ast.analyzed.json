@@ -1,0 +1,78 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [
+  {
+   "_": "MachineDecl",
+   "region": [2, 9, 2, 14],
+   "name": "Timer",
+   "states": [
+    {
+     "_": "StateDecl",
+     "region": [3, 19, 3, 26],
+     "name": "waiting",
+     "is_initial": true,
+     "enter_body": [],
+     "exit_body": [],
+     "transitions": [],
+     "timed_transitions": [
+      {
+       "_": "TimedTransition",
+       "region": [4, 15, 4, 23],
+       "duration": {
+        "_": "DurationLiteral",
+        "region": [4, 15, 4, 23],
+        "microseconds": 5000000,
+        "original": "5seconds"
+       },
+       "target_state": "done",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "body": []
+    },
+    {
+     "_": "StateDecl",
+     "region": [6, 11, 6, 15],
+     "name": "done",
+     "is_initial": false,
+     "enter_body": [],
+     "exit_body": [],
+     "transitions": [],
+     "timed_transitions": [
+      {
+       "_": "TimedTransition",
+       "region": [7, 15, 7, 23],
+       "duration": {
+        "_": "DurationLiteral",
+        "region": [7, 15, 7, 23],
+        "microseconds": 1000000,
+        "original": "1seconds"
+       },
+       "target_state": "waiting",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "body": []
+    }
+   ],
+   "variables": []
+  }
+ ],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

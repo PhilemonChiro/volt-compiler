@@ -1,0 +1,89 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [
+  {
+   "_": "FuncDecl",
+   "region": [2, 6, 2, 9],
+   "name": "add",
+   "params": [
+    {
+     "_": "Param",
+     "region": [2, 10, 2, 11],
+     "name": "a",
+     "type_name": "int"
+    },
+    {
+     "_": "Param",
+     "region": [2, 18, 2, 19],
+     "name": "b",
+     "type_name": "int"
+    }
+   ],
+   "return_type": "int",
+   "body": [
+    {
+     "_": "ReturnStmt",
+     "region": [0, 0, 0, 0],
+     "value": {
+      "_": "BinaryExpr",
+      "region": [3, 12, 3, 13],
+      "left": {
+       "_": "VarRef",
+       "region": [3, 12, 3, 13],
+       "name": "a"
+      },
+      "op": "+",
+      "right": {
+       "_": "VarRef",
+       "region": [3, 16, 3, 17],
+       "name": "b"
+      },
+      "result_type": null
+     }
+    }
+   ],
+   "contains_yield": false
+  }
+ ],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "FuncCall",
+     "region": [6, 5, 6, 8],
+     "name": "add",
+     "args": [
+      {
+       "_": "StringLiteral",
+       "region": [6, 9, 6, 12],
+       "value": "a"
+      },
+      {
+       "_": "StringLiteral",
+       "region": [6, 14, 6, 17],
+       "value": "b"
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

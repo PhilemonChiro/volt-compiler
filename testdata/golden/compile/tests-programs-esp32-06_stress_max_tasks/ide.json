@@ -1,0 +1,2341 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 1,
+    "col": 6,
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "severity": "warning",
+    "hint": "The chip declaration will move to volt.toml in a future version."
+   },
+   {
+    "line": 4,
+    "col": 9,
+    "message": "Strapping pin: GPIO 2 must be LOW during boot for flash programming.",
+    "severity": "warning",
+    "hint": ""
+   },
+   {
+    "line": 6,
+    "col": 9,
+    "message": "Strapping pin: GPIO 5 controls boot debug output. Usually safe for general use.",
+    "severity": "warning",
+    "hint": ""
+   },
+   {
+    "line": 0,
+    "col": 0,
+    "message": "Variable `isr1_count` is shared between critical task (isr1) and task (stress_report). The compiler will mark it `volatile` in generated C.",
+    "severity": "warning",
+    "hint": "For multi-word values, consider using atomic operations."
+   },
+   {
+    "line": 0,
+    "col": 0,
+    "message": "Variable `isr2_count` is shared between critical task (isr2) and task (stress_report). The compiler will mark it `volatile` in generated C.",
+    "severity": "warning",
+    "hint": "For multi-word values, consider using atomic operations."
+   }
+  ],
+  "pins": [
+   {
+    "name": "p1",
+    "mode": "Output",
+    "gpio": 2
+   },
+   {
+    "name": "p2",
+    "mode": "Output",
+    "gpio": 4
+   },
+   {
+    "name": "p3",
+    "mode": "Output",
+    "gpio": 5
+   },
+   {
+    "name": "p4",
+    "mode": "Output",
+    "gpio": 13
+   },
+   {
+    "name": "p5",
+    "mode": "Output",
+    "gpio": 14
+   },
+   {
+    "name": "p6",
+    "mode": "Output",
+    "gpio": 16
+   },
+   {
+    "name": "p7",
+    "mode": "Output",
+    "gpio": 17
+   },
+   {
+    "name": "p8",
+    "mode": "Output",
+    "gpio": 18
+   },
+   {
+    "name": "p9",
+    "mode": "Output",
+    "gpio": 19
+   },
+   {
+    "name": "p10",
+    "mode": "Output",
+    "gpio": 21
+   },
+   {
+    "name": "p11",
+    "mode": "Output",
+    "gpio": 22
+   },
+   {
+    "name": "p12",
+    "mode": "Output",
+    "gpio": 23
+   },
+   {
+    "name": "a1",
+    "mode": "Analog",
+    "gpio": 32
+   },
+   {
+    "name": "a2",
+    "mode": "Analog",
+    "gpio": 33
+   },
+   {
+    "name": "a3",
+    "mode": "Analog",
+    "gpio": 34
+   },
+   {
+    "name": "a4",
+    "mode": "Analog",
+    "gpio": 35
+   },
+   {
+    "name": "a5",
+    "mode": "Analog",
+    "gpio": 36
+   },
+   {
+    "name": "a6",
+    "mode": "Analog",
+    "gpio": 39
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "t1",
+    "tier": "background",
+    "line": 39
+   },
+   {
+    "name": "t2",
+    "tier": "background",
+    "line": 46
+   },
+   {
+    "name": "t3",
+    "tier": "background",
+    "line": 53
+   },
+   {
+    "name": "t4",
+    "tier": "background",
+    "line": 60
+   },
+   {
+    "name": "t5",
+    "tier": "background",
+    "line": 67
+   },
+   {
+    "name": "t6",
+    "tier": "background",
+    "line": 74
+   },
+   {
+    "name": "t7",
+    "tier": "background",
+    "line": 81
+   },
+   {
+    "name": "t8",
+    "tier": "background",
+    "line": 88
+   },
+   {
+    "name": "t9",
+    "tier": "background",
+    "line": 95
+   },
+   {
+    "name": "t10",
+    "tier": "background",
+    "line": 102
+   },
+   {
+    "name": "isr1",
+    "tier": "critical",
+    "line": 109
+   },
+   {
+    "name": "isr2",
+    "tier": "critical",
+    "line": 116
+   },
+   {
+    "name": "adc_poll",
+    "tier": "background",
+    "line": 123
+   },
+   {
+    "name": "net_report",
+    "tier": "priority",
+    "line": 138
+   },
+   {
+    "name": "stress_report",
+    "tier": "background",
+    "line": 148
+   }
+  ],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": "esp32"
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "chip esp32\n\nhardware {\n    pin p1: Output = 2\n    pin p2: Output = 4\n    pin p3: Output = 5\n    pin p4: Output = 13\n    pin p5: Output = 14\n    pin p6: Output = 16\n    pin p7: Output = 17\n    pin p8: Output = 18\n    pin p9: Output = 19\n    pin p10: Output = 21\n    pin p11: Output = 22\n    pin p12: Output = 23\n    pin a1: Analog = 32\n    pin a2: Analog = 33\n    pin a3: Analog = 34\n    pin a4: Analog = 35\n    pin a5: Analog = 36\n    pin a6: Analog = 39\n}\n\nvar t1_count: int = 0\n\nvar t2_count: int = 0\n\nvar t3_count: int = 0\n\nvar t4_count: int = 0\n\nvar t5_count: int = 0\n\nvar t6_count: int = 0\n\nvar t7_count: int = 0\n\nvar t8_count: int = 0\n\nvar t9_count: int = 0\n\nvar t10_count: int = 0\n\nvar isr1_count: int = 0\n\nvar isr2_count: int = 0\n\nvar adc_count: int = 0\n\nvar net_count: int = 0\n\ntask t1 {\n    every 100ms {\n        p1.toggle()\n        t1_count += 1\n    }\n}\n\ntask t2 {\n    every 200ms {\n        p2.toggle()\n        t2_count += 1\n    }\n}\n\ntask t3 {\n    every 300ms {\n        p3.toggle()\n        t3_count += 1\n    }\n}\n\ntask t4 {\n    every 400ms {\n        p4.toggle()\n        t4_count += 1\n    }\n}\n\ntask t5 {\n    every 500ms {\n        p5.toggle()\n        t5_count += 1\n    }\n}\n\ntask t6 {\n    every 600ms {\n        p6.toggle()\n        t6_count += 1\n    }\n}\n\ntask t7 {\n    every 700ms {\n        p7.toggle()\n        t7_count += 1\n    }\n}\n\ntask t8 {\n    every 800ms {\n        p8.toggle()\n        t8_count += 1\n    }\n}\n\ntask t9 {\n    every 900ms {\n        p9.toggle()\n        t9_count += 1\n    }\n}\n\ntask t10 {\n    every 1s {\n        p10.toggle()\n        t10_count += 1\n    }\n}\n\ntask isr1 {\n    every 1ms strict {\n        p11.toggle()\n        isr1_count += 1\n    }\n}\n\ntask isr2 {\n    every 500ms strict {\n        p12.toggle()\n        isr2_count += 1\n    }\n}\n\ntask adc_poll {\n    every 100ms {\n        let v1 = a1.read()\n        let v2 = a2.read()\n        let v3 = a3.read()\n        let v4 = a4.read()\n        let v5 = a5.read()\n        let v6 = a6.read()\n        adc_count += 1\n        if adc_count % 50 == 0 {\n            log(\"adc\", \"#\" + adc_count + \" ch0=\" + v1 + \" ch1=\" + v2 + \" ch2=\" + v3 + \" ch3=\" + v4 + \" ch4=\" + v5 + \" ch5=\" + v6)\n        }\n    }\n}\n\ntask net_report {\n    every 10s {\n        net_count += 1\n        mqtt.send_int(\"stress/a1\", a1.read())\n        mqtt.send_int(\"stress/a2\", a2.read())\n        mqtt.send_int(\"stress/a3\", a3.read())\n        log(\"net\", \"#\" + net_count + \" mqtt sent 3 values\")\n    }\n}\n\ntask stress_report {\n    every 5s {\n        log(\"stress\", \"t1=\" + t1_count + \" t2=\" + t2_count + \" t3=\" + t3_count + \" t4=\" + t4_count + \" t5=\" + t5_count)\n        log(\"stress\", \"t6=\" + t6_count + \" t7=\" + t7_count + \" t8=\" + t8_count + \" t9=\" + t9_count + \" t10=\" + t10_count)\n        log(\"stress\", \"isr1=\" + isr1_count + \" isr2=\" + isr2_count + \" adc=\" + adc_count + \" net=\" + net_count)\n        log(\"stress\", \"heap=\" + system.free_heap() + \" wifi=\" + wifi.is_connected())\n    }\n}\n\nsetup {\n    wifi.connect(\"StressNet\", \"password\")\n    mqtt.connect(\"mqtt://broker.local\")\n}\n",
+ "find_symbols": [
+  {
+   "name": "p1",
+   "kind": "pin",
+   "def_line": 4,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 41,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "p2",
+   "kind": "pin",
+   "def_line": 5,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 48,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "p3",
+   "kind": "pin",
+   "def_line": 6,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 55,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "p4",
+   "kind": "pin",
+   "def_line": 7,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 62,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "p5",
+   "kind": "pin",
+   "def_line": 8,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 69,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "p6",
+   "kind": "pin",
+   "def_line": 9,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 76,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "p7",
+   "kind": "pin",
+   "def_line": 10,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 83,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "p8",
+   "kind": "pin",
+   "def_line": 11,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 90,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "p9",
+   "kind": "pin",
+   "def_line": 12,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 97,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "p10",
+   "kind": "pin",
+   "def_line": 13,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 104,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "p11",
+   "kind": "pin",
+   "def_line": 14,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 111,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "p12",
+   "kind": "pin",
+   "def_line": 15,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 118,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "a1",
+   "kind": "pin",
+   "def_line": 16,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 125,
+     "col": 18
+    },
+    {
+     "line": 141,
+     "col": 36
+    }
+   ]
+  },
+  {
+   "name": "a2",
+   "kind": "pin",
+   "def_line": 17,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 126,
+     "col": 18
+    },
+    {
+     "line": 142,
+     "col": 36
+    }
+   ]
+  },
+  {
+   "name": "a3",
+   "kind": "pin",
+   "def_line": 18,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 127,
+     "col": 18
+    },
+    {
+     "line": 143,
+     "col": 36
+    }
+   ]
+  },
+  {
+   "name": "a4",
+   "kind": "pin",
+   "def_line": 19,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 128,
+     "col": 18
+    }
+   ]
+  },
+  {
+   "name": "a5",
+   "kind": "pin",
+   "def_line": 20,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 129,
+     "col": 18
+    }
+   ]
+  },
+  {
+   "name": "a6",
+   "kind": "pin",
+   "def_line": 21,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 130,
+     "col": 18
+    }
+   ]
+  },
+  {
+   "name": "t1",
+   "kind": "task",
+   "def_line": 39,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "t2",
+   "kind": "task",
+   "def_line": 46,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "t3",
+   "kind": "task",
+   "def_line": 53,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "t4",
+   "kind": "task",
+   "def_line": 60,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "t5",
+   "kind": "task",
+   "def_line": 67,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "t6",
+   "kind": "task",
+   "def_line": 74,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "t7",
+   "kind": "task",
+   "def_line": 81,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "t8",
+   "kind": "task",
+   "def_line": 88,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "t9",
+   "kind": "task",
+   "def_line": 95,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "t10",
+   "kind": "task",
+   "def_line": 102,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "isr1",
+   "kind": "task",
+   "def_line": 109,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "isr2",
+   "kind": "task",
+   "def_line": 116,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "adc_poll",
+   "kind": "task",
+   "def_line": 123,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "net_report",
+   "kind": "task",
+   "def_line": 138,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "stress_report",
+   "kind": "task",
+   "def_line": 148,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "t1_count",
+   "kind": "var",
+   "def_line": 24,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 42,
+     "col": 9
+    },
+    {
+     "line": 150,
+     "col": 31
+    }
+   ]
+  },
+  {
+   "name": "t2_count",
+   "kind": "var",
+   "def_line": 25,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 49,
+     "col": 9
+    },
+    {
+     "line": 150,
+     "col": 51
+    }
+   ]
+  },
+  {
+   "name": "t3_count",
+   "kind": "var",
+   "def_line": 26,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 56,
+     "col": 9
+    },
+    {
+     "line": 150,
+     "col": 71
+    }
+   ]
+  },
+  {
+   "name": "t4_count",
+   "kind": "var",
+   "def_line": 27,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 63,
+     "col": 9
+    },
+    {
+     "line": 150,
+     "col": 91
+    }
+   ]
+  },
+  {
+   "name": "t5_count",
+   "kind": "var",
+   "def_line": 28,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 70,
+     "col": 9
+    },
+    {
+     "line": 150,
+     "col": 111
+    }
+   ]
+  },
+  {
+   "name": "t6_count",
+   "kind": "var",
+   "def_line": 29,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 77,
+     "col": 9
+    },
+    {
+     "line": 151,
+     "col": 31
+    }
+   ]
+  },
+  {
+   "name": "t7_count",
+   "kind": "var",
+   "def_line": 30,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 84,
+     "col": 9
+    },
+    {
+     "line": 151,
+     "col": 51
+    }
+   ]
+  },
+  {
+   "name": "t8_count",
+   "kind": "var",
+   "def_line": 31,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 91,
+     "col": 9
+    },
+    {
+     "line": 151,
+     "col": 71
+    }
+   ]
+  },
+  {
+   "name": "t9_count",
+   "kind": "var",
+   "def_line": 32,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 98,
+     "col": 9
+    },
+    {
+     "line": 151,
+     "col": 91
+    }
+   ]
+  },
+  {
+   "name": "t10_count",
+   "kind": "var",
+   "def_line": 33,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 105,
+     "col": 9
+    },
+    {
+     "line": 151,
+     "col": 112
+    }
+   ]
+  },
+  {
+   "name": "isr1_count",
+   "kind": "var",
+   "def_line": 34,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 112,
+     "col": 9
+    },
+    {
+     "line": 152,
+     "col": 33
+    }
+   ]
+  },
+  {
+   "name": "isr2_count",
+   "kind": "var",
+   "def_line": 35,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 119,
+     "col": 9
+    },
+    {
+     "line": 152,
+     "col": 57
+    }
+   ]
+  },
+  {
+   "name": "adc_count",
+   "kind": "var",
+   "def_line": 36,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 131,
+     "col": 9
+    },
+    {
+     "line": 132,
+     "col": 12
+    },
+    {
+     "line": 133,
+     "col": 30
+    },
+    {
+     "line": 152,
+     "col": 80
+    }
+   ]
+  },
+  {
+   "name": "net_count",
+   "kind": "var",
+   "def_line": 37,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 140,
+     "col": 9
+    },
+    {
+     "line": 144,
+     "col": 26
+    },
+    {
+     "line": 152,
+     "col": 102
+    }
+   ]
+  },
+  {
+   "name": "v1",
+   "kind": "var",
+   "def_line": 125,
+   "def_col": 13,
+   "refs": [
+    {
+     "line": 133,
+     "col": 52
+    }
+   ]
+  },
+  {
+   "name": "v2",
+   "kind": "var",
+   "def_line": 126,
+   "def_col": 13,
+   "refs": [
+    {
+     "line": 133,
+     "col": 67
+    }
+   ]
+  },
+  {
+   "name": "v3",
+   "kind": "var",
+   "def_line": 127,
+   "def_col": 13,
+   "refs": [
+    {
+     "line": 133,
+     "col": 82
+    }
+   ]
+  },
+  {
+   "name": "v4",
+   "kind": "var",
+   "def_line": 128,
+   "def_col": 13,
+   "refs": [
+    {
+     "line": 133,
+     "col": 97
+    }
+   ]
+  },
+  {
+   "name": "v5",
+   "kind": "var",
+   "def_line": 129,
+   "def_col": 13,
+   "refs": [
+    {
+     "line": 133,
+     "col": 112
+    }
+   ]
+  },
+  {
+   "name": "v6",
+   "kind": "var",
+   "def_line": 130,
+   "def_col": 13,
+   "refs": [
+    {
+     "line": 133,
+     "col": 127
+    }
+   ]
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_wifi{{\"wifi\"}}\n    s_mqtt{{\"mqtt\"}}\n    v_t1_count(\"t1_count\")\n    v_t2_count(\"t2_count\")\n    v_t3_count(\"t3_count\")\n    v_t4_count(\"t4_count\")\n    v_t5_count(\"t5_count\")\n    v_t6_count(\"t6_count\")\n    v_t7_count(\"t7_count\")\n    v_t8_count(\"t8_count\")\n    v_t9_count(\"t9_count\")\n    v_t10_count(\"t10_count\")\n    v_isr1_count(\"isr1_count\")\n    v_isr2_count(\"isr2_count\")\n    p_a1([\"a1\"])\n    p_a2([\"a2\"])\n    p_a3([\"a3\"])\n    v_adc_count(\"adc_count\")\n    s_log{{\"log\"}}\n    v_net_count(\"net_count\")\n    u_t1((\"t1<br>↻ 100ms\"))\n    u_t2((\"t2<br>↻ 200ms\"))\n    u_t3((\"t3<br>↻ 300ms\"))\n    u_t4((\"t4<br>↻ 400ms\"))\n    u_t5((\"t5<br>↻ 500ms\"))\n    u_t6((\"t6<br>↻ 600ms\"))\n    u_t7((\"t7<br>↻ 700ms\"))\n    u_t8((\"t8<br>↻ 800ms\"))\n    u_t9((\"t9<br>↻ 900ms\"))\n    u_t10((\"t10<br>↻ 1s\"))\n    u_isr1((\"isr1<br>↻ 1ms\"))\n    u_isr2((\"isr2<br>↻ 500ms\"))\n    u_adc_poll((\"adc_poll<br>↻ 100ms\"))\n    u_net_report((\"net_report<br>↻ 10s\"))\n    u_stress_report((\"stress_report<br>↻ 5s\"))\n    u_setup -->|connect| s_wifi\n    u_setup -->|connect| s_mqtt\n    u_t1 -->|write| v_t1_count\n    u_t2 -->|write| v_t2_count\n    u_t3 -->|write| v_t3_count\n    u_t4 -->|write| v_t4_count\n    u_t5 -->|write| v_t5_count\n    u_t6 -->|write| v_t6_count\n    u_t7 -->|write| v_t7_count\n    u_t8 -->|write| v_t8_count\n    u_t9 -->|write| v_t9_count\n    u_t10 -->|write| v_t10_count\n    u_isr1 -->|write| v_isr1_count\n    u_isr2 -->|write| v_isr2_count\n    p_a1 -.->|read| u_adc_poll\n    p_a2 -.->|read| u_adc_poll\n    p_a3 -.->|read| u_adc_poll\n    u_adc_poll -->|write| v_adc_count\n    v_adc_count -.->|read| u_adc_poll\n    u_adc_poll -->|log| s_log\n    u_net_report -->|write| v_net_count\n    u_net_report -->|send_int| s_mqtt\n    p_a1 -.->|read| u_net_report\n    p_a2 -.->|read| u_net_report\n    p_a3 -.->|read| u_net_report\n    u_net_report -->|log| s_log\n    v_net_count -.->|read| u_net_report\n    u_stress_report -->|log| s_log\n    v_t1_count -.->|read| u_stress_report\n    v_t2_count -.->|read| u_stress_report\n    v_t3_count -.->|read| u_stress_report\n    v_t4_count -.->|read| u_stress_report\n    v_t5_count -.->|read| u_stress_report\n    v_t6_count -.->|read| u_stress_report\n    v_t7_count -.->|read| u_stress_report\n    v_t8_count -.->|read| u_stress_report\n    v_t9_count -.->|read| u_stress_report\n    v_t10_count -.->|read| u_stress_report\n    v_isr1_count -.->|read| u_stress_report\n    v_isr2_count -.->|read| u_stress_report\n    v_adc_count -.->|read| u_stress_report\n    v_net_count -.->|read| u_stress_report\n    s_wifi -.->|is_connected| u_stress_report\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_wifi service;\n    class s_mqtt service;\n    class u_t1 timer;\n    class v_t1_count shared;\n    class u_t2 timer;\n    class v_t2_count shared;\n    class u_t3 timer;\n    class v_t3_count shared;\n    class u_t4 timer;\n    class v_t4_count shared;\n    class u_t5 timer;\n    class v_t5_count shared;\n    class u_t6 timer;\n    class v_t6_count shared;\n    class u_t7 timer;\n    class v_t7_count shared;\n    class u_t8 timer;\n    class v_t8_count shared;\n    class u_t9 timer;\n    class v_t9_count shared;\n    class u_t10 timer;\n    class v_t10_count shared;\n    class u_isr1 timer;\n    class v_isr1_count shared;\n    class u_isr2 timer;\n    class v_isr2_count shared;\n    class u_adc_poll timer;\n    class p_a1 shared;\n    class p_a2 shared;\n    class p_a3 shared;\n    class v_adc_count shared;\n    class s_log service;\n    class u_net_report timer;\n    class v_net_count shared;\n    class u_stress_report timer;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_t1",
+    "name": "t1<br>↻ 100ms",
+    "line": 39
+   },
+   {
+    "id": "u_t2",
+    "name": "t2<br>↻ 200ms",
+    "line": 46
+   },
+   {
+    "id": "u_t3",
+    "name": "t3<br>↻ 300ms",
+    "line": 53
+   },
+   {
+    "id": "u_t4",
+    "name": "t4<br>↻ 400ms",
+    "line": 60
+   },
+   {
+    "id": "u_t5",
+    "name": "t5<br>↻ 500ms",
+    "line": 67
+   },
+   {
+    "id": "u_t6",
+    "name": "t6<br>↻ 600ms",
+    "line": 74
+   },
+   {
+    "id": "u_t7",
+    "name": "t7<br>↻ 700ms",
+    "line": 81
+   },
+   {
+    "id": "u_t8",
+    "name": "t8<br>↻ 800ms",
+    "line": 88
+   },
+   {
+    "id": "u_t9",
+    "name": "t9<br>↻ 900ms",
+    "line": 95
+   },
+   {
+    "id": "u_t10",
+    "name": "t10<br>↻ 1s",
+    "line": 102
+   },
+   {
+    "id": "u_isr1",
+    "name": "isr1<br>↻ 1ms",
+    "line": 109
+   },
+   {
+    "id": "u_isr2",
+    "name": "isr2<br>↻ 500ms",
+    "line": 116
+   },
+   {
+    "id": "u_adc_poll",
+    "name": "adc_poll<br>↻ 100ms",
+    "line": 123
+   },
+   {
+    "id": "u_net_report",
+    "name": "net_report<br>↻ 10s",
+    "line": 138
+   },
+   {
+    "id": "u_stress_report",
+    "name": "stress_report<br>↻ 5s",
+    "line": 148
+   }
+  ],
+  "loops": [
+   "u_t1",
+   "u_t2",
+   "u_t3",
+   "u_t4",
+   "u_t5",
+   "u_t6",
+   "u_t7",
+   "u_t8",
+   "u_t9",
+   "u_t10",
+   "u_isr1",
+   "u_isr2",
+   "u_adc_poll",
+   "u_net_report",
+   "u_stress_report"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_wifi"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_mqtt"
+   },
+   {
+    "drive": "timer",
+    "src": "u_t1",
+    "dst": "v_t1_count",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t2",
+    "dst": "v_t2_count",
+    "rate_ms": 200.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t3",
+    "dst": "v_t3_count",
+    "rate_ms": 300.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t4",
+    "dst": "v_t4_count",
+    "rate_ms": 400.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t5",
+    "dst": "v_t5_count",
+    "rate_ms": 500.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t6",
+    "dst": "v_t6_count",
+    "rate_ms": 600.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t7",
+    "dst": "v_t7_count",
+    "rate_ms": 700.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t8",
+    "dst": "v_t8_count",
+    "rate_ms": 800.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t9",
+    "dst": "v_t9_count",
+    "rate_ms": 900.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t10",
+    "dst": "v_t10_count",
+    "rate_ms": 1000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_isr1",
+    "dst": "v_isr1_count",
+    "rate_ms": 1.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_isr2",
+    "dst": "v_isr2_count",
+    "rate_ms": 500.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_a1",
+    "dst": "u_adc_poll",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_a2",
+    "dst": "u_adc_poll",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_a3",
+    "dst": "u_adc_poll",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_adc_poll",
+    "dst": "v_adc_count",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_adc_count",
+    "dst": "u_adc_poll",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_adc_poll",
+    "dst": "s_log",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_net_report",
+    "dst": "v_net_count",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_net_report",
+    "dst": "s_mqtt",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_a1",
+    "dst": "u_net_report",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_a2",
+    "dst": "u_net_report",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_a3",
+    "dst": "u_net_report",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_net_report",
+    "dst": "s_log",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_net_count",
+    "dst": "u_net_report",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_stress_report",
+    "dst": "s_log",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_t1_count",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_t2_count",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_t3_count",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_t4_count",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_t5_count",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_t6_count",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_t7_count",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_t8_count",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_t9_count",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_t10_count",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_isr1_count",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_isr2_count",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_adc_count",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_net_count",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "s_wifi",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_wifi": {
+    "kind": "service",
+    "label": "wifi",
+    "line": null,
+    "detail": "connect, is_connected"
+   },
+   "s_mqtt": {
+    "kind": "service",
+    "label": "mqtt",
+    "line": null,
+    "detail": "connect, send_int"
+   },
+   "u_t1": {
+    "kind": "timer",
+    "label": "t1<br>↻ 100ms",
+    "line": 39,
+    "detail": "every 100ms"
+   },
+   "p_p1": {
+    "kind": "pin",
+    "label": "p1",
+    "line": 4,
+    "detail": "Output · GPIO 2"
+   },
+   "v_t1_count": {
+    "kind": "var",
+    "label": "t1_count",
+    "line": 24,
+    "detail": "int"
+   },
+   "u_t2": {
+    "kind": "timer",
+    "label": "t2<br>↻ 200ms",
+    "line": 46,
+    "detail": "every 200ms"
+   },
+   "p_p2": {
+    "kind": "pin",
+    "label": "p2",
+    "line": 5,
+    "detail": "Output · GPIO 4"
+   },
+   "v_t2_count": {
+    "kind": "var",
+    "label": "t2_count",
+    "line": 25,
+    "detail": "int"
+   },
+   "u_t3": {
+    "kind": "timer",
+    "label": "t3<br>↻ 300ms",
+    "line": 53,
+    "detail": "every 300ms"
+   },
+   "p_p3": {
+    "kind": "pin",
+    "label": "p3",
+    "line": 6,
+    "detail": "Output · GPIO 5"
+   },
+   "v_t3_count": {
+    "kind": "var",
+    "label": "t3_count",
+    "line": 26,
+    "detail": "int"
+   },
+   "u_t4": {
+    "kind": "timer",
+    "label": "t4<br>↻ 400ms",
+    "line": 60,
+    "detail": "every 400ms"
+   },
+   "p_p4": {
+    "kind": "pin",
+    "label": "p4",
+    "line": 7,
+    "detail": "Output · GPIO 13"
+   },
+   "v_t4_count": {
+    "kind": "var",
+    "label": "t4_count",
+    "line": 27,
+    "detail": "int"
+   },
+   "u_t5": {
+    "kind": "timer",
+    "label": "t5<br>↻ 500ms",
+    "line": 67,
+    "detail": "every 500ms"
+   },
+   "p_p5": {
+    "kind": "pin",
+    "label": "p5",
+    "line": 8,
+    "detail": "Output · GPIO 14"
+   },
+   "v_t5_count": {
+    "kind": "var",
+    "label": "t5_count",
+    "line": 28,
+    "detail": "int"
+   },
+   "u_t6": {
+    "kind": "timer",
+    "label": "t6<br>↻ 600ms",
+    "line": 74,
+    "detail": "every 600ms"
+   },
+   "p_p6": {
+    "kind": "pin",
+    "label": "p6",
+    "line": 9,
+    "detail": "Output · GPIO 16"
+   },
+   "v_t6_count": {
+    "kind": "var",
+    "label": "t6_count",
+    "line": 29,
+    "detail": "int"
+   },
+   "u_t7": {
+    "kind": "timer",
+    "label": "t7<br>↻ 700ms",
+    "line": 81,
+    "detail": "every 700ms"
+   },
+   "p_p7": {
+    "kind": "pin",
+    "label": "p7",
+    "line": 10,
+    "detail": "Output · GPIO 17"
+   },
+   "v_t7_count": {
+    "kind": "var",
+    "label": "t7_count",
+    "line": 30,
+    "detail": "int"
+   },
+   "u_t8": {
+    "kind": "timer",
+    "label": "t8<br>↻ 800ms",
+    "line": 88,
+    "detail": "every 800ms"
+   },
+   "p_p8": {
+    "kind": "pin",
+    "label": "p8",
+    "line": 11,
+    "detail": "Output · GPIO 18"
+   },
+   "v_t8_count": {
+    "kind": "var",
+    "label": "t8_count",
+    "line": 31,
+    "detail": "int"
+   },
+   "u_t9": {
+    "kind": "timer",
+    "label": "t9<br>↻ 900ms",
+    "line": 95,
+    "detail": "every 900ms"
+   },
+   "p_p9": {
+    "kind": "pin",
+    "label": "p9",
+    "line": 12,
+    "detail": "Output · GPIO 19"
+   },
+   "v_t9_count": {
+    "kind": "var",
+    "label": "t9_count",
+    "line": 32,
+    "detail": "int"
+   },
+   "u_t10": {
+    "kind": "timer",
+    "label": "t10<br>↻ 1s",
+    "line": 102,
+    "detail": "every 1s"
+   },
+   "p_p10": {
+    "kind": "pin",
+    "label": "p10",
+    "line": 13,
+    "detail": "Output · GPIO 21"
+   },
+   "v_t10_count": {
+    "kind": "var",
+    "label": "t10_count",
+    "line": 33,
+    "detail": "int"
+   },
+   "u_isr1": {
+    "kind": "timer",
+    "label": "isr1<br>↻ 1ms",
+    "line": 109,
+    "detail": "every 1ms"
+   },
+   "p_p11": {
+    "kind": "pin",
+    "label": "p11",
+    "line": 14,
+    "detail": "Output · GPIO 22"
+   },
+   "v_isr1_count": {
+    "kind": "var",
+    "label": "isr1_count",
+    "line": 34,
+    "detail": "int"
+   },
+   "u_isr2": {
+    "kind": "timer",
+    "label": "isr2<br>↻ 500ms",
+    "line": 116,
+    "detail": "every 500ms"
+   },
+   "p_p12": {
+    "kind": "pin",
+    "label": "p12",
+    "line": 15,
+    "detail": "Output · GPIO 23"
+   },
+   "v_isr2_count": {
+    "kind": "var",
+    "label": "isr2_count",
+    "line": 35,
+    "detail": "int"
+   },
+   "u_adc_poll": {
+    "kind": "timer",
+    "label": "adc_poll<br>↻ 100ms",
+    "line": 123,
+    "detail": "every 100ms"
+   },
+   "p_a1": {
+    "kind": "pin",
+    "label": "a1",
+    "line": 16,
+    "detail": "Analog · GPIO 32"
+   },
+   "p_a2": {
+    "kind": "pin",
+    "label": "a2",
+    "line": 17,
+    "detail": "Analog · GPIO 33"
+   },
+   "p_a3": {
+    "kind": "pin",
+    "label": "a3",
+    "line": 18,
+    "detail": "Analog · GPIO 34"
+   },
+   "p_a4": {
+    "kind": "pin",
+    "label": "a4",
+    "line": 19,
+    "detail": "Analog · GPIO 35"
+   },
+   "p_a5": {
+    "kind": "pin",
+    "label": "a5",
+    "line": 20,
+    "detail": "Analog · GPIO 36"
+   },
+   "p_a6": {
+    "kind": "pin",
+    "label": "a6",
+    "line": 21,
+    "detail": "Analog · GPIO 39"
+   },
+   "v_adc_count": {
+    "kind": "var",
+    "label": "adc_count",
+    "line": 36,
+    "detail": "int"
+   },
+   "s_log": {
+    "kind": "service",
+    "label": "log",
+    "line": null,
+    "detail": "log"
+   },
+   "u_net_report": {
+    "kind": "timer",
+    "label": "net_report<br>↻ 10s",
+    "line": 138,
+    "detail": "every 10s"
+   },
+   "v_net_count": {
+    "kind": "var",
+    "label": "net_count",
+    "line": 37,
+    "detail": "int"
+   },
+   "u_stress_report": {
+    "kind": "timer",
+    "label": "stress_report<br>↻ 5s",
+    "line": 148,
+    "detail": "every 5s"
+   },
+   "s_system": {
+    "kind": "service",
+    "label": "system",
+    "line": null,
+    "detail": "free_heap"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_wifi{{\"wifi\"}}\n    s_mqtt{{\"mqtt\"}}\n    p_p1([\"p1\"])\n    v_t1_count(\"t1_count\")\n    p_p2([\"p2\"])\n    v_t2_count(\"t2_count\")\n    p_p3([\"p3\"])\n    v_t3_count(\"t3_count\")\n    p_p4([\"p4\"])\n    v_t4_count(\"t4_count\")\n    p_p5([\"p5\"])\n    v_t5_count(\"t5_count\")\n    p_p6([\"p6\"])\n    v_t6_count(\"t6_count\")\n    p_p7([\"p7\"])\n    v_t7_count(\"t7_count\")\n    p_p8([\"p8\"])\n    v_t8_count(\"t8_count\")\n    p_p9([\"p9\"])\n    v_t9_count(\"t9_count\")\n    p_p10([\"p10\"])\n    v_t10_count(\"t10_count\")\n    p_p11([\"p11\"])\n    v_isr1_count(\"isr1_count\")\n    p_p12([\"p12\"])\n    v_isr2_count(\"isr2_count\")\n    p_a1([\"a1\"])\n    p_a2([\"a2\"])\n    p_a3([\"a3\"])\n    p_a4([\"a4\"])\n    p_a5([\"a5\"])\n    p_a6([\"a6\"])\n    v_adc_count(\"adc_count\")\n    s_log{{\"log\"}}\n    v_net_count(\"net_count\")\n    s_system{{\"system\"}}\n    u_t1((\"t1<br>↻ 100ms\"))\n    u_t2((\"t2<br>↻ 200ms\"))\n    u_t3((\"t3<br>↻ 300ms\"))\n    u_t4((\"t4<br>↻ 400ms\"))\n    u_t5((\"t5<br>↻ 500ms\"))\n    u_t6((\"t6<br>↻ 600ms\"))\n    u_t7((\"t7<br>↻ 700ms\"))\n    u_t8((\"t8<br>↻ 800ms\"))\n    u_t9((\"t9<br>↻ 900ms\"))\n    u_t10((\"t10<br>↻ 1s\"))\n    u_isr1((\"isr1<br>↻ 1ms\"))\n    u_isr2((\"isr2<br>↻ 500ms\"))\n    u_adc_poll((\"adc_poll<br>↻ 100ms\"))\n    u_net_report((\"net_report<br>↻ 10s\"))\n    u_stress_report((\"stress_report<br>↻ 5s\"))\n    u_setup -->|connect| s_wifi\n    u_setup -->|connect| s_mqtt\n    u_t1 -->|toggle| p_p1\n    u_t1 -->|write| v_t1_count\n    u_t2 -->|toggle| p_p2\n    u_t2 -->|write| v_t2_count\n    u_t3 -->|toggle| p_p3\n    u_t3 -->|write| v_t3_count\n    u_t4 -->|toggle| p_p4\n    u_t4 -->|write| v_t4_count\n    u_t5 -->|toggle| p_p5\n    u_t5 -->|write| v_t5_count\n    u_t6 -->|toggle| p_p6\n    u_t6 -->|write| v_t6_count\n    u_t7 -->|toggle| p_p7\n    u_t7 -->|write| v_t7_count\n    u_t8 -->|toggle| p_p8\n    u_t8 -->|write| v_t8_count\n    u_t9 -->|toggle| p_p9\n    u_t9 -->|write| v_t9_count\n    u_t10 -->|toggle| p_p10\n    u_t10 -->|write| v_t10_count\n    u_isr1 -->|toggle| p_p11\n    u_isr1 -->|write| v_isr1_count\n    u_isr2 -->|toggle| p_p12\n    u_isr2 -->|write| v_isr2_count\n    p_a1 -.->|read| u_adc_poll\n    p_a2 -.->|read| u_adc_poll\n    p_a3 -.->|read| u_adc_poll\n    p_a4 -.->|read| u_adc_poll\n    p_a5 -.->|read| u_adc_poll\n    p_a6 -.->|read| u_adc_poll\n    u_adc_poll -->|write| v_adc_count\n    v_adc_count -.->|read| u_adc_poll\n    u_adc_poll -->|log| s_log\n    u_net_report -->|write| v_net_count\n    u_net_report -->|send_int| s_mqtt\n    p_a1 -.->|read| u_net_report\n    p_a2 -.->|read| u_net_report\n    p_a3 -.->|read| u_net_report\n    u_net_report -->|log| s_log\n    v_net_count -.->|read| u_net_report\n    u_stress_report -->|log| s_log\n    v_t1_count -.->|read| u_stress_report\n    v_t2_count -.->|read| u_stress_report\n    v_t3_count -.->|read| u_stress_report\n    v_t4_count -.->|read| u_stress_report\n    v_t5_count -.->|read| u_stress_report\n    v_t6_count -.->|read| u_stress_report\n    v_t7_count -.->|read| u_stress_report\n    v_t8_count -.->|read| u_stress_report\n    v_t9_count -.->|read| u_stress_report\n    v_t10_count -.->|read| u_stress_report\n    v_isr1_count -.->|read| u_stress_report\n    v_isr2_count -.->|read| u_stress_report\n    v_adc_count -.->|read| u_stress_report\n    v_net_count -.->|read| u_stress_report\n    u_stress_report -->|free_heap| s_system\n    s_wifi -.->|is_connected| u_stress_report\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_wifi service;\n    class s_mqtt service;\n    class u_t1 timer;\n    class p_p1 pin;\n    class v_t1_count shared;\n    class u_t2 timer;\n    class p_p2 pin;\n    class v_t2_count shared;\n    class u_t3 timer;\n    class p_p3 pin;\n    class v_t3_count shared;\n    class u_t4 timer;\n    class p_p4 pin;\n    class v_t4_count shared;\n    class u_t5 timer;\n    class p_p5 pin;\n    class v_t5_count shared;\n    class u_t6 timer;\n    class p_p6 pin;\n    class v_t6_count shared;\n    class u_t7 timer;\n    class p_p7 pin;\n    class v_t7_count shared;\n    class u_t8 timer;\n    class p_p8 pin;\n    class v_t8_count shared;\n    class u_t9 timer;\n    class p_p9 pin;\n    class v_t9_count shared;\n    class u_t10 timer;\n    class p_p10 pin;\n    class v_t10_count shared;\n    class u_isr1 timer;\n    class p_p11 pin;\n    class v_isr1_count shared;\n    class u_isr2 timer;\n    class p_p12 pin;\n    class v_isr2_count shared;\n    class u_adc_poll timer;\n    class p_a1 shared;\n    class p_a2 shared;\n    class p_a3 shared;\n    class p_a4 pin;\n    class p_a5 pin;\n    class p_a6 pin;\n    class v_adc_count shared;\n    class s_log service;\n    class u_net_report timer;\n    class v_net_count shared;\n    class u_stress_report timer;\n    class s_system service;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_t1",
+    "name": "t1<br>↻ 100ms",
+    "line": 39
+   },
+   {
+    "id": "u_t2",
+    "name": "t2<br>↻ 200ms",
+    "line": 46
+   },
+   {
+    "id": "u_t3",
+    "name": "t3<br>↻ 300ms",
+    "line": 53
+   },
+   {
+    "id": "u_t4",
+    "name": "t4<br>↻ 400ms",
+    "line": 60
+   },
+   {
+    "id": "u_t5",
+    "name": "t5<br>↻ 500ms",
+    "line": 67
+   },
+   {
+    "id": "u_t6",
+    "name": "t6<br>↻ 600ms",
+    "line": 74
+   },
+   {
+    "id": "u_t7",
+    "name": "t7<br>↻ 700ms",
+    "line": 81
+   },
+   {
+    "id": "u_t8",
+    "name": "t8<br>↻ 800ms",
+    "line": 88
+   },
+   {
+    "id": "u_t9",
+    "name": "t9<br>↻ 900ms",
+    "line": 95
+   },
+   {
+    "id": "u_t10",
+    "name": "t10<br>↻ 1s",
+    "line": 102
+   },
+   {
+    "id": "u_isr1",
+    "name": "isr1<br>↻ 1ms",
+    "line": 109
+   },
+   {
+    "id": "u_isr2",
+    "name": "isr2<br>↻ 500ms",
+    "line": 116
+   },
+   {
+    "id": "u_adc_poll",
+    "name": "adc_poll<br>↻ 100ms",
+    "line": 123
+   },
+   {
+    "id": "u_net_report",
+    "name": "net_report<br>↻ 10s",
+    "line": 138
+   },
+   {
+    "id": "u_stress_report",
+    "name": "stress_report<br>↻ 5s",
+    "line": 148
+   }
+  ],
+  "loops": [
+   "u_t1",
+   "u_t2",
+   "u_t3",
+   "u_t4",
+   "u_t5",
+   "u_t6",
+   "u_t7",
+   "u_t8",
+   "u_t9",
+   "u_t10",
+   "u_isr1",
+   "u_isr2",
+   "u_adc_poll",
+   "u_net_report",
+   "u_stress_report"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_wifi"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_mqtt"
+   },
+   {
+    "drive": "timer",
+    "src": "u_t1",
+    "dst": "p_p1",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t1",
+    "dst": "v_t1_count",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t2",
+    "dst": "p_p2",
+    "rate_ms": 200.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t2",
+    "dst": "v_t2_count",
+    "rate_ms": 200.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t3",
+    "dst": "p_p3",
+    "rate_ms": 300.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t3",
+    "dst": "v_t3_count",
+    "rate_ms": 300.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t4",
+    "dst": "p_p4",
+    "rate_ms": 400.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t4",
+    "dst": "v_t4_count",
+    "rate_ms": 400.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t5",
+    "dst": "p_p5",
+    "rate_ms": 500.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t5",
+    "dst": "v_t5_count",
+    "rate_ms": 500.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t6",
+    "dst": "p_p6",
+    "rate_ms": 600.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t6",
+    "dst": "v_t6_count",
+    "rate_ms": 600.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t7",
+    "dst": "p_p7",
+    "rate_ms": 700.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t7",
+    "dst": "v_t7_count",
+    "rate_ms": 700.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t8",
+    "dst": "p_p8",
+    "rate_ms": 800.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t8",
+    "dst": "v_t8_count",
+    "rate_ms": 800.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t9",
+    "dst": "p_p9",
+    "rate_ms": 900.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t9",
+    "dst": "v_t9_count",
+    "rate_ms": 900.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t10",
+    "dst": "p_p10",
+    "rate_ms": 1000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_t10",
+    "dst": "v_t10_count",
+    "rate_ms": 1000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_isr1",
+    "dst": "p_p11",
+    "rate_ms": 1.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_isr1",
+    "dst": "v_isr1_count",
+    "rate_ms": 1.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_isr2",
+    "dst": "p_p12",
+    "rate_ms": 500.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_isr2",
+    "dst": "v_isr2_count",
+    "rate_ms": 500.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_a1",
+    "dst": "u_adc_poll",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_a2",
+    "dst": "u_adc_poll",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_a3",
+    "dst": "u_adc_poll",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_a4",
+    "dst": "u_adc_poll",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_a5",
+    "dst": "u_adc_poll",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_a6",
+    "dst": "u_adc_poll",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_adc_poll",
+    "dst": "v_adc_count",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_adc_count",
+    "dst": "u_adc_poll",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_adc_poll",
+    "dst": "s_log",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_net_report",
+    "dst": "v_net_count",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_net_report",
+    "dst": "s_mqtt",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_a1",
+    "dst": "u_net_report",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_a2",
+    "dst": "u_net_report",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_a3",
+    "dst": "u_net_report",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_net_report",
+    "dst": "s_log",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_net_count",
+    "dst": "u_net_report",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_stress_report",
+    "dst": "s_log",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_t1_count",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_t2_count",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_t3_count",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_t4_count",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_t5_count",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_t6_count",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_t7_count",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_t8_count",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_t9_count",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_t10_count",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_isr1_count",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_isr2_count",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_adc_count",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_net_count",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_stress_report",
+    "dst": "s_system",
+    "rate_ms": 5000.0
+   },
+   {
+    "drive": "timer",
+    "src": "s_wifi",
+    "dst": "u_stress_report",
+    "rate_ms": 5000.0
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_wifi": {
+    "kind": "service",
+    "label": "wifi",
+    "line": null,
+    "detail": "connect, is_connected"
+   },
+   "s_mqtt": {
+    "kind": "service",
+    "label": "mqtt",
+    "line": null,
+    "detail": "connect, send_int"
+   },
+   "u_t1": {
+    "kind": "timer",
+    "label": "t1<br>↻ 100ms",
+    "line": 39,
+    "detail": "every 100ms"
+   },
+   "p_p1": {
+    "kind": "pin",
+    "label": "p1",
+    "line": 4,
+    "detail": "Output · GPIO 2"
+   },
+   "v_t1_count": {
+    "kind": "var",
+    "label": "t1_count",
+    "line": 24,
+    "detail": "int"
+   },
+   "u_t2": {
+    "kind": "timer",
+    "label": "t2<br>↻ 200ms",
+    "line": 46,
+    "detail": "every 200ms"
+   },
+   "p_p2": {
+    "kind": "pin",
+    "label": "p2",
+    "line": 5,
+    "detail": "Output · GPIO 4"
+   },
+   "v_t2_count": {
+    "kind": "var",
+    "label": "t2_count",
+    "line": 25,
+    "detail": "int"
+   },
+   "u_t3": {
+    "kind": "timer",
+    "label": "t3<br>↻ 300ms",
+    "line": 53,
+    "detail": "every 300ms"
+   },
+   "p_p3": {
+    "kind": "pin",
+    "label": "p3",
+    "line": 6,
+    "detail": "Output · GPIO 5"
+   },
+   "v_t3_count": {
+    "kind": "var",
+    "label": "t3_count",
+    "line": 26,
+    "detail": "int"
+   },
+   "u_t4": {
+    "kind": "timer",
+    "label": "t4<br>↻ 400ms",
+    "line": 60,
+    "detail": "every 400ms"
+   },
+   "p_p4": {
+    "kind": "pin",
+    "label": "p4",
+    "line": 7,
+    "detail": "Output · GPIO 13"
+   },
+   "v_t4_count": {
+    "kind": "var",
+    "label": "t4_count",
+    "line": 27,
+    "detail": "int"
+   },
+   "u_t5": {
+    "kind": "timer",
+    "label": "t5<br>↻ 500ms",
+    "line": 67,
+    "detail": "every 500ms"
+   },
+   "p_p5": {
+    "kind": "pin",
+    "label": "p5",
+    "line": 8,
+    "detail": "Output · GPIO 14"
+   },
+   "v_t5_count": {
+    "kind": "var",
+    "label": "t5_count",
+    "line": 28,
+    "detail": "int"
+   },
+   "u_t6": {
+    "kind": "timer",
+    "label": "t6<br>↻ 600ms",
+    "line": 74,
+    "detail": "every 600ms"
+   },
+   "p_p6": {
+    "kind": "pin",
+    "label": "p6",
+    "line": 9,
+    "detail": "Output · GPIO 16"
+   },
+   "v_t6_count": {
+    "kind": "var",
+    "label": "t6_count",
+    "line": 29,
+    "detail": "int"
+   },
+   "u_t7": {
+    "kind": "timer",
+    "label": "t7<br>↻ 700ms",
+    "line": 81,
+    "detail": "every 700ms"
+   },
+   "p_p7": {
+    "kind": "pin",
+    "label": "p7",
+    "line": 10,
+    "detail": "Output · GPIO 17"
+   },
+   "v_t7_count": {
+    "kind": "var",
+    "label": "t7_count",
+    "line": 30,
+    "detail": "int"
+   },
+   "u_t8": {
+    "kind": "timer",
+    "label": "t8<br>↻ 800ms",
+    "line": 88,
+    "detail": "every 800ms"
+   },
+   "p_p8": {
+    "kind": "pin",
+    "label": "p8",
+    "line": 11,
+    "detail": "Output · GPIO 18"
+   },
+   "v_t8_count": {
+    "kind": "var",
+    "label": "t8_count",
+    "line": 31,
+    "detail": "int"
+   },
+   "u_t9": {
+    "kind": "timer",
+    "label": "t9<br>↻ 900ms",
+    "line": 95,
+    "detail": "every 900ms"
+   },
+   "p_p9": {
+    "kind": "pin",
+    "label": "p9",
+    "line": 12,
+    "detail": "Output · GPIO 19"
+   },
+   "v_t9_count": {
+    "kind": "var",
+    "label": "t9_count",
+    "line": 32,
+    "detail": "int"
+   },
+   "u_t10": {
+    "kind": "timer",
+    "label": "t10<br>↻ 1s",
+    "line": 102,
+    "detail": "every 1s"
+   },
+   "p_p10": {
+    "kind": "pin",
+    "label": "p10",
+    "line": 13,
+    "detail": "Output · GPIO 21"
+   },
+   "v_t10_count": {
+    "kind": "var",
+    "label": "t10_count",
+    "line": 33,
+    "detail": "int"
+   },
+   "u_isr1": {
+    "kind": "timer",
+    "label": "isr1<br>↻ 1ms",
+    "line": 109,
+    "detail": "every 1ms"
+   },
+   "p_p11": {
+    "kind": "pin",
+    "label": "p11",
+    "line": 14,
+    "detail": "Output · GPIO 22"
+   },
+   "v_isr1_count": {
+    "kind": "var",
+    "label": "isr1_count",
+    "line": 34,
+    "detail": "int"
+   },
+   "u_isr2": {
+    "kind": "timer",
+    "label": "isr2<br>↻ 500ms",
+    "line": 116,
+    "detail": "every 500ms"
+   },
+   "p_p12": {
+    "kind": "pin",
+    "label": "p12",
+    "line": 15,
+    "detail": "Output · GPIO 23"
+   },
+   "v_isr2_count": {
+    "kind": "var",
+    "label": "isr2_count",
+    "line": 35,
+    "detail": "int"
+   },
+   "u_adc_poll": {
+    "kind": "timer",
+    "label": "adc_poll<br>↻ 100ms",
+    "line": 123,
+    "detail": "every 100ms"
+   },
+   "p_a1": {
+    "kind": "pin",
+    "label": "a1",
+    "line": 16,
+    "detail": "Analog · GPIO 32"
+   },
+   "p_a2": {
+    "kind": "pin",
+    "label": "a2",
+    "line": 17,
+    "detail": "Analog · GPIO 33"
+   },
+   "p_a3": {
+    "kind": "pin",
+    "label": "a3",
+    "line": 18,
+    "detail": "Analog · GPIO 34"
+   },
+   "p_a4": {
+    "kind": "pin",
+    "label": "a4",
+    "line": 19,
+    "detail": "Analog · GPIO 35"
+   },
+   "p_a5": {
+    "kind": "pin",
+    "label": "a5",
+    "line": 20,
+    "detail": "Analog · GPIO 36"
+   },
+   "p_a6": {
+    "kind": "pin",
+    "label": "a6",
+    "line": 21,
+    "detail": "Analog · GPIO 39"
+   },
+   "v_adc_count": {
+    "kind": "var",
+    "label": "adc_count",
+    "line": 36,
+    "detail": "int"
+   },
+   "s_log": {
+    "kind": "service",
+    "label": "log",
+    "line": null,
+    "detail": "log"
+   },
+   "u_net_report": {
+    "kind": "timer",
+    "label": "net_report<br>↻ 10s",
+    "line": 138,
+    "detail": "every 10s"
+   },
+   "v_net_count": {
+    "kind": "var",
+    "label": "net_count",
+    "line": 37,
+    "detail": "int"
+   },
+   "u_stress_report": {
+    "kind": "timer",
+    "label": "stress_report<br>↻ 5s",
+    "line": 148,
+    "detail": "every 5s"
+   },
+   "s_system": {
+    "kind": "service",
+    "label": "system",
+    "line": null,
+    "detail": "free_heap"
+   }
+  }
+ }
+}

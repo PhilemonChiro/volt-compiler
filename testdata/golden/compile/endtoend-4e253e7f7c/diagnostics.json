@@ -1,0 +1,14 @@
+[
+  {
+    "severity": "error",
+    "category": "HARDWARE ERROR",
+    "message": "GPIO 21 does not have an ADC channel \u2014 cannot be used as Analog.",
+    "hint": "ADC1 (safe with WiFi): GPIO 32-39. ADC2 (blocked by WiFi): GPIO 0, 2, 4, 12-15, 25-27.",
+    "region": [
+      2,
+      9,
+      2,
+      10
+    ]
+  }
+]

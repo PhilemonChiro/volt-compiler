@@ -1,0 +1,145 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [
+  {
+   "_": "MachineDecl",
+   "region": [2, 9, 2, 14],
+   "name": "Retry",
+   "states": [
+    {
+     "_": "StateDecl",
+     "region": [5, 19, 5, 25],
+     "name": "trying",
+     "is_initial": true,
+     "enter_body": [],
+     "exit_body": [],
+     "transitions": [
+      {
+       "_": "StateTransition",
+       "region": [6, 12, 6, 16],
+       "event": {
+        "_": "FuncCall",
+        "region": [6, 12, 6, 16],
+        "name": "fail",
+        "args": []
+       },
+       "target_state": "trying",
+       "guard": {
+        "_": "BinaryExpr",
+        "region": [6, 20, 6, 25],
+        "left": {
+         "_": "VarRef",
+         "region": [6, 20, 6, 25],
+         "name": "count"
+        },
+        "op": "<",
+        "right": {
+         "_": "IntLiteral",
+         "region": [6, 28, 6, 29],
+         "value": 3
+        },
+        "result_type": null
+       },
+       "action": []
+      },
+      {
+       "_": "StateTransition",
+       "region": [7, 12, 7, 16],
+       "event": {
+        "_": "FuncCall",
+        "region": [7, 12, 7, 16],
+        "name": "fail",
+        "args": []
+       },
+       "target_state": "gave_up",
+       "guard": null,
+       "action": []
+      },
+      {
+       "_": "StateTransition",
+       "region": [8, 12, 8, 19],
+       "event": {
+        "_": "FuncCall",
+        "region": [8, 12, 8, 19],
+        "name": "succeed",
+        "args": []
+       },
+       "target_state": "done",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "timed_transitions": [],
+     "body": []
+    },
+    {
+     "_": "StateDecl",
+     "region": [10, 11, 10, 18],
+     "name": "gave_up",
+     "is_initial": false,
+     "enter_body": [],
+     "exit_body": [],
+     "transitions": [],
+     "timed_transitions": [
+      {
+       "_": "TimedTransition",
+       "region": [11, 15, 11, 24],
+       "duration": {
+        "_": "DurationLiteral",
+        "region": [11, 15, 11, 24],
+        "microseconds": 10000000,
+        "original": "10seconds"
+       },
+       "target_state": "trying",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "body": []
+    },
+    {
+     "_": "StateDecl",
+     "region": [13, 11, 13, 15],
+     "name": "done",
+     "is_initial": false,
+     "enter_body": [],
+     "exit_body": [],
+     "transitions": [],
+     "timed_transitions": [],
+     "body": []
+    }
+   ],
+   "variables": [
+    {
+     "_": "VarDecl",
+     "region": [3, 9, 3, 14],
+     "name": "count",
+     "type_name": null,
+     "value": {
+      "_": "IntLiteral",
+      "region": [3, 17, 3, 18],
+      "value": 0
+     },
+     "mutable": true,
+     "shared": false,
+     "needs_lifting": false
+    }
+   ]
+  }
+ ],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

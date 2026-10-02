@@ -1,0 +1,58 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [
+  {
+   "_": "EnumDecl",
+   "region": [3, 6, 3, 11],
+   "name": "Color",
+   "variants": [
+    "red",
+    "green",
+    "blue"
+   ]
+  }
+ ],
+ "functions": [],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "VarDecl",
+    "region": [9, 9, 9, 10],
+    "name": "c",
+    "type_name": "Color",
+    "value": {
+     "_": "DotAccess",
+     "region": [9, 20, 9, 25],
+     "obj": {
+      "_": "VarRef",
+      "region": [9, 20, 9, 25],
+      "name": "Color"
+     },
+     "field_name": "red"
+    },
+    "mutable": true,
+    "shared": false,
+    "needs_lifting": false
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

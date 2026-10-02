@@ -1,0 +1,8 @@
+
+[red bold]-- HARDWARE ERROR -- invalid_gpio.volt:2[/red bold]
+
+GPIO 50 does not exist on ESP32 (valid: 0-39).
+
+ [dim]1 |[/dim] hardware {
+ [dim]2 |[/dim]     pin x: Output = 50
+ [dim]  |[/dim] [red]        ^[/red]

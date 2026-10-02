@@ -1,0 +1,19 @@
+
+[yellow bold]-- DEPRECATION -- esp8266_blink_compiles.volt:2[/yellow bold]
+
+Move `chip esp8266` to volt.toml: chip = "esp8266"
+
+ [dim]1 |[/dim] 
+ [dim]2 |[/dim] chip esp8266
+ [dim]  |[/dim] [yellow]     ^^^^^^^[/yellow]
+
+[cyan]Hint: The chip declaration will move to volt.toml in a future version.[/cyan]
+
+
+[yellow bold]-- HARDWARE WARNING -- esp8266_blink_compiles.volt:5[/yellow bold]
+
+Strapping pin: GPIO 2 must be HIGH at boot. Often connected to onboard LED.
+
+ [dim]4 |[/dim] hardware {
+ [dim]5 |[/dim]     pin led: Output = 2
+ [dim]  |[/dim] [yellow]        ^^^[/yellow]

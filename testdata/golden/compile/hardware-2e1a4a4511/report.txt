@@ -1,0 +1,17 @@
+
+[yellow bold]-- HARDWARE WARNING -- main.volt:2[/yellow bold]
+
+GPIO 15: GPIO 15 is a strapping pin. Outputs PWM signal during boot. LOW at boot suppresses UART boot log messages.
+
+ [dim]1 |[/dim] hardware {
+ [dim]2 |[/dim]     pin x: Output = 15
+ [dim]  |[/dim] [yellow]        ^[/yellow]
+
+
+[yellow bold]-- HARDWARE WARNING -- main.volt:2[/yellow bold]
+
+GPIO 15 is a JTAG pin. Using it disables JTAG debugging.
+
+ [dim]1 |[/dim] hardware {
+ [dim]2 |[/dim]     pin x: Output = 15
+ [dim]  |[/dim] [yellow]        ^[/yellow]

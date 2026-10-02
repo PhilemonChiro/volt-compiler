@@ -1,0 +1,38 @@
+[
+  {
+    "severity": "warning",
+    "category": "DEPRECATION",
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "hint": "The chip declaration will move to volt.toml in a future version.",
+    "region": [
+      1,
+      6,
+      1,
+      11
+    ]
+  },
+  {
+    "severity": "error",
+    "category": "TASK ERROR",
+    "message": "Critical task `t` calls `wifi.connect()` which is not safe in ISR context (may block on I2C/SPI/UART).",
+    "hint": "Move this to a Background or Priority task. Share data with the critical task via a volatile variable.",
+    "region": [
+      6,
+      9,
+      6,
+      13
+    ]
+  },
+  {
+    "severity": "warning",
+    "category": "TASK WARNING",
+    "message": "Critical task `t` estimated at ~100010 cycles (~416us at 240MHz), may exceed ISR time budget. Top costs: wifi.connect()(~100000 cycles)",
+    "hint": "Keep critical tasks under ~20us. Move heavy work to a Background task.",
+    "region": [
+      3,
+      6,
+      3,
+      7
+    ]
+  }
+]

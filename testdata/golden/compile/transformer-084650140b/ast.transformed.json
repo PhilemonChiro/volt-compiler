@@ -1,0 +1,172 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [4, 9, 6, 10],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [4, 9, 4, 10],
+    "name": "a",
+    "mode": "Output",
+    "gpio": 2
+   },
+   {
+    "_": "PinDecl",
+    "region": [5, 9, 5, 10],
+    "name": "b",
+    "mode": "Output",
+    "gpio": 4
+   },
+   {
+    "_": "PinDecl",
+    "region": [6, 9, 6, 10],
+    "name": "c",
+    "mode": "Output",
+    "gpio": 5
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [8, 6, 8, 12],
+   "name": "triple",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [9, 11, 9, 16],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [9, 11, 9, 16],
+      "microseconds": 100000,
+      "original": "100ms"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [9, 19, 9, 20],
+        "obj": {
+         "_": "VarRef",
+         "region": [9, 19, 9, 20],
+         "name": "a"
+        },
+        "method": "toggle",
+        "args": []
+       }
+      }
+     ],
+     "yield_label": 1
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false
+  },
+  {
+   "_": "TaskDecl",
+   "region": [8, 6, 8, 12],
+   "name": "triple_2",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [10, 11, 10, 16],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [10, 11, 10, 16],
+      "microseconds": 200000,
+      "original": "200ms"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [10, 19, 10, 20],
+        "obj": {
+         "_": "VarRef",
+         "region": [10, 19, 10, 20],
+         "name": "b"
+        },
+        "method": "toggle",
+        "args": []
+       }
+      }
+     ],
+     "yield_label": 1
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false
+  },
+  {
+   "_": "TaskDecl",
+   "region": [8, 6, 8, 12],
+   "name": "triple_3",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [11, 11, 11, 16],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [11, 11, 11, 16],
+      "microseconds": 500000,
+      "original": "500ms"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [11, 19, 11, 20],
+        "obj": {
+         "_": "VarRef",
+         "region": [11, 19, 11, 20],
+         "name": "c"
+        },
+        "method": "toggle",
+        "args": []
+       }
+      }
+     ],
+     "yield_label": 1
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

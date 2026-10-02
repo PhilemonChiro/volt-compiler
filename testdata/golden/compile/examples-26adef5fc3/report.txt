@@ -1,0 +1,46 @@
+
+[yellow bold]-- HARDWARE WARNING -- main.volt:2[/yellow bold]
+
+GPIO 2: GPIO 2 is a strapping pin. Must be LOW or floating for download mode.
+
+ [dim]1 |[/dim] hardware {
+ [dim]2 |[/dim]     pin led = 2
+ [dim]  |[/dim] [yellow]        ^^^[/yellow]
+
+
+[yellow bold]-- HARDWARE NOTE -- main.volt:3[/yellow bold]
+
+GPIO 32: Also 32kHz crystal pin (XTAL_32K_P). If external 32kHz crystal is used, this pin is unavailable.
+
+ [dim]2 |[/dim]     pin led = 2
+ [dim]3 |[/dim]     pin soil: Analog = 32
+ [dim]  |[/dim] [yellow]        ^^^^[/yellow]
+
+
+[yellow bold]-- HARDWARE NOTE -- main.volt:4[/yellow bold]
+
+GPIO 33: Also 32kHz crystal pin (XTAL_32K_N). If external 32kHz crystal is used, this pin is unavailable.
+
+ [dim]3 |[/dim]     pin soil: Analog = 32
+ [dim]4 |[/dim]     pin light: Analog = 33
+ [dim]  |[/dim] [yellow]        ^^^^^[/yellow]
+
+
+[yellow bold]-- HARDWARE WARNING -- main.volt:5[/yellow bold]
+
+GPIO 36 has a hardware errata: interrupts may fire spuriously during WiFi/BT light sleep. Use a different pin for interrupt-driven input.
+
+ [dim]4 |[/dim]     pin light: Analog = 33
+ [dim]5 |[/dim]     pin temperature: Analog = 36
+ [dim]  |[/dim] [yellow]        ^^^^^^^^^^^[/yellow]
+
+[cyan]Hint: GPIO 34, 35 do not have this errata.[/cyan]
+
+
+[yellow bold]-- HARDWARE NOTE -- main.volt:5[/yellow bold]
+
+GPIO 36: Hardware errata: interrupts on GPIO 36 may fire spuriously during WiFi/BT light sleep.
+
+ [dim]4 |[/dim]     pin light: Analog = 33
+ [dim]5 |[/dim]     pin temperature: Analog = 36
+ [dim]  |[/dim] [yellow]        ^^^^^^^^^^^[/yellow]

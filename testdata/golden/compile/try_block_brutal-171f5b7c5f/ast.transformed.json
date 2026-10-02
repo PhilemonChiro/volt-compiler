@@ -1,0 +1,155 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [1, 6, 1, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [3, 9, 5, 15],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [3, 9, 3, 12],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 4
+   }
+  ],
+  "buses": [
+   {
+    "_": "BusDecl",
+    "region": [4, 9, 4, 13],
+    "bus_type": "i2c",
+    "name": "i2c0",
+    "params": {
+     "sda": {
+      "_": "IntLiteral",
+      "region": [4, 24, 4, 26],
+      "value": 21
+     },
+     "scl": {
+      "_": "IntLiteral",
+      "region": [4, 33, 4, 35],
+      "value": 22
+     }
+    }
+   }
+  ],
+  "sensors": [
+   {
+    "_": "SensorDecl",
+    "region": [5, 12, 5, 15],
+    "name": "bme",
+    "sensor_type": "BME280",
+    "bus_name": "i2c0",
+    "address": 118,
+    "pin_params": {}
+   }
+  ]
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [
+  {
+   "_": "MachineDecl",
+   "region": [7, 9, 7, 10],
+   "name": "m",
+   "states": [
+    {
+     "_": "StateDecl",
+     "region": [8, 11, 8, 12],
+     "name": "a",
+     "is_initial": true,
+     "enter_body": [
+      {
+       "_": "TryBlock",
+       "region": [0, 0, 0, 0],
+       "body": [
+        {
+         "_": "ExprStmt",
+         "region": [0, 0, 0, 0],
+         "expr": {
+          "_": "MethodCall",
+          "region": [9, 23, 9, 26],
+          "obj": {
+           "_": "VarRef",
+           "region": [9, 23, 9, 26],
+           "name": "bme"
+          },
+          "method": "temperature",
+          "args": []
+         }
+        }
+       ],
+       "policy": "retry",
+       "retry_limit": 3,
+       "terminal": "skip",
+       "try_id": 1,
+       "needs_context_lift": false,
+       "is_yield_point": false
+      }
+     ],
+     "exit_body": [],
+     "transitions": [],
+     "timed_transitions": [
+      {
+       "_": "TimedTransition",
+       "region": [10, 15, 10, 17],
+       "duration": {
+        "_": "DurationLiteral",
+        "region": [10, 15, 10, 17],
+        "microseconds": 1000000,
+        "original": "1s"
+       },
+       "target_state": "b",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "body": []
+    },
+    {
+     "_": "StateDecl",
+     "region": [12, 11, 12, 12],
+     "name": "b",
+     "is_initial": false,
+     "enter_body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [12, 23, 12, 26],
+        "obj": {
+         "_": "VarRef",
+         "region": [12, 23, 12, 26],
+         "name": "led"
+        },
+        "method": "on",
+        "args": []
+       }
+      }
+     ],
+     "exit_body": [],
+     "transitions": [],
+     "timed_transitions": [],
+     "body": []
+    }
+   ],
+   "variables": []
+  }
+ ],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

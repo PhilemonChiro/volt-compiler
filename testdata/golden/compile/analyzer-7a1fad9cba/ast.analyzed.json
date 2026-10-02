@@ -1,0 +1,47 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [
+  {
+   "_": "FuncDecl",
+   "region": [2, 6, 2, 19],
+   "name": "wait_for_wifi",
+   "params": [],
+   "return_type": null,
+   "body": [
+    {
+     "_": "ExprStmt",
+     "region": [0, 0, 0, 0],
+     "expr": {
+      "_": "FuncCall",
+      "region": [3, 5, 3, 10],
+      "name": "sleep",
+      "args": [
+       {
+        "_": "DurationLiteral",
+        "region": [3, 11, 3, 18],
+        "microseconds": 1000000,
+        "original": "1second"
+       }
+      ]
+     }
+    }
+   ],
+   "contains_yield": true
+  }
+ ],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

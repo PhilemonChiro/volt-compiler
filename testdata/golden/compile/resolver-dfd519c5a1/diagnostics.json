@@ -1,0 +1,38 @@
+[
+  {
+    "severity": "warning",
+    "category": "HARDWARE WARNING",
+    "message": "GPIO 2: GPIO 2 is a strapping pin. Must be LOW or floating for download mode.",
+    "hint": null,
+    "region": [
+      3,
+      9,
+      3,
+      12
+    ]
+  },
+  {
+    "severity": "warning",
+    "category": "HARDWARE WARNING",
+    "message": "GPIO 0: GPIO 0 is a strapping pin. LOW at boot = download mode. Ensure pull-up (internal or external) for normal boot.",
+    "hint": null,
+    "region": [
+      4,
+      9,
+      4,
+      15
+    ]
+  },
+  {
+    "severity": "warning",
+    "category": "STATE MACHINE WARNING",
+    "message": "State `running` in machine `DeviceState` has no outgoing transitions (dead-end state).",
+    "hint": "Add a transition or mark with @terminal if intentional.",
+    "region": [
+      11,
+      11,
+      11,
+      18
+    ]
+  }
+]

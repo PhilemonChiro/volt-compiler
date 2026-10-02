@@ -1,0 +1,115 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [9, 9, 9, 12],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [9, 9, 9, 12],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [
+  {
+   "_": "EnumDecl",
+   "region": [3, 6, 3, 15],
+   "name": "DoorState",
+   "variants": [
+    "locked",
+    "unlocked",
+    "ajar"
+   ]
+  }
+ ],
+ "functions": [],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "VarDecl",
+    "region": [12, 9, 12, 14],
+    "name": "state",
+    "type_name": "DoorState",
+    "value": {
+     "_": "DotAccess",
+     "region": [12, 28, 12, 37],
+     "obj": {
+      "_": "VarRef",
+      "region": [12, 28, 12, 37],
+      "name": "DoorState"
+     },
+     "field_name": "locked"
+    },
+    "mutable": true,
+    "shared": false,
+    "needs_lifting": false
+   },
+   {
+    "_": "IfStmt",
+    "region": [13, 8, 13, 13],
+    "condition": {
+     "_": "BinaryExpr",
+     "region": [13, 8, 13, 13],
+     "left": {
+      "_": "VarRef",
+      "region": [13, 8, 13, 13],
+      "name": "state"
+     },
+     "op": "==",
+     "right": {
+      "_": "DotAccess",
+      "region": [13, 17, 13, 26],
+      "obj": {
+       "_": "VarRef",
+       "region": [13, 17, 13, 26],
+       "name": "DoorState"
+      },
+      "field_name": "unlocked"
+     },
+     "result_type": null
+    },
+    "then_body": [
+     {
+      "_": "ExprStmt",
+      "region": [0, 0, 0, 0],
+      "expr": {
+       "_": "MethodCall",
+       "region": [14, 9, 14, 12],
+       "obj": {
+        "_": "VarRef",
+        "region": [14, 9, 14, 12],
+        "name": "led"
+       },
+       "method": "on",
+       "args": []
+      }
+     }
+    ],
+    "else_body": null
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

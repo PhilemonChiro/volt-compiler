@@ -1,0 +1,311 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [4, 9, 7, 15],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [4, 9, 4, 15],
+    "name": "heater",
+    "mode": "Output",
+    "gpio": 2
+   },
+   {
+    "_": "PinDecl",
+    "region": [5, 9, 5, 12],
+    "name": "fan",
+    "mode": "Output",
+    "gpio": 4
+   }
+  ],
+  "buses": [
+   {
+    "_": "BusDecl",
+    "region": [6, 9, 6, 13],
+    "bus_type": "i2c",
+    "name": "i2c0",
+    "params": {
+     "sda": {
+      "_": "IntLiteral",
+      "region": [6, 24, 6, 26],
+      "value": 21
+     },
+     "scl": {
+      "_": "IntLiteral",
+      "region": [6, 33, 6, 35],
+      "value": 22
+     }
+    }
+   }
+  ],
+  "sensors": [
+   {
+    "_": "SensorDecl",
+    "region": [7, 12, 7, 15],
+    "name": "bme",
+    "sensor_type": "BME280",
+    "bus_name": "i2c0",
+    "address": 118,
+    "pin_params": {}
+   }
+  ]
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [32, 6, 32, 19],
+   "name": "sensor_reader",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [33, 11, 33, 13],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [33, 11, 33, 13],
+      "microseconds": 2000000,
+      "original": "2s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "VarDecl",
+       "region": [34, 13, 34, 17],
+       "name": "temp",
+       "type_name": "float",
+       "value": {
+        "_": "MethodCall",
+        "region": [34, 27, 34, 30],
+        "obj": {
+         "_": "VarRef",
+         "region": [34, 27, 34, 30],
+         "name": "bme"
+        },
+        "method": "temperature",
+        "args": []
+       },
+       "mutable": true,
+       "shared": false,
+       "needs_lifting": false
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  }
+ ],
+ "machines": [
+  {
+   "_": "MachineDecl",
+   "region": [12, 9, 12, 19],
+   "name": "thermostat",
+   "states": [
+    {
+     "_": "StateDecl",
+     "region": [13, 11, 13, 15],
+     "name": "idle",
+     "is_initial": true,
+     "enter_body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [15, 13, 15, 19],
+        "obj": {
+         "_": "VarRef",
+         "region": [15, 13, 15, 19],
+         "name": "heater"
+        },
+        "method": "off",
+        "args": []
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [16, 13, 16, 16],
+        "obj": {
+         "_": "VarRef",
+         "region": [16, 13, 16, 16],
+         "name": "fan"
+        },
+        "method": "off",
+        "args": []
+       }
+      }
+     ],
+     "exit_body": [],
+     "transitions": [],
+     "timed_transitions": [
+      {
+       "_": "TimedTransition",
+       "region": [18, 15, 18, 17],
+       "duration": {
+        "_": "DurationLiteral",
+        "region": [18, 15, 18, 17],
+        "microseconds": 5000000,
+        "original": "5s"
+       },
+       "target_state": "heating",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "body": []
+    },
+    {
+     "_": "StateDecl",
+     "region": [20, 11, 20, 18],
+     "name": "heating",
+     "is_initial": false,
+     "enter_body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [21, 17, 21, 23],
+        "obj": {
+         "_": "VarRef",
+         "region": [21, 17, 21, 23],
+         "name": "heater"
+        },
+        "method": "on",
+        "args": []
+       }
+      }
+     ],
+     "exit_body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [22, 16, 22, 22],
+        "obj": {
+         "_": "VarRef",
+         "region": [22, 16, 22, 22],
+         "name": "heater"
+        },
+        "method": "off",
+        "args": []
+       }
+      }
+     ],
+     "transitions": [],
+     "timed_transitions": [
+      {
+       "_": "TimedTransition",
+       "region": [23, 15, 23, 18],
+       "duration": {
+        "_": "DurationLiteral",
+        "region": [23, 15, 23, 18],
+        "microseconds": 30000000,
+        "original": "30s"
+       },
+       "target_state": "cooling",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "body": []
+    },
+    {
+     "_": "StateDecl",
+     "region": [25, 11, 25, 18],
+     "name": "cooling",
+     "is_initial": false,
+     "enter_body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [26, 17, 26, 20],
+        "obj": {
+         "_": "VarRef",
+         "region": [26, 17, 26, 20],
+         "name": "fan"
+        },
+        "method": "on",
+        "args": []
+       }
+      }
+     ],
+     "exit_body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [27, 16, 27, 19],
+        "obj": {
+         "_": "VarRef",
+         "region": [27, 16, 27, 19],
+         "name": "fan"
+        },
+        "method": "off",
+        "args": []
+       }
+      }
+     ],
+     "transitions": [],
+     "timed_transitions": [
+      {
+       "_": "TimedTransition",
+       "region": [28, 15, 28, 18],
+       "duration": {
+        "_": "DurationLiteral",
+        "region": [28, 15, 28, 18],
+        "microseconds": 30000000,
+        "original": "30s"
+       },
+       "target_state": "idle",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "body": []
+    }
+   ],
+   "variables": []
+  }
+ ],
+ "storage_vars": [
+  {
+   "_": "StorageDecl",
+   "region": [10, 9, 10, 20],
+   "name": "target_temp",
+   "type_name": "int",
+   "default_value": {
+    "_": "IntLiteral",
+    "region": [10, 28, 10, 30],
+    "value": 22
+   }
+  }
+ ],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

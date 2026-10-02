@@ -1,0 +1,121 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [3, 9, 4, 15],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [3, 9, 3, 12],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   },
+   {
+    "_": "PinDecl",
+    "region": [4, 9, 4, 15],
+    "name": "button",
+    "mode": "PullUpInput",
+    "gpio": 0
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [
+  {
+   "_": "MachineDecl",
+   "region": [7, 9, 7, 20],
+   "name": "DeviceState",
+   "states": [
+    {
+     "_": "StateDecl",
+     "region": [8, 11, 8, 15],
+     "name": "idle",
+     "is_initial": true,
+     "enter_body": [],
+     "exit_body": [],
+     "transitions": [
+      {
+       "_": "StateTransition",
+       "region": [9, 12, 9, 18],
+       "event": {
+        "_": "MethodCall",
+        "region": [9, 12, 9, 18],
+        "obj": {
+         "_": "VarRef",
+         "region": [9, 12, 9, 18],
+         "name": "button"
+        },
+        "method": "press",
+        "args": []
+       },
+       "target_state": "running",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "timed_transitions": [],
+     "body": []
+    },
+    {
+     "_": "StateDecl",
+     "region": [11, 11, 11, 18],
+     "name": "running",
+     "is_initial": false,
+     "enter_body": [],
+     "exit_body": [],
+     "transitions": [],
+     "timed_transitions": [],
+     "body": [
+      {
+       "_": "EveryBlock",
+       "region": [12, 15, 12, 22],
+       "interval": {
+        "_": "DurationLiteral",
+        "region": [12, 15, 12, 22],
+        "microseconds": 1000000,
+        "original": "1second"
+       },
+       "strict": false,
+       "guard": null,
+       "body": [
+        {
+         "_": "ExprStmt",
+         "region": [0, 0, 0, 0],
+         "expr": {
+          "_": "MethodCall",
+          "region": [13, 13, 13, 16],
+          "obj": {
+           "_": "VarRef",
+           "region": [13, 13, 13, 16],
+           "name": "led"
+          },
+          "method": "toggle",
+          "args": []
+         }
+        }
+       ],
+       "yield_label": 0
+      }
+     ]
+    }
+   ],
+   "variables": []
+  }
+ ],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

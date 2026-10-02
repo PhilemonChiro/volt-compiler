@@ -1,0 +1,21 @@
+
+[yellow bold]-- DEPRECATION -- analog_on_gpio_pin.volt:2[/yellow bold]
+
+Move `chip esp8266` to volt.toml: chip = "esp8266"
+
+ [dim]1 |[/dim] 
+ [dim]2 |[/dim] chip esp8266
+ [dim]  |[/dim] [yellow]     ^^^^^^^[/yellow]
+
+[cyan]Hint: The chip declaration will move to volt.toml in a future version.[/cyan]
+
+
+[red bold]-- HARDWARE ERROR -- analog_on_gpio_pin.volt:4[/red bold]
+
+GPIO 4 is not an analog pin. ESP8266 has only one ADC input (A0/TOUT) which is not a GPIO.
+
+ [dim]3 |[/dim] hardware {
+ [dim]4 |[/dim]     pin sensor: Analog = 4
+ [dim]  |[/dim] [red]        ^^^^^^[/red]
+
+[cyan]Hint: Use the dedicated A0 pin for analog reads.[/cyan]

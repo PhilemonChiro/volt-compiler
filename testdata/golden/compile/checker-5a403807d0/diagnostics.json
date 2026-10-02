@@ -1,0 +1,26 @@
+[
+  {
+    "severity": "error",
+    "category": "TYPE MISMATCH",
+    "message": "Argument 1 of `add` expects `int`, got `string`.",
+    "hint": null,
+    "region": [
+      6,
+      17,
+      6,
+      22
+    ]
+  },
+  {
+    "severity": "error",
+    "category": "TYPE MISMATCH",
+    "message": "Argument 2 of `add` expects `int`, got `string`.",
+    "hint": null,
+    "region": [
+      6,
+      24,
+      6,
+      29
+    ]
+  }
+]

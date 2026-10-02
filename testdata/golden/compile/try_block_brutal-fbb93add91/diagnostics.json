@@ -1,0 +1,26 @@
+[
+  {
+    "severity": "warning",
+    "category": "DEPRECATION",
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "hint": "The chip declaration will move to volt.toml in a future version.",
+    "region": [
+      1,
+      6,
+      1,
+      11
+    ]
+  },
+  {
+    "severity": "warning",
+    "category": "RETRY SIDE EFFECT",
+    "message": "mutation to `counter` inside retry'd `try` block; side effects will repeat on each retry.",
+    "hint": "Move the mutation outside the try, or verify the operation is idempotent.",
+    "region": [
+      6,
+      9,
+      6,
+      16
+    ]
+  }
+]

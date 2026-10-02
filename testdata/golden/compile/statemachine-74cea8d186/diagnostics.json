@@ -1,0 +1,14 @@
+[
+  {
+    "severity": "error",
+    "category": "STATE MACHINE ERROR",
+    "message": "State `a`: multiple unguarded transitions for event `x`. Add guards [condition] to distinguish them.",
+    "hint": null,
+    "region": [
+      3,
+      19,
+      3,
+      20
+    ]
+  }
+]

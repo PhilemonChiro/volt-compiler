@@ -1,0 +1,228 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 2,
+    "col": 6,
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "severity": "warning",
+    "hint": "The chip declaration will move to volt.toml in a future version."
+   },
+   {
+    "line": 3,
+    "col": 16,
+    "message": "Strapping pin: GPIO 2 must be LOW during boot for flash programming.",
+    "severity": "warning",
+    "hint": ""
+   }
+  ],
+  "pins": [
+   {
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "inc",
+    "tier": "critical",
+    "line": 5
+   },
+   {
+    "name": "dec",
+    "tier": "critical",
+    "line": 10
+   }
+  ],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": "esp32"
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n}\n\nshared var counter: int = 0\n\ntask inc {\n    every 100ms strict { counter += 1 }\n}\n\ntask dec {\n    every 200ms strict { counter -= 1 }\n}\n",
+ "find_symbols": [
+  {
+   "name": "led",
+   "kind": "pin",
+   "def_line": 3,
+   "def_col": 16,
+   "refs": []
+  },
+  {
+   "name": "inc",
+   "kind": "task",
+   "def_line": 5,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "dec",
+   "kind": "task",
+   "def_line": 10,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "counter",
+   "kind": "var",
+   "def_line": 4,
+   "def_col": 12,
+   "refs": [
+    {
+     "line": 7,
+     "col": 9
+    },
+    {
+     "line": 12,
+     "col": 9
+    }
+   ]
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    v_counter(\"counter\")\n    u_inc((\"inc<br>↻ 100ms\"))\n    u_dec((\"dec<br>↻ 200ms\"))\n    u_inc -->|write| v_counter\n    u_dec -->|write| v_counter\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_inc timer;\n    class v_counter shared;\n    class u_dec timer;",
+  "units": [
+   {
+    "id": "u_inc",
+    "name": "inc<br>↻ 100ms",
+    "line": 5
+   },
+   {
+    "id": "u_dec",
+    "name": "dec<br>↻ 200ms",
+    "line": 10
+   }
+  ],
+  "loops": [
+   "u_inc",
+   "u_dec"
+  ],
+  "edges": [
+   {
+    "drive": "timer",
+    "src": "u_inc",
+    "dst": "v_counter",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_dec",
+    "dst": "v_counter",
+    "rate_ms": 200.0
+   }
+  ],
+  "nodes": {
+   "u_inc": {
+    "kind": "timer",
+    "label": "inc<br>↻ 100ms",
+    "line": 5,
+    "detail": "every 100ms"
+   },
+   "v_counter": {
+    "kind": "var",
+    "label": "counter",
+    "line": 4,
+    "detail": "shared int"
+   },
+   "u_dec": {
+    "kind": "timer",
+    "label": "dec<br>↻ 200ms",
+    "line": 10,
+    "detail": "every 200ms"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    v_counter(\"counter\")\n    u_inc((\"inc<br>↻ 100ms\"))\n    u_dec((\"dec<br>↻ 200ms\"))\n    u_inc -->|write| v_counter\n    u_dec -->|write| v_counter\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_inc timer;\n    class v_counter shared;\n    class u_dec timer;",
+  "units": [
+   {
+    "id": "u_inc",
+    "name": "inc<br>↻ 100ms",
+    "line": 5
+   },
+   {
+    "id": "u_dec",
+    "name": "dec<br>↻ 200ms",
+    "line": 10
+   }
+  ],
+  "loops": [
+   "u_inc",
+   "u_dec"
+  ],
+  "edges": [
+   {
+    "drive": "timer",
+    "src": "u_inc",
+    "dst": "v_counter",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_dec",
+    "dst": "v_counter",
+    "rate_ms": 200.0
+   }
+  ],
+  "nodes": {
+   "u_inc": {
+    "kind": "timer",
+    "label": "inc<br>↻ 100ms",
+    "line": 5,
+    "detail": "every 100ms"
+   },
+   "v_counter": {
+    "kind": "var",
+    "label": "counter",
+    "line": 4,
+    "detail": "shared int"
+   },
+   "u_dec": {
+    "kind": "timer",
+    "label": "dec<br>↻ 200ms",
+    "line": 10,
+    "detail": "every 200ms"
+   }
+  }
+ }
+}

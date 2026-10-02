@@ -1,0 +1,31 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [
+  {
+   "_": "StorageDecl",
+   "region": [2, 9, 2, 14],
+   "name": "count",
+   "type_name": "int",
+   "default_value": {
+    "_": "IntLiteral",
+    "region": [2, 22, 2, 23],
+    "value": 0
+   }
+  }
+ ],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

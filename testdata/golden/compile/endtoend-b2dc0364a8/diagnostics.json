@@ -1,0 +1,14 @@
+[
+  {
+    "severity": "error",
+    "category": "TYPE MISMATCH",
+    "message": "Type `Output` has no method `read`.",
+    "hint": "Available: on, off, toggle, write, is_on, blink, blink_once",
+    "region": [
+      6,
+      5,
+      6,
+      8
+    ]
+  }
+]

@@ -1,0 +1,137 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [3, 9, 5, 12],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [3, 9, 3, 12],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   },
+   {
+    "_": "PinDecl",
+    "region": [4, 9, 4, 12],
+    "name": "btn",
+    "mode": "PullUpInput",
+    "gpio": 0
+   },
+   {
+    "_": "PinDecl",
+    "region": [5, 9, 5, 12],
+    "name": "bat",
+    "mode": "Analog",
+    "gpio": 36
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "MethodCall",
+     "region": [8, 5, 8, 8],
+     "obj": {
+      "_": "VarRef",
+      "region": [8, 5, 8, 8],
+      "name": "led"
+     },
+     "method": "on",
+     "args": []
+    }
+   },
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "MethodCall",
+     "region": [9, 5, 9, 8],
+     "obj": {
+      "_": "VarRef",
+      "region": [9, 5, 9, 8],
+      "name": "led"
+     },
+     "method": "off",
+     "args": []
+    }
+   },
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "MethodCall",
+     "region": [10, 5, 10, 8],
+     "obj": {
+      "_": "VarRef",
+      "region": [10, 5, 10, 8],
+      "name": "led"
+     },
+     "method": "toggle",
+     "args": []
+    }
+   },
+   {
+    "_": "VarDecl",
+    "region": [11, 9, 11, 16],
+    "name": "pressed",
+    "type_name": null,
+    "value": {
+     "_": "MethodCall",
+     "region": [11, 19, 11, 22],
+     "obj": {
+      "_": "VarRef",
+      "region": [11, 19, 11, 22],
+      "name": "btn"
+     },
+     "method": "is_pressed",
+     "args": []
+    },
+    "mutable": false,
+    "shared": false,
+    "needs_lifting": false
+   },
+   {
+    "_": "VarDecl",
+    "region": [12, 9, 12, 12],
+    "name": "val",
+    "type_name": null,
+    "value": {
+     "_": "MethodCall",
+     "region": [12, 15, 12, 18],
+     "obj": {
+      "_": "VarRef",
+      "region": [12, 15, 12, 18],
+      "name": "bat"
+     },
+     "method": "read",
+     "args": []
+    },
+    "mutable": false,
+    "shared": false,
+    "needs_lifting": false
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

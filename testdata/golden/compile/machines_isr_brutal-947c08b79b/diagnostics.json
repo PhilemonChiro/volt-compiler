@@ -1,0 +1,26 @@
+[
+  {
+    "severity": "warning",
+    "category": "DEPRECATION",
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "hint": "The chip declaration will move to volt.toml in a future version.",
+    "region": [
+      1,
+      6,
+      1,
+      11
+    ]
+  },
+  {
+    "severity": "error",
+    "category": "STATE MACHINE ERROR",
+    "message": "Timed transition target `totally_made_up` does not exist. Available states: a.",
+    "hint": null,
+    "region": [
+      6,
+      15,
+      6,
+      20
+    ]
+  }
+]

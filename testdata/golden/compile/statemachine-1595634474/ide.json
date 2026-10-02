@@ -1,0 +1,316 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 3,
+    "col": 9,
+    "message": "GPIO 2: GPIO 2 is a strapping pin. Must be LOW or floating for download mode.",
+    "severity": "warning",
+    "hint": ""
+   }
+  ],
+  "pins": [
+   {
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "blink",
+    "tier": "background",
+    "line": 13
+   }
+  ],
+  "machines": [
+   {
+    "name": "DevState",
+    "states": [
+     "idle",
+     "running"
+    ],
+    "line": 5
+   }
+  ],
+  "channels": [],
+  "enums": [],
+  "chip": ""
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "hardware {\n    pin led: Output = 2\n}\n\ntask blink {\n    every 500ms { led.toggle() }\n}\n\nmachine DevState {\n    initial state idle {\n        on activate() -> running\n    }\n\n    state running {\n        on deactivate() -> idle\n    }\n}\n\nsetup {\n    run(blink)\n}\n",
+ "find_symbols": [
+  {
+   "name": "led",
+   "kind": "pin",
+   "def_line": 3,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 15,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "blink",
+   "kind": "task",
+   "def_line": 13,
+   "def_col": 6,
+   "refs": [
+    {
+     "line": 19,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "DevState",
+   "kind": "machine",
+   "def_line": 5,
+   "def_col": 9,
+   "refs": []
+  },
+  {
+   "name": "idle",
+   "kind": "state",
+   "def_line": 6,
+   "def_col": 19,
+   "refs": []
+  },
+  {
+   "name": "running",
+   "kind": "state",
+   "def_line": 9,
+   "def_col": 11,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": [
+   {
+    "name": "DevState",
+    "mermaid": "stateDiagram-v2\n    [*] --> idle\n    idle --> running : activate\n    running --> idle : deactivate",
+    "states": [
+     {
+      "name": "idle",
+      "line": 6
+     },
+     {
+      "name": "running",
+      "line": 9
+     }
+    ]
+   }
+  ]
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_run{{\"run\"}}\n    u_DevState[[\"DevState\"]]\n    s_activate{{\"activate\"}}\n    s_deactivate{{\"deactivate\"}}\n    u_blink((\"blink<br>↻ 500ms\"))\n    u_setup -->|run| s_run\n    u_DevState -->|activate| s_activate\n    u_DevState -->|deactivate| s_deactivate\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_run service;\n    class u_blink timer;\n    class u_DevState machine;\n    class s_activate service;\n    class s_deactivate service;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_blink",
+    "name": "blink<br>↻ 500ms",
+    "line": 13
+   },
+   {
+    "id": "u_DevState",
+    "name": "DevState",
+    "line": 5
+   }
+  ],
+  "loops": [
+   "u_blink"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_run"
+   },
+   {
+    "drive": "machine",
+    "src": "u_DevState",
+    "dst": "s_activate"
+   },
+   {
+    "drive": "machine",
+    "src": "u_DevState",
+    "dst": "s_deactivate"
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_run": {
+    "kind": "service",
+    "label": "run",
+    "line": null,
+    "detail": "run"
+   },
+   "u_blink": {
+    "kind": "timer",
+    "label": "blink<br>↻ 500ms",
+    "line": 13,
+    "detail": "every 500ms"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 3,
+    "detail": "Output · GPIO 2"
+   },
+   "u_DevState": {
+    "kind": "machine",
+    "label": "DevState",
+    "line": 5,
+    "detail": "2 states"
+   },
+   "s_activate": {
+    "kind": "service",
+    "label": "activate",
+    "line": null,
+    "detail": "activate"
+   },
+   "s_deactivate": {
+    "kind": "service",
+    "label": "deactivate",
+    "line": null,
+    "detail": "deactivate"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_run{{\"run\"}}\n    p_led([\"led\"])\n    u_DevState[[\"DevState\"]]\n    s_activate{{\"activate\"}}\n    s_deactivate{{\"deactivate\"}}\n    u_blink((\"blink<br>↻ 500ms\"))\n    u_setup -->|run| s_run\n    u_blink -->|toggle| p_led\n    u_DevState -->|activate| s_activate\n    u_DevState -->|deactivate| s_deactivate\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_run service;\n    class u_blink timer;\n    class p_led pin;\n    class u_DevState machine;\n    class s_activate service;\n    class s_deactivate service;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_blink",
+    "name": "blink<br>↻ 500ms",
+    "line": 13
+   },
+   {
+    "id": "u_DevState",
+    "name": "DevState",
+    "line": 5
+   }
+  ],
+  "loops": [
+   "u_blink"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_run"
+   },
+   {
+    "drive": "timer",
+    "src": "u_blink",
+    "dst": "p_led",
+    "rate_ms": 500.0
+   },
+   {
+    "drive": "machine",
+    "src": "u_DevState",
+    "dst": "s_activate"
+   },
+   {
+    "drive": "machine",
+    "src": "u_DevState",
+    "dst": "s_deactivate"
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_run": {
+    "kind": "service",
+    "label": "run",
+    "line": null,
+    "detail": "run"
+   },
+   "u_blink": {
+    "kind": "timer",
+    "label": "blink<br>↻ 500ms",
+    "line": 13,
+    "detail": "every 500ms"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 3,
+    "detail": "Output · GPIO 2"
+   },
+   "u_DevState": {
+    "kind": "machine",
+    "label": "DevState",
+    "line": 5,
+    "detail": "2 states"
+   },
+   "s_activate": {
+    "kind": "service",
+    "label": "activate",
+    "line": null,
+    "detail": "activate"
+   },
+   "s_deactivate": {
+    "kind": "service",
+    "label": "deactivate",
+    "line": null,
+    "detail": "deactivate"
+   }
+  }
+ }
+}

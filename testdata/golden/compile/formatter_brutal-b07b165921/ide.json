@@ -1,0 +1,1038 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 17,
+    "col": 9,
+    "message": "GPIO 2: GPIO 2 is a strapping pin. Must be LOW or floating for download mode.",
+    "severity": "warning",
+    "hint": ""
+   },
+   {
+    "line": 19,
+    "col": 9,
+    "message": "GPIO 15: GPIO 15 is a strapping pin. Outputs PWM signal during boot. LOW at boot suppresses UART boot log messages.",
+    "severity": "warning",
+    "hint": ""
+   },
+   {
+    "line": 19,
+    "col": 9,
+    "message": "GPIO 15 is a JTAG pin. Using it disables JTAG debugging.",
+    "severity": "warning",
+    "hint": ""
+   }
+  ],
+  "pins": [
+   {
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   },
+   {
+    "name": "relay",
+    "mode": "Output",
+    "gpio": 4
+   },
+   {
+    "name": "button",
+    "mode": "PullUpInput",
+    "gpio": 15
+   },
+   {
+    "name": "buzzer",
+    "mode": "PWM",
+    "gpio": 18
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "keypad",
+    "tier": "background",
+    "line": 42
+   },
+   {
+    "name": "command_processor",
+    "tier": "background",
+    "line": 120
+   },
+   {
+    "name": "_rule0",
+    "tier": "priority",
+    "line": 142
+   }
+  ],
+  "machines": [
+   {
+    "name": "door_lock",
+    "states": [
+     "locked",
+     "unlocked",
+     "alert"
+    ],
+    "line": 77
+   }
+  ],
+  "channels": [
+   {
+    "name": "lock_commands",
+    "elem_type": "int",
+    "capacity": 4
+   }
+  ],
+  "enums": [
+   {
+    "name": "DoorState",
+    "variants": [
+     "locked",
+     "unlocked",
+     "alert"
+    ]
+   }
+  ],
+  "chip": ""
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "/* ============================================================\nSmart Door Lock — v3\n\nWiFi-connected door lock with keypad, buzzer alerts,\nauto-lock timer, and remote MQTT control.\n\nHardware:\nGPIO2  = status LED\nGPIO4  = lock relay\nGPIO15 = keypad button\nGPIO18 = buzzer (PWM)\n============================================================ */\n\nenum DoorState { locked, unlocked, alert }\n\nhardware {\n    pin led = 2\n    pin relay = 4\n    pin button: PullUpInput = 15\n    pin buzzer: PWM = 18\n}\n\nstorage total_unlocks: int = 0\nstorage failed_attempts: int = 0\n\nvar door: DoorState = DoorState.locked\nvar attempt_count: int = 0\nvar unlock_request: int = 0\n\nchannel lock_commands: int[4]\n\n/* Startup */\nsetup {\n    // wifi.connect(\"HomeNet\", \"password\") or retry(10)\n    // mqtt.connect(\"mqtt://192.168.1.100\") or retry(5)\n    log(\"boot\", \"Smart Door Lock v3\")\n    log(\"boot\", \"press button 3x within 2s to unlock\")\n    buzzer.beep_startup()\n}\n\n/* Keypad: detect 3-press unlock code */\ntask keypad {\n    var last: int = 1\n    var press_count: int = 0\n    var last_press_time: int = 0\n\n    every 30ms {\n        let state: int = button.read()\n        if state == 0 {\n            if last == 1 {\n                press_count += 1\n                last_press_time = system.uptime()\n                buzzer.click()\n\n                if press_count >= 3 {\n                    lock_commands.send(1)\n                    press_count = 0\n                }\n            }\n        }\n        last = state\n\n        let now: int = system.uptime()\n        if now - last_press_time > 2 {\n            if press_count > 0 {\n                if press_count < 3 {\n                    lock_commands.send(0)\n                    buzzer.beep_error()\n                }\n                press_count = 0\n            }\n        }\n    }\n}\n\n/* Lock state machine */\nmachine door_lock {\n    var auto_lock_timer: int = 0\n\n    state locked {\n        enter {\n            relay.off()\n            led.off()\n            door = DoorState.locked\n            log(\"lock\", \"LOCKED\")\n            // mqtt.send_int(\"door/status\", 0)\n        }\n        on unlock_request == 1 -> unlocked { unlock_request = 0 }\n        on attempt_count >= 3 -> alert\n    }\n\n    state unlocked {\n        enter {\n            relay.on()\n            led.on()\n            door = DoorState.unlocked\n            total_unlocks += 1\n            log(\"lock\", \"UNLOCKED\")\n            // mqtt.send_int(\"door/status\", 1)\n            buzzer.beep_success()\n        }\n        after 10s -> locked\n    }\n\n    state alert {\n        enter {\n            buzzer.beep_alarm()\n            log(\"lock\", \"ALERT — too many failed attempts!\")\n            // mqtt.send_int(\"door/alert\", 1)\n        }\n        exit {\n            attempt_count = 0\n            // mqtt.send_int(\"door/alert\", 0)\n        }\n        after 20s -> locked\n    }\n}\n\n/* Command processor */\ntask command_processor {\n    every 100ms {\n        if lock_commands.has_data() {\n            let cmd: int = lock_commands.receive()\n            if cmd == 1 {\n                attempt_count = 0\n                unlock_request = 1\n            } else {\n                attempt_count += 1\n                failed_attempts += 1\n                log(\"security\", \"failed attempt #{attempt_count}\")\n            }\n        }\n    }\n}\n\n/* Remote status reporting */\n// every 5s when wifi.is_connected() {\n    //     mqtt.send_int(\"door/locked\", 0) or retry(3)\n    // }\n\n    /* Health + persistence */\n    every 30s {\n        storage.save(\"total_unlocks\", total_unlocks)\n        storage.save(\"failed_attempts\", failed_attempts)\n        let heap: int = system.free_heap()\n        log(\"health\", \"heap={heap} unlocks={total_unlocks}\")\n    }\n",
+ "find_symbols": [
+  {
+   "name": "led",
+   "kind": "pin",
+   "def_line": 17,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 83,
+     "col": 13
+    },
+    {
+     "line": 95,
+     "col": 13
+    }
+   ]
+  },
+  {
+   "name": "relay",
+   "kind": "pin",
+   "def_line": 18,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 82,
+     "col": 13
+    },
+    {
+     "line": 94,
+     "col": 13
+    }
+   ]
+  },
+  {
+   "name": "button",
+   "kind": "pin",
+   "def_line": 19,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 48,
+     "col": 26
+    }
+   ]
+  },
+  {
+   "name": "buzzer",
+   "kind": "pin",
+   "def_line": 20,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 53,
+     "col": 17
+    },
+    {
+     "line": 68,
+     "col": 21
+    },
+    {
+     "line": 100,
+     "col": 13
+    },
+    {
+     "line": 107,
+     "col": 13
+    },
+    {
+     "line": 38,
+     "col": 5
+    }
+   ]
+  },
+  {
+   "name": "keypad",
+   "kind": "task",
+   "def_line": 42,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "command_processor",
+   "kind": "task",
+   "def_line": 120,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "_rule0",
+   "kind": "task",
+   "def_line": 142,
+   "def_col": 11,
+   "refs": []
+  },
+  {
+   "name": "door_lock",
+   "kind": "machine",
+   "def_line": 77,
+   "def_col": 9,
+   "refs": []
+  },
+  {
+   "name": "locked",
+   "kind": "state",
+   "def_line": 80,
+   "def_col": 11,
+   "refs": []
+  },
+  {
+   "name": "unlocked",
+   "kind": "state",
+   "def_line": 92,
+   "def_col": 11,
+   "refs": []
+  },
+  {
+   "name": "alert",
+   "kind": "state",
+   "def_line": 105,
+   "def_col": 11,
+   "refs": []
+  },
+  {
+   "name": "total_unlocks",
+   "kind": "storage",
+   "def_line": 23,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 143,
+     "col": 39
+    },
+    {
+     "line": 97,
+     "col": 13
+    }
+   ]
+  },
+  {
+   "name": "failed_attempts",
+   "kind": "storage",
+   "def_line": 24,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 129,
+     "col": 17
+    },
+    {
+     "line": 144,
+     "col": 41
+    }
+   ]
+  },
+  {
+   "name": "door",
+   "kind": "var",
+   "def_line": 26,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 84,
+     "col": 13
+    },
+    {
+     "line": 96,
+     "col": 13
+    }
+   ]
+  },
+  {
+   "name": "attempt_count",
+   "kind": "var",
+   "def_line": 27,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 125,
+     "col": 17
+    },
+    {
+     "line": 128,
+     "col": 17
+    },
+    {
+     "line": 112,
+     "col": 13
+    }
+   ]
+  },
+  {
+   "name": "unlock_request",
+   "kind": "var",
+   "def_line": 28,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 126,
+     "col": 17
+    }
+   ]
+  },
+  {
+   "name": "last",
+   "kind": "var",
+   "def_line": 43,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 50,
+     "col": 16
+    },
+    {
+     "line": 61,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "press_count",
+   "kind": "var",
+   "def_line": 44,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 51,
+     "col": 17
+    },
+    {
+     "line": 55,
+     "col": 20
+    },
+    {
+     "line": 57,
+     "col": 21
+    },
+    {
+     "line": 65,
+     "col": 16
+    },
+    {
+     "line": 66,
+     "col": 20
+    },
+    {
+     "line": 70,
+     "col": 17
+    }
+   ]
+  },
+  {
+   "name": "last_press_time",
+   "kind": "var",
+   "def_line": 45,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 52,
+     "col": 17
+    },
+    {
+     "line": 64,
+     "col": 18
+    }
+   ]
+  },
+  {
+   "name": "state",
+   "kind": "var",
+   "def_line": 48,
+   "def_col": 13,
+   "refs": [
+    {
+     "line": 49,
+     "col": 12
+    },
+    {
+     "line": 61,
+     "col": 16
+    }
+   ]
+  },
+  {
+   "name": "now",
+   "kind": "var",
+   "def_line": 63,
+   "def_col": 13,
+   "refs": [
+    {
+     "line": 64,
+     "col": 12
+    }
+   ]
+  },
+  {
+   "name": "cmd",
+   "kind": "var",
+   "def_line": 123,
+   "def_col": 17,
+   "refs": [
+    {
+     "line": 124,
+     "col": 16
+    }
+   ]
+  },
+  {
+   "name": "heap",
+   "kind": "var",
+   "def_line": 145,
+   "def_col": 13,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": [
+   {
+    "name": "door_lock",
+    "mermaid": "stateDiagram-v2\n    [*] --> locked\n    locked --> unlocked : unlock_request == 1\n    locked --> alert : attempt_count >= 3\n    unlocked --> locked : after 10s\n    alert --> locked : after 20s",
+    "states": [
+     {
+      "name": "locked",
+      "line": 80
+     },
+     {
+      "name": "unlocked",
+      "line": 92
+     },
+     {
+      "name": "alert",
+      "line": 105
+     }
+    ]
+   }
+  ]
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_log{{\"log\"}}\n    p_buzzer([\"buzzer\"])\n    s_system{{\"system\"}}\n    c_lock_commands[/\"lock_commands\"/]\n    v_attempt_count(\"attempt_count\")\n    v_unlock_request(\"unlock_request\")\n    v_failed_attempts(\"failed_attempts\")\n    v_total_unlocks(\"total_unlocks\")\n    u_door_lock[[\"door_lock\"]]\n    p_relay([\"relay\"])\n    p_led([\"led\"])\n    v_door(\"door\")\n    u_keypad((\"keypad<br>↻ 30ms\"))\n    u_command_processor((\"command_processor<br>↻ 100ms\"))\n    u__rule0((\"↻ 30s\"))\n    u_setup -->|log| s_log\n    u_setup -->|beep_startup| p_buzzer\n    u_keypad -->|uptime| s_system\n    u_keypad -->|beep_error, click| p_buzzer\n    u_keypad -->|send| c_lock_commands\n    c_lock_commands -.->|has_data, receive| u_command_processor\n    u_command_processor -->|write| v_attempt_count\n    u_command_processor -->|write| v_unlock_request\n    u_command_processor -->|write| v_failed_attempts\n    u_command_processor -->|log| s_log\n    v_total_unlocks -.->|read| u__rule0\n    v_failed_attempts -.->|read| u__rule0\n    u__rule0 -->|free_heap| s_system\n    u__rule0 -->|log| s_log\n    u_door_lock -->|off, on| p_relay\n    u_door_lock -->|off, on| p_led\n    u_door_lock -->|write| v_door\n    u_door_lock -->|log| s_log\n    v_unlock_request -.->|read| u_door_lock\n    u_door_lock -->|write| v_unlock_request\n    v_attempt_count -.->|read| u_door_lock\n    u_door_lock -->|write| v_total_unlocks\n    u_door_lock -->|beep_alarm, beep_success| p_buzzer\n    u_door_lock -->|write| v_attempt_count\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_log service;\n    class p_buzzer shared;\n    class u_keypad timer;\n    class s_system service;\n    class c_lock_commands shared;\n    class u_command_processor timer;\n    class v_attempt_count shared;\n    class v_unlock_request shared;\n    class v_failed_attempts shared;\n    class u__rule0 timer;\n    class v_total_unlocks shared;\n    class u_door_lock machine;\n    class p_relay pin;\n    class p_led pin;\n    class v_door var;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_keypad",
+    "name": "keypad<br>↻ 30ms",
+    "line": 42
+   },
+   {
+    "id": "u_command_processor",
+    "name": "command_processor<br>↻ 100ms",
+    "line": 120
+   },
+   {
+    "id": "u__rule0",
+    "name": "↻ 30s",
+    "line": 142
+   },
+   {
+    "id": "u_door_lock",
+    "name": "door_lock",
+    "line": 77
+   }
+  ],
+  "loops": [
+   "u_keypad",
+   "u_command_processor",
+   "u__rule0"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_log"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "p_buzzer"
+   },
+   {
+    "drive": "timer",
+    "src": "u_keypad",
+    "dst": "s_system",
+    "rate_ms": 30.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_keypad",
+    "dst": "p_buzzer",
+    "rate_ms": 30.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_keypad",
+    "dst": "c_lock_commands",
+    "rate_ms": 30.0
+   },
+   {
+    "drive": "timer",
+    "src": "c_lock_commands",
+    "dst": "u_command_processor",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_command_processor",
+    "dst": "v_attempt_count",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_command_processor",
+    "dst": "v_unlock_request",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_command_processor",
+    "dst": "v_failed_attempts",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_command_processor",
+    "dst": "s_log",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_total_unlocks",
+    "dst": "u__rule0",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_failed_attempts",
+    "dst": "u__rule0",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule0",
+    "dst": "s_system",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule0",
+    "dst": "s_log",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "machine",
+    "src": "u_door_lock",
+    "dst": "p_relay"
+   },
+   {
+    "drive": "machine",
+    "src": "u_door_lock",
+    "dst": "p_led"
+   },
+   {
+    "drive": "machine",
+    "src": "u_door_lock",
+    "dst": "v_door"
+   },
+   {
+    "drive": "machine",
+    "src": "u_door_lock",
+    "dst": "s_log"
+   },
+   {
+    "drive": "machine",
+    "src": "v_unlock_request",
+    "dst": "u_door_lock"
+   },
+   {
+    "drive": "machine",
+    "src": "u_door_lock",
+    "dst": "v_unlock_request"
+   },
+   {
+    "drive": "machine",
+    "src": "v_attempt_count",
+    "dst": "u_door_lock"
+   },
+   {
+    "drive": "machine",
+    "src": "u_door_lock",
+    "dst": "v_total_unlocks"
+   },
+   {
+    "drive": "machine",
+    "src": "u_door_lock",
+    "dst": "p_buzzer"
+   },
+   {
+    "drive": "machine",
+    "src": "u_door_lock",
+    "dst": "v_attempt_count"
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_log": {
+    "kind": "service",
+    "label": "log",
+    "line": null,
+    "detail": "log"
+   },
+   "p_buzzer": {
+    "kind": "pin",
+    "label": "buzzer",
+    "line": 20,
+    "detail": "PWM · GPIO 18"
+   },
+   "u_keypad": {
+    "kind": "timer",
+    "label": "keypad<br>↻ 30ms",
+    "line": 42,
+    "detail": "every 30ms"
+   },
+   "p_button": {
+    "kind": "pin",
+    "label": "button",
+    "line": 19,
+    "detail": "PullUpInput · GPIO 15"
+   },
+   "s_system": {
+    "kind": "service",
+    "label": "system",
+    "line": null,
+    "detail": "free_heap, uptime"
+   },
+   "c_lock_commands": {
+    "kind": "channel",
+    "label": "lock_commands",
+    "line": 30,
+    "detail": "int[4]"
+   },
+   "u_command_processor": {
+    "kind": "timer",
+    "label": "command_processor<br>↻ 100ms",
+    "line": 120,
+    "detail": "every 100ms"
+   },
+   "v_attempt_count": {
+    "kind": "var",
+    "label": "attempt_count",
+    "line": 27,
+    "detail": "int"
+   },
+   "v_unlock_request": {
+    "kind": "var",
+    "label": "unlock_request",
+    "line": 28,
+    "detail": "int"
+   },
+   "v_failed_attempts": {
+    "kind": "var",
+    "label": "failed_attempts",
+    "line": 24,
+    "detail": "int · storage"
+   },
+   "u__rule0": {
+    "kind": "timer",
+    "label": "↻ 30s",
+    "line": 142,
+    "detail": "every 30s"
+   },
+   "s_storage": {
+    "kind": "service",
+    "label": "storage",
+    "line": null,
+    "detail": "save"
+   },
+   "v_total_unlocks": {
+    "kind": "var",
+    "label": "total_unlocks",
+    "line": 23,
+    "detail": "int · storage"
+   },
+   "u_door_lock": {
+    "kind": "machine",
+    "label": "door_lock",
+    "line": 77,
+    "detail": "3 states"
+   },
+   "p_relay": {
+    "kind": "pin",
+    "label": "relay",
+    "line": 18,
+    "detail": "GPIO 4"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 17,
+    "detail": "GPIO 2"
+   },
+   "v_door": {
+    "kind": "var",
+    "label": "door",
+    "line": 26,
+    "detail": "DoorState"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_log{{\"log\"}}\n    p_buzzer([\"buzzer\"])\n    p_button([\"button\"])\n    s_system{{\"system\"}}\n    c_lock_commands[/\"lock_commands\"/]\n    v_attempt_count(\"attempt_count\")\n    v_unlock_request(\"unlock_request\")\n    v_failed_attempts(\"failed_attempts\")\n    s_storage{{\"storage\"}}\n    v_total_unlocks(\"total_unlocks\")\n    u_door_lock[[\"door_lock\"]]\n    p_relay([\"relay\"])\n    p_led([\"led\"])\n    v_door(\"door\")\n    u_keypad((\"keypad<br>↻ 30ms\"))\n    u_command_processor((\"command_processor<br>↻ 100ms\"))\n    u__rule0((\"↻ 30s\"))\n    u_setup -->|log| s_log\n    u_setup -->|beep_startup| p_buzzer\n    p_button -.->|read| u_keypad\n    u_keypad -->|uptime| s_system\n    u_keypad -->|beep_error, click| p_buzzer\n    u_keypad -->|send| c_lock_commands\n    c_lock_commands -.->|has_data, receive| u_command_processor\n    u_command_processor -->|write| v_attempt_count\n    u_command_processor -->|write| v_unlock_request\n    u_command_processor -->|write| v_failed_attempts\n    u_command_processor -->|log| s_log\n    u__rule0 -->|save| s_storage\n    v_total_unlocks -.->|read| u__rule0\n    v_failed_attempts -.->|read| u__rule0\n    u__rule0 -->|free_heap| s_system\n    u__rule0 -->|log| s_log\n    u_door_lock -->|off, on| p_relay\n    u_door_lock -->|off, on| p_led\n    u_door_lock -->|write| v_door\n    u_door_lock -->|log| s_log\n    v_unlock_request -.->|read| u_door_lock\n    u_door_lock -->|write| v_unlock_request\n    v_attempt_count -.->|read| u_door_lock\n    u_door_lock -->|write| v_total_unlocks\n    u_door_lock -->|beep_alarm, beep_success| p_buzzer\n    u_door_lock -->|write| v_attempt_count\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_log service;\n    class p_buzzer shared;\n    class u_keypad timer;\n    class p_button pin;\n    class s_system service;\n    class c_lock_commands shared;\n    class u_command_processor timer;\n    class v_attempt_count shared;\n    class v_unlock_request shared;\n    class v_failed_attempts shared;\n    class u__rule0 timer;\n    class s_storage service;\n    class v_total_unlocks shared;\n    class u_door_lock machine;\n    class p_relay pin;\n    class p_led pin;\n    class v_door var;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_keypad",
+    "name": "keypad<br>↻ 30ms",
+    "line": 42
+   },
+   {
+    "id": "u_command_processor",
+    "name": "command_processor<br>↻ 100ms",
+    "line": 120
+   },
+   {
+    "id": "u__rule0",
+    "name": "↻ 30s",
+    "line": 142
+   },
+   {
+    "id": "u_door_lock",
+    "name": "door_lock",
+    "line": 77
+   }
+  ],
+  "loops": [
+   "u_keypad",
+   "u_command_processor",
+   "u__rule0"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_log"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "p_buzzer"
+   },
+   {
+    "drive": "timer",
+    "src": "p_button",
+    "dst": "u_keypad",
+    "rate_ms": 30.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_keypad",
+    "dst": "s_system",
+    "rate_ms": 30.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_keypad",
+    "dst": "p_buzzer",
+    "rate_ms": 30.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_keypad",
+    "dst": "c_lock_commands",
+    "rate_ms": 30.0
+   },
+   {
+    "drive": "timer",
+    "src": "c_lock_commands",
+    "dst": "u_command_processor",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_command_processor",
+    "dst": "v_attempt_count",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_command_processor",
+    "dst": "v_unlock_request",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_command_processor",
+    "dst": "v_failed_attempts",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_command_processor",
+    "dst": "s_log",
+    "rate_ms": 100.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule0",
+    "dst": "s_storage",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_total_unlocks",
+    "dst": "u__rule0",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_failed_attempts",
+    "dst": "u__rule0",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule0",
+    "dst": "s_system",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule0",
+    "dst": "s_log",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "machine",
+    "src": "u_door_lock",
+    "dst": "p_relay"
+   },
+   {
+    "drive": "machine",
+    "src": "u_door_lock",
+    "dst": "p_led"
+   },
+   {
+    "drive": "machine",
+    "src": "u_door_lock",
+    "dst": "v_door"
+   },
+   {
+    "drive": "machine",
+    "src": "u_door_lock",
+    "dst": "s_log"
+   },
+   {
+    "drive": "machine",
+    "src": "v_unlock_request",
+    "dst": "u_door_lock"
+   },
+   {
+    "drive": "machine",
+    "src": "u_door_lock",
+    "dst": "v_unlock_request"
+   },
+   {
+    "drive": "machine",
+    "src": "v_attempt_count",
+    "dst": "u_door_lock"
+   },
+   {
+    "drive": "machine",
+    "src": "u_door_lock",
+    "dst": "v_total_unlocks"
+   },
+   {
+    "drive": "machine",
+    "src": "u_door_lock",
+    "dst": "p_buzzer"
+   },
+   {
+    "drive": "machine",
+    "src": "u_door_lock",
+    "dst": "v_attempt_count"
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_log": {
+    "kind": "service",
+    "label": "log",
+    "line": null,
+    "detail": "log"
+   },
+   "p_buzzer": {
+    "kind": "pin",
+    "label": "buzzer",
+    "line": 20,
+    "detail": "PWM · GPIO 18"
+   },
+   "u_keypad": {
+    "kind": "timer",
+    "label": "keypad<br>↻ 30ms",
+    "line": 42,
+    "detail": "every 30ms"
+   },
+   "p_button": {
+    "kind": "pin",
+    "label": "button",
+    "line": 19,
+    "detail": "PullUpInput · GPIO 15"
+   },
+   "s_system": {
+    "kind": "service",
+    "label": "system",
+    "line": null,
+    "detail": "free_heap, uptime"
+   },
+   "c_lock_commands": {
+    "kind": "channel",
+    "label": "lock_commands",
+    "line": 30,
+    "detail": "int[4]"
+   },
+   "u_command_processor": {
+    "kind": "timer",
+    "label": "command_processor<br>↻ 100ms",
+    "line": 120,
+    "detail": "every 100ms"
+   },
+   "v_attempt_count": {
+    "kind": "var",
+    "label": "attempt_count",
+    "line": 27,
+    "detail": "int"
+   },
+   "v_unlock_request": {
+    "kind": "var",
+    "label": "unlock_request",
+    "line": 28,
+    "detail": "int"
+   },
+   "v_failed_attempts": {
+    "kind": "var",
+    "label": "failed_attempts",
+    "line": 24,
+    "detail": "int · storage"
+   },
+   "u__rule0": {
+    "kind": "timer",
+    "label": "↻ 30s",
+    "line": 142,
+    "detail": "every 30s"
+   },
+   "s_storage": {
+    "kind": "service",
+    "label": "storage",
+    "line": null,
+    "detail": "save"
+   },
+   "v_total_unlocks": {
+    "kind": "var",
+    "label": "total_unlocks",
+    "line": 23,
+    "detail": "int · storage"
+   },
+   "u_door_lock": {
+    "kind": "machine",
+    "label": "door_lock",
+    "line": 77,
+    "detail": "3 states"
+   },
+   "p_relay": {
+    "kind": "pin",
+    "label": "relay",
+    "line": 18,
+    "detail": "GPIO 4"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 17,
+    "detail": "GPIO 2"
+   },
+   "v_door": {
+    "kind": "var",
+    "label": "door",
+    "line": 26,
+    "detail": "DoorState"
+   }
+  }
+ }
+}

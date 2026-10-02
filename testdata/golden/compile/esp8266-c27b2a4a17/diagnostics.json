@@ -1,0 +1,26 @@
+[
+  {
+    "severity": "warning",
+    "category": "DEPRECATION",
+    "message": "Move `chip esp8266` to volt.toml: chip = \"esp8266\"",
+    "hint": "The chip declaration will move to volt.toml in a future version.",
+    "region": [
+      2,
+      6,
+      2,
+      13
+    ]
+  },
+  {
+    "severity": "error",
+    "category": "HARDWARE ERROR",
+    "message": "ESP8266 does not have capacitive touch pins.",
+    "hint": "Capacitive touch is available on ESP32.",
+    "region": [
+      4,
+      9,
+      4,
+      10
+    ]
+  }
+]

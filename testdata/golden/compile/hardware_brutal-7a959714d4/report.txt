@@ -1,0 +1,20 @@
+
+[yellow bold]-- DEPRECATION -- main.volt:1[/yellow bold]
+
+Move `chip esp32` to volt.toml: chip = "esp32"
+
+ [dim]1 |[/dim] chip esp32
+ [dim]  |[/dim] [yellow]     ^^^^^[/yellow]
+
+[cyan]Hint: The chip declaration will move to volt.toml in a future version.[/cyan]
+
+
+[red bold]-- HARDWARE ERROR -- main.volt:3[/red bold]
+
+GPIO 36 is input-only (GPIO 34-39 cannot output).
+
+ [dim]2 |[/dim] hardware {
+ [dim]3 |[/dim]     pin led: Output = 36
+ [dim]  |[/dim] [red]        ^^^[/red]
+
+[cyan]Hint: Available output pins: 0, 2, 4, 5, 12, 13, 14, 15, 16, 17, 18, 19, 21, 22, 23, 25, 26, 27, 32, 33[/cyan]

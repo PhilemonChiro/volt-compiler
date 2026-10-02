@@ -1,0 +1,10 @@
+
+[red bold]-- TYPE MISMATCH -- if_int.volt:2[/red bold]
+
+Condition must be `bool`, got `int`.
+
+ [dim]1 |[/dim] setup {
+ [dim]2 |[/dim]     if 42 {
+ [dim]  |[/dim] [red]       ^^[/red]
+
+[cyan]Hint: Use a comparison like `x > 0` or a boolean function.[/cyan]

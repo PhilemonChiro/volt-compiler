@@ -1,0 +1,82 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [
+  {
+   "_": "MachineDecl",
+   "region": [2, 9, 2, 16],
+   "name": "Counter",
+   "states": [
+    {
+     "_": "StateDecl",
+     "region": [6, 19, 6, 27],
+     "name": "counting",
+     "is_initial": true,
+     "enter_body": [],
+     "exit_body": [],
+     "transitions": [],
+     "timed_transitions": [
+      {
+       "_": "TimedTransition",
+       "region": [7, 15, 7, 23],
+       "duration": {
+        "_": "DurationLiteral",
+        "region": [7, 15, 7, 23],
+        "microseconds": 1000000,
+        "original": "1seconds"
+       },
+       "target_state": "counting",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "body": []
+    }
+   ],
+   "variables": [
+    {
+     "_": "VarDecl",
+     "region": [3, 9, 3, 14],
+     "name": "count",
+     "type_name": null,
+     "value": {
+      "_": "IntLiteral",
+      "region": [3, 17, 3, 18],
+      "value": 0
+     },
+     "mutable": true,
+     "shared": false,
+     "needs_lifting": false
+    },
+    {
+     "_": "VarDecl",
+     "region": [4, 9, 4, 18],
+     "name": "max_count",
+     "type_name": null,
+     "value": {
+      "_": "IntLiteral",
+      "region": [4, 21, 4, 23],
+      "value": 10
+     },
+     "mutable": true,
+     "shared": false,
+     "needs_lifting": false
+    }
+   ]
+  }
+ ],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

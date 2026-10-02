@@ -1,0 +1,14 @@
+[
+  {
+    "severity": "error",
+    "category": "TYPE MISMATCH",
+    "message": "Interval must be a duration (e.g., 500ms), got `int`.",
+    "hint": null,
+    "region": [
+      3,
+      11,
+      3,
+      13
+    ]
+  }
+]

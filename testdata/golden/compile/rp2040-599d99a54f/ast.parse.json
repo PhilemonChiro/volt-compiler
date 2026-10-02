@@ -1,0 +1,113 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 12],
+  "target": "rp2040"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [4, 9, 6, 15],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [4, 9, 4, 12],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 25
+   }
+  ],
+  "buses": [
+   {
+    "_": "BusDecl",
+    "region": [5, 9, 5, 13],
+    "bus_type": "i2c",
+    "name": "i2c0",
+    "params": {
+     "sda": {
+      "_": "IntLiteral",
+      "region": [5, 24, 5, 25],
+      "value": 4
+     },
+     "scl": {
+      "_": "IntLiteral",
+      "region": [5, 32, 5, 33],
+      "value": 5
+     }
+    }
+   }
+  ],
+  "sensors": [
+   {
+    "_": "SensorDecl",
+    "region": [6, 12, 6, 15],
+    "name": "bme",
+    "sensor_type": "BME280",
+    "bus_name": "i2c0",
+    "address": 118,
+    "pin_params": {}
+   }
+  ]
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [8, 6, 8, 12],
+   "name": "reader",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [9, 11, 9, 13],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [9, 11, 9, 13],
+      "microseconds": 2000000,
+      "original": "2s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "VarDecl",
+       "region": [10, 13, 10, 17],
+       "name": "temp",
+       "type_name": "float",
+       "value": {
+        "_": "MethodCall",
+        "region": [10, 27, 10, 30],
+        "obj": {
+         "_": "VarRef",
+         "region": [10, 27, 10, 30],
+         "name": "bme"
+        },
+        "method": "temperature",
+        "args": []
+       },
+       "mutable": true,
+       "shared": false,
+       "needs_lifting": false
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

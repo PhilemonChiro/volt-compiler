@@ -1,0 +1,78 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [
+  {
+   "_": "MachineDecl",
+   "region": [2, 9, 2, 14],
+   "name": "Light",
+   "states": [
+    {
+     "_": "StateDecl",
+     "region": [3, 19, 3, 22],
+     "name": "off",
+     "is_initial": true,
+     "enter_body": [],
+     "exit_body": [],
+     "transitions": [
+      {
+       "_": "StateTransition",
+       "region": [4, 12, 4, 18],
+       "event": {
+        "_": "FuncCall",
+        "region": [4, 12, 4, 18],
+        "name": "toggle",
+        "args": []
+       },
+       "target_state": "on",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "timed_transitions": [],
+     "body": []
+    },
+    {
+     "_": "StateDecl",
+     "region": [6, 11, 6, 13],
+     "name": "on",
+     "is_initial": false,
+     "enter_body": [],
+     "exit_body": [],
+     "transitions": [
+      {
+       "_": "StateTransition",
+       "region": [7, 12, 7, 18],
+       "event": {
+        "_": "FuncCall",
+        "region": [7, 12, 7, 18],
+        "name": "toggle",
+        "args": []
+       },
+       "target_state": "off",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "timed_transitions": [],
+     "body": []
+    }
+   ],
+   "variables": []
+  }
+ ],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

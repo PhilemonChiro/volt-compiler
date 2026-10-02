@@ -1,0 +1,121 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [1, 6, 1, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [2, 16, 2, 19],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [2, 16, 2, 19],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 4
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [4, 7, 4, 9],
+   "name": "_rule0",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [4, 7, 4, 9],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [4, 7, 4, 9],
+      "microseconds": 1000000,
+      "original": "1s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [4, 12, 4, 15],
+        "obj": {
+         "_": "VarRef",
+         "region": [4, 12, 4, 15],
+         "name": "led"
+        },
+        "method": "toggle",
+        "args": []
+       }
+      }
+     ],
+     "yield_label": 1
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "TryBlock",
+    "region": [0, 0, 0, 0],
+    "body": [
+     {
+      "_": "ExprStmt",
+      "region": [0, 0, 0, 0],
+      "expr": {
+       "_": "MethodCall",
+       "region": [3, 15, 3, 19],
+       "obj": {
+        "_": "VarRef",
+        "region": [3, 15, 3, 19],
+        "name": "wifi"
+       },
+       "method": "connect",
+       "args": [
+        {
+         "_": "StringLiteral",
+         "region": [3, 28, 3, 31],
+         "value": "a"
+        },
+        {
+         "_": "StringLiteral",
+         "region": [3, 32, 3, 35],
+         "value": "b"
+        }
+       ]
+      }
+     }
+    ],
+    "policy": "retry",
+    "retry_limit": 3,
+    "terminal": "skip",
+    "try_id": 0,
+    "needs_context_lift": false,
+    "is_yield_point": false
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

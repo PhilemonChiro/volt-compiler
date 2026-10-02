@@ -1,0 +1,91 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [
+  {
+   "_": "StorageDecl",
+   "region": [3, 9, 3, 19],
+   "name": "boot_count",
+   "type_name": "int",
+   "default_value": {
+    "_": "IntLiteral",
+    "region": [3, 27, 3, 28],
+    "value": 0
+   }
+  }
+ ],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "AssignExpr",
+    "region": [6, 5, 6, 15],
+    "target": {
+     "_": "VarRef",
+     "region": [6, 5, 6, 15],
+     "name": "boot_count"
+    },
+    "value": {
+     "_": "BinaryExpr",
+     "region": [6, 18, 6, 28],
+     "left": {
+      "_": "VarRef",
+      "region": [6, 18, 6, 28],
+      "name": "boot_count"
+     },
+     "op": "+",
+     "right": {
+      "_": "IntLiteral",
+      "region": [6, 31, 6, 32],
+      "value": 1
+     },
+     "result_type": "int"
+    }
+   },
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "MethodCall",
+     "region": [7, 5, 7, 12],
+     "obj": {
+      "_": "VarRef",
+      "region": [7, 5, 7, 12],
+      "name": "storage"
+     },
+     "method": "save",
+     "args": [
+      {
+       "_": "StringLiteral",
+       "region": [7, 18, 7, 30],
+       "value": "boot_count"
+      },
+      {
+       "_": "VarRef",
+       "region": [7, 32, 7, 42],
+       "name": "boot_count"
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

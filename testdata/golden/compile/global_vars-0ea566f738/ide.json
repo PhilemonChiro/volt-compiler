@@ -1,0 +1,322 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 0,
+    "col": 0,
+    "message": "Variable `shared_flag` is shared between critical task (control, control) and task (monitor). The compiler will mark it `volatile` in generated C.",
+    "severity": "warning",
+    "hint": "For multi-word values, consider using atomic operations."
+   }
+  ],
+  "pins": [],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "control",
+    "tier": "critical",
+    "line": 5
+   },
+   {
+    "name": "monitor",
+    "tier": "background",
+    "line": 10
+   }
+  ],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": ""
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "let max_speed: int = 100\n\nvar speed: int = 0\n\nvar shared_flag: int = 0\n\ntask control {\n    every 1ms strict { shared_flag = 1 }\n}\n\ntask monitor {\n    every 500ms { speed = shared_flag + max_speed }\n}\n\nsetup {\n    run(control, monitor)\n}\n",
+ "find_symbols": [
+  {
+   "name": "control",
+   "kind": "task",
+   "def_line": 5,
+   "def_col": 6,
+   "refs": [
+    {
+     "line": 16,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "monitor",
+   "kind": "task",
+   "def_line": 10,
+   "def_col": 6,
+   "refs": [
+    {
+     "line": 16,
+     "col": 18
+    }
+   ]
+  },
+  {
+   "name": "max_speed",
+   "kind": "var",
+   "def_line": 2,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 12,
+     "col": 31
+    }
+   ]
+  },
+  {
+   "name": "speed",
+   "kind": "var",
+   "def_line": 3,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 12,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "shared_flag",
+   "kind": "var",
+   "def_line": 4,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 7,
+     "col": 9
+    },
+    {
+     "line": 12,
+     "col": 17
+    }
+   ]
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_run{{\"run\"}}\n    v_shared_flag(\"shared_flag\")\n    u_control((\"control<br>↻ 1ms\"))\n    u_monitor((\"monitor<br>↻ 500ms\"))\n    u_setup -->|run| s_run\n    u_control -->|write| v_shared_flag\n    v_shared_flag -.->|read| u_monitor\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_run service;\n    class u_control timer;\n    class v_shared_flag shared;\n    class u_monitor timer;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_control",
+    "name": "control<br>↻ 1ms",
+    "line": 5
+   },
+   {
+    "id": "u_monitor",
+    "name": "monitor<br>↻ 500ms",
+    "line": 10
+   }
+  ],
+  "loops": [
+   "u_control",
+   "u_monitor"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_run"
+   },
+   {
+    "drive": "timer",
+    "src": "u_control",
+    "dst": "v_shared_flag",
+    "rate_ms": 1.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_shared_flag",
+    "dst": "u_monitor",
+    "rate_ms": 500.0
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_run": {
+    "kind": "service",
+    "label": "run",
+    "line": null,
+    "detail": "run"
+   },
+   "u_control": {
+    "kind": "timer",
+    "label": "control<br>↻ 1ms",
+    "line": 5,
+    "detail": "every 1ms"
+   },
+   "v_shared_flag": {
+    "kind": "var",
+    "label": "shared_flag",
+    "line": 4,
+    "detail": "int"
+   },
+   "u_monitor": {
+    "kind": "timer",
+    "label": "monitor<br>↻ 500ms",
+    "line": 10,
+    "detail": "every 500ms"
+   },
+   "v_speed": {
+    "kind": "var",
+    "label": "speed",
+    "line": 3,
+    "detail": "int"
+   },
+   "v_max_speed": {
+    "kind": "var",
+    "label": "max_speed",
+    "line": 2,
+    "detail": "int"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_run{{\"run\"}}\n    v_shared_flag(\"shared_flag\")\n    v_speed(\"speed\")\n    v_max_speed(\"max_speed\")\n    u_control((\"control<br>↻ 1ms\"))\n    u_monitor((\"monitor<br>↻ 500ms\"))\n    u_setup -->|run| s_run\n    u_control -->|write| v_shared_flag\n    u_monitor -->|write| v_speed\n    v_shared_flag -.->|read| u_monitor\n    v_max_speed -.->|read| u_monitor\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_run service;\n    class u_control timer;\n    class v_shared_flag shared;\n    class u_monitor timer;\n    class v_speed var;\n    class v_max_speed var;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_control",
+    "name": "control<br>↻ 1ms",
+    "line": 5
+   },
+   {
+    "id": "u_monitor",
+    "name": "monitor<br>↻ 500ms",
+    "line": 10
+   }
+  ],
+  "loops": [
+   "u_control",
+   "u_monitor"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_run"
+   },
+   {
+    "drive": "timer",
+    "src": "u_control",
+    "dst": "v_shared_flag",
+    "rate_ms": 1.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_monitor",
+    "dst": "v_speed",
+    "rate_ms": 500.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_shared_flag",
+    "dst": "u_monitor",
+    "rate_ms": 500.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_max_speed",
+    "dst": "u_monitor",
+    "rate_ms": 500.0
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_run": {
+    "kind": "service",
+    "label": "run",
+    "line": null,
+    "detail": "run"
+   },
+   "u_control": {
+    "kind": "timer",
+    "label": "control<br>↻ 1ms",
+    "line": 5,
+    "detail": "every 1ms"
+   },
+   "v_shared_flag": {
+    "kind": "var",
+    "label": "shared_flag",
+    "line": 4,
+    "detail": "int"
+   },
+   "u_monitor": {
+    "kind": "timer",
+    "label": "monitor<br>↻ 500ms",
+    "line": 10,
+    "detail": "every 500ms"
+   },
+   "v_speed": {
+    "kind": "var",
+    "label": "speed",
+    "line": 3,
+    "detail": "int"
+   },
+   "v_max_speed": {
+    "kind": "var",
+    "label": "max_speed",
+    "line": 2,
+    "detail": "int"
+   }
+  }
+ }
+}

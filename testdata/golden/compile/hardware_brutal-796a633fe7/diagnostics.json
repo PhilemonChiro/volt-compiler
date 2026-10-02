@@ -1,0 +1,26 @@
+[
+  {
+    "severity": "warning",
+    "category": "DEPRECATION",
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "hint": "The chip declaration will move to volt.toml in a future version.",
+    "region": [
+      1,
+      6,
+      1,
+      11
+    ]
+  },
+  {
+    "severity": "error",
+    "category": "HARDWARE ERROR",
+    "message": "GPIO 99 does not exist on ESP32.",
+    "hint": "Available pins: 0-39 (excluding 20, 24, 28-31)",
+    "region": [
+      3,
+      9,
+      3,
+      10
+    ]
+  }
+]

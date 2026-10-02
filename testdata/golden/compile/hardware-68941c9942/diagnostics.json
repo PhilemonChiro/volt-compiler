@@ -1,0 +1,14 @@
+[
+  {
+    "severity": "warning",
+    "category": "HARDWARE WARNING",
+    "message": "GPIO 14 is a JTAG pin. Using it disables JTAG debugging.",
+    "hint": null,
+    "region": [
+      2,
+      9,
+      2,
+      10
+    ]
+  }
+]

@@ -1,0 +1,14 @@
+[
+  {
+    "severity": "warning",
+    "category": "HARDWARE WARNING",
+    "message": "GP25 is the onboard LED on Pico. On Pico W, GP25 is used for WiFi SPI \u2014 not available as GPIO.",
+    "hint": null,
+    "region": [
+      15,
+      9,
+      15,
+      12
+    ]
+  }
+]

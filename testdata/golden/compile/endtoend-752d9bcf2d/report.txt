@@ -1,0 +1,21 @@
+
+[yellow bold]-- TASK WARNING -- wifi_in_critical.volt:2[/yellow bold]
+
+Critical task `pid` estimated at ~100000 cycles (~416us at 240MHz), may exceed ISR time budget. Top costs: wifi.connect()(~100000 cycles)
+
+ [dim]1 |[/dim] 
+ [dim]2 |[/dim] task pid {
+ [dim]  |[/dim] [yellow]     ^^^[/yellow]
+
+[cyan]Hint: Keep critical tasks under ~20us. Move heavy work to a Background task.[/cyan]
+
+
+[red bold]-- TASK ERROR -- wifi_in_critical.volt:4[/red bold]
+
+Critical task `pid` calls `wifi.connect()` which is not safe in ISR context (may block on I2C/SPI/UART).
+
+ [dim]3 |[/dim]     every 1ms strict {
+ [dim]4 |[/dim]         wifi.connect("a", "b")
+ [dim]  |[/dim] [red]        ^^^^[/red]
+
+[cyan]Hint: Move this to a Background or Priority task. Share data with the critical task via a volatile variable.[/cyan]

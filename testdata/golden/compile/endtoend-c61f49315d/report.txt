@@ -1,0 +1,7 @@
+
+[red bold]-- SYNTAX ERROR -- missing_brace.volt:1[/red bold]
+
+Unexpected token Token('$END', '') at line 2, column 12.
+
+ [dim]1 |[/dim] setup {
+ [dim]  |[/dim] [red]^[/red]

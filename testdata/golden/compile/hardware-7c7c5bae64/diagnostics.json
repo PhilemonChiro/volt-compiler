@@ -1,0 +1,14 @@
+[
+  {
+    "severity": "warning",
+    "category": "HARDWARE WARNING",
+    "message": "GPIO 5: GPIO 5 is a strapping pin. Outputs PWM signal during boot. Connected loads (relays, motors) may briefly activate.",
+    "hint": null,
+    "region": [
+      2,
+      9,
+      2,
+      10
+    ]
+  }
+]

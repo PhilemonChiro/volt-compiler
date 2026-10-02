@@ -1,0 +1,120 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [5, 9, 5, 14],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [5, 9, 5, 14],
+    "name": "motor",
+    "mode": "PWM",
+    "gpio": 4
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [10, 6, 10, 14],
+   "name": "pid_loop",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [11, 11, 11, 14],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [11, 11, 11, 14],
+      "microseconds": 1000,
+      "original": "1ms"
+     },
+     "strict": true,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [12, 9, 12, 14],
+        "obj": {
+         "_": "VarRef",
+         "region": [12, 9, 12, 14],
+         "name": "motor"
+        },
+        "method": "set_pwm",
+        "args": [
+         {
+          "_": "VarRef",
+          "region": [12, 23, 12, 35],
+          "name": "pwm_setpoint"
+         }
+        ]
+       }
+      }
+     ],
+     "yield_label": 1
+    }
+   ],
+   "tier": "critical",
+   "crossing_vars": [],
+   "has_strict": true
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [
+  {
+   "_": "VarDecl",
+   "region": [8, 5, 8, 17],
+   "name": "pwm_setpoint",
+   "type_name": null,
+   "value": {
+    "_": "IntLiteral",
+    "region": [8, 20, 8, 21],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  }
+ ],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "FuncCall",
+     "region": [17, 5, 17, 8],
+     "name": "run",
+     "args": [
+      {
+       "_": "VarRef",
+       "region": [17, 9, 17, 17],
+       "name": "pid_loop"
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

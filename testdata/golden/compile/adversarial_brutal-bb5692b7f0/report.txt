@@ -1,0 +1,7 @@
+
+[red bold]-- SYNTAX ERROR -- main.volt:1[/red bold]
+
+No terminal matches '@' in the current parser context, at line 2 col 1
+
+ [dim]1 |[/dim] chip esp32
+ [dim]  |[/dim] [red]^[/red]

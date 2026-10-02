@@ -1,0 +1,14 @@
+[
+  {
+    "severity": "error",
+    "category": "NAME ERROR",
+    "message": "Name `led` is already declared.",
+    "hint": "First declared at line 3.",
+    "region": [
+      4,
+      9,
+      4,
+      12
+    ]
+  }
+]

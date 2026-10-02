@@ -1,0 +1,7 @@
+
+[red bold]-- SYNTAX ERROR -- multi_chip.volt:1[/red bold]
+
+Error trying to process rule "start":
+
+ [dim]1 |[/dim] 
+ [dim]  |[/dim] [red]^[/red]

@@ -1,0 +1,145 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [1, 6, 1, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [2, 16, 2, 19],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [2, 16, 2, 19],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 4
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [4, 6, 4, 14],
+   "name": "isr_task",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [5, 11, 5, 14],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [5, 11, 5, 14],
+      "microseconds": 1000,
+      "original": "1ms"
+     },
+     "strict": true,
+     "guard": null,
+     "body": [
+      {
+       "_": "AssignExpr",
+       "region": [5, 24, 5, 27],
+       "target": {
+        "_": "VarRef",
+        "region": [5, 24, 5, 27],
+        "name": "big"
+       },
+       "value": {
+        "_": "BinaryExpr",
+        "region": [5, 30, 5, 33],
+        "left": {
+         "_": "VarRef",
+         "region": [5, 30, 5, 33],
+         "name": "big"
+        },
+        "op": "+",
+        "right": {
+         "_": "IntLiteral",
+         "region": [5, 36, 5, 37],
+         "value": 1
+        },
+        "result_type": null
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  },
+  {
+   "_": "TaskDecl",
+   "region": [7, 6, 7, 15],
+   "name": "slow_task",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [8, 11, 8, 13],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [8, 11, 8, 13],
+      "microseconds": 1000000,
+      "original": "1s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [8, 16, 8, 19],
+        "obj": {
+         "_": "VarRef",
+         "region": [8, 16, 8, 19],
+         "name": "led"
+        },
+        "method": "toggle",
+        "args": []
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [
+  {
+   "_": "VarDecl",
+   "region": [3, 5, 3, 8],
+   "name": "big",
+   "type_name": "int64",
+   "value": {
+    "_": "IntLiteral",
+    "region": [3, 18, 3, 19],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  }
+ ],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

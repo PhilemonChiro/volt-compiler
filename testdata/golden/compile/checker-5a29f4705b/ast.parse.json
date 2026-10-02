@@ -1,0 +1,52 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "IfStmt",
+    "region": [3, 8, 3, 10],
+    "condition": {
+     "_": "IntLiteral",
+     "region": [3, 8, 3, 10],
+     "value": 42
+    },
+    "then_body": [
+     {
+      "_": "ExprStmt",
+      "region": [0, 0, 0, 0],
+      "expr": {
+       "_": "FuncCall",
+       "region": [4, 9, 4, 12],
+       "name": "log",
+       "args": [
+        {
+         "_": "StringLiteral",
+         "region": [4, 13, 4, 19],
+         "value": "nope"
+        }
+       ]
+      }
+     }
+    ],
+    "else_body": null
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

@@ -1,0 +1,14 @@
+[
+  {
+    "severity": "warning",
+    "category": "CONCURRENCY",
+    "message": "Variable `counter` is shared between critical task (fast_task, fast_task, fast_task) and task (slow_task, slow_task, slow_task). The compiler will mark it `volatile` in generated C.",
+    "hint": "For multi-word values, consider using atomic operations.",
+    "region": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+]

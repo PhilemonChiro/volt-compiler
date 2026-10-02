@@ -1,0 +1,14 @@
+[
+  {
+    "severity": "warning",
+    "category": "CONCURRENCY",
+    "message": "Variable `shared_flag` is shared between critical task (control, control) and task (monitor). The compiler will mark it `volatile` in generated C.",
+    "hint": "For multi-word values, consider using atomic operations.",
+    "region": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+]

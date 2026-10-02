@@ -1,0 +1,1022 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 2,
+    "col": 9,
+    "message": "GPIO 2: GPIO 2 is a strapping pin. Must be LOW or floating for download mode.",
+    "severity": "warning",
+    "hint": ""
+   },
+   {
+    "line": 3,
+    "col": 9,
+    "message": "GPIO 32: Also 32kHz crystal pin (XTAL_32K_P). If external 32kHz crystal is used, this pin is unavailable.",
+    "severity": "warning",
+    "hint": ""
+   },
+   {
+    "line": 4,
+    "col": 9,
+    "message": "GPIO 33: Also 32kHz crystal pin (XTAL_32K_N). If external 32kHz crystal is used, this pin is unavailable.",
+    "severity": "warning",
+    "hint": ""
+   },
+   {
+    "line": 5,
+    "col": 9,
+    "message": "GPIO 36 has a hardware errata: interrupts may fire spuriously during WiFi/BT light sleep. Use a different pin for interrupt-driven input.",
+    "severity": "warning",
+    "hint": "GPIO 34, 35 do not have this errata."
+   },
+   {
+    "line": 5,
+    "col": 9,
+    "message": "GPIO 36: Hardware errata: interrupts on GPIO 36 may fire spuriously during WiFi/BT light sleep.",
+    "severity": "warning",
+    "hint": ""
+   }
+  ],
+  "pins": [
+   {
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   },
+   {
+    "name": "soil",
+    "mode": "Analog",
+    "gpio": 32
+   },
+   {
+    "name": "light",
+    "mode": "Analog",
+    "gpio": 33
+   },
+   {
+    "name": "temperature",
+    "mode": "Analog",
+    "gpio": 36
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "_rule0",
+    "tier": "background",
+    "line": 20
+   },
+   {
+    "name": "_rule1",
+    "tier": "background",
+    "line": 32
+   },
+   {
+    "name": "_rule2",
+    "tier": "priority",
+    "line": 42
+   },
+   {
+    "name": "name",
+    "tier": "background",
+    "line": 47
+   },
+   {
+    "name": "_rule3",
+    "tier": "background",
+    "line": 51
+   },
+   {
+    "name": "_rule4",
+    "tier": "background",
+    "line": 57
+   }
+  ],
+  "machines": [],
+  "channels": [
+   {
+    "name": "readings",
+    "elem_type": "int",
+    "capacity": 16
+   }
+  ],
+  "enums": [],
+  "chip": ""
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "hardware {\n    pin led = 2\n    pin soil: Analog = 32\n    pin light: Analog = 33\n    pin temperature: Analog = 36\n}\n\nchannel readings: int[16]\n\nstorage boot_count: int = 0\n\nstorage total_readings: int = 0\n\nvar soil_pct: int = 0\n\nvar light_lux: int = 0\n\nvar temp_raw: int = 0\n\nevery 10s {\n    let s: int = soil.read()\n    let l: int = light.read()\n    let t: int = temperature.read()\n    soil_pct = s * 100 / 4095\n    light_lux = l * 1000 / 4095\n    temp_raw = t\n    total_readings += 1\n    readings.send(soil_pct)\n    log(\"sensor\", \"soil={soil_pct}% light={light_lux}lux\")\n}\n\nevery 30s when wifi.is_connected() {\n    mqtt.send_int(\"weather/soil\", soil_pct) or retry(3)\n    mqtt.send_int(\"weather/light\", light_lux) or retry(3)\n    mqtt.send_int(\"weather/temp\", temp_raw) or retry(3)\n    while readings.has_data() {\n        let val: int = readings.receive()\n        mqtt.send_int(\"weather/soil_buffered\", val) or retry(3)\n    }\n}\n\nevery 60s {\n    storage.save(\"boot_count\", boot_count)\n    storage.save(\"total_readings\", total_readings)\n}\n\ntask name {\n    deep_sleep(60s)\n}\n\nevery 30s {\n    let heap: int = system.free_heap()\n    let up: int = system.uptime()\n    log(\"health\", \"uptime={up}s heap={heap} readings={total_readings}\")\n}\n\nevery 1s { led.toggle() }\n\nsetup {\n    boot_count += 1\n    wifi.connect(\"WeatherNet\", \"password123\") or retry(10)\n    mqtt.connect(\"mqtt://192.168.1.100\") or retry(5)\n    log(\"boot\", \"Weather Station v3 — boot #{boot_count}\")\n}\n",
+ "find_symbols": [
+  {
+   "name": "led",
+   "kind": "pin",
+   "def_line": 2,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 57,
+     "col": 12
+    }
+   ]
+  },
+  {
+   "name": "soil",
+   "kind": "pin",
+   "def_line": 3,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 21,
+     "col": 18
+    }
+   ]
+  },
+  {
+   "name": "light",
+   "kind": "pin",
+   "def_line": 4,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 22,
+     "col": 18
+    }
+   ]
+  },
+  {
+   "name": "temperature",
+   "kind": "pin",
+   "def_line": 5,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 23,
+     "col": 18
+    }
+   ]
+  },
+  {
+   "name": "_rule0",
+   "kind": "task",
+   "def_line": 20,
+   "def_col": 7,
+   "refs": []
+  },
+  {
+   "name": "_rule1",
+   "kind": "task",
+   "def_line": 32,
+   "def_col": 7,
+   "refs": []
+  },
+  {
+   "name": "_rule2",
+   "kind": "task",
+   "def_line": 42,
+   "def_col": 7,
+   "refs": []
+  },
+  {
+   "name": "name",
+   "kind": "task",
+   "def_line": 47,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "_rule3",
+   "kind": "task",
+   "def_line": 51,
+   "def_col": 7,
+   "refs": []
+  },
+  {
+   "name": "_rule4",
+   "kind": "task",
+   "def_line": 57,
+   "def_col": 7,
+   "refs": []
+  },
+  {
+   "name": "boot_count",
+   "kind": "storage",
+   "def_line": 10,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 43,
+     "col": 32
+    },
+    {
+     "line": 60,
+     "col": 5
+    }
+   ]
+  },
+  {
+   "name": "total_readings",
+   "kind": "storage",
+   "def_line": 12,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 27,
+     "col": 5
+    },
+    {
+     "line": 44,
+     "col": 36
+    }
+   ]
+  },
+  {
+   "name": "soil_pct",
+   "kind": "var",
+   "def_line": 14,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 24,
+     "col": 5
+    },
+    {
+     "line": 28,
+     "col": 19
+    }
+   ]
+  },
+  {
+   "name": "light_lux",
+   "kind": "var",
+   "def_line": 16,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 25,
+     "col": 5
+    }
+   ]
+  },
+  {
+   "name": "temp_raw",
+   "kind": "var",
+   "def_line": 18,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 26,
+     "col": 5
+    }
+   ]
+  },
+  {
+   "name": "s",
+   "kind": "var",
+   "def_line": 21,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 24,
+     "col": 16
+    }
+   ]
+  },
+  {
+   "name": "l",
+   "kind": "var",
+   "def_line": 22,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 25,
+     "col": 17
+    }
+   ]
+  },
+  {
+   "name": "t",
+   "kind": "var",
+   "def_line": 23,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 26,
+     "col": 16
+    }
+   ]
+  },
+  {
+   "name": "val",
+   "kind": "var",
+   "def_line": 37,
+   "def_col": 13,
+   "refs": []
+  },
+  {
+   "name": "heap",
+   "kind": "var",
+   "def_line": 52,
+   "def_col": 9,
+   "refs": []
+  },
+  {
+   "name": "up",
+   "kind": "var",
+   "def_line": 53,
+   "def_col": 9,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    v_boot_count(\"boot_count\")\n    s_wifi{{\"wifi\"}}\n    s_mqtt{{\"mqtt\"}}\n    s_log{{\"log\"}}\n    v_soil_pct(\"soil_pct\")\n    v_light_lux(\"light_lux\")\n    v_temp_raw(\"temp_raw\")\n    v_total_readings(\"total_readings\")\n    c_readings[/\"readings\"/]\n    u_name[\"name\"]\n    s_deep_sleep{{\"deep_sleep\"}}\n    u__rule0((\"↻ 10s\"))\n    u__rule1((\"↻ 30s\"))\n    u__rule2((\"↻ 60s\"))\n    u__rule3((\"↻ 30s\"))\n    u__rule4((\"↻ 1s\"))\n    u_setup -->|write| v_boot_count\n    u_setup -->|connect| s_wifi\n    u_setup -->|connect| s_mqtt\n    u_setup -->|log| s_log\n    u__rule0 -->|write| v_soil_pct\n    u__rule0 -->|write| v_light_lux\n    u__rule0 -->|write| v_temp_raw\n    u__rule0 -->|write| v_total_readings\n    u__rule0 -->|send| c_readings\n    v_soil_pct -.->|read| u__rule0\n    u__rule0 -->|log| s_log\n    s_wifi -.->|is_connected| u__rule1\n    u__rule1 -->|send_int| s_mqtt\n    v_soil_pct -.->|read| u__rule1\n    v_light_lux -.->|read| u__rule1\n    v_temp_raw -.->|read| u__rule1\n    c_readings -.->|has_data, receive| u__rule1\n    v_boot_count -.->|read| u__rule2\n    v_total_readings -.->|read| u__rule2\n    u_name -->|deep_sleep| s_deep_sleep\n    u__rule3 -->|log| s_log\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class v_boot_count shared;\n    class s_wifi service;\n    class s_mqtt service;\n    class s_log service;\n    class u__rule0 timer;\n    class v_soil_pct shared;\n    class v_light_lux shared;\n    class v_temp_raw shared;\n    class v_total_readings shared;\n    class c_readings shared;\n    class u__rule1 timer;\n    class u__rule2 timer;\n    class u_name task;\n    class s_deep_sleep service;\n    class u__rule3 timer;\n    class u__rule4 timer;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u__rule0",
+    "name": "↻ 10s",
+    "line": 20
+   },
+   {
+    "id": "u__rule1",
+    "name": "↻ 30s",
+    "line": 32
+   },
+   {
+    "id": "u__rule2",
+    "name": "↻ 60s",
+    "line": 42
+   },
+   {
+    "id": "u_name",
+    "name": "name",
+    "line": 47
+   },
+   {
+    "id": "u__rule3",
+    "name": "↻ 30s",
+    "line": 51
+   },
+   {
+    "id": "u__rule4",
+    "name": "↻ 1s",
+    "line": 57
+   }
+  ],
+  "loops": [
+   "u__rule0",
+   "u__rule1",
+   "u__rule2",
+   "u__rule3",
+   "u__rule4"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "v_boot_count"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_wifi"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_mqtt"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_log"
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule0",
+    "dst": "v_soil_pct",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule0",
+    "dst": "v_light_lux",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule0",
+    "dst": "v_temp_raw",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule0",
+    "dst": "v_total_readings",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule0",
+    "dst": "c_readings",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_soil_pct",
+    "dst": "u__rule0",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule0",
+    "dst": "s_log",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "s_wifi",
+    "dst": "u__rule1",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule1",
+    "dst": "s_mqtt",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_soil_pct",
+    "dst": "u__rule1",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_light_lux",
+    "dst": "u__rule1",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_temp_raw",
+    "dst": "u__rule1",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "c_readings",
+    "dst": "u__rule1",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_boot_count",
+    "dst": "u__rule2",
+    "rate_ms": 60000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_total_readings",
+    "dst": "u__rule2",
+    "rate_ms": 60000.0
+   },
+   {
+    "drive": "task",
+    "src": "u_name",
+    "dst": "s_deep_sleep"
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule3",
+    "dst": "s_log",
+    "rate_ms": 30000.0
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "v_boot_count": {
+    "kind": "var",
+    "label": "boot_count",
+    "line": 10,
+    "detail": "int · storage"
+   },
+   "s_wifi": {
+    "kind": "service",
+    "label": "wifi",
+    "line": null,
+    "detail": "connect, is_connected"
+   },
+   "s_mqtt": {
+    "kind": "service",
+    "label": "mqtt",
+    "line": null,
+    "detail": "connect, send_int"
+   },
+   "s_log": {
+    "kind": "service",
+    "label": "log",
+    "line": null,
+    "detail": "log"
+   },
+   "u__rule0": {
+    "kind": "timer",
+    "label": "↻ 10s",
+    "line": 20,
+    "detail": "every 10s"
+   },
+   "p_soil": {
+    "kind": "pin",
+    "label": "soil",
+    "line": 3,
+    "detail": "Analog · GPIO 32"
+   },
+   "p_light": {
+    "kind": "pin",
+    "label": "light",
+    "line": 4,
+    "detail": "Analog · GPIO 33"
+   },
+   "p_temperature": {
+    "kind": "pin",
+    "label": "temperature",
+    "line": 5,
+    "detail": "Analog · GPIO 36"
+   },
+   "v_soil_pct": {
+    "kind": "var",
+    "label": "soil_pct",
+    "line": 14,
+    "detail": "int"
+   },
+   "v_light_lux": {
+    "kind": "var",
+    "label": "light_lux",
+    "line": 16,
+    "detail": "int"
+   },
+   "v_temp_raw": {
+    "kind": "var",
+    "label": "temp_raw",
+    "line": 18,
+    "detail": "int"
+   },
+   "v_total_readings": {
+    "kind": "var",
+    "label": "total_readings",
+    "line": 12,
+    "detail": "int · storage"
+   },
+   "c_readings": {
+    "kind": "channel",
+    "label": "readings",
+    "line": 8,
+    "detail": "int[16]"
+   },
+   "u__rule1": {
+    "kind": "timer",
+    "label": "↻ 30s",
+    "line": 32,
+    "detail": "every 30s"
+   },
+   "u__rule2": {
+    "kind": "timer",
+    "label": "↻ 60s",
+    "line": 42,
+    "detail": "every 60s"
+   },
+   "s_storage": {
+    "kind": "service",
+    "label": "storage",
+    "line": null,
+    "detail": "save"
+   },
+   "u_name": {
+    "kind": "task",
+    "label": "name",
+    "line": 47,
+    "detail": "task"
+   },
+   "s_deep_sleep": {
+    "kind": "service",
+    "label": "deep_sleep",
+    "line": null,
+    "detail": "deep_sleep"
+   },
+   "u__rule3": {
+    "kind": "timer",
+    "label": "↻ 30s",
+    "line": 51,
+    "detail": "every 30s"
+   },
+   "s_system": {
+    "kind": "service",
+    "label": "system",
+    "line": null,
+    "detail": "free_heap, uptime"
+   },
+   "u__rule4": {
+    "kind": "timer",
+    "label": "↻ 1s",
+    "line": 57,
+    "detail": "every 1s"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 2,
+    "detail": "GPIO 2"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    v_boot_count(\"boot_count\")\n    s_wifi{{\"wifi\"}}\n    s_mqtt{{\"mqtt\"}}\n    s_log{{\"log\"}}\n    p_soil([\"soil\"])\n    p_light([\"light\"])\n    p_temperature([\"temperature\"])\n    v_soil_pct(\"soil_pct\")\n    v_light_lux(\"light_lux\")\n    v_temp_raw(\"temp_raw\")\n    v_total_readings(\"total_readings\")\n    c_readings[/\"readings\"/]\n    s_storage{{\"storage\"}}\n    u_name[\"name\"]\n    s_deep_sleep{{\"deep_sleep\"}}\n    s_system{{\"system\"}}\n    p_led([\"led\"])\n    u__rule0((\"↻ 10s\"))\n    u__rule1((\"↻ 30s\"))\n    u__rule2((\"↻ 60s\"))\n    u__rule3((\"↻ 30s\"))\n    u__rule4((\"↻ 1s\"))\n    u_setup -->|write| v_boot_count\n    u_setup -->|connect| s_wifi\n    u_setup -->|connect| s_mqtt\n    u_setup -->|log| s_log\n    p_soil -.->|read| u__rule0\n    p_light -.->|read| u__rule0\n    p_temperature -.->|read| u__rule0\n    u__rule0 -->|write| v_soil_pct\n    u__rule0 -->|write| v_light_lux\n    u__rule0 -->|write| v_temp_raw\n    u__rule0 -->|write| v_total_readings\n    u__rule0 -->|send| c_readings\n    v_soil_pct -.->|read| u__rule0\n    u__rule0 -->|log| s_log\n    s_wifi -.->|is_connected| u__rule1\n    u__rule1 -->|send_int| s_mqtt\n    v_soil_pct -.->|read| u__rule1\n    v_light_lux -.->|read| u__rule1\n    v_temp_raw -.->|read| u__rule1\n    c_readings -.->|has_data, receive| u__rule1\n    u__rule2 -->|save| s_storage\n    v_boot_count -.->|read| u__rule2\n    v_total_readings -.->|read| u__rule2\n    u_name -->|deep_sleep| s_deep_sleep\n    u__rule3 -->|free_heap, uptime| s_system\n    u__rule3 -->|log| s_log\n    u__rule4 -->|toggle| p_led\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class v_boot_count shared;\n    class s_wifi service;\n    class s_mqtt service;\n    class s_log service;\n    class u__rule0 timer;\n    class p_soil pin;\n    class p_light pin;\n    class p_temperature pin;\n    class v_soil_pct shared;\n    class v_light_lux shared;\n    class v_temp_raw shared;\n    class v_total_readings shared;\n    class c_readings shared;\n    class u__rule1 timer;\n    class u__rule2 timer;\n    class s_storage service;\n    class u_name task;\n    class s_deep_sleep service;\n    class u__rule3 timer;\n    class s_system service;\n    class u__rule4 timer;\n    class p_led pin;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u__rule0",
+    "name": "↻ 10s",
+    "line": 20
+   },
+   {
+    "id": "u__rule1",
+    "name": "↻ 30s",
+    "line": 32
+   },
+   {
+    "id": "u__rule2",
+    "name": "↻ 60s",
+    "line": 42
+   },
+   {
+    "id": "u_name",
+    "name": "name",
+    "line": 47
+   },
+   {
+    "id": "u__rule3",
+    "name": "↻ 30s",
+    "line": 51
+   },
+   {
+    "id": "u__rule4",
+    "name": "↻ 1s",
+    "line": 57
+   }
+  ],
+  "loops": [
+   "u__rule0",
+   "u__rule1",
+   "u__rule2",
+   "u__rule3",
+   "u__rule4"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "v_boot_count"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_wifi"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_mqtt"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_log"
+   },
+   {
+    "drive": "timer",
+    "src": "p_soil",
+    "dst": "u__rule0",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_light",
+    "dst": "u__rule0",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "p_temperature",
+    "dst": "u__rule0",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule0",
+    "dst": "v_soil_pct",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule0",
+    "dst": "v_light_lux",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule0",
+    "dst": "v_temp_raw",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule0",
+    "dst": "v_total_readings",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule0",
+    "dst": "c_readings",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_soil_pct",
+    "dst": "u__rule0",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule0",
+    "dst": "s_log",
+    "rate_ms": 10000.0
+   },
+   {
+    "drive": "timer",
+    "src": "s_wifi",
+    "dst": "u__rule1",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule1",
+    "dst": "s_mqtt",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_soil_pct",
+    "dst": "u__rule1",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_light_lux",
+    "dst": "u__rule1",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_temp_raw",
+    "dst": "u__rule1",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "c_readings",
+    "dst": "u__rule1",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule2",
+    "dst": "s_storage",
+    "rate_ms": 60000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_boot_count",
+    "dst": "u__rule2",
+    "rate_ms": 60000.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_total_readings",
+    "dst": "u__rule2",
+    "rate_ms": 60000.0
+   },
+   {
+    "drive": "task",
+    "src": "u_name",
+    "dst": "s_deep_sleep"
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule3",
+    "dst": "s_system",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule3",
+    "dst": "s_log",
+    "rate_ms": 30000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule4",
+    "dst": "p_led",
+    "rate_ms": 1000.0
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "v_boot_count": {
+    "kind": "var",
+    "label": "boot_count",
+    "line": 10,
+    "detail": "int · storage"
+   },
+   "s_wifi": {
+    "kind": "service",
+    "label": "wifi",
+    "line": null,
+    "detail": "connect, is_connected"
+   },
+   "s_mqtt": {
+    "kind": "service",
+    "label": "mqtt",
+    "line": null,
+    "detail": "connect, send_int"
+   },
+   "s_log": {
+    "kind": "service",
+    "label": "log",
+    "line": null,
+    "detail": "log"
+   },
+   "u__rule0": {
+    "kind": "timer",
+    "label": "↻ 10s",
+    "line": 20,
+    "detail": "every 10s"
+   },
+   "p_soil": {
+    "kind": "pin",
+    "label": "soil",
+    "line": 3,
+    "detail": "Analog · GPIO 32"
+   },
+   "p_light": {
+    "kind": "pin",
+    "label": "light",
+    "line": 4,
+    "detail": "Analog · GPIO 33"
+   },
+   "p_temperature": {
+    "kind": "pin",
+    "label": "temperature",
+    "line": 5,
+    "detail": "Analog · GPIO 36"
+   },
+   "v_soil_pct": {
+    "kind": "var",
+    "label": "soil_pct",
+    "line": 14,
+    "detail": "int"
+   },
+   "v_light_lux": {
+    "kind": "var",
+    "label": "light_lux",
+    "line": 16,
+    "detail": "int"
+   },
+   "v_temp_raw": {
+    "kind": "var",
+    "label": "temp_raw",
+    "line": 18,
+    "detail": "int"
+   },
+   "v_total_readings": {
+    "kind": "var",
+    "label": "total_readings",
+    "line": 12,
+    "detail": "int · storage"
+   },
+   "c_readings": {
+    "kind": "channel",
+    "label": "readings",
+    "line": 8,
+    "detail": "int[16]"
+   },
+   "u__rule1": {
+    "kind": "timer",
+    "label": "↻ 30s",
+    "line": 32,
+    "detail": "every 30s"
+   },
+   "u__rule2": {
+    "kind": "timer",
+    "label": "↻ 60s",
+    "line": 42,
+    "detail": "every 60s"
+   },
+   "s_storage": {
+    "kind": "service",
+    "label": "storage",
+    "line": null,
+    "detail": "save"
+   },
+   "u_name": {
+    "kind": "task",
+    "label": "name",
+    "line": 47,
+    "detail": "task"
+   },
+   "s_deep_sleep": {
+    "kind": "service",
+    "label": "deep_sleep",
+    "line": null,
+    "detail": "deep_sleep"
+   },
+   "u__rule3": {
+    "kind": "timer",
+    "label": "↻ 30s",
+    "line": 51,
+    "detail": "every 30s"
+   },
+   "s_system": {
+    "kind": "service",
+    "label": "system",
+    "line": null,
+    "detail": "free_heap, uptime"
+   },
+   "u__rule4": {
+    "kind": "timer",
+    "label": "↻ 1s",
+    "line": 57,
+    "detail": "every 1s"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 2,
+    "detail": "GPIO 2"
+   }
+  }
+ }
+}

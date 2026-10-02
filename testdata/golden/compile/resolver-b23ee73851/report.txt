@@ -1,0 +1,10 @@
+
+[red bold]-- NAME ERROR -- main.volt:6[/red bold]
+
+Unknown name `lde`.
+
+ [dim]5 |[/dim] setup {
+ [dim]6 |[/dim]     lde.toggle()
+ [dim]  |[/dim] [red]    ^^^[/red]
+
+[cyan]Hint: Did you mean `ble`?[/cyan]

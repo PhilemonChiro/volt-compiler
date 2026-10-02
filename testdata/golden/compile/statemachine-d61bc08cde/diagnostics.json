@@ -1,0 +1,14 @@
+[
+  {
+    "severity": "warning",
+    "category": "STATE MACHINE WARNING",
+    "message": "State `orphan` in machine `Bad` is unreachable from initial state `a`.",
+    "hint": null,
+    "region": [
+      9,
+      11,
+      9,
+      17
+    ]
+  }
+]

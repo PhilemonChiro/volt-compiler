@@ -1,0 +1,14 @@
+[
+  {
+    "severity": "error",
+    "category": "ARGUMENT ERROR",
+    "message": "`add` expects 2 arguments, got 1.",
+    "hint": null,
+    "region": [
+      6,
+      5,
+      6,
+      8
+    ]
+  }
+]

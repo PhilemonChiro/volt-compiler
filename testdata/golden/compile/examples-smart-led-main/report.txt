@@ -1,0 +1,8 @@
+
+[yellow bold]-- HARDWARE WARNING -- main.volt:15[/yellow bold]
+
+GP25 is the onboard LED on Pico. On Pico W, GP25 is used for WiFi SPI — not available as GPIO.
+
+ [dim]14 |[/dim] hardware {
+ [dim]15 |[/dim]     pin led: PWM = GP25
+ [dim]   |[/dim] [yellow]        ^^^[/yellow]

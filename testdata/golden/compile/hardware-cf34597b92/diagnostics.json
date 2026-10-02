@@ -1,0 +1,50 @@
+[
+  {
+    "severity": "warning",
+    "category": "HARDWARE WARNING",
+    "message": "GPIO 2: GPIO 2 is a strapping pin. Must be LOW or floating for download mode.",
+    "hint": null,
+    "region": [
+      3,
+      9,
+      3,
+      12
+    ]
+  },
+  {
+    "severity": "warning",
+    "category": "HARDWARE WARNING",
+    "message": "GPIO 0: GPIO 0 is a strapping pin. LOW at boot = download mode. Ensure pull-up (internal or external) for normal boot.",
+    "hint": null,
+    "region": [
+      4,
+      9,
+      4,
+      15
+    ]
+  },
+  {
+    "severity": "warning",
+    "category": "HARDWARE WARNING",
+    "message": "GPIO 36 has a hardware errata: interrupts may fire spuriously during WiFi/BT light sleep. Use a different pin for interrupt-driven input.",
+    "hint": "GPIO 34, 35 do not have this errata.",
+    "region": [
+      5,
+      9,
+      5,
+      16
+    ]
+  },
+  {
+    "severity": "warning",
+    "category": "HARDWARE NOTE",
+    "message": "GPIO 36: Hardware errata: interrupts on GPIO 36 may fire spuriously during WiFi/BT light sleep.",
+    "hint": null,
+    "region": [
+      5,
+      9,
+      5,
+      16
+    ]
+  }
+]

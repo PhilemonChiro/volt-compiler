@@ -1,0 +1,38 @@
+[
+  {
+    "severity": "error",
+    "category": "NAME ERROR",
+    "message": "Unknown name `x`.",
+    "hint": null,
+    "region": [
+      3,
+      8,
+      3,
+      9
+    ]
+  },
+  {
+    "severity": "error",
+    "category": "NAME ERROR",
+    "message": "Unknown name `running`.",
+    "hint": null,
+    "region": [
+      8,
+      11,
+      8,
+      18
+    ]
+  },
+  {
+    "severity": "error",
+    "category": "NAME ERROR",
+    "message": "Unknown function `tick`.",
+    "hint": null,
+    "region": [
+      9,
+      9,
+      9,
+      13
+    ]
+  }
+]

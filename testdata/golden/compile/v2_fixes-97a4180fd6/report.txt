@@ -1,0 +1,18 @@
+
+[yellow bold]-- DEPRECATION -- main.volt:1[/yellow bold]
+
+Move `chip rp2040` to volt.toml: chip = "rp2040"
+
+ [dim]1 |[/dim] chip rp2040
+ [dim]  |[/dim] [yellow]     ^^^^^^[/yellow]
+
+[cyan]Hint: The chip declaration will move to volt.toml in a future version.[/cyan]
+
+
+[yellow bold]-- HARDWARE WARNING -- main.volt:3[/yellow bold]
+
+GP25 is the onboard LED on Pico. On Pico W, GP25 is used for WiFi SPI — not available as GPIO.
+
+ [dim]2 |[/dim] hardware {
+ [dim]3 |[/dim]     pin led: Output = 25
+ [dim]  |[/dim] [yellow]        ^^^[/yellow]

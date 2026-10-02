@@ -1,0 +1,1882 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [1, 6, 1, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [4, 9, 12, 14],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [4, 9, 4, 14],
+    "name": "led_r",
+    "mode": "Output",
+    "gpio": 23
+   },
+   {
+    "_": "PinDecl",
+    "region": [5, 9, 5, 14],
+    "name": "led_g",
+    "mode": "Output",
+    "gpio": 22
+   },
+   {
+    "_": "PinDecl",
+    "region": [6, 9, 6, 14],
+    "name": "led_b",
+    "mode": "Output",
+    "gpio": 21
+   },
+   {
+    "_": "PinDecl",
+    "region": [7, 9, 7, 14],
+    "name": "motor",
+    "mode": "PWM",
+    "gpio": 4
+   },
+   {
+    "_": "PinDecl",
+    "region": [8, 9, 8, 12],
+    "name": "fan",
+    "mode": "Output",
+    "gpio": 5
+   },
+   {
+    "_": "PinDecl",
+    "region": [9, 9, 9, 15],
+    "name": "button",
+    "mode": "PullUpInput",
+    "gpio": 15
+   },
+   {
+    "_": "PinDecl",
+    "region": [10, 9, 10, 13],
+    "name": "soil",
+    "mode": "Analog",
+    "gpio": 32
+   },
+   {
+    "_": "PinDecl",
+    "region": [11, 9, 11, 13],
+    "name": "temp",
+    "mode": "Analog",
+    "gpio": 33
+   },
+   {
+    "_": "PinDecl",
+    "region": [12, 9, 12, 14],
+    "name": "light",
+    "mode": "Analog",
+    "gpio": 34
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [
+  {
+   "_": "FuncDecl",
+   "region": [24, 6, 24, 21],
+   "name": "check_threshold",
+   "params": [
+    {
+     "_": "Param",
+     "region": [24, 22, 24, 27],
+     "name": "value",
+     "type_name": "int"
+    },
+    {
+     "_": "Param",
+     "region": [24, 34, 24, 39],
+     "name": "limit",
+     "type_name": "int"
+    }
+   ],
+   "return_type": "bool",
+   "body": [
+    {
+     "_": "ReturnStmt",
+     "region": [0, 0, 0, 0],
+     "value": {
+      "_": "BinaryExpr",
+      "region": [25, 12, 25, 17],
+      "left": {
+       "_": "VarRef",
+       "region": [25, 12, 25, 17],
+       "name": "value"
+      },
+      "op": ">",
+      "right": {
+       "_": "VarRef",
+       "region": [25, 20, 25, 25],
+       "name": "limit"
+      },
+      "result_type": null
+     }
+    }
+   ],
+   "contains_yield": false
+  }
+ ],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [28, 6, 28, 17],
+   "name": "sensor_poll",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [29, 11, 29, 13],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [29, 11, 29, 13],
+      "microseconds": 2000000,
+      "original": "2s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "VarDecl",
+       "region": [30, 13, 30, 14],
+       "name": "s",
+       "type_name": null,
+       "value": {
+        "_": "MethodCall",
+        "region": [30, 17, 30, 21],
+        "obj": {
+         "_": "VarRef",
+         "region": [30, 17, 30, 21],
+         "name": "soil"
+        },
+        "method": "read",
+        "args": []
+       },
+       "mutable": false,
+       "shared": false,
+       "needs_lifting": false
+      },
+      {
+       "_": "VarDecl",
+       "region": [31, 13, 31, 14],
+       "name": "t",
+       "type_name": null,
+       "value": {
+        "_": "MethodCall",
+        "region": [31, 17, 31, 21],
+        "obj": {
+         "_": "VarRef",
+         "region": [31, 17, 31, 21],
+         "name": "temp"
+        },
+        "method": "read",
+        "args": []
+       },
+       "mutable": false,
+       "shared": false,
+       "needs_lifting": false
+      },
+      {
+       "_": "VarDecl",
+       "region": [32, 13, 32, 14],
+       "name": "l",
+       "type_name": null,
+       "value": {
+        "_": "MethodCall",
+        "region": [32, 17, 32, 22],
+        "obj": {
+         "_": "VarRef",
+         "region": [32, 17, 32, 22],
+         "name": "light"
+        },
+        "method": "read",
+        "args": []
+       },
+       "mutable": false,
+       "shared": false,
+       "needs_lifting": false
+      },
+      {
+       "_": "CompoundAssign",
+       "region": [33, 9, 33, 27],
+       "target": {
+        "_": "VarRef",
+        "region": [33, 9, 33, 27],
+        "name": "total_sensor_reads"
+       },
+       "op": "+=",
+       "value": {
+        "_": "IntLiteral",
+        "region": [33, 31, 33, 32],
+        "value": 1
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [35, 9, 35, 12],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [35, 13, 35, 21],
+          "value": "sensor"
+         },
+         {
+          "_": "BinaryExpr",
+          "region": [35, 23, 35, 26],
+          "left": {
+           "_": "BinaryExpr",
+           "region": [35, 23, 35, 26],
+           "left": {
+            "_": "BinaryExpr",
+            "region": [35, 23, 35, 26],
+            "left": {
+             "_": "BinaryExpr",
+             "region": [35, 23, 35, 26],
+             "left": {
+              "_": "BinaryExpr",
+              "region": [35, 23, 35, 26],
+              "left": {
+               "_": "BinaryExpr",
+               "region": [35, 23, 35, 26],
+               "left": {
+                "_": "BinaryExpr",
+                "region": [35, 23, 35, 26],
+                "left": {
+                 "_": "StringLiteral",
+                 "region": [35, 23, 35, 26],
+                 "value": "#"
+                },
+                "op": "+",
+                "right": {
+                 "_": "VarRef",
+                 "region": [35, 29, 35, 47],
+                 "name": "total_sensor_reads"
+                },
+                "result_type": null
+               },
+               "op": "+",
+               "right": {
+                "_": "StringLiteral",
+                "region": [35, 50, 35, 58],
+                "value": " soil="
+               },
+               "result_type": null
+              },
+              "op": "+",
+              "right": {
+               "_": "VarRef",
+               "region": [35, 61, 35, 62],
+               "name": "s"
+              },
+              "result_type": null
+             },
+             "op": "+",
+             "right": {
+              "_": "StringLiteral",
+              "region": [35, 65, 35, 73],
+              "value": " temp="
+             },
+             "result_type": null
+            },
+            "op": "+",
+            "right": {
+             "_": "VarRef",
+             "region": [35, 76, 35, 77],
+             "name": "t"
+            },
+            "result_type": null
+           },
+           "op": "+",
+           "right": {
+            "_": "StringLiteral",
+            "region": [35, 80, 35, 89],
+            "value": " light="
+           },
+           "result_type": null
+          },
+          "op": "+",
+          "right": {
+           "_": "VarRef",
+           "region": [35, 92, 35, 93],
+           "name": "l"
+          },
+          "result_type": null
+         }
+        ]
+       }
+      },
+      {
+       "_": "IfStmt",
+       "region": [37, 12, 37, 27],
+       "condition": {
+        "_": "FuncCall",
+        "region": [37, 12, 37, 27],
+        "name": "check_threshold",
+        "args": [
+         {
+          "_": "VarRef",
+          "region": [37, 28, 37, 29],
+          "name": "t"
+         },
+         {
+          "_": "IntLiteral",
+          "region": [37, 31, 37, 34],
+          "value": 800
+         }
+        ]
+       },
+       "then_body": [
+        {
+         "_": "ExprStmt",
+         "region": [0, 0, 0, 0],
+         "expr": {
+          "_": "MethodCall",
+          "region": [38, 13, 38, 16],
+          "obj": {
+           "_": "VarRef",
+           "region": [38, 13, 38, 16],
+           "name": "fan"
+          },
+          "method": "on",
+          "args": []
+         }
+        },
+        {
+         "_": "AssignExpr",
+         "region": [39, 13, 39, 19],
+         "target": {
+          "_": "VarRef",
+          "region": [39, 13, 39, 19],
+          "name": "fan_on"
+         },
+         "value": {
+          "_": "IntLiteral",
+          "region": [39, 22, 39, 23],
+          "value": 1
+         }
+        }
+       ],
+       "else_body": [
+        {
+         "_": "ExprStmt",
+         "region": [0, 0, 0, 0],
+         "expr": {
+          "_": "MethodCall",
+          "region": [41, 13, 41, 16],
+          "obj": {
+           "_": "VarRef",
+           "region": [41, 13, 41, 16],
+           "name": "fan"
+          },
+          "method": "off",
+          "args": []
+         }
+        },
+        {
+         "_": "AssignExpr",
+         "region": [42, 13, 42, 19],
+         "target": {
+          "_": "VarRef",
+          "region": [42, 13, 42, 19],
+          "name": "fan_on"
+         },
+         "value": {
+          "_": "IntLiteral",
+          "region": [42, 22, 42, 23],
+          "value": 0
+         }
+        }
+       ]
+      },
+      {
+       "_": "IfStmt",
+       "region": [45, 12, 45, 13],
+       "condition": {
+        "_": "BinaryExpr",
+        "region": [45, 12, 45, 13],
+        "left": {
+         "_": "VarRef",
+         "region": [45, 12, 45, 13],
+         "name": "s"
+        },
+        "op": "<",
+        "right": {
+         "_": "VarRef",
+         "region": [45, 16, 45, 24],
+         "name": "setpoint"
+        },
+        "result_type": null
+       },
+       "then_body": [
+        {
+         "_": "ExprStmt",
+         "region": [0, 0, 0, 0],
+         "expr": {
+          "_": "MethodCall",
+          "region": [46, 13, 46, 18],
+          "obj": {
+           "_": "VarRef",
+           "region": [46, 13, 46, 18],
+           "name": "motor"
+          },
+          "method": "set_pwm",
+          "args": [
+           {
+            "_": "IntLiteral",
+            "region": [46, 27, 46, 30],
+            "value": 200
+           }
+          ]
+         }
+        }
+       ],
+       "else_body": [
+        {
+         "_": "ExprStmt",
+         "region": [0, 0, 0, 0],
+         "expr": {
+          "_": "MethodCall",
+          "region": [48, 13, 48, 18],
+          "obj": {
+           "_": "VarRef",
+           "region": [48, 13, 48, 18],
+           "name": "motor"
+          },
+          "method": "set_pwm",
+          "args": [
+           {
+            "_": "IntLiteral",
+            "region": [48, 27, 48, 28],
+            "value": 0
+           }
+          ]
+         }
+        }
+       ]
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  },
+  {
+   "_": "TaskDecl",
+   "region": [53, 6, 53, 17],
+   "name": "pid_control",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [54, 11, 54, 14],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [54, 11, 54, 14],
+      "microseconds": 1000,
+      "original": "1ms"
+     },
+     "strict": true,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [55, 9, 55, 14],
+        "obj": {
+         "_": "VarRef",
+         "region": [55, 9, 55, 14],
+         "name": "motor"
+        },
+        "method": "set_pwm",
+        "args": [
+         {
+          "_": "IntLiteral",
+          "region": [55, 23, 55, 24],
+          "value": 0
+         }
+        ]
+       }
+      },
+      {
+       "_": "CompoundAssign",
+       "region": [56, 9, 56, 24],
+       "target": {
+        "_": "VarRef",
+        "region": [56, 9, 56, 24],
+        "name": "motor_isr_count"
+       },
+       "op": "+=",
+       "value": {
+        "_": "IntLiteral",
+        "region": [56, 28, 56, 29],
+        "value": 1
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  },
+  {
+   "_": "TaskDecl",
+   "region": [60, 6, 60, 20],
+   "name": "button_monitor",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [61, 11, 61, 15],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [61, 11, 61, 15],
+      "microseconds": 50000,
+      "original": "50ms"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "VarDecl",
+       "region": [62, 13, 62, 18],
+       "name": "state",
+       "type_name": null,
+       "value": {
+        "_": "MethodCall",
+        "region": [62, 21, 62, 27],
+        "obj": {
+         "_": "VarRef",
+         "region": [62, 21, 62, 27],
+         "name": "button"
+        },
+        "method": "read",
+        "args": []
+       },
+       "mutable": false,
+       "shared": false,
+       "needs_lifting": false
+      },
+      {
+       "_": "IfStmt",
+       "region": [63, 12, 63, 17],
+       "condition": {
+        "_": "BinaryExpr",
+        "region": [63, 12, 63, 17],
+        "left": {
+         "_": "VarRef",
+         "region": [63, 12, 63, 17],
+         "name": "state"
+        },
+        "op": "==",
+        "right": {
+         "_": "IntLiteral",
+         "region": [63, 21, 63, 22],
+         "value": 0
+        },
+        "result_type": null
+       },
+       "then_body": [
+        {
+         "_": "IfStmt",
+         "region": [64, 16, 64, 27],
+         "condition": {
+          "_": "BinaryExpr",
+          "region": [64, 16, 64, 27],
+          "left": {
+           "_": "VarRef",
+           "region": [64, 16, 64, 27],
+           "name": "last_button"
+          },
+          "op": "==",
+          "right": {
+           "_": "IntLiteral",
+           "region": [64, 31, 64, 32],
+           "value": 1
+          },
+          "result_type": null
+         },
+         "then_body": [
+          {
+           "_": "CompoundAssign",
+           "region": [65, 17, 65, 31],
+           "target": {
+            "_": "VarRef",
+            "region": [65, 17, 65, 31],
+            "name": "button_presses"
+           },
+           "op": "+=",
+           "value": {
+            "_": "IntLiteral",
+            "region": [65, 35, 65, 36],
+            "value": 1
+           }
+          },
+          {
+           "_": "ExprStmt",
+           "region": [0, 0, 0, 0],
+           "expr": {
+            "_": "FuncCall",
+            "region": [66, 17, 66, 20],
+            "name": "log",
+            "args": [
+             {
+              "_": "StringLiteral",
+              "region": [66, 21, 66, 29],
+              "value": "button"
+             },
+             {
+              "_": "BinaryExpr",
+              "region": [66, 31, 66, 40],
+              "left": {
+               "_": "StringLiteral",
+               "region": [66, 31, 66, 40],
+               "value": "PRESS #"
+              },
+              "op": "+",
+              "right": {
+               "_": "VarRef",
+               "region": [66, 43, 66, 57],
+               "name": "button_presses"
+              },
+              "result_type": null
+             }
+            ]
+           }
+          }
+         ],
+         "else_body": null
+        }
+       ],
+       "else_body": null
+      },
+      {
+       "_": "AssignExpr",
+       "region": [69, 9, 69, 20],
+       "target": {
+        "_": "VarRef",
+        "region": [69, 9, 69, 20],
+        "name": "last_button"
+       },
+       "value": {
+        "_": "VarRef",
+        "region": [69, 23, 69, 28],
+        "name": "state"
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  },
+  {
+   "_": "TaskDecl",
+   "region": [73, 6, 73, 17],
+   "name": "data_logger",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [74, 11, 74, 14],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [74, 11, 74, 14],
+      "microseconds": 30000000,
+      "original": "30s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [75, 9, 75, 16],
+        "obj": {
+         "_": "VarRef",
+         "region": [75, 9, 75, 16],
+         "name": "storage"
+        },
+        "method": "push",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [75, 22, 75, 28],
+          "value": "soil"
+         },
+         {
+          "_": "MethodCall",
+          "region": [75, 30, 75, 34],
+          "obj": {
+           "_": "VarRef",
+           "region": [75, 30, 75, 34],
+           "name": "soil"
+          },
+          "method": "read",
+          "args": []
+         }
+        ]
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [76, 9, 76, 16],
+        "obj": {
+         "_": "VarRef",
+         "region": [76, 9, 76, 16],
+         "name": "storage"
+        },
+        "method": "push",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [76, 22, 76, 28],
+          "value": "temp"
+         },
+         {
+          "_": "MethodCall",
+          "region": [76, 30, 76, 34],
+          "obj": {
+           "_": "VarRef",
+           "region": [76, 30, 76, 34],
+           "name": "temp"
+          },
+          "method": "read",
+          "args": []
+         }
+        ]
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [77, 9, 77, 16],
+        "obj": {
+         "_": "VarRef",
+         "region": [77, 9, 77, 16],
+         "name": "storage"
+        },
+        "method": "push",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [77, 22, 77, 29],
+          "value": "light"
+         },
+         {
+          "_": "MethodCall",
+          "region": [77, 31, 77, 36],
+          "obj": {
+           "_": "VarRef",
+           "region": [77, 31, 77, 36],
+           "name": "light"
+          },
+          "method": "read",
+          "args": []
+         }
+        ]
+       }
+      },
+      {
+       "_": "CompoundAssign",
+       "region": [78, 9, 78, 21],
+       "target": {
+        "_": "VarRef",
+        "region": [78, 9, 78, 21],
+        "name": "total_pushes"
+       },
+       "op": "+=",
+       "value": {
+        "_": "IntLiteral",
+        "region": [78, 25, 78, 26],
+        "value": 3
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [79, 9, 79, 12],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [79, 13, 79, 22],
+          "value": "storage"
+         },
+         {
+          "_": "BinaryExpr",
+          "region": [79, 24, 79, 52],
+          "left": {
+           "_": "StringLiteral",
+           "region": [79, 24, 79, 52],
+           "value": "pushed 3 readings | total="
+          },
+          "op": "+",
+          "right": {
+           "_": "VarRef",
+           "region": [79, 55, 79, 67],
+           "name": "total_pushes"
+          },
+          "result_type": null
+         }
+        ]
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  },
+  {
+   "_": "TaskDecl",
+   "region": [83, 6, 83, 16],
+   "name": "cloud_sync",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [84, 11, 84, 14],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [84, 11, 84, 14],
+      "microseconds": 60000000,
+      "original": "60s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "IfStmt",
+       "region": [85, 12, 85, 16],
+       "condition": {
+        "_": "MethodCall",
+        "region": [85, 12, 85, 16],
+        "obj": {
+         "_": "VarRef",
+         "region": [85, 12, 85, 16],
+         "name": "wifi"
+        },
+        "method": "is_connected",
+        "args": []
+       },
+       "then_body": [
+        {
+         "_": "CompoundAssign",
+         "region": [86, 13, 86, 24],
+         "target": {
+          "_": "VarRef",
+          "region": [86, 13, 86, 24],
+          "name": "total_syncs"
+         },
+         "op": "+=",
+         "value": {
+          "_": "IntLiteral",
+          "region": [86, 28, 86, 29],
+          "value": 1
+         }
+        },
+        {
+         "_": "ExprStmt",
+         "region": [0, 0, 0, 0],
+         "expr": {
+          "_": "FuncCall",
+          "region": [87, 13, 87, 16],
+          "name": "log",
+          "args": [
+           {
+            "_": "StringLiteral",
+            "region": [87, 17, 87, 23],
+            "value": "sync"
+           },
+           {
+            "_": "BinaryExpr",
+            "region": [87, 25, 87, 28],
+            "left": {
+             "_": "BinaryExpr",
+             "region": [87, 25, 87, 28],
+             "left": {
+              "_": "StringLiteral",
+              "region": [87, 25, 87, 28],
+              "value": "#"
+             },
+             "op": "+",
+             "right": {
+              "_": "VarRef",
+              "region": [87, 31, 87, 42],
+              "name": "total_syncs"
+             },
+             "result_type": null
+            },
+            "op": "+",
+            "right": {
+             "_": "StringLiteral",
+             "region": [87, 45, 87, 55],
+             "value": " sending"
+            },
+            "result_type": null
+           }
+          ]
+         }
+        },
+        {
+         "_": "ExprStmt",
+         "region": [0, 0, 0, 0],
+         "expr": {
+          "_": "MethodCall",
+          "region": [88, 13, 88, 17],
+          "obj": {
+           "_": "VarRef",
+           "region": [88, 13, 88, 17],
+           "name": "mqtt"
+          },
+          "method": "send_int",
+          "args": [
+           {
+            "_": "StringLiteral",
+            "region": [88, 27, 88, 38],
+            "value": "farm/soil"
+           },
+           {
+            "_": "MethodCall",
+            "region": [88, 40, 88, 44],
+            "obj": {
+             "_": "VarRef",
+             "region": [88, 40, 88, 44],
+             "name": "soil"
+            },
+            "method": "read",
+            "args": []
+           }
+          ]
+         }
+        },
+        {
+         "_": "ExprStmt",
+         "region": [0, 0, 0, 0],
+         "expr": {
+          "_": "MethodCall",
+          "region": [89, 13, 89, 17],
+          "obj": {
+           "_": "VarRef",
+           "region": [89, 13, 89, 17],
+           "name": "mqtt"
+          },
+          "method": "send_int",
+          "args": [
+           {
+            "_": "StringLiteral",
+            "region": [89, 27, 89, 38],
+            "value": "farm/temp"
+           },
+           {
+            "_": "MethodCall",
+            "region": [89, 40, 89, 44],
+            "obj": {
+             "_": "VarRef",
+             "region": [89, 40, 89, 44],
+             "name": "temp"
+            },
+            "method": "read",
+            "args": []
+           }
+          ]
+         }
+        },
+        {
+         "_": "ExprStmt",
+         "region": [0, 0, 0, 0],
+         "expr": {
+          "_": "MethodCall",
+          "region": [90, 13, 90, 17],
+          "obj": {
+           "_": "VarRef",
+           "region": [90, 13, 90, 17],
+           "name": "mqtt"
+          },
+          "method": "send_int",
+          "args": [
+           {
+            "_": "StringLiteral",
+            "region": [90, 27, 90, 39],
+            "value": "farm/light"
+           },
+           {
+            "_": "MethodCall",
+            "region": [90, 41, 90, 46],
+            "obj": {
+             "_": "VarRef",
+             "region": [90, 41, 90, 46],
+             "name": "light"
+            },
+            "method": "read",
+            "args": []
+           }
+          ]
+         }
+        },
+        {
+         "_": "ExprStmt",
+         "region": [0, 0, 0, 0],
+         "expr": {
+          "_": "MethodCall",
+          "region": [91, 13, 91, 17],
+          "obj": {
+           "_": "VarRef",
+           "region": [91, 13, 91, 17],
+           "name": "mqtt"
+          },
+          "method": "send_int",
+          "args": [
+           {
+            "_": "StringLiteral",
+            "region": [91, 27, 91, 37],
+            "value": "farm/fan"
+           },
+           {
+            "_": "VarRef",
+            "region": [91, 39, 91, 45],
+            "name": "fan_on"
+           }
+          ]
+         }
+        }
+       ],
+       "else_body": [
+        {
+         "_": "ExprStmt",
+         "region": [0, 0, 0, 0],
+         "expr": {
+          "_": "FuncCall",
+          "region": [93, 13, 93, 16],
+          "name": "log",
+          "args": [
+           {
+            "_": "StringLiteral",
+            "region": [93, 17, 93, 23],
+            "value": "sync"
+           },
+           {
+            "_": "StringLiteral",
+            "region": [93, 25, 93, 60],
+            "value": "wifi not connected, data buffered"
+           }
+          ]
+         }
+        }
+       ]
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  },
+  {
+   "_": "TaskDecl",
+   "region": [98, 6, 98, 19],
+   "name": "health_report",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [99, 11, 99, 14],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [99, 11, 99, 14],
+      "microseconds": 10000000,
+      "original": "10s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [100, 9, 100, 12],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [100, 13, 100, 21],
+          "value": "health"
+         },
+         {
+          "_": "BinaryExpr",
+          "region": [100, 23, 100, 31],
+          "left": {
+           "_": "BinaryExpr",
+           "region": [100, 23, 100, 31],
+           "left": {
+            "_": "BinaryExpr",
+            "region": [100, 23, 100, 31],
+            "left": {
+             "_": "BinaryExpr",
+             "region": [100, 23, 100, 31],
+             "left": {
+              "_": "BinaryExpr",
+              "region": [100, 23, 100, 31],
+              "left": {
+               "_": "BinaryExpr",
+               "region": [100, 23, 100, 31],
+               "left": {
+                "_": "BinaryExpr",
+                "region": [100, 23, 100, 31],
+                "left": {
+                 "_": "BinaryExpr",
+                 "region": [100, 23, 100, 31],
+                 "left": {
+                  "_": "BinaryExpr",
+                  "region": [100, 23, 100, 31],
+                  "left": {
+                   "_": "StringLiteral",
+                   "region": [100, 23, 100, 31],
+                   "value": "reads="
+                  },
+                  "op": "+",
+                  "right": {
+                   "_": "VarRef",
+                   "region": [100, 34, 100, 52],
+                   "name": "total_sensor_reads"
+                  },
+                  "result_type": null
+                 },
+                 "op": "+",
+                 "right": {
+                  "_": "StringLiteral",
+                  "region": [100, 55, 100, 62],
+                  "value": " isr="
+                 },
+                 "result_type": null
+                },
+                "op": "+",
+                "right": {
+                 "_": "VarRef",
+                 "region": [100, 65, 100, 80],
+                 "name": "motor_isr_count"
+                },
+                "result_type": null
+               },
+               "op": "+",
+               "right": {
+                "_": "StringLiteral",
+                "region": [100, 83, 100, 90],
+                "value": " btn="
+               },
+               "result_type": null
+              },
+              "op": "+",
+              "right": {
+               "_": "VarRef",
+               "region": [100, 93, 100, 107],
+               "name": "button_presses"
+              },
+              "result_type": null
+             },
+             "op": "+",
+             "right": {
+              "_": "StringLiteral",
+              "region": [100, 110, 100, 120],
+              "value": " pushes="
+             },
+             "result_type": null
+            },
+            "op": "+",
+            "right": {
+             "_": "VarRef",
+             "region": [100, 123, 100, 135],
+             "name": "total_pushes"
+            },
+            "result_type": null
+           },
+           "op": "+",
+           "right": {
+            "_": "StringLiteral",
+            "region": [100, 138, 100, 147],
+            "value": " syncs="
+           },
+           "result_type": null
+          },
+          "op": "+",
+          "right": {
+           "_": "VarRef",
+           "region": [100, 150, 100, 161],
+           "name": "total_syncs"
+          },
+          "result_type": null
+         }
+        ]
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [101, 9, 101, 12],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [101, 13, 101, 21],
+          "value": "health"
+         },
+         {
+          "_": "BinaryExpr",
+          "region": [101, 23, 101, 30],
+          "left": {
+           "_": "BinaryExpr",
+           "region": [101, 23, 101, 30],
+           "left": {
+            "_": "BinaryExpr",
+            "region": [101, 23, 101, 30],
+            "left": {
+             "_": "BinaryExpr",
+             "region": [101, 23, 101, 30],
+             "left": {
+              "_": "BinaryExpr",
+              "region": [101, 23, 101, 30],
+              "left": {
+               "_": "StringLiteral",
+               "region": [101, 23, 101, 30],
+               "value": "wifi="
+              },
+              "op": "+",
+              "right": {
+               "_": "MethodCall",
+               "region": [101, 33, 101, 37],
+               "obj": {
+                "_": "VarRef",
+                "region": [101, 33, 101, 37],
+                "name": "wifi"
+               },
+               "method": "is_connected",
+               "args": []
+              },
+              "result_type": null
+             },
+             "op": "+",
+             "right": {
+              "_": "StringLiteral",
+              "region": [101, 55, 101, 63],
+              "value": " heap="
+             },
+             "result_type": null
+            },
+            "op": "+",
+            "right": {
+             "_": "MethodCall",
+             "region": [101, 66, 101, 72],
+             "obj": {
+              "_": "VarRef",
+              "region": [101, 66, 101, 72],
+              "name": "system"
+             },
+             "method": "free_heap",
+             "args": []
+            },
+            "result_type": null
+           },
+           "op": "+",
+           "right": {
+            "_": "StringLiteral",
+            "region": [101, 87, 101, 94],
+            "value": " fan="
+           },
+           "result_type": null
+          },
+          "op": "+",
+          "right": {
+           "_": "VarRef",
+           "region": [101, 97, 101, 103],
+           "name": "fan_on"
+          },
+          "result_type": null
+         }
+        ]
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  }
+ ],
+ "machines": [
+  {
+   "_": "MachineDecl",
+   "region": [105, 9, 105, 18],
+   "name": "StatusLED",
+   "states": [
+    {
+     "_": "StateDecl",
+     "region": [106, 19, 106, 22],
+     "name": "off",
+     "is_initial": true,
+     "enter_body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [108, 13, 108, 18],
+        "obj": {
+         "_": "VarRef",
+         "region": [108, 13, 108, 18],
+         "name": "led_r"
+        },
+        "method": "off",
+        "args": []
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [109, 13, 109, 18],
+        "obj": {
+         "_": "VarRef",
+         "region": [109, 13, 109, 18],
+         "name": "led_g"
+        },
+        "method": "off",
+        "args": []
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [110, 13, 110, 18],
+        "obj": {
+         "_": "VarRef",
+         "region": [110, 13, 110, 18],
+         "name": "led_b"
+        },
+        "method": "off",
+        "args": []
+       }
+      }
+     ],
+     "exit_body": [],
+     "transitions": [
+      {
+       "_": "StateTransition",
+       "region": [112, 12, 112, 26],
+       "event": {
+        "_": "VarRef",
+        "region": [112, 12, 112, 26],
+        "name": "wifi_connected"
+       },
+       "target_state": "connected",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "timed_transitions": [],
+     "body": []
+    },
+    {
+     "_": "StateDecl",
+     "region": [115, 11, 115, 20],
+     "name": "connected",
+     "is_initial": false,
+     "enter_body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [117, 13, 117, 18],
+        "obj": {
+         "_": "VarRef",
+         "region": [117, 13, 117, 18],
+         "name": "led_g"
+        },
+        "method": "on",
+        "args": []
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [118, 13, 118, 16],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [118, 17, 118, 26],
+          "value": "led_fsm"
+         },
+         {
+          "_": "StringLiteral",
+          "region": [118, 28, 118, 48],
+          "value": "STATE -> connected"
+         }
+        ]
+       }
+      }
+     ],
+     "exit_body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [121, 13, 121, 18],
+        "obj": {
+         "_": "VarRef",
+         "region": [121, 13, 121, 18],
+         "name": "led_g"
+        },
+        "method": "off",
+        "args": []
+       }
+      }
+     ],
+     "transitions": [
+      {
+       "_": "StateTransition",
+       "region": [123, 12, 123, 21],
+       "event": {
+        "_": "VarRef",
+        "region": [123, 12, 123, 21],
+        "name": "wifi_lost"
+       },
+       "target_state": "disconnected",
+       "guard": null,
+       "action": []
+      },
+      {
+       "_": "StateTransition",
+       "region": [124, 12, 124, 23],
+       "event": {
+        "_": "VarRef",
+        "region": [124, 12, 124, 23],
+        "name": "error_event"
+       },
+       "target_state": "error",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "timed_transitions": [],
+     "body": []
+    },
+    {
+     "_": "StateDecl",
+     "region": [127, 11, 127, 23],
+     "name": "disconnected",
+     "is_initial": false,
+     "enter_body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [129, 13, 129, 18],
+        "obj": {
+         "_": "VarRef",
+         "region": [129, 13, 129, 18],
+         "name": "led_r"
+        },
+        "method": "on",
+        "args": []
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [130, 13, 130, 16],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [130, 17, 130, 26],
+          "value": "led_fsm"
+         },
+         {
+          "_": "StringLiteral",
+          "region": [130, 28, 130, 51],
+          "value": "STATE -> disconnected"
+         }
+        ]
+       }
+      }
+     ],
+     "exit_body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [133, 13, 133, 18],
+        "obj": {
+         "_": "VarRef",
+         "region": [133, 13, 133, 18],
+         "name": "led_r"
+        },
+        "method": "off",
+        "args": []
+       }
+      }
+     ],
+     "transitions": [
+      {
+       "_": "StateTransition",
+       "region": [136, 12, 136, 26],
+       "event": {
+        "_": "VarRef",
+        "region": [136, 12, 136, 26],
+        "name": "wifi_connected"
+       },
+       "target_state": "connected",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "timed_transitions": [
+      {
+       "_": "TimedTransition",
+       "region": [135, 15, 135, 17],
+       "duration": {
+        "_": "DurationLiteral",
+        "region": [135, 15, 135, 17],
+        "microseconds": 5000000,
+        "original": "5s"
+       },
+       "target_state": "off",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "body": []
+    },
+    {
+     "_": "StateDecl",
+     "region": [139, 11, 139, 16],
+     "name": "error",
+     "is_initial": false,
+     "enter_body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [141, 13, 141, 18],
+        "obj": {
+         "_": "VarRef",
+         "region": [141, 13, 141, 18],
+         "name": "led_r"
+        },
+        "method": "on",
+        "args": []
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [142, 13, 142, 18],
+        "obj": {
+         "_": "VarRef",
+         "region": [142, 13, 142, 18],
+         "name": "led_b"
+        },
+        "method": "on",
+        "args": []
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [143, 13, 143, 16],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [143, 17, 143, 26],
+          "value": "led_fsm"
+         },
+         {
+          "_": "StringLiteral",
+          "region": [143, 28, 143, 44],
+          "value": "STATE -> error"
+         }
+        ]
+       }
+      }
+     ],
+     "exit_body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [146, 13, 146, 18],
+        "obj": {
+         "_": "VarRef",
+         "region": [146, 13, 146, 18],
+         "name": "led_r"
+        },
+        "method": "off",
+        "args": []
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [147, 13, 147, 18],
+        "obj": {
+         "_": "VarRef",
+         "region": [147, 13, 147, 18],
+         "name": "led_b"
+        },
+        "method": "off",
+        "args": []
+       }
+      }
+     ],
+     "transitions": [],
+     "timed_transitions": [
+      {
+       "_": "TimedTransition",
+       "region": [149, 15, 149, 18],
+       "duration": {
+        "_": "DurationLiteral",
+        "region": [149, 15, 149, 18],
+        "microseconds": 10000000,
+        "original": "10s"
+       },
+       "target_state": "off",
+       "guard": null,
+       "action": []
+      }
+     ],
+     "body": []
+    }
+   ],
+   "variables": []
+  }
+ ],
+ "storage_vars": [],
+ "global_vars": [
+  {
+   "_": "VarDecl",
+   "region": [15, 5, 15, 13],
+   "name": "setpoint",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [15, 21, 15, 24],
+    "value": 500
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  },
+  {
+   "_": "VarDecl",
+   "region": [16, 5, 16, 11],
+   "name": "fan_on",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [16, 19, 16, 20],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  },
+  {
+   "_": "VarDecl",
+   "region": [17, 5, 17, 23],
+   "name": "total_sensor_reads",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [17, 31, 17, 32],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  },
+  {
+   "_": "VarDecl",
+   "region": [18, 5, 18, 17],
+   "name": "total_pushes",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [18, 25, 18, 26],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  },
+  {
+   "_": "VarDecl",
+   "region": [19, 5, 19, 16],
+   "name": "total_syncs",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [19, 24, 19, 25],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  },
+  {
+   "_": "VarDecl",
+   "region": [20, 5, 20, 20],
+   "name": "motor_isr_count",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [20, 28, 20, 29],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  },
+  {
+   "_": "VarDecl",
+   "region": [21, 5, 21, 19],
+   "name": "button_presses",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [21, 27, 21, 28],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  },
+  {
+   "_": "VarDecl",
+   "region": [22, 5, 22, 16],
+   "name": "last_button",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [22, 24, 22, 25],
+    "value": 1
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  }
+ ],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "MethodCall",
+     "region": [154, 5, 154, 9],
+     "obj": {
+      "_": "VarRef",
+      "region": [154, 5, 154, 9],
+      "name": "wifi"
+     },
+     "method": "connect",
+     "args": [
+      {
+       "_": "StringLiteral",
+       "region": [154, 18, 154, 27],
+       "value": "FarmNet"
+      },
+      {
+       "_": "StringLiteral",
+       "region": [154, 29, 154, 39],
+       "value": "password"
+      }
+     ]
+    }
+   },
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "MethodCall",
+     "region": [155, 5, 155, 9],
+     "obj": {
+      "_": "VarRef",
+      "region": [155, 5, 155, 9],
+      "name": "mqtt"
+     },
+     "method": "connect",
+     "args": [
+      {
+       "_": "StringLiteral",
+       "region": [155, 18, 155, 39],
+       "value": "mqtt://broker.local"
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

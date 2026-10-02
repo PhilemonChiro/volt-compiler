@@ -1,0 +1,8 @@
+
+[red bold]-- TYPE MISMATCH -- main.volt:2[/red bold]
+
+Cannot negate `int` with `!`. Only `bool` allowed.
+
+ [dim]1 |[/dim] setup {
+ [dim]2 |[/dim]     let x = !42
+ [dim]  |[/dim] [red]             ^^[/red]

@@ -1,0 +1,74 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [4, 9, 4, 10],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [4, 9, 4, 10],
+    "name": "s",
+    "mode": "Servo",
+    "gpio": 5
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "MethodCall",
+     "region": [7, 5, 7, 6],
+     "obj": {
+      "_": "VarRef",
+      "region": [7, 5, 7, 6],
+      "name": "s"
+     },
+     "method": "ease_to_with",
+     "args": [
+      {
+       "_": "IntLiteral",
+       "region": [7, 20, 7, 22],
+       "value": 90
+      },
+      {
+       "_": "DurationLiteral",
+       "region": [7, 24, 7, 29],
+       "microseconds": 500000,
+       "original": "500ms"
+      },
+      {
+       "_": "VarRef",
+       "region": [7, 31, 7, 44],
+       "name": "ease_out_sine"
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

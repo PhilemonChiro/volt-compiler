@@ -1,0 +1,50 @@
+[
+  {
+    "severity": "warning",
+    "category": "HARDWARE NOTE",
+    "message": "GPIO 25: Also DAC channel 1. When DAC is enabled, outputs ~1.6V by default.",
+    "hint": null,
+    "region": [
+      15,
+      9,
+      15,
+      12
+    ]
+  },
+  {
+    "severity": "warning",
+    "category": "HARDWARE WARNING",
+    "message": "GPIO 15: GPIO 15 is a strapping pin. Outputs PWM signal during boot. LOW at boot suppresses UART boot log messages.",
+    "hint": null,
+    "region": [
+      16,
+      9,
+      16,
+      15
+    ]
+  },
+  {
+    "severity": "warning",
+    "category": "HARDWARE WARNING",
+    "message": "GPIO 15 is a JTAG pin. Using it disables JTAG debugging.",
+    "hint": null,
+    "region": [
+      16,
+      9,
+      16,
+      15
+    ]
+  },
+  {
+    "severity": "warning",
+    "category": "HARDWARE WARNING",
+    "message": "GPIO 0: GPIO 0 is a strapping pin. LOW at boot = download mode. Ensure pull-up (internal or external) for normal boot.",
+    "hint": null,
+    "region": [
+      17,
+      9,
+      17,
+      15
+    ]
+  }
+]

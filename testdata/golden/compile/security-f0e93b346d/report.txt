@@ -1,0 +1,18 @@
+
+[red bold]-- INCLUDE ERROR -- include_absolute.volt:1[/red bold]
+
+Absolute include paths are not allowed: /etc/passwd
+
+ [dim]1 |[/dim] 
+ [dim]  |[/dim] [red]^[/red]
+
+
+[yellow bold]-- DEPRECATION -- include_absolute.volt:2[/yellow bold]
+
+Move `chip esp32` to volt.toml: chip = "esp32"
+
+ [dim]1 |[/dim] 
+ [dim]2 |[/dim] chip esp32
+ [dim]  |[/dim] [yellow]     ^^^^^[/yellow]
+
+[cyan]Hint: The chip declaration will move to volt.toml in a future version.[/cyan]

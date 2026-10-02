@@ -1,0 +1,96 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [1, 6, 1, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [2, 16, 2, 19],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [2, 16, 2, 19],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 4
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [],
+ "machines": [
+  {
+   "_": "MachineDecl",
+   "region": [3, 9, 3, 10],
+   "name": "m",
+   "states": [
+    {
+     "_": "StateDecl",
+     "region": [4, 11, 4, 12],
+     "name": "s",
+     "is_initial": true,
+     "enter_body": [
+      {
+       "_": "TryBlock",
+       "region": [0, 0, 0, 0],
+       "body": [
+        {
+         "_": "ExprStmt",
+         "region": [0, 0, 0, 0],
+         "expr": {
+          "_": "MethodCall",
+          "region": [5, 23, 5, 27],
+          "obj": {
+           "_": "VarRef",
+           "region": [5, 23, 5, 27],
+           "name": "wifi"
+          },
+          "method": "connect",
+          "args": [
+           {
+            "_": "StringLiteral",
+            "region": [5, 36, 5, 39],
+            "value": "a"
+           },
+           {
+            "_": "StringLiteral",
+            "region": [5, 40, 5, 43],
+            "value": "b"
+           }
+          ]
+         }
+        }
+       ],
+       "policy": "retry",
+       "retry_limit": null,
+       "terminal": null,
+       "try_id": 0,
+       "needs_context_lift": false,
+       "is_yield_point": false
+      }
+     ],
+     "exit_body": [],
+     "transitions": [],
+     "timed_transitions": [],
+     "body": []
+    }
+   ],
+   "variables": []
+  }
+ ],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

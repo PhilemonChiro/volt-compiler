@@ -1,0 +1,264 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 3,
+    "col": 9,
+    "message": "GPIO 2: GPIO 2 is a strapping pin. Must be LOW or floating for download mode.",
+    "severity": "warning",
+    "hint": ""
+   },
+   {
+    "line": 4,
+    "col": 9,
+    "message": "GPIO 0: GPIO 0 is a strapping pin. LOW at boot = download mode. Ensure pull-up (internal or external) for normal boot.",
+    "severity": "warning",
+    "hint": ""
+   },
+   {
+    "line": 5,
+    "col": 9,
+    "message": "GPIO 36 has a hardware errata: interrupts may fire spuriously during WiFi/BT light sleep. Use a different pin for interrupt-driven input.",
+    "severity": "warning",
+    "hint": "GPIO 34, 35 do not have this errata."
+   },
+   {
+    "line": 5,
+    "col": 9,
+    "message": "GPIO 36: Hardware errata: interrupts on GPIO 36 may fire spuriously during WiFi/BT light sleep.",
+    "severity": "warning",
+    "hint": ""
+   }
+  ],
+  "pins": [
+   {
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   },
+   {
+    "name": "btn",
+    "mode": "PullUpInput",
+    "gpio": 0
+   },
+   {
+    "name": "bat",
+    "mode": "Analog",
+    "gpio": 36
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": ""
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "hardware {\n    pin led: Output = 2\n    pin btn: PullUpInput = 0\n    pin bat: Analog = 36\n}\n\nsetup {\n    led.on()\n    led.off()\n    led.toggle()\n    let pressed = btn.is_pressed()\n    let val = bat.read()\n}\n",
+ "find_symbols": [
+  {
+   "name": "led",
+   "kind": "pin",
+   "def_line": 3,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 8,
+     "col": 5
+    },
+    {
+     "line": 9,
+     "col": 5
+    },
+    {
+     "line": 10,
+     "col": 5
+    }
+   ]
+  },
+  {
+   "name": "btn",
+   "kind": "pin",
+   "def_line": 4,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 11,
+     "col": 19
+    }
+   ]
+  },
+  {
+   "name": "bat",
+   "kind": "pin",
+   "def_line": 5,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 12,
+     "col": 15
+    }
+   ]
+  },
+  {
+   "name": "pressed",
+   "kind": "var",
+   "def_line": 11,
+   "def_col": 9,
+   "refs": []
+  },
+  {
+   "name": "val",
+   "kind": "var",
+   "def_line": 12,
+   "def_col": 9,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    p_led([\"led\"])\n    p_btn([\"btn\"])\n    p_bat([\"bat\"])\n    u_setup -->|off, on, toggle| p_led\n    p_btn -.->|is_pressed| u_setup\n    p_bat -.->|read| u_setup\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class p_led pin;\n    class p_btn pin;\n    class p_bat pin;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   }
+  ],
+  "loops": [],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "p_led"
+   },
+   {
+    "drive": "setup",
+    "src": "p_btn",
+    "dst": "u_setup"
+   },
+   {
+    "drive": "setup",
+    "src": "p_bat",
+    "dst": "u_setup"
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 3,
+    "detail": "Output · GPIO 2"
+   },
+   "p_btn": {
+    "kind": "pin",
+    "label": "btn",
+    "line": 4,
+    "detail": "PullUpInput · GPIO 0"
+   },
+   "p_bat": {
+    "kind": "pin",
+    "label": "bat",
+    "line": 5,
+    "detail": "Analog · GPIO 36"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    p_led([\"led\"])\n    p_btn([\"btn\"])\n    p_bat([\"bat\"])\n    u_setup -->|off, on, toggle| p_led\n    p_btn -.->|is_pressed| u_setup\n    p_bat -.->|read| u_setup\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class p_led pin;\n    class p_btn pin;\n    class p_bat pin;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   }
+  ],
+  "loops": [],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "p_led"
+   },
+   {
+    "drive": "setup",
+    "src": "p_btn",
+    "dst": "u_setup"
+   },
+   {
+    "drive": "setup",
+    "src": "p_bat",
+    "dst": "u_setup"
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 3,
+    "detail": "Output · GPIO 2"
+   },
+   "p_btn": {
+    "kind": "pin",
+    "label": "btn",
+    "line": 4,
+    "detail": "PullUpInput · GPIO 0"
+   },
+   "p_bat": {
+    "kind": "pin",
+    "label": "bat",
+    "line": 5,
+    "detail": "Analog · GPIO 36"
+   }
+  }
+ }
+}

@@ -1,0 +1,221 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 2,
+    "col": 6,
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "severity": "warning",
+    "hint": "The chip declaration will move to volt.toml in a future version."
+   },
+   {
+    "line": 3,
+    "col": 14,
+    "message": "Strapping pin: GPIO 2 must be LOW during boot for flash programming.",
+    "severity": "warning",
+    "hint": ""
+   }
+  ],
+  "pins": [
+   {
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "a",
+    "tier": "background",
+    "line": 4
+   },
+   {
+    "name": "b",
+    "tier": "background",
+    "line": 5
+   }
+  ],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": "esp32"
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n}\n\ntask a {\n    every 1s { led.toggle() }\n}\n\ntask b {\n    every 2s { led.toggle() }\n}\n",
+ "find_symbols": [
+  {
+   "name": "led",
+   "kind": "pin",
+   "def_line": 3,
+   "def_col": 14,
+   "refs": [
+    {
+     "line": 4,
+     "col": 17
+    },
+    {
+     "line": 5,
+     "col": 17
+    }
+   ]
+  },
+  {
+   "name": "a",
+   "kind": "task",
+   "def_line": 4,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "b",
+   "kind": "task",
+   "def_line": 5,
+   "def_col": 6,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    p_led([\"led\"])\n    u_a((\"a<br>↻ 1s\"))\n    u_b((\"b<br>↻ 2s\"))\n    u_a -->|toggle| p_led\n    u_b -->|toggle| p_led\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_a timer;\n    class p_led shared;\n    class u_b timer;",
+  "units": [
+   {
+    "id": "u_a",
+    "name": "a<br>↻ 1s",
+    "line": 4
+   },
+   {
+    "id": "u_b",
+    "name": "b<br>↻ 2s",
+    "line": 5
+   }
+  ],
+  "loops": [
+   "u_a",
+   "u_b"
+  ],
+  "edges": [
+   {
+    "drive": "timer",
+    "src": "u_a",
+    "dst": "p_led",
+    "rate_ms": 1000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_b",
+    "dst": "p_led",
+    "rate_ms": 2000.0
+   }
+  ],
+  "nodes": {
+   "u_a": {
+    "kind": "timer",
+    "label": "a<br>↻ 1s",
+    "line": 4,
+    "detail": "every 1s"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 3,
+    "detail": "Output · GPIO 2"
+   },
+   "u_b": {
+    "kind": "timer",
+    "label": "b<br>↻ 2s",
+    "line": 5,
+    "detail": "every 2s"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    p_led([\"led\"])\n    u_a((\"a<br>↻ 1s\"))\n    u_b((\"b<br>↻ 2s\"))\n    u_a -->|toggle| p_led\n    u_b -->|toggle| p_led\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_a timer;\n    class p_led shared;\n    class u_b timer;",
+  "units": [
+   {
+    "id": "u_a",
+    "name": "a<br>↻ 1s",
+    "line": 4
+   },
+   {
+    "id": "u_b",
+    "name": "b<br>↻ 2s",
+    "line": 5
+   }
+  ],
+  "loops": [
+   "u_a",
+   "u_b"
+  ],
+  "edges": [
+   {
+    "drive": "timer",
+    "src": "u_a",
+    "dst": "p_led",
+    "rate_ms": 1000.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_b",
+    "dst": "p_led",
+    "rate_ms": 2000.0
+   }
+  ],
+  "nodes": {
+   "u_a": {
+    "kind": "timer",
+    "label": "a<br>↻ 1s",
+    "line": 4,
+    "detail": "every 1s"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 3,
+    "detail": "Output · GPIO 2"
+   },
+   "u_b": {
+    "kind": "timer",
+    "label": "b<br>↻ 2s",
+    "line": 5,
+    "detail": "every 2s"
+   }
+  }
+ }
+}

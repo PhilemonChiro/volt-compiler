@@ -1,0 +1,357 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [4, 9, 6, 15],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [4, 9, 4, 12],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   }
+  ],
+  "buses": [
+   {
+    "_": "BusDecl",
+    "region": [5, 9, 5, 16],
+    "bus_type": "i2c",
+    "name": "sensors",
+    "params": {
+     "sda": {
+      "_": "IntLiteral",
+      "region": [5, 27, 5, 29],
+      "value": 21
+     },
+     "scl": {
+      "_": "IntLiteral",
+      "region": [5, 36, 5, 38],
+      "value": 22
+     }
+    }
+   }
+  ],
+  "sensors": [
+   {
+    "_": "SensorDecl",
+    "region": [6, 12, 6, 15],
+    "name": "bme",
+    "sensor_type": "BME280",
+    "bus_name": "sensors",
+    "address": 118,
+    "pin_params": {}
+   }
+  ]
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [14, 6, 14, 13],
+   "name": "monitor",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [15, 11, 15, 14],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [15, 11, 15, 14],
+      "microseconds": 10000000,
+      "original": "10s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "VarDecl",
+       "region": [16, 13, 16, 17],
+       "name": "temp",
+       "type_name": "float",
+       "value": {
+        "_": "OrExpr",
+        "region": [16, 27, 16, 30],
+        "expr": {
+         "_": "MethodCall",
+         "region": [16, 27, 16, 30],
+         "obj": {
+          "_": "VarRef",
+          "region": [16, 27, 16, 30],
+          "name": "bme"
+         },
+         "method": "temperature",
+         "args": []
+        },
+        "fallback": null,
+        "kind": "skip"
+       },
+       "mutable": true,
+       "shared": false,
+       "needs_lifting": false
+      },
+      {
+       "_": "VarDecl",
+       "region": [17, 13, 17, 16],
+       "name": "hum",
+       "type_name": "float",
+       "value": {
+        "_": "OrExpr",
+        "region": [17, 26, 17, 29],
+        "expr": {
+         "_": "MethodCall",
+         "region": [17, 26, 17, 29],
+         "obj": {
+          "_": "VarRef",
+          "region": [17, 26, 17, 29],
+          "name": "bme"
+         },
+         "method": "humidity",
+         "args": []
+        },
+        "fallback": null,
+        "kind": "skip"
+       },
+       "mutable": true,
+       "shared": false,
+       "needs_lifting": false
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "OrExpr",
+        "region": [18, 9, 18, 13],
+        "expr": {
+         "_": "MethodCall",
+         "region": [18, 9, 18, 13],
+         "obj": {
+          "_": "VarRef",
+          "region": [18, 9, 18, 13],
+          "name": "mqtt"
+         },
+         "method": "send_float",
+         "args": [
+          {
+           "_": "StringLiteral",
+           "region": [18, 25, 18, 39],
+           "value": "weather/temp"
+          },
+          {
+           "_": "VarRef",
+           "region": [18, 41, 18, 45],
+           "name": "temp"
+          }
+         ]
+        },
+        "fallback": {
+         "_": "IntLiteral",
+         "region": [18, 56, 18, 57],
+         "value": 3
+        },
+        "kind": "retry"
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "OrExpr",
+        "region": [19, 9, 19, 13],
+        "expr": {
+         "_": "MethodCall",
+         "region": [19, 9, 19, 13],
+         "obj": {
+          "_": "VarRef",
+          "region": [19, 9, 19, 13],
+          "name": "mqtt"
+         },
+         "method": "send_float",
+         "args": [
+          {
+           "_": "StringLiteral",
+           "region": [19, 25, 19, 38],
+           "value": "weather/hum"
+          },
+          {
+           "_": "VarRef",
+           "region": [19, 40, 19, 43],
+           "name": "hum"
+          }
+         ]
+        },
+        "fallback": {
+         "_": "IntLiteral",
+         "region": [19, 54, 19, 55],
+         "value": 3
+        },
+        "kind": "retry"
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  },
+  {
+   "_": "TaskDecl",
+   "region": [22, 6, 22, 15],
+   "name": "heartbeat",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [23, 11, 23, 13],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [23, 11, 23, 13],
+      "microseconds": 1000000,
+      "original": "1s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [24, 9, 24, 12],
+        "obj": {
+         "_": "VarRef",
+         "region": [24, 9, 24, 12],
+         "name": "led"
+        },
+        "method": "toggle",
+        "args": []
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  }
+ ],
+ "machines": [],
+ "storage_vars": [
+  {
+   "_": "StorageDecl",
+   "region": [8, 9, 8, 19],
+   "name": "boot_count",
+   "type_name": "int",
+   "default_value": {
+    "_": "IntLiteral",
+    "region": [8, 27, 8, 28],
+    "value": 0
+   }
+  }
+ ],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "CompoundAssign",
+    "region": [10, 5, 10, 15],
+    "target": {
+     "_": "VarRef",
+     "region": [10, 5, 10, 15],
+     "name": "boot_count"
+    },
+    "op": "+=",
+    "value": {
+     "_": "IntLiteral",
+     "region": [10, 19, 10, 20],
+     "value": 1
+    }
+   },
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "OrExpr",
+     "region": [11, 5, 11, 9],
+     "expr": {
+      "_": "MethodCall",
+      "region": [11, 5, 11, 9],
+      "obj": {
+       "_": "VarRef",
+       "region": [11, 5, 11, 9],
+       "name": "wifi"
+      },
+      "method": "connect",
+      "args": [
+       {
+        "_": "StringLiteral",
+        "region": [11, 18, 11, 30],
+        "value": "WeatherNet"
+       },
+       {
+        "_": "StringLiteral",
+        "region": [11, 32, 11, 38],
+        "value": "pass"
+       }
+      ]
+     },
+     "fallback": {
+      "_": "IntLiteral",
+      "region": [11, 49, 11, 51],
+      "value": 10
+     },
+     "kind": "retry"
+    }
+   },
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "OrExpr",
+     "region": [12, 5, 12, 9],
+     "expr": {
+      "_": "MethodCall",
+      "region": [12, 5, 12, 9],
+      "obj": {
+       "_": "VarRef",
+       "region": [12, 5, 12, 9],
+       "name": "mqtt"
+      },
+      "method": "connect",
+      "args": [
+       {
+        "_": "StringLiteral",
+        "region": [12, 18, 12, 40],
+        "value": "mqtt://192.168.1.100"
+       }
+      ]
+     },
+     "fallback": {
+      "_": "IntLiteral",
+      "region": [12, 51, 12, 52],
+      "value": 5
+     },
+     "kind": "retry"
+    }
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

@@ -1,0 +1,20 @@
+
+[yellow bold]-- DEPRECATION -- main.volt:1[/yellow bold]
+
+Move `chip esp32` to volt.toml: chip = "esp32"
+
+ [dim]1 |[/dim] chip esp32
+ [dim]  |[/dim] [yellow]     ^^^^^[/yellow]
+
+[cyan]Hint: The chip declaration will move to volt.toml in a future version.[/cyan]
+
+
+[yellow bold]-- STATE MACHINE WARNING -- main.volt:8[/yellow bold]
+
+State `b` in machine `m` has no outgoing transitions (dead-end state).
+
+ [dim]7 |[/dim]     }
+ [dim]8 |[/dim]     state b { enter { led.on() } }
+ [dim]  |[/dim] [yellow]          ^[/yellow]
+
+[cyan]Hint: Add a transition or mark with @terminal if intentional.[/cyan]

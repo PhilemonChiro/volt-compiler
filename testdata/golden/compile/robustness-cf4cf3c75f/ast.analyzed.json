@@ -1,0 +1,188 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [2, 6, 2, 11],
+  "target": "esp32"
+ },
+ "hardware": null,
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [6, 6, 6, 14],
+   "name": "producer",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [7, 11, 7, 13],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [7, 11, 7, 13],
+      "microseconds": 1000000,
+      "original": "1s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "CompoundAssign",
+       "region": [8, 9, 8, 14],
+       "target": {
+        "_": "VarRef",
+        "region": [8, 9, 8, 14],
+        "name": "total"
+       },
+       "op": "+=",
+       "value": {
+        "_": "IntLiteral",
+        "region": [8, 18, 8, 19],
+        "value": 1
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [9, 9, 9, 13],
+        "obj": {
+         "_": "VarRef",
+         "region": [9, 9, 9, 13],
+         "name": "data"
+        },
+        "method": "send",
+        "args": [
+         {
+          "_": "VarRef",
+          "region": [9, 19, 9, 24],
+          "name": "total"
+         }
+        ]
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  },
+  {
+   "_": "TaskDecl",
+   "region": [13, 6, 13, 14],
+   "name": "consumer",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [14, 11, 14, 16],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [14, 11, 14, 16],
+      "microseconds": 500000,
+      "original": "500ms"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "IfStmt",
+       "region": [15, 12, 15, 16],
+       "condition": {
+        "_": "MethodCall",
+        "region": [15, 12, 15, 16],
+        "obj": {
+         "_": "VarRef",
+         "region": [15, 12, 15, 16],
+         "name": "data"
+        },
+        "method": "has_data",
+        "args": []
+       },
+       "then_body": [
+        {
+         "_": "VarDecl",
+         "region": [16, 17, 16, 20],
+         "name": "val",
+         "type_name": "int",
+         "value": {
+          "_": "MethodCall",
+          "region": [16, 28, 16, 32],
+          "obj": {
+           "_": "VarRef",
+           "region": [16, 28, 16, 32],
+           "name": "data"
+          },
+          "method": "receive",
+          "args": []
+         },
+         "mutable": true,
+         "shared": false,
+         "needs_lifting": false
+        },
+        {
+         "_": "CompoundAssign",
+         "region": [17, 13, 17, 18],
+         "target": {
+          "_": "VarRef",
+          "region": [17, 13, 17, 18],
+          "name": "total"
+         },
+         "op": "-=",
+         "value": {
+          "_": "VarRef",
+          "region": [17, 22, 17, 25],
+          "name": "val"
+         }
+        }
+       ],
+       "else_body": null
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false,
+   "_annotations": []
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [
+  {
+   "_": "VarDecl",
+   "region": [4, 12, 4, 17],
+   "name": "total",
+   "type_name": "int",
+   "value": {
+    "_": "IntLiteral",
+    "region": [4, 25, 4, 26],
+    "value": 0
+   },
+   "mutable": true,
+   "shared": true,
+   "needs_lifting": false
+  }
+ ],
+ "channels": [
+  {
+   "_": "ChannelDecl",
+   "region": [3, 9, 3, 13],
+   "name": "data",
+   "elem_type": "int",
+   "capacity": 16
+  }
+ ],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

@@ -1,0 +1,278 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 0,
+    "col": 0,
+    "message": "Variable `x` is shared between critical task (isr, isr) and task (bg, bg, bg). The compiler will mark it `volatile` in generated C.",
+    "severity": "warning",
+    "hint": "For multi-word values, consider using atomic operations."
+   }
+  ],
+  "pins": [],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "bg",
+    "tier": "background",
+    "line": 3
+   },
+   {
+    "name": "isr",
+    "tier": "critical",
+    "line": 8
+   }
+  ],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": ""
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "var x: int = 0\n\ntask bg {\n    every 500ms { x = x + 1 }\n}\n\ntask isr {\n    every 1ms strict { x = 0 }\n}\n\nsetup {\n    run(bg, isr)\n}\n",
+ "find_symbols": [
+  {
+   "name": "bg",
+   "kind": "task",
+   "def_line": 3,
+   "def_col": 6,
+   "refs": [
+    {
+     "line": 14,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "isr",
+   "kind": "task",
+   "def_line": 8,
+   "def_col": 6,
+   "refs": [
+    {
+     "line": 14,
+     "col": 13
+    }
+   ]
+  },
+  {
+   "name": "x",
+   "kind": "var",
+   "def_line": 2,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 5,
+     "col": 9
+    },
+    {
+     "line": 5,
+     "col": 13
+    },
+    {
+     "line": 10,
+     "col": 9
+    }
+   ]
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_run{{\"run\"}}\n    v_x(\"x\")\n    u_bg((\"bg<br>↻ 500ms\"))\n    u_isr((\"isr<br>↻ 1ms\"))\n    u_setup -->|run| s_run\n    u_bg -->|write| v_x\n    v_x -.->|read| u_bg\n    u_isr -->|write| v_x\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_run service;\n    class u_bg timer;\n    class v_x shared;\n    class u_isr timer;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_bg",
+    "name": "bg<br>↻ 500ms",
+    "line": 3
+   },
+   {
+    "id": "u_isr",
+    "name": "isr<br>↻ 1ms",
+    "line": 8
+   }
+  ],
+  "loops": [
+   "u_bg",
+   "u_isr"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_run"
+   },
+   {
+    "drive": "timer",
+    "src": "u_bg",
+    "dst": "v_x",
+    "rate_ms": 500.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_x",
+    "dst": "u_bg",
+    "rate_ms": 500.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_isr",
+    "dst": "v_x",
+    "rate_ms": 1.0
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_run": {
+    "kind": "service",
+    "label": "run",
+    "line": null,
+    "detail": "run"
+   },
+   "u_bg": {
+    "kind": "timer",
+    "label": "bg<br>↻ 500ms",
+    "line": 3,
+    "detail": "every 500ms"
+   },
+   "v_x": {
+    "kind": "var",
+    "label": "x",
+    "line": 2,
+    "detail": "int"
+   },
+   "u_isr": {
+    "kind": "timer",
+    "label": "isr<br>↻ 1ms",
+    "line": 8,
+    "detail": "every 1ms"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_run{{\"run\"}}\n    v_x(\"x\")\n    u_bg((\"bg<br>↻ 500ms\"))\n    u_isr((\"isr<br>↻ 1ms\"))\n    u_setup -->|run| s_run\n    u_bg -->|write| v_x\n    v_x -.->|read| u_bg\n    u_isr -->|write| v_x\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_run service;\n    class u_bg timer;\n    class v_x shared;\n    class u_isr timer;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u_bg",
+    "name": "bg<br>↻ 500ms",
+    "line": 3
+   },
+   {
+    "id": "u_isr",
+    "name": "isr<br>↻ 1ms",
+    "line": 8
+   }
+  ],
+  "loops": [
+   "u_bg",
+   "u_isr"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_run"
+   },
+   {
+    "drive": "timer",
+    "src": "u_bg",
+    "dst": "v_x",
+    "rate_ms": 500.0
+   },
+   {
+    "drive": "timer",
+    "src": "v_x",
+    "dst": "u_bg",
+    "rate_ms": 500.0
+   },
+   {
+    "drive": "timer",
+    "src": "u_isr",
+    "dst": "v_x",
+    "rate_ms": 1.0
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_run": {
+    "kind": "service",
+    "label": "run",
+    "line": null,
+    "detail": "run"
+   },
+   "u_bg": {
+    "kind": "timer",
+    "label": "bg<br>↻ 500ms",
+    "line": 3,
+    "detail": "every 500ms"
+   },
+   "v_x": {
+    "kind": "var",
+    "label": "x",
+    "line": 2,
+    "detail": "int"
+   },
+   "u_isr": {
+    "kind": "timer",
+    "label": "isr<br>↻ 1ms",
+    "line": 8,
+    "detail": "every 1ms"
+   }
+  }
+ }
+}
