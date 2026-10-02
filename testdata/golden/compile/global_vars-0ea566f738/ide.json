@@ -166,13 +166,13 @@
     "drive": "timer",
     "src": "u_control",
     "dst": "v_shared_flag",
-    "rate_ms": 1.0
+    "rate_ms": 1
    },
    {
     "drive": "timer",
     "src": "v_shared_flag",
     "dst": "u_monitor",
-    "rate_ms": 500.0
+    "rate_ms": 500
    }
   ],
   "nodes": {
@@ -253,25 +253,25 @@
     "drive": "timer",
     "src": "u_control",
     "dst": "v_shared_flag",
-    "rate_ms": 1.0
+    "rate_ms": 1
    },
    {
     "drive": "timer",
     "src": "u_monitor",
     "dst": "v_speed",
-    "rate_ms": 500.0
+    "rate_ms": 500
    },
    {
     "drive": "timer",
     "src": "v_shared_flag",
     "dst": "u_monitor",
-    "rate_ms": 500.0
+    "rate_ms": 500
    },
    {
     "drive": "timer",
     "src": "v_max_speed",
     "dst": "u_monitor",
-    "rate_ms": 500.0
+    "rate_ms": 500
    }
   ],
   "nodes": {

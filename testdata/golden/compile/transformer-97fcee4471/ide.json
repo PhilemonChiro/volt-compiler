@@ -222,13 +222,13 @@
     "drive": "timer",
     "src": "u_worker",
     "dst": "f_wait_a",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    },
    {
     "drive": "timer",
     "src": "u_worker",
     "dst": "f_wait_b",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    },
    {
     "drive": "func",

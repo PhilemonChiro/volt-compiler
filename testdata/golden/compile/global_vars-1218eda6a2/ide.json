@@ -158,25 +158,25 @@
     "drive": "timer",
     "src": "v_depth",
     "dst": "u_deep",
-    "rate_ms": 100.0
+    "rate_ms": 100
    },
    {
     "drive": "timer",
     "src": "u_deep",
     "dst": "v_depth",
-    "rate_ms": 100.0
+    "rate_ms": 100
    },
    {
     "drive": "timer",
     "src": "u_isr",
     "dst": "v_depth",
-    "rate_ms": 1.0
+    "rate_ms": 1
    },
    {
     "drive": "timer",
     "src": "v_depth",
     "dst": "u_isr",
-    "rate_ms": 1.0
+    "rate_ms": 1
    }
   ],
   "nodes": {
@@ -245,25 +245,25 @@
     "drive": "timer",
     "src": "v_depth",
     "dst": "u_deep",
-    "rate_ms": 100.0
+    "rate_ms": 100
    },
    {
     "drive": "timer",
     "src": "u_deep",
     "dst": "v_depth",
-    "rate_ms": 100.0
+    "rate_ms": 100
    },
    {
     "drive": "timer",
     "src": "u_isr",
     "dst": "v_depth",
-    "rate_ms": 1.0
+    "rate_ms": 1
    },
    {
     "drive": "timer",
     "src": "v_depth",
     "dst": "u_isr",
-    "rate_ms": 1.0
+    "rate_ms": 1
    }
   ],
   "nodes": {

@@ -2,11 +2,11 @@
  "compile_full": {
   "diagnostics": [
    {
-    "line": 1,
-    "col": 1,
-    "message": "Unexpected token Token('RBRACE', '}') at line 4, column 96.",
+    "line": 4,
+    "col": 96,
+    "message": "Unexpected token \"}\" at line 4, column 96.",
     "severity": "error",
-    "hint": ""
+    "hint": "Expected a new line here."
    }
   ],
   "pins": [],

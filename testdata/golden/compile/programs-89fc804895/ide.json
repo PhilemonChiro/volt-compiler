@@ -209,7 +209,7 @@
     "drive": "timer",
     "src": "u_report",
     "dst": "s_mqtt",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    }
   ],
   "nodes": {
@@ -313,25 +313,25 @@
     "drive": "timer",
     "src": "u_blink",
     "dst": "p_led",
-    "rate_ms": 500.0
+    "rate_ms": 500
    },
    {
     "drive": "timer",
     "src": "p_button",
     "dst": "u_check_button",
-    "rate_ms": 50.0
+    "rate_ms": 50
    },
    {
     "drive": "timer",
     "src": "u_check_button",
     "dst": "p_relay",
-    "rate_ms": 50.0
+    "rate_ms": 50
    },
    {
     "drive": "timer",
     "src": "u_report",
     "dst": "s_mqtt",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    }
   ],
   "nodes": {

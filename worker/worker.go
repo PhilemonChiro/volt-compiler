@@ -1,5 +1,5 @@
-// Package worker is a drop-in for the Python IDE worker
-// (volt/legacy/python/ide/worker.py): a long-lived process answering
+// Package worker is the IDE worker (a drop-in for the original Python
+// worker.py): a long-lived process answering
 // JSON-line requests on stdin.
 //
 //	Request:  {"id": <any>, "op": "<name>", ...op-specific fields}

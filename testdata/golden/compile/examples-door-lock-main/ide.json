@@ -507,73 +507,73 @@
     "drive": "timer",
     "src": "u_keypad",
     "dst": "s_system",
-    "rate_ms": 30.0
+    "rate_ms": 30
    },
    {
     "drive": "timer",
     "src": "u_keypad",
     "dst": "p_buzzer",
-    "rate_ms": 30.0
+    "rate_ms": 30
    },
    {
     "drive": "timer",
     "src": "u_keypad",
     "dst": "c_lock_commands",
-    "rate_ms": 30.0
+    "rate_ms": 30
    },
    {
     "drive": "timer",
     "src": "c_lock_commands",
     "dst": "u_command_processor",
-    "rate_ms": 100.0
+    "rate_ms": 100
    },
    {
     "drive": "timer",
     "src": "u_command_processor",
     "dst": "v_attempt_count",
-    "rate_ms": 100.0
+    "rate_ms": 100
    },
    {
     "drive": "timer",
     "src": "u_command_processor",
     "dst": "v_unlock_request",
-    "rate_ms": 100.0
+    "rate_ms": 100
    },
    {
     "drive": "timer",
     "src": "u_command_processor",
     "dst": "v_failed_attempts",
-    "rate_ms": 100.0
+    "rate_ms": 100
    },
    {
     "drive": "timer",
     "src": "u_command_processor",
     "dst": "s_log",
-    "rate_ms": 100.0
+    "rate_ms": 100
    },
    {
     "drive": "timer",
     "src": "v_total_unlocks",
     "dst": "u__rule0",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "v_failed_attempts",
     "dst": "u__rule0",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "u__rule0",
     "dst": "s_system",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "u__rule0",
     "dst": "s_log",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "machine",
@@ -786,85 +786,85 @@
     "drive": "timer",
     "src": "p_button",
     "dst": "u_keypad",
-    "rate_ms": 30.0
+    "rate_ms": 30
    },
    {
     "drive": "timer",
     "src": "u_keypad",
     "dst": "s_system",
-    "rate_ms": 30.0
+    "rate_ms": 30
    },
    {
     "drive": "timer",
     "src": "u_keypad",
     "dst": "p_buzzer",
-    "rate_ms": 30.0
+    "rate_ms": 30
    },
    {
     "drive": "timer",
     "src": "u_keypad",
     "dst": "c_lock_commands",
-    "rate_ms": 30.0
+    "rate_ms": 30
    },
    {
     "drive": "timer",
     "src": "c_lock_commands",
     "dst": "u_command_processor",
-    "rate_ms": 100.0
+    "rate_ms": 100
    },
    {
     "drive": "timer",
     "src": "u_command_processor",
     "dst": "v_attempt_count",
-    "rate_ms": 100.0
+    "rate_ms": 100
    },
    {
     "drive": "timer",
     "src": "u_command_processor",
     "dst": "v_unlock_request",
-    "rate_ms": 100.0
+    "rate_ms": 100
    },
    {
     "drive": "timer",
     "src": "u_command_processor",
     "dst": "v_failed_attempts",
-    "rate_ms": 100.0
+    "rate_ms": 100
    },
    {
     "drive": "timer",
     "src": "u_command_processor",
     "dst": "s_log",
-    "rate_ms": 100.0
+    "rate_ms": 100
    },
    {
     "drive": "timer",
     "src": "u__rule0",
     "dst": "s_storage",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "v_total_unlocks",
     "dst": "u__rule0",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "v_failed_attempts",
     "dst": "u__rule0",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "u__rule0",
     "dst": "s_system",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "u__rule0",
     "dst": "s_log",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "machine",

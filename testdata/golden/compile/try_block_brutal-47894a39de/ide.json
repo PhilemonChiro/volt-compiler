@@ -124,7 +124,7 @@
     "drive": "timer",
     "src": "u_tick",
     "dst": "s_wifi",
-    "rate_ms": 1.0
+    "rate_ms": 1
    }
   ],
   "nodes": {

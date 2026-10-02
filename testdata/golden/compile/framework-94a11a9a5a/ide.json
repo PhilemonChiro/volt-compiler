@@ -173,7 +173,7 @@
     "drive": "timer",
     "src": "u_read_dht",
     "dst": "s_dht_sensor",
-    "rate_ms": 2000.0
+    "rate_ms": 2000
    }
   ],
   "nodes": {

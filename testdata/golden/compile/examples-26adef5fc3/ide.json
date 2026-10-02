@@ -434,91 +434,91 @@
     "drive": "timer",
     "src": "u__rule0",
     "dst": "v_soil_pct",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "u__rule0",
     "dst": "v_light_lux",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "u__rule0",
     "dst": "v_temp_raw",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "u__rule0",
     "dst": "v_total_readings",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "u__rule0",
     "dst": "c_readings",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "v_soil_pct",
     "dst": "u__rule0",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "u__rule0",
     "dst": "s_log",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "s_wifi",
     "dst": "u__rule1",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "u__rule1",
     "dst": "s_mqtt",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "v_soil_pct",
     "dst": "u__rule1",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "v_light_lux",
     "dst": "u__rule1",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "v_temp_raw",
     "dst": "u__rule1",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "c_readings",
     "dst": "u__rule1",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "v_boot_count",
     "dst": "u__rule2",
-    "rate_ms": 60000.0
+    "rate_ms": 60000
    },
    {
     "drive": "timer",
     "src": "v_total_readings",
     "dst": "u__rule2",
-    "rate_ms": 60000.0
+    "rate_ms": 60000
    },
    {
     "drive": "task",
@@ -529,7 +529,7 @@
     "drive": "timer",
     "src": "u__rule3",
     "dst": "s_log",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    }
   ],
   "nodes": {
@@ -744,115 +744,115 @@
     "drive": "timer",
     "src": "p_soil",
     "dst": "u__rule0",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "p_light",
     "dst": "u__rule0",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "p_temperature",
     "dst": "u__rule0",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "u__rule0",
     "dst": "v_soil_pct",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "u__rule0",
     "dst": "v_light_lux",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "u__rule0",
     "dst": "v_temp_raw",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "u__rule0",
     "dst": "v_total_readings",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "u__rule0",
     "dst": "c_readings",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "v_soil_pct",
     "dst": "u__rule0",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "u__rule0",
     "dst": "s_log",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "s_wifi",
     "dst": "u__rule1",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "u__rule1",
     "dst": "s_mqtt",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "v_soil_pct",
     "dst": "u__rule1",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "v_light_lux",
     "dst": "u__rule1",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "v_temp_raw",
     "dst": "u__rule1",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "c_readings",
     "dst": "u__rule1",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "u__rule2",
     "dst": "s_storage",
-    "rate_ms": 60000.0
+    "rate_ms": 60000
    },
    {
     "drive": "timer",
     "src": "v_boot_count",
     "dst": "u__rule2",
-    "rate_ms": 60000.0
+    "rate_ms": 60000
    },
    {
     "drive": "timer",
     "src": "v_total_readings",
     "dst": "u__rule2",
-    "rate_ms": 60000.0
+    "rate_ms": 60000
    },
    {
     "drive": "task",
@@ -863,19 +863,19 @@
     "drive": "timer",
     "src": "u__rule3",
     "dst": "s_system",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "u__rule3",
     "dst": "s_log",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "u__rule4",
     "dst": "p_led",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    }
   ],
   "nodes": {

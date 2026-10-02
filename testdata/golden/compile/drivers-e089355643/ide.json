@@ -182,19 +182,19 @@
     "drive": "timer",
     "src": "p_pad1",
     "dst": "u_sense",
-    "rate_ms": 50.0
+    "rate_ms": 50
    },
    {
     "drive": "timer",
     "src": "u_sense",
     "dst": "s_log",
-    "rate_ms": 50.0
+    "rate_ms": 50
    },
    {
     "drive": "timer",
     "src": "p_pad2",
     "dst": "u_sense",
-    "rate_ms": 50.0
+    "rate_ms": 50
    }
   ],
   "nodes": {

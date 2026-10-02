@@ -140,13 +140,13 @@
     "drive": "timer",
     "src": "p_pad",
     "dst": "u_sense",
-    "rate_ms": 100.0
+    "rate_ms": 100
    },
    {
     "drive": "timer",
     "src": "u_sense",
     "dst": "s_log",
-    "rate_ms": 100.0
+    "rate_ms": 100
    }
   ],
   "nodes": {

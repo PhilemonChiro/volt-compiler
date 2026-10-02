@@ -129,7 +129,7 @@
     "drive": "timer",
     "src": "u_t",
     "dst": "c_big",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    }
   ],
   "nodes": {

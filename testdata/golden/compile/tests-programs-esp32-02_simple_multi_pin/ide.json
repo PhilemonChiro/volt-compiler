@@ -338,25 +338,25 @@
     "drive": "timer",
     "src": "u_blink_red",
     "dst": "s_log",
-    "rate_ms": 100.0
+    "rate_ms": 100
    },
    {
     "drive": "timer",
     "src": "u_blink_green",
     "dst": "s_log",
-    "rate_ms": 400.0
+    "rate_ms": 400
    },
    {
     "drive": "timer",
     "src": "u_read_button",
     "dst": "s_log",
-    "rate_ms": 50.0
+    "rate_ms": 50
    },
    {
     "drive": "timer",
     "src": "u_adc_monitor",
     "dst": "s_log",
-    "rate_ms": 2000.0
+    "rate_ms": 2000
    }
   ],
   "nodes": {
@@ -497,103 +497,103 @@
     "drive": "timer",
     "src": "u_blink_red",
     "dst": "p_red",
-    "rate_ms": 100.0
+    "rate_ms": 100
    },
    {
     "drive": "timer",
     "src": "u_blink_red",
     "dst": "v_red_count",
-    "rate_ms": 100.0
+    "rate_ms": 100
    },
    {
     "drive": "timer",
     "src": "v_red_count",
     "dst": "u_blink_red",
-    "rate_ms": 100.0
+    "rate_ms": 100
    },
    {
     "drive": "timer",
     "src": "u_blink_red",
     "dst": "s_log",
-    "rate_ms": 100.0
+    "rate_ms": 100
    },
    {
     "drive": "timer",
     "src": "u_blink_green",
     "dst": "p_green",
-    "rate_ms": 400.0
+    "rate_ms": 400
    },
    {
     "drive": "timer",
     "src": "u_blink_green",
     "dst": "v_green_count",
-    "rate_ms": 400.0
+    "rate_ms": 400
    },
    {
     "drive": "timer",
     "src": "u_blink_green",
     "dst": "s_log",
-    "rate_ms": 400.0
+    "rate_ms": 400
    },
    {
     "drive": "timer",
     "src": "v_green_count",
     "dst": "u_blink_green",
-    "rate_ms": 400.0
+    "rate_ms": 400
    },
    {
     "drive": "timer",
     "src": "p_button",
     "dst": "u_read_button",
-    "rate_ms": 50.0
+    "rate_ms": 50
    },
    {
     "drive": "timer",
     "src": "v_last_button",
     "dst": "u_read_button",
-    "rate_ms": 50.0
+    "rate_ms": 50
    },
    {
     "drive": "timer",
     "src": "u_read_button",
     "dst": "v_button_presses",
-    "rate_ms": 50.0
+    "rate_ms": 50
    },
    {
     "drive": "timer",
     "src": "u_read_button",
     "dst": "s_log",
-    "rate_ms": 50.0
+    "rate_ms": 50
    },
    {
     "drive": "timer",
     "src": "v_button_presses",
     "dst": "u_read_button",
-    "rate_ms": 50.0
+    "rate_ms": 50
    },
    {
     "drive": "timer",
     "src": "u_read_button",
     "dst": "p_yellow",
-    "rate_ms": 50.0
+    "rate_ms": 50
    },
    {
     "drive": "timer",
     "src": "u_read_button",
     "dst": "v_last_button",
-    "rate_ms": 50.0
+    "rate_ms": 50
    },
    {
     "drive": "timer",
     "src": "p_sensor",
     "dst": "u_adc_monitor",
-    "rate_ms": 2000.0
+    "rate_ms": 2000
    },
    {
     "drive": "timer",
     "src": "u_adc_monitor",
     "dst": "s_log",
-    "rate_ms": 2000.0
+    "rate_ms": 2000
    }
   ],
   "nodes": {

@@ -98,7 +98,7 @@
     "drive": "timer",
     "src": "u_alive",
     "dst": "s_system",
-    "rate_ms": 3000.0
+    "rate_ms": 3000
    }
   ],
   "nodes": {
@@ -149,7 +149,7 @@
     "drive": "timer",
     "src": "u_alive",
     "dst": "s_system",
-    "rate_ms": 3000.0
+    "rate_ms": 3000
    }
   ],
   "nodes": {

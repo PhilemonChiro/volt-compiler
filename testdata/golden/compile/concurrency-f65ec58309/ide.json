@@ -201,19 +201,19 @@
     "drive": "timer",
     "src": "u_solo",
     "dst": "v_sole_var",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    },
    {
     "drive": "timer",
     "src": "v_sole_var",
     "dst": "u_solo",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    },
    {
     "drive": "timer",
     "src": "u_solo",
     "dst": "p_led",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    }
   ],
   "nodes": {

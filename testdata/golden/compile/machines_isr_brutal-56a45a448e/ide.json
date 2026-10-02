@@ -142,13 +142,13 @@
     "drive": "timer",
     "src": "u_t",
     "dst": "p_led",
-    "rate_ms": 1.0
+    "rate_ms": 1
    },
    {
     "drive": "timer",
     "src": "u_t",
     "dst": "s_wifi",
-    "rate_ms": 1.0
+    "rate_ms": 1
    }
   ],
   "nodes": {

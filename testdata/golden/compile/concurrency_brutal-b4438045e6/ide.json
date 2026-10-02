@@ -2,11 +2,11 @@
  "compile_full": {
   "diagnostics": [
    {
-    "line": 1,
-    "col": 1,
-    "message": "Unexpected token Token('MINUS', '-') at line 3, column 16.",
+    "line": 3,
+    "col": 16,
+    "message": "Unexpected token \"-\" at line 3, column 16.",
     "severity": "error",
-    "hint": ""
+    "hint": "Expected an integer capacity here."
    }
   ],
   "pins": [],

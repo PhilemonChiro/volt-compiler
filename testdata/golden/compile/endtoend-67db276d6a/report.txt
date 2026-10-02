@@ -1,7 +1,10 @@
 
-[red bold]-- SYNTAX ERROR -- empty_parens.volt:1[/red bold]
+[red bold]-- SYNTAX ERROR -- empty_parens.volt:2[/red bold]
 
-Unexpected token Token('RPAR', ')') at line 2, column 14.
+Unexpected token ")" at line 2, column 14.
 
  [dim]1 |[/dim] setup {
- [dim]  |[/dim] [red]^[/red]
+ [dim]2 |[/dim]     let x = ()
+ [dim]  |[/dim] [red]             ^[/red]
+
+[cyan]Hint: Expected an expression here.[/cyan]

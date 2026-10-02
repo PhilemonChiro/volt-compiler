@@ -1,7 +1,10 @@
 
-[red bold]-- SYNTAX ERROR -- main.volt:1[/red bold]
+[red bold]-- SYNTAX ERROR -- main.volt:3[/red bold]
 
-Unexpected token Token('MINUS', '-') at line 3, column 16.
+Unexpected token "-" at line 3, column 16.
 
- [dim]1 |[/dim] chip esp32
- [dim]  |[/dim] [red]^[/red]
+ [dim]2 |[/dim] hardware { pin led: Output = 4 }
+ [dim]3 |[/dim] channel q: int[-1]
+ [dim]  |[/dim] [red]               ^[/red]
+
+[cyan]Hint: Expected an integer capacity here.[/cyan]

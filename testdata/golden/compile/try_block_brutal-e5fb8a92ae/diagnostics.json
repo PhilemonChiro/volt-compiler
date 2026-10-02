@@ -2,13 +2,13 @@
   {
     "severity": "error",
     "category": "SYNTAX ERROR",
-    "message": "Unexpected token Token('FAIL', 'fail') at line 3, column 42.",
-    "hint": null,
+    "message": "Unexpected token \"fail\" at line 3, column 42.",
+    "hint": "Expected `retry`, `skip` or `restart` here.",
     "region": [
-      1,
-      1,
-      1,
-      1
+      3,
+      42,
+      3,
+      46
     ]
   }
 ]

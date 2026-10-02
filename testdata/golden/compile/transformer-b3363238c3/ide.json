@@ -204,7 +204,7 @@
     "drive": "timer",
     "src": "u_worker",
     "dst": "f_delayed_set",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    },
    {
     "drive": "func",

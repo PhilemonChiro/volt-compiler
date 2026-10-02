@@ -10,8 +10,9 @@ import (
 	"testing"
 )
 
-// Golden tests: the Python compiler's output in testdata/golden (see gen.py)
-// is the specification. Cases the Go port can't handle yet
+// Golden tests: testdata/golden holds the expected output of every pass for
+// every case (first made by the original Python compiler, now rewritten with
+// -update; see golden_update_test.go). Cases the compiler can't handle
 // (errNotImplemented) are skipped, not failed.
 
 const goldenDir = "testdata/golden"
@@ -44,7 +45,7 @@ func caseDirs(t *testing.T, kind string) []string {
 	t.Helper()
 	dirs, err := filepath.Glob(filepath.Join(goldenDir, kind, "*"))
 	if err != nil || len(dirs) == 0 {
-		t.Fatalf("no golden %s cases (run gen.py): %v", kind, err)
+		t.Fatalf("no golden %s cases: %v", kind, err)
 	}
 	return dirs
 }
@@ -62,9 +63,6 @@ func TestGoldenCompile(t *testing.T) {
 	for _, dir := range caseDirs(t, "compile") {
 		dir, _ := filepath.Abs(dir)
 		t.Run(filepath.Base(dir), func(t *testing.T) {
-			if exists(filepath.Join(dir, "crash.txt")) {
-				t.Skip("Python compiler crashed on this case")
-			}
 			c, source, want := loadCase(t, dir)
 			t.Chdir(dir)
 			code, errs, err := Compile(source, c.File)
@@ -75,10 +73,6 @@ func TestGoldenCompile(t *testing.T) {
 				t.Fatal(err)
 			}
 
-			syntaxErr := false
-			for _, d := range want {
-				syntaxErr = syntaxErr || d.Category == "SYNTAX ERROR"
-			}
 			checkDiagnostics(t, errs.List, want)
 
 			wantC := filepath.Join(dir, "expected.c")
@@ -90,9 +84,7 @@ func TestGoldenCompile(t *testing.T) {
 			case exists(wantC):
 				checkText(t, "expected.c", code, mustRead(t, wantC))
 			}
-			if !syntaxErr { // report embeds the parser's message wording
-				checkText(t, "report.txt", errs.Report(c.File), mustRead(t, filepath.Join(dir, "report.txt")))
-			}
+			checkText(t, "report.txt", errs.Report(c.File), mustRead(t, filepath.Join(dir, "report.txt")))
 		})
 	}
 }
@@ -119,9 +111,6 @@ func TestGoldenReport(t *testing.T) {
 func TestGoldenFormat(t *testing.T) {
 	for _, dir := range caseDirs(t, "format") {
 		t.Run(filepath.Base(dir), func(t *testing.T) {
-			if exists(filepath.Join(dir, "crash.txt")) {
-				t.Skip("Python formatter crashed on this case")
-			}
 			got, err := Format(mustRead(t, filepath.Join(dir, "input.volt")))
 			if errors.Is(err, errNotImplemented) {
 				t.Skip(err)
@@ -134,9 +123,7 @@ func TestGoldenFormat(t *testing.T) {
 	}
 }
 
-// checkDiagnostics compares in emission order. SYNTAX ERROR messages and
-// hints come from Lark in Python, so only their severity, category and
-// region must match.
+// checkDiagnostics compares in emission order.
 func checkDiagnostics(t *testing.T, got []Diagnostic, want []goldenDiag) {
 	t.Helper()
 	for i := 0; i < max(len(got), len(want)); i++ {
@@ -146,11 +133,7 @@ func checkDiagnostics(t *testing.T, got []Diagnostic, want []goldenDiag) {
 		case i >= len(want):
 			t.Errorf("diagnostic %d unexpected: %+v", i, got[i])
 		default:
-			g, w := got[i], want[i].toDiagnostic()
-			if w.Category == "SYNTAX ERROR" {
-				g.Message, g.Hint = w.Message, w.Hint
-			}
-			if g != w {
+			if g, w := got[i], want[i].toDiagnostic(); g != w {
 				t.Errorf("diagnostic %d:\n got %+v\nwant %+v", i, got[i], w)
 			}
 		}
@@ -201,8 +184,8 @@ func mustJSON(t *testing.T, path string, v any) {
 	}
 }
 
-// TestGoldenParse checks Parse against the AST the Python parser built
-// (ast.parse.json). Where Python reported a syntax error, Parse must fail.
+// TestGoldenParse checks Parse against ast.parse.json. Where the golden has
+// a syntax error, Parse must fail.
 func TestGoldenParse(t *testing.T) {
 	for _, dir := range caseDirs(t, "compile") {
 		t.Run(filepath.Base(dir), func(t *testing.T) {
@@ -219,7 +202,7 @@ func TestGoldenParse(t *testing.T) {
 				}
 				switch {
 				case !syntaxErr:
-					t.Skip("Python did not reach the parser")
+					t.Skip("the parser was not reached")
 				case err == nil:
 					t.Errorf("parse succeeded, want syntax error")
 				}
@@ -257,7 +240,7 @@ func testGoldenPasses(t *testing.T, pass string) {
 				}
 			}
 			if n < 0 {
-				t.Skipf("Python did not complete %s", pass)
+				t.Skipf("%s was not reached", pass)
 			}
 			t.Chdir(dir)
 			errs := &Errors{}
@@ -295,7 +278,7 @@ func TestGoldenTransform(t *testing.T) {
 		t.Run(filepath.Base(dir), func(t *testing.T) {
 			want := filepath.Join(dir, "ast.transformed.json")
 			if !exists(want) {
-				t.Skip("Python did not reach the transformer")
+				t.Skip("the transformer was not reached")
 			}
 			c, source, _ := loadCase(t, dir)
 			t.Chdir(dir)

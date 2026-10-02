@@ -201,19 +201,19 @@
     "drive": "timer",
     "src": "u_triple",
     "dst": "p_a",
-    "rate_ms": 100.0
+    "rate_ms": 100
    },
    {
     "drive": "timer",
     "src": "u_triple",
     "dst": "p_b",
-    "rate_ms": 100.0
+    "rate_ms": 100
    },
    {
     "drive": "timer",
     "src": "u_triple",
     "dst": "p_c",
-    "rate_ms": 100.0
+    "rate_ms": 100
    }
   ],
   "nodes": {

@@ -18,7 +18,7 @@ func TestMain(m *testing.M) {
 	os.Exit(m.Run())
 }
 
-// TestGoldenIDE checks every op against the Python worker's ide.json.
+// TestGoldenIDE checks every op against ide.json.
 func TestGoldenIDE(t *testing.T) {
 	dirs, _ := filepath.Glob("../testdata/golden/compile/*/ide.json")
 	if len(dirs) == 0 {
@@ -70,7 +70,7 @@ func TestGoldenIDE(t *testing.T) {
 					t.Fatal(err)
 				}
 				if op == "compile_full" {
-					b, w = blankSyntaxMessages(t, dir, cf, w)
+					b = dropCCode(b)
 				}
 				g, wc := canon(t, b), canon(t, []byte(w))
 				if g != wc {
@@ -82,7 +82,7 @@ func TestGoldenIDE(t *testing.T) {
 }
 
 // canon re-emits JSON keeping object key order, with numbers by value
-// (Python 100.0 == Go 100), one value per line for diffing.
+// (100.0 == 100), one value per line for diffing.
 func canon(t *testing.T, b []byte) string {
 	t.Helper()
 	dec := json.NewDecoder(bytes.NewReader(b))
@@ -108,32 +108,6 @@ func canon(t *testing.T, b []byte) string {
 		out.WriteByte('\n')
 	}
 	return out.String()
-}
-
-// blankSyntaxMessages clears message and hint of SYNTAX ERROR diagnostics
-// (Lark's wording in Python) in both results, as the compiler goldens do.
-// The golden has no c_code, so neither side keeps it.
-func blankSyntaxMessages(t *testing.T, dir string, got *CompileResult, want string) ([]byte, string) {
-	t.Helper()
-	var cats []struct{ Category string }
-	mustJSON(t, filepath.Join(dir, "diagnostics.json"), &cats)
-	var w CompileResult
-	dec := json.NewDecoder(strings.NewReader(want))
-	dec.DisallowUnknownFields()
-	if err := dec.Decode(&w); err != nil {
-		t.Fatal(err)
-	}
-	g := *got
-	g.Diagnostics = nonNil(append([]Diagnostic(nil), got.Diagnostics...))
-	for i, c := range cats {
-		if c.Category == "SYNTAX ERROR" && i < len(g.Diagnostics) && i < len(w.Diagnostics) {
-			g.Diagnostics[i].Message, g.Diagnostics[i].Hint = "", ""
-			w.Diagnostics[i].Message, w.Diagnostics[i].Hint = "", ""
-		}
-	}
-	gb, _ := json.Marshal(g)
-	wb, _ := json.Marshal(w)
-	return gb, string(wb)
 }
 
 func firstDiff(got, want string) string {

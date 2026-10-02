@@ -313,19 +313,19 @@
     "drive": "timer",
     "src": "u_blink",
     "dst": "p_led",
-    "rate_ms": 500.0
+    "rate_ms": 500
    },
    {
     "drive": "timer",
     "src": "u_motor_control",
     "dst": "p_motor",
-    "rate_ms": 1.0
+    "rate_ms": 1
    },
    {
     "drive": "timer",
     "src": "u_telemetry",
     "dst": "s_mqtt",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    }
   ],
   "nodes": {

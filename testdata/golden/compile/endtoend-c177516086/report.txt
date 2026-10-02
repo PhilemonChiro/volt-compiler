@@ -1,7 +1,9 @@
 
 [red bold]-- SYNTAX ERROR -- garbage.volt:1[/red bold]
 
-Unexpected token Token('BANG', '!') at line 1, column 1.
+Unexpected token "!" at line 1, column 1.
 
  [dim]1 |[/dim] !@#$%^&
  [dim]  |[/dim] [red]^[/red]
+
+[cyan]Hint: Expected a top-level declaration (chip, hardware, task, fn, every, …) here.[/cyan]

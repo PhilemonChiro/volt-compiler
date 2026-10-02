@@ -189,7 +189,7 @@
     "drive": "timer",
     "src": "u_t",
     "dst": "f_flash",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    },
    {
     "drive": "func",

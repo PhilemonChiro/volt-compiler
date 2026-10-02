@@ -154,13 +154,13 @@
     "drive": "timer",
     "src": "u_multi_yield",
     "dst": "p_led",
-    "rate_ms": 500.0
+    "rate_ms": 500
    },
    {
     "drive": "timer",
     "src": "u_multi_yield",
     "dst": "s_sleep",
-    "rate_ms": 500.0
+    "rate_ms": 500
    }
   ],
   "nodes": {

@@ -151,7 +151,7 @@
     "drive": "timer",
     "src": "u__rule0",
     "dst": "s_log",
-    "rate_ms": 200.0
+    "rate_ms": 200
    }
   ],
   "nodes": {
@@ -214,19 +214,19 @@
     "drive": "timer",
     "src": "u__rule0",
     "dst": "s_dist",
-    "rate_ms": 200.0
+    "rate_ms": 200
    },
    {
     "drive": "timer",
     "src": "u__rule0",
     "dst": "s_log",
-    "rate_ms": 200.0
+    "rate_ms": 200
    },
    {
     "drive": "timer",
     "src": "u__rule0",
     "dst": "p_led",
-    "rate_ms": 200.0
+    "rate_ms": 200
    }
   ],
   "nodes": {

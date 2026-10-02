@@ -2,11 +2,11 @@
  "compile_full": {
   "diagnostics": [
    {
-    "line": 1,
+    "line": 2,
     "col": 1,
-    "message": "No terminal matches '@' in the current parser context, at line 2 col 1",
+    "message": "Unexpected token \"@\" at line 2, column 1.",
     "severity": "error",
-    "hint": ""
+    "hint": "Expected a top-level declaration (chip, hardware, task, fn, every, …) here."
    }
   ],
   "pins": [],

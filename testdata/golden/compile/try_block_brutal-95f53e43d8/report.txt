@@ -1,7 +1,10 @@
 
-[red bold]-- SYNTAX ERROR -- main.volt:1[/red bold]
+[red bold]-- SYNTAX ERROR -- main.volt:4[/red bold]
 
-Unexpected token Token('RBRACE', '}') at line 4, column 96.
+Unexpected token "}" at line 4, column 96.
 
- [dim]1 |[/dim] chip esp32
- [dim]  |[/dim] [red]^[/red]
+ [dim]3 |[/dim] machine m {
+ [dim]4 |[/dim]     state a { enter { try { wifi.connect("a","b") } or retry 3 times else skip } after 1s -> b }
+ [dim]  |[/dim] [red]                                                                                               ^[/red]
+
+[cyan]Hint: Expected a new line here.[/cyan]

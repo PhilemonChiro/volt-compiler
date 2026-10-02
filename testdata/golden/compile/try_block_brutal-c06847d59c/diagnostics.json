@@ -2,13 +2,13 @@
   {
     "severity": "error",
     "category": "SYNTAX ERROR",
-    "message": "Error trying to process rule \"try_block\":",
+    "message": "try block body must contain at least one statement at line 3, column 17.",
     "hint": null,
     "region": [
-      1,
-      1,
-      1,
-      1
+      3,
+      17,
+      3,
+      19
     ]
   }
 ]

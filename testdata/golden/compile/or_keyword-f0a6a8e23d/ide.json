@@ -136,7 +136,7 @@
     "drive": "timer",
     "src": "p_btn",
     "dst": "u_reader",
-    "rate_ms": 2000.0
+    "rate_ms": 2000
    }
   ],
   "nodes": {

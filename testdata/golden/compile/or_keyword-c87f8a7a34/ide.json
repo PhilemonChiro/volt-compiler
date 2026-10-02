@@ -149,7 +149,7 @@
     "drive": "timer",
     "src": "u_monitor",
     "dst": "s_bme",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    }
   ],
   "nodes": {

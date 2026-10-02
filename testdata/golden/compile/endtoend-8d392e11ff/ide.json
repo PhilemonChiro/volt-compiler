@@ -361,7 +361,7 @@
     "drive": "timer",
     "src": "u_monitor",
     "dst": "s_mqtt",
-    "rate_ms": 5000.0
+    "rate_ms": 5000
    }
   ],
   "nodes": {
@@ -493,31 +493,31 @@
     "drive": "timer",
     "src": "u_blink",
     "dst": "p_led",
-    "rate_ms": 500.0
+    "rate_ms": 500
    },
    {
     "drive": "timer",
     "src": "u_motor_control",
     "dst": "p_motor",
-    "rate_ms": 1.0
+    "rate_ms": 1
    },
    {
     "drive": "timer",
     "src": "p_battery",
     "dst": "u_monitor",
-    "rate_ms": 5000.0
+    "rate_ms": 5000
    },
    {
     "drive": "timer",
     "src": "u_monitor",
     "dst": "f_clamp",
-    "rate_ms": 5000.0
+    "rate_ms": 5000
    },
    {
     "drive": "timer",
     "src": "u_monitor",
     "dst": "s_mqtt",
-    "rate_ms": 5000.0
+    "rate_ms": 5000
    }
   ],
   "nodes": {

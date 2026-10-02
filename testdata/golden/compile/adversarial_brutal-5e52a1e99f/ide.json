@@ -171,7 +171,7 @@
     "drive": "timer",
     "src": "u__rule0",
     "dst": "f_f",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    },
    {
     "drive": "func",

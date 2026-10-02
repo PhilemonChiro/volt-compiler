@@ -1,7 +1,8 @@
 
-[red bold]-- SYNTAX ERROR -- main.volt:1[/red bold]
+[red bold]-- SYNTAX ERROR -- main.volt:3[/red bold]
 
-Error trying to process rule "try_block":
+try block body must contain at least one statement at line 3, column 17.
 
- [dim]1 |[/dim] chip esp32
- [dim]  |[/dim] [red]^[/red]
+ [dim]2 |[/dim] hardware { pin led: Output = 4 }
+ [dim]3 |[/dim] setup { try { } or retry }
+ [dim]  |[/dim] [red]                ^^[/red]

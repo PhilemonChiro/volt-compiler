@@ -759,217 +759,217 @@
     "drive": "timer",
     "src": "p_soil",
     "dst": "u_sensor_poll",
-    "rate_ms": 2000.0
+    "rate_ms": 2000
    },
    {
     "drive": "timer",
     "src": "p_temp",
     "dst": "u_sensor_poll",
-    "rate_ms": 2000.0
+    "rate_ms": 2000
    },
    {
     "drive": "timer",
     "src": "p_light",
     "dst": "u_sensor_poll",
-    "rate_ms": 2000.0
+    "rate_ms": 2000
    },
    {
     "drive": "timer",
     "src": "u_sensor_poll",
     "dst": "v_total_sensor_reads",
-    "rate_ms": 2000.0
+    "rate_ms": 2000
    },
    {
     "drive": "timer",
     "src": "u_sensor_poll",
     "dst": "s_log",
-    "rate_ms": 2000.0
+    "rate_ms": 2000
    },
    {
     "drive": "timer",
     "src": "v_total_sensor_reads",
     "dst": "u_sensor_poll",
-    "rate_ms": 2000.0
+    "rate_ms": 2000
    },
    {
     "drive": "timer",
     "src": "u_sensor_poll",
     "dst": "v_fan_on",
-    "rate_ms": 2000.0
+    "rate_ms": 2000
    },
    {
     "drive": "timer",
     "src": "u_sensor_poll",
     "dst": "p_motor",
-    "rate_ms": 2000.0
+    "rate_ms": 2000
    },
    {
     "drive": "timer",
     "src": "u_pid_control",
     "dst": "p_motor",
-    "rate_ms": 1.0
+    "rate_ms": 1
    },
    {
     "drive": "timer",
     "src": "u_pid_control",
     "dst": "v_motor_isr_count",
-    "rate_ms": 1.0
+    "rate_ms": 1
    },
    {
     "drive": "timer",
     "src": "u_button_monitor",
     "dst": "v_button_presses",
-    "rate_ms": 50.0
+    "rate_ms": 50
    },
    {
     "drive": "timer",
     "src": "u_button_monitor",
     "dst": "s_log",
-    "rate_ms": 50.0
+    "rate_ms": 50
    },
    {
     "drive": "timer",
     "src": "v_button_presses",
     "dst": "u_button_monitor",
-    "rate_ms": 50.0
+    "rate_ms": 50
    },
    {
     "drive": "timer",
     "src": "p_soil",
     "dst": "u_data_logger",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "p_temp",
     "dst": "u_data_logger",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "p_light",
     "dst": "u_data_logger",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "u_data_logger",
     "dst": "v_total_pushes",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "u_data_logger",
     "dst": "s_log",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "v_total_pushes",
     "dst": "u_data_logger",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "s_wifi",
     "dst": "u_cloud_sync",
-    "rate_ms": 60000.0
+    "rate_ms": 60000
    },
    {
     "drive": "timer",
     "src": "u_cloud_sync",
     "dst": "v_total_syncs",
-    "rate_ms": 60000.0
+    "rate_ms": 60000
    },
    {
     "drive": "timer",
     "src": "u_cloud_sync",
     "dst": "s_log",
-    "rate_ms": 60000.0
+    "rate_ms": 60000
    },
    {
     "drive": "timer",
     "src": "v_total_syncs",
     "dst": "u_cloud_sync",
-    "rate_ms": 60000.0
+    "rate_ms": 60000
    },
    {
     "drive": "timer",
     "src": "u_cloud_sync",
     "dst": "s_mqtt",
-    "rate_ms": 60000.0
+    "rate_ms": 60000
    },
    {
     "drive": "timer",
     "src": "p_soil",
     "dst": "u_cloud_sync",
-    "rate_ms": 60000.0
+    "rate_ms": 60000
    },
    {
     "drive": "timer",
     "src": "p_temp",
     "dst": "u_cloud_sync",
-    "rate_ms": 60000.0
+    "rate_ms": 60000
    },
    {
     "drive": "timer",
     "src": "p_light",
     "dst": "u_cloud_sync",
-    "rate_ms": 60000.0
+    "rate_ms": 60000
    },
    {
     "drive": "timer",
     "src": "v_fan_on",
     "dst": "u_cloud_sync",
-    "rate_ms": 60000.0
+    "rate_ms": 60000
    },
    {
     "drive": "timer",
     "src": "u_health_report",
     "dst": "s_log",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "v_total_sensor_reads",
     "dst": "u_health_report",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "v_motor_isr_count",
     "dst": "u_health_report",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "v_button_presses",
     "dst": "u_health_report",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "v_total_pushes",
     "dst": "u_health_report",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "v_total_syncs",
     "dst": "u_health_report",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "s_wifi",
     "dst": "u_health_report",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "v_fan_on",
     "dst": "u_health_report",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "machine",
@@ -1259,265 +1259,265 @@
     "drive": "timer",
     "src": "p_soil",
     "dst": "u_sensor_poll",
-    "rate_ms": 2000.0
+    "rate_ms": 2000
    },
    {
     "drive": "timer",
     "src": "p_temp",
     "dst": "u_sensor_poll",
-    "rate_ms": 2000.0
+    "rate_ms": 2000
    },
    {
     "drive": "timer",
     "src": "p_light",
     "dst": "u_sensor_poll",
-    "rate_ms": 2000.0
+    "rate_ms": 2000
    },
    {
     "drive": "timer",
     "src": "u_sensor_poll",
     "dst": "v_total_sensor_reads",
-    "rate_ms": 2000.0
+    "rate_ms": 2000
    },
    {
     "drive": "timer",
     "src": "u_sensor_poll",
     "dst": "s_log",
-    "rate_ms": 2000.0
+    "rate_ms": 2000
    },
    {
     "drive": "timer",
     "src": "v_total_sensor_reads",
     "dst": "u_sensor_poll",
-    "rate_ms": 2000.0
+    "rate_ms": 2000
    },
    {
     "drive": "timer",
     "src": "u_sensor_poll",
     "dst": "f_check_threshold",
-    "rate_ms": 2000.0
+    "rate_ms": 2000
    },
    {
     "drive": "timer",
     "src": "u_sensor_poll",
     "dst": "p_fan",
-    "rate_ms": 2000.0
+    "rate_ms": 2000
    },
    {
     "drive": "timer",
     "src": "u_sensor_poll",
     "dst": "v_fan_on",
-    "rate_ms": 2000.0
+    "rate_ms": 2000
    },
    {
     "drive": "timer",
     "src": "v_setpoint",
     "dst": "u_sensor_poll",
-    "rate_ms": 2000.0
+    "rate_ms": 2000
    },
    {
     "drive": "timer",
     "src": "u_sensor_poll",
     "dst": "p_motor",
-    "rate_ms": 2000.0
+    "rate_ms": 2000
    },
    {
     "drive": "timer",
     "src": "u_pid_control",
     "dst": "p_motor",
-    "rate_ms": 1.0
+    "rate_ms": 1
    },
    {
     "drive": "timer",
     "src": "u_pid_control",
     "dst": "v_motor_isr_count",
-    "rate_ms": 1.0
+    "rate_ms": 1
    },
    {
     "drive": "timer",
     "src": "p_button",
     "dst": "u_button_monitor",
-    "rate_ms": 50.0
+    "rate_ms": 50
    },
    {
     "drive": "timer",
     "src": "v_last_button",
     "dst": "u_button_monitor",
-    "rate_ms": 50.0
+    "rate_ms": 50
    },
    {
     "drive": "timer",
     "src": "u_button_monitor",
     "dst": "v_button_presses",
-    "rate_ms": 50.0
+    "rate_ms": 50
    },
    {
     "drive": "timer",
     "src": "u_button_monitor",
     "dst": "s_log",
-    "rate_ms": 50.0
+    "rate_ms": 50
    },
    {
     "drive": "timer",
     "src": "v_button_presses",
     "dst": "u_button_monitor",
-    "rate_ms": 50.0
+    "rate_ms": 50
    },
    {
     "drive": "timer",
     "src": "u_button_monitor",
     "dst": "v_last_button",
-    "rate_ms": 50.0
+    "rate_ms": 50
    },
    {
     "drive": "timer",
     "src": "u_data_logger",
     "dst": "s_storage",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "p_soil",
     "dst": "u_data_logger",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "p_temp",
     "dst": "u_data_logger",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "p_light",
     "dst": "u_data_logger",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "u_data_logger",
     "dst": "v_total_pushes",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "u_data_logger",
     "dst": "s_log",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "v_total_pushes",
     "dst": "u_data_logger",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "s_wifi",
     "dst": "u_cloud_sync",
-    "rate_ms": 60000.0
+    "rate_ms": 60000
    },
    {
     "drive": "timer",
     "src": "u_cloud_sync",
     "dst": "v_total_syncs",
-    "rate_ms": 60000.0
+    "rate_ms": 60000
    },
    {
     "drive": "timer",
     "src": "u_cloud_sync",
     "dst": "s_log",
-    "rate_ms": 60000.0
+    "rate_ms": 60000
    },
    {
     "drive": "timer",
     "src": "v_total_syncs",
     "dst": "u_cloud_sync",
-    "rate_ms": 60000.0
+    "rate_ms": 60000
    },
    {
     "drive": "timer",
     "src": "u_cloud_sync",
     "dst": "s_mqtt",
-    "rate_ms": 60000.0
+    "rate_ms": 60000
    },
    {
     "drive": "timer",
     "src": "p_soil",
     "dst": "u_cloud_sync",
-    "rate_ms": 60000.0
+    "rate_ms": 60000
    },
    {
     "drive": "timer",
     "src": "p_temp",
     "dst": "u_cloud_sync",
-    "rate_ms": 60000.0
+    "rate_ms": 60000
    },
    {
     "drive": "timer",
     "src": "p_light",
     "dst": "u_cloud_sync",
-    "rate_ms": 60000.0
+    "rate_ms": 60000
    },
    {
     "drive": "timer",
     "src": "v_fan_on",
     "dst": "u_cloud_sync",
-    "rate_ms": 60000.0
+    "rate_ms": 60000
    },
    {
     "drive": "timer",
     "src": "u_health_report",
     "dst": "s_log",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "v_total_sensor_reads",
     "dst": "u_health_report",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "v_motor_isr_count",
     "dst": "u_health_report",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "v_button_presses",
     "dst": "u_health_report",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "v_total_pushes",
     "dst": "u_health_report",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "v_total_syncs",
     "dst": "u_health_report",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "s_wifi",
     "dst": "u_health_report",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "u_health_report",
     "dst": "s_system",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "v_fan_on",
     "dst": "u_health_report",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "machine",

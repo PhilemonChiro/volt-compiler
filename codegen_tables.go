@@ -66,6 +66,7 @@ var staticMethodMap = map[[2]string]*string{
 	{"Storage", "drain"}:              nil,
 	{"Storage", "list_count"}:         ptr("storage_list_count({args})"),
 	{"Storage", "list_clear"}:         ptr("storage_list_clear({args})"),
+	{"Storage", "flush"}:              ptr("storage_flush()"),
 	{"System", "restart"}:             ptr("system_restart()"),
 	{"System", "free_heap"}:           ptr("system_free_heap()"),
 	{"System", "uptime"}:              ptr("system_uptime()"),

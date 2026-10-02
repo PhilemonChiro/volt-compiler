@@ -198,25 +198,25 @@
     "drive": "timer",
     "src": "u_expr_task",
     "dst": "v_x",
-    "rate_ms": 1.0
+    "rate_ms": 1
    },
    {
     "drive": "timer",
     "src": "v_x",
     "dst": "u_expr_task",
-    "rate_ms": 1.0
+    "rate_ms": 1
    },
    {
     "drive": "timer",
     "src": "v_y",
     "dst": "u_expr_task",
-    "rate_ms": 1.0
+    "rate_ms": 1
    },
    {
     "drive": "timer",
     "src": "v_z",
     "dst": "u_expr_task",
-    "rate_ms": 1.0
+    "rate_ms": 1
    }
   ],
   "nodes": {

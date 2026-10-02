@@ -142,7 +142,7 @@
     "drive": "timer",
     "src": "u__rule0",
     "dst": "p_led",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    }
   ],
   "nodes": {

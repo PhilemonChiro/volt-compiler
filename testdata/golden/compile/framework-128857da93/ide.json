@@ -201,19 +201,19 @@
     "drive": "timer",
     "src": "u_lights",
     "dst": "p_led1",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    },
    {
     "drive": "timer",
     "src": "u_lights",
     "dst": "p_led2",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    },
    {
     "drive": "timer",
     "src": "p_btn",
     "dst": "u_lights",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    }
   ],
   "nodes": {

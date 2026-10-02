@@ -124,7 +124,7 @@
     "drive": "timer",
     "src": "u_monitor",
     "dst": "s_log",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    }
   ],
   "nodes": {

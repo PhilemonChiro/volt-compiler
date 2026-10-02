@@ -2,13 +2,13 @@
   {
     "severity": "error",
     "category": "SYNTAX ERROR",
-    "message": "Error trying to process rule \"start\":",
+    "message": "Multiple chip declarations \u2014 already declared 'esp32' (line 2) at line 4, column 1.",
     "hint": null,
     "region": [
+      4,
       1,
-      1,
-      1,
-      1
+      4,
+      6
     ]
   }
 ]

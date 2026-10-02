@@ -194,13 +194,13 @@
     "drive": "timer",
     "src": "u_fast",
     "dst": "p_led1",
-    "rate_ms": 100.0
+    "rate_ms": 100
    },
    {
     "drive": "timer",
     "src": "u_slow",
     "dst": "p_led2",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    }
   ],
   "nodes": {

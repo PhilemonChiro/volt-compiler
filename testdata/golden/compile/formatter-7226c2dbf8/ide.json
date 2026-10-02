@@ -4,9 +4,9 @@
    {
     "line": 1,
     "col": 1,
-    "message": "Unexpected token Token('NAME', 'this') at line 1, column 1.",
+    "message": "Unexpected token \"this\" at line 1, column 1.",
     "severity": "error",
-    "hint": ""
+    "hint": "Expected a top-level declaration (chip, hardware, task, fn, every, …) here."
    }
   ],
   "pins": [],

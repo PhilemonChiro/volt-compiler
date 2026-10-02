@@ -227,19 +227,19 @@
     "drive": "timer",
     "src": "v_mixed_val",
     "dst": "u_isr_task",
-    "rate_ms": 1.0
+    "rate_ms": 1
    },
    {
     "drive": "timer",
     "src": "u_bg_task",
     "dst": "v_mixed_val",
-    "rate_ms": 500.0
+    "rate_ms": 500
    },
    {
     "drive": "timer",
     "src": "v_mixed_val",
     "dst": "u_bg_task",
-    "rate_ms": 500.0
+    "rate_ms": 500
    }
   ],
   "nodes": {
@@ -332,55 +332,55 @@
     "drive": "timer",
     "src": "u_isr_task",
     "dst": "p_motor",
-    "rate_ms": 1.0
+    "rate_ms": 1
    },
    {
     "drive": "timer",
     "src": "v_mixed_val",
     "dst": "u_isr_task",
-    "rate_ms": 1.0
+    "rate_ms": 1
    },
    {
     "drive": "timer",
     "src": "u_isr_task",
     "dst": "v_private_a",
-    "rate_ms": 1.0
+    "rate_ms": 1
    },
    {
     "drive": "timer",
     "src": "v_private_a",
     "dst": "u_isr_task",
-    "rate_ms": 1.0
+    "rate_ms": 1
    },
    {
     "drive": "timer",
     "src": "u_bg_task",
     "dst": "v_mixed_val",
-    "rate_ms": 500.0
+    "rate_ms": 500
    },
    {
     "drive": "timer",
     "src": "v_mixed_val",
     "dst": "u_bg_task",
-    "rate_ms": 500.0
+    "rate_ms": 500
    },
    {
     "drive": "timer",
     "src": "u_bg_task",
     "dst": "v_private_b",
-    "rate_ms": 500.0
+    "rate_ms": 500
    },
    {
     "drive": "timer",
     "src": "v_private_b",
     "dst": "u_bg_task",
-    "rate_ms": 500.0
+    "rate_ms": 500
    },
    {
     "drive": "timer",
     "src": "u_bg_task",
     "dst": "p_led",
-    "rate_ms": 500.0
+    "rate_ms": 500
    }
   ],
   "nodes": {

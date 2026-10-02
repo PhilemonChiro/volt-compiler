@@ -162,13 +162,13 @@
     "drive": "timer",
     "src": "u_isr_task",
     "dst": "v_isr_count",
-    "rate_ms": 1.0
+    "rate_ms": 1
    },
    {
     "drive": "timer",
     "src": "v_isr_count",
     "dst": "u_isr_task",
-    "rate_ms": 1.0
+    "rate_ms": 1
    }
   ],
   "nodes": {

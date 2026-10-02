@@ -21,7 +21,9 @@ import (
 // SyntaxError is returned by Parse. Line and Col locate the offending token.
 type SyntaxError struct {
 	Line, Col int
+	EndCol    int // column just past the offending token
 	Msg       string
+	Hint      string // what the parser wanted there, when it knows
 }
 
 func (e *SyntaxError) Error() string {
@@ -60,15 +62,38 @@ func (p *parser) take(t token) token {
 func (p *parser) next(ctx lexCtx) token { return p.take(p.peek(ctx)) }
 
 func (p *parser) fail(t token, format string, args ...any) {
-	l, c := p.lx.pos(t.start)
-	panic(&SyntaxError{l, c, fmt.Sprintf(format, args...)})
+	p.failHint(t, "", format, args...)
 }
 
-func (p *parser) unexpected(t token) {
-	if t.kind == tEOF {
-		p.fail(t, "Unexpected end of input")
+func (p *parser) failHint(t token, hint, format string, args ...any) {
+	r := p.lx.region(t)
+	end := r.EndCol
+	if t.kind == tNL || t.kind == tEOF || end <= r.StartCol {
+		end = r.StartCol + 1
 	}
-	p.fail(t, "Unexpected token %q", t.text)
+	panic(&SyntaxError{Line: r.StartLine, Col: r.StartCol, EndCol: end, Msg: fmt.Sprintf(format, args...), Hint: hint})
+}
+
+func (p *parser) unexpected(t token) { p.unexpectedWant(t, "") }
+
+// unexpectedWant reports t, naming what was expected (e.g. "`}`") in the hint.
+func (p *parser) unexpectedWant(t token, want string) {
+	hint := ""
+	if want != "" {
+		hint = "Expected " + want + " here."
+	}
+	if t.kind == tEOF {
+		p.failHint(t, hint, "Unexpected end of input")
+	}
+	if t.kind == tNL {
+		p.failHint(t, hint, "Unexpected end of line")
+	}
+	// A word the context doesn't accept lexes as one bad character; report
+	// the whole word.
+	if w := reName.FindString(p.lx.src[t.start:]); t.kind == tBad && w != "" {
+		t.text, t.end = w, t.start+len(w)
+	}
+	p.failHint(t, hint, "Unexpected token %q", t.text)
 }
 
 // failNear reports a non-token error (Python raises inside the
@@ -84,7 +109,7 @@ func (p *parser) expectSym(s string) token {
 func (p *parser) expectSymIn(ctx lexCtx, s string) token {
 	t := p.next(ctx)
 	if !t.sym(s) {
-		p.unexpected(t)
+		p.unexpectedWant(t, "`"+s+"`")
 	}
 	return t
 }
@@ -93,7 +118,7 @@ func (p *parser) expectSymIn(ctx lexCtx, s string) token {
 func (p *parser) expectKw(kw string) token {
 	t := p.next(prefixCtx(kw))
 	if !t.word(kw) {
-		p.unexpected(t)
+		p.unexpectedWant(t, "`"+kw+"`")
 	}
 	return t
 }
@@ -102,14 +127,14 @@ func (p *parser) expectKw(kw string) token {
 func (p *parser) name() token {
 	t := p.next(ctxName)
 	if t.kind != tName {
-		p.unexpected(t)
+		p.unexpectedWant(t, "a name")
 	}
 	return t
 }
 
 func (p *parser) expectNL() {
 	if t := p.next(ctxName); t.kind != tNL {
-		p.unexpected(t)
+		p.unexpectedWant(t, "a new line")
 	}
 }
 
@@ -158,7 +183,7 @@ func (p *parser) program() *Program {
 			p.take(t)
 			s := p.next(ctxName)
 			if s.kind != tString {
-				p.unexpected(s)
+				p.unexpectedWant(s, "a quoted file name")
 			}
 			p.expectNL()
 			if path := strings.Trim(s.text, `"`); strings.HasSuffix(path, ".volt") {
@@ -188,7 +213,7 @@ func (p *parser) program() *Program {
 			p.expectSym("{")
 			s := p.next(ctxName)
 			if s.kind != tString {
-				p.unexpected(s)
+				p.unexpectedWant(s, "a quoted string")
 			}
 			p.expectSym("}")
 			prog.RawBlocks = append(prog.RawBlocks, &RawBlock{CCode: strings.Trim(s.text, `"`)})
@@ -217,7 +242,7 @@ func (p *parser) program() *Program {
 				Base: Base{regionOf(rule)}, Name: fmt.Sprintf("_rule%d", n), Body: []Node{rule},
 			})
 		default:
-			p.unexpected(t)
+			p.unexpectedWant(t, "a top-level declaration (chip, hardware, task, fn, every, …)")
 		}
 	}
 }
@@ -254,14 +279,14 @@ func (p *parser) hardwareBlock() *HardwareBlock {
 			hw.Sensors = append(hw.Sensors, d)
 			items = append(items, d)
 		default:
-			p.unexpected(t)
+			p.unexpectedWant(t, "`pin`, `bus`, `device` or `}`")
 		}
 		switch t := p.next(ctxName); {
 		case t.kind == tNL:
 		case t.sym("}"): // _hw_inline
 			done = true
 		default:
-			p.unexpected(t)
+			p.unexpectedWant(t, "a new line or `}`")
 		}
 	}
 	if len(items) > 0 {
@@ -284,7 +309,7 @@ func (p *parser) pinDecl() *PinDecl {
 	inferred := t.sym("=")
 	if !inferred {
 		if !t.sym(":") {
-			p.unexpected(t)
+			p.unexpectedWant(t, "`:` or `=`")
 		}
 		parts := []string{p.name().text}
 		for p.peek(ctxName).sym(".") {
@@ -361,7 +386,7 @@ func (p *parser) sensorDecl() *SensorDecl {
 			d.PinParams.Set(k, v)
 		}
 	default:
-		p.unexpected(t)
+		p.unexpectedWant(t, "`on` or `(`")
 	}
 	return d
 }
@@ -383,7 +408,7 @@ func (p *parser) namedArgs() Dict {
 			return d
 		}
 		if !t.sym(",") {
-			p.unexpected(t)
+			p.unexpectedWant(t, "`,` or `)`")
 		}
 	}
 }
@@ -405,7 +430,7 @@ func (p *parser) powerBlock() *PowerBlock {
 		case t.sym("}"):
 			return pb
 		case t.kind != tName:
-			p.unexpected(t)
+			p.unexpectedWant(t, "a power setting or `}`")
 		}
 		p.expectSym(":")
 		value := p.name()
@@ -435,7 +460,7 @@ func (p *parser) structDecl() *StructDecl {
 		case t.sym("}"):
 			return s
 		case t.kind != tName:
-			p.unexpected(t)
+			p.unexpectedWant(t, "a field name or `}`")
 		}
 		p.expectSym(":")
 		s.Fields = append(s.Fields, &FieldDecl{Base{p.region(t)}, t.text, p.typeName()})
@@ -463,7 +488,7 @@ func (p *parser) enumDecl() *EnumDecl {
 				p.take(c)
 			}
 		default:
-			p.unexpected(t)
+			p.unexpectedWant(t, "an enum variant or `}`")
 		}
 	}
 }
@@ -489,7 +514,7 @@ func (p *parser) funcDecl() *FuncDecl {
 				break
 			}
 			if !t.sym(",") {
-				p.unexpected(t)
+				p.unexpectedWant(t, "`,` or `)`")
 			}
 		}
 	}
@@ -512,7 +537,7 @@ func (p *parser) taskDecl() *TaskDecl {
 			continue
 		}
 		if !t.word("task") {
-			p.unexpected(t)
+			p.unexpectedWant(t, "`task`")
 		}
 		break
 	}
@@ -557,7 +582,7 @@ func (p *parser) machineDecl() *MachineDecl {
 			m.Variables = append(m.Variables, p.varDecl(ctx))
 			p.expectNL()
 		default:
-			p.unexpected(t)
+			p.unexpectedWant(t, "`initial`, `state`, a variable or `}`")
 		}
 	}
 }
@@ -664,7 +689,7 @@ func (p *parser) channelDecl() *ChannelDecl {
 		p.take(t)
 		n := p.next(ctxName)
 		if n.kind != tInt {
-			p.unexpected(n)
+			p.unexpectedWant(n, "an integer capacity")
 		}
 		c.Capacity = p.atoi(n.text)
 		p.expectSym("]")
@@ -703,7 +728,7 @@ func (p *parser) varDecl(ctx lexCtx) *VarDecl {
 		t = p.next(lexCtx{varKw: true})
 	}
 	if t.kind != tVarKw {
-		p.unexpected(t)
+		p.unexpectedWant(t, "`let` or `var`")
 	}
 	name := p.name()
 	v := &VarDecl{Base: Base{p.region(name)}, Name: name.text, Mutable: t.text == "var", Shared: shared}
@@ -749,7 +774,7 @@ func (p *parser) block() []Node {
 			case t.sym("}"):
 				return body
 			default:
-				p.unexpected(t)
+				p.unexpectedWant(t, "a statement or `}`")
 			}
 		}
 	}
@@ -931,18 +956,18 @@ func (p *parser) tryBlock() *TryBlock {
 			b.RetryLimit = &limit
 			p.expectKw("times")
 			if e := p.next(lexCtx{elseKw: true}); !e.word("else") {
-				p.unexpected(e)
+				p.unexpectedWant(e, "`else`")
 			}
 			term := p.next(prefixCtx("skip", "restart", "fail"))
 			if !term.word("skip") && !term.word("restart") && !term.word("fail") {
-				p.unexpected(term)
+				p.unexpectedWant(term, "`skip`, `restart` or `fail`")
 			}
 			b.Terminal = &term.text
 		}
 	case t.word("skip"), t.word("restart"):
 		b.Policy = t.text
 	default:
-		p.unexpected(t)
+		p.unexpectedWant(t, "`retry`, `skip` or `restart`")
 	}
 	return b
 }
@@ -973,14 +998,14 @@ func (p *parser) matchStmt() *MatchStmt {
 				p.take(n)
 				hi := p.next(ctxName)
 				if hi.kind != tInt {
-					p.unexpected(hi)
+					p.unexpectedWant(hi, "an integer")
 				}
 				arm.Pattern += ".." + hi.text
 			}
 		case t.word("_"):
 			arm.Pattern = "_"
 		default:
-			p.unexpected(t)
+			p.unexpectedWant(t, "a pattern (number, name or `_`)")
 		}
 		p.expectSym("->")
 		if t := p.peek(ctxName); t.sym("{") {
@@ -1116,7 +1141,7 @@ func (p *parser) argList(optional bool) []Node {
 			return args
 		}
 		if !t.sym(",") {
-			p.unexpected(t)
+			p.unexpectedWant(t, "`,` or `)`")
 		}
 	}
 }
@@ -1173,7 +1198,7 @@ func (p *parser) primary() Node {
 					break
 				}
 				if !c.sym(",") {
-					p.unexpected(c)
+					p.unexpectedWant(c, "`,` or `]`")
 				}
 			}
 			first, last := regionOf(a.Elements[0]), regionOf(a.Elements[len(a.Elements)-1])
@@ -1181,7 +1206,7 @@ func (p *parser) primary() Node {
 			return a
 		}
 	}
-	p.unexpected(t)
+	p.unexpectedWant(t, "an expression")
 	return nil
 }
 

@@ -188,7 +188,7 @@
     "drive": "timer",
     "src": "u_worker",
     "dst": "f_count_up",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    },
    {
     "drive": "func",

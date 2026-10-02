@@ -111,7 +111,7 @@
     "drive": "timer",
     "src": "u_pid",
     "dst": "s_wifi",
-    "rate_ms": 1.0
+    "rate_ms": 1
    }
   ],
   "nodes": {

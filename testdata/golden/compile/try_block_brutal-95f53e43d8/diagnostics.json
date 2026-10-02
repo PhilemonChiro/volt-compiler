@@ -2,13 +2,13 @@
   {
     "severity": "error",
     "category": "SYNTAX ERROR",
-    "message": "Unexpected token Token('RBRACE', '}') at line 4, column 96.",
-    "hint": null,
+    "message": "Unexpected token \"}\" at line 4, column 96.",
+    "hint": "Expected a new line here.",
     "region": [
-      1,
-      1,
-      1,
-      1
+      4,
+      96,
+      4,
+      97
     ]
   }
 ]

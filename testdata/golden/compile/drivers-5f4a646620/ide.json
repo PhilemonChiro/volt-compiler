@@ -147,25 +147,25 @@
     "drive": "timer",
     "src": "u_main",
     "dst": "s_system",
-    "rate_ms": 5000.0
+    "rate_ms": 5000
    },
    {
     "drive": "timer",
     "src": "s_ble",
     "dst": "u_main",
-    "rate_ms": 5000.0
+    "rate_ms": 5000
    },
    {
     "drive": "timer",
     "src": "u_main",
     "dst": "s_ble",
-    "rate_ms": 5000.0
+    "rate_ms": 5000
    },
    {
     "drive": "timer",
     "src": "v_count",
     "dst": "u_main",
-    "rate_ms": 5000.0
+    "rate_ms": 5000
    }
   ],
   "nodes": {
@@ -265,25 +265,25 @@
     "drive": "timer",
     "src": "u_main",
     "dst": "s_system",
-    "rate_ms": 5000.0
+    "rate_ms": 5000
    },
    {
     "drive": "timer",
     "src": "s_ble",
     "dst": "u_main",
-    "rate_ms": 5000.0
+    "rate_ms": 5000
    },
    {
     "drive": "timer",
     "src": "u_main",
     "dst": "s_ble",
-    "rate_ms": 5000.0
+    "rate_ms": 5000
    },
    {
     "drive": "timer",
     "src": "v_count",
     "dst": "u_main",
-    "rate_ms": 5000.0
+    "rate_ms": 5000
    }
   ],
   "nodes": {

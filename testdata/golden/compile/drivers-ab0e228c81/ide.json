@@ -98,7 +98,7 @@
     "drive": "timer",
     "src": "u_heartbeat",
     "dst": "s_system",
-    "rate_ms": 2000.0
+    "rate_ms": 2000
    }
   ],
   "nodes": {
@@ -149,7 +149,7 @@
     "drive": "timer",
     "src": "u_heartbeat",
     "dst": "s_system",
-    "rate_ms": 2000.0
+    "rate_ms": 2000
    }
   ],
   "nodes": {

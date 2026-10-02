@@ -315,7 +315,7 @@
     "drive": "timer",
     "src": "u_sensor_reader",
     "dst": "s_bme",
-    "rate_ms": 2000.0
+    "rate_ms": 2000
    },
    {
     "drive": "machine",

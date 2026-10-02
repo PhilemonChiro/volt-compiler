@@ -11,7 +11,7 @@ import (
 	"unicode"
 )
 
-// DumpAST renders an AST in the canonical JSON form of gen.py's dump_ast:
+// DumpAST renders an AST in the goldens' canonical JSON form:
 // every node is {"_": class, fields in declaration order, then extra
 // attributes sorted}, as Python's json.dumps(indent=1, ensure_ascii=False)
 // prints it, with 4-int lists (regions) folded onto one line.

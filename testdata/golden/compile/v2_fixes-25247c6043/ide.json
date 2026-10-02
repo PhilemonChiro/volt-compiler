@@ -171,13 +171,13 @@
     "drive": "timer",
     "src": "u_blinker",
     "dst": "p_led1",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    },
    {
     "drive": "timer",
     "src": "u_blinker",
     "dst": "p_led2",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    }
   ],
   "nodes": {

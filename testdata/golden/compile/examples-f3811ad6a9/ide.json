@@ -232,19 +232,19 @@
     "drive": "timer",
     "src": "u__rule0",
     "dst": "p_red",
-    "rate_ms": 100.0
+    "rate_ms": 100
    },
    {
     "drive": "timer",
     "src": "u__rule1",
     "dst": "p_green",
-    "rate_ms": 400.0
+    "rate_ms": 400
    },
    {
     "drive": "timer",
     "src": "u__rule2",
     "dst": "p_yellow",
-    "rate_ms": 600.0
+    "rate_ms": 600
    }
   ],
   "nodes": {

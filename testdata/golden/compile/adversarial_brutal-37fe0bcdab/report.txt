@@ -1,7 +1,10 @@
 
-[red bold]-- SYNTAX ERROR -- main.volt:1[/red bold]
+[red bold]-- SYNTAX ERROR -- main.volt:3[/red bold]
 
-Unexpected token Token('EVERY', 'every') at line 3, column 1.
+Unexpected token "every" at line 3, column 1.
 
- [dim]1 |[/dim] chip esp32
- [dim]  |[/dim] [red]^[/red]
+ [dim]2 |[/dim] hardware { pin led: Output = 4 
+ [dim]3 |[/dim] every 1s { led.toggle() }
+ [dim]  |[/dim] [red]^^^^^[/red]
+
+[cyan]Hint: Expected `pin`, `bus`, `device` or `}` here.[/cyan]

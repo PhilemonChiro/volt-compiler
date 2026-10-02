@@ -1,7 +1,8 @@
 
-[red bold]-- SYNTAX ERROR -- multi_chip.volt:1[/red bold]
+[red bold]-- SYNTAX ERROR -- multi_chip.volt:4[/red bold]
 
-Error trying to process rule "start":
+Multiple chip declarations — already declared 'esp32' (line 2) at line 4, column 1.
 
- [dim]1 |[/dim] 
- [dim]  |[/dim] [red]^[/red]
+ [dim]3 |[/dim] chip rp2040
+ [dim]4 |[/dim] setup {
+ [dim]  |[/dim] [red]^^^^^[/red]

@@ -2,13 +2,13 @@
   {
     "severity": "error",
     "category": "SYNTAX ERROR",
-    "message": "Unexpected token Token('RPAR', ')') at line 2, column 14.",
-    "hint": null,
+    "message": "Unexpected token \")\" at line 2, column 14.",
+    "hint": "Expected an expression here.",
     "region": [
-      1,
-      1,
-      1,
-      1
+      2,
+      14,
+      2,
+      15
     ]
   }
 ]

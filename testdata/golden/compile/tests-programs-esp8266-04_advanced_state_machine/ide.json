@@ -277,49 +277,49 @@
     "drive": "timer",
     "src": "u_status_blink",
     "dst": "v_blink_count",
-    "rate_ms": 2000.0
+    "rate_ms": 2000
    },
    {
     "drive": "timer",
     "src": "u_status_blink",
     "dst": "s_log",
-    "rate_ms": 2000.0
+    "rate_ms": 2000
    },
    {
     "drive": "timer",
     "src": "v_blink_count",
     "dst": "u_status_blink",
-    "rate_ms": 2000.0
+    "rate_ms": 2000
    },
    {
     "drive": "timer",
     "src": "v_lock_toggles",
     "dst": "u_status_blink",
-    "rate_ms": 2000.0
+    "rate_ms": 2000
    },
    {
     "drive": "timer",
     "src": "u_health",
     "dst": "s_log",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "v_lock_toggles",
     "dst": "u_health",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "v_blink_count",
     "dst": "u_health",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "s_wifi",
     "dst": "u_health",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "machine",
@@ -460,61 +460,61 @@
     "drive": "timer",
     "src": "u_status_blink",
     "dst": "p_buzzer",
-    "rate_ms": 2000.0
+    "rate_ms": 2000
    },
    {
     "drive": "timer",
     "src": "u_status_blink",
     "dst": "v_blink_count",
-    "rate_ms": 2000.0
+    "rate_ms": 2000
    },
    {
     "drive": "timer",
     "src": "u_status_blink",
     "dst": "s_log",
-    "rate_ms": 2000.0
+    "rate_ms": 2000
    },
    {
     "drive": "timer",
     "src": "v_blink_count",
     "dst": "u_status_blink",
-    "rate_ms": 2000.0
+    "rate_ms": 2000
    },
    {
     "drive": "timer",
     "src": "v_lock_toggles",
     "dst": "u_status_blink",
-    "rate_ms": 2000.0
+    "rate_ms": 2000
    },
    {
     "drive": "timer",
     "src": "u_health",
     "dst": "s_log",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "v_lock_toggles",
     "dst": "u_health",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "v_blink_count",
     "dst": "u_health",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "s_wifi",
     "dst": "u_health",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "u_health",
     "dst": "s_system",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "machine",

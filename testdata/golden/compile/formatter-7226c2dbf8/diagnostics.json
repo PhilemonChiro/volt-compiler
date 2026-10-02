@@ -2,13 +2,13 @@
   {
     "severity": "error",
     "category": "SYNTAX ERROR",
-    "message": "Unexpected token Token('NAME', 'this') at line 1, column 1.",
-    "hint": null,
+    "message": "Unexpected token \"this\" at line 1, column 1.",
+    "hint": "Expected a top-level declaration (chip, hardware, task, fn, every, \u2026) here.",
     "region": [
       1,
       1,
       1,
-      1
+      5
     ]
   }
 ]

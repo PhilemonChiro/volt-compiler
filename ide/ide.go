@@ -1,7 +1,6 @@
-// Package ide is the Go port of the Volt IDE worker's ops
-// (volt/legacy/python/ide/worker.py): diagnostics and side-panel data,
-// formatting, symbols, state diagrams and the system graph. Results marshal
-// to the same JSON as worker.py.
+// Package ide is the Volt IDE worker's ops (ported from the Python
+// worker.py): diagnostics and side-panel data, formatting, symbols, state
+// diagrams and the system graph. Results marshal to the JSON worker.py used.
 package ide
 
 import (

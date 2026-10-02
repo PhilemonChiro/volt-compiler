@@ -2,11 +2,11 @@
  "compile_full": {
   "diagnostics": [
    {
-    "line": 1,
-    "col": 1,
-    "message": "Unexpected token Token('FAIL', 'fail') at line 3, column 42.",
+    "line": 3,
+    "col": 42,
+    "message": "Unexpected token \"fail\" at line 3, column 42.",
     "severity": "error",
-    "hint": ""
+    "hint": "Expected `retry`, `skip` or `restart` here."
    }
   ],
   "pins": [],

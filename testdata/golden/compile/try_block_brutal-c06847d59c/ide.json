@@ -2,9 +2,9 @@
  "compile_full": {
   "diagnostics": [
    {
-    "line": 1,
-    "col": 1,
-    "message": "Error trying to process rule \"try_block\":",
+    "line": 3,
+    "col": 17,
+    "message": "try block body must contain at least one statement at line 3, column 17.",
     "severity": "error",
     "hint": ""
    }

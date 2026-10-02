@@ -142,13 +142,13 @@
     "drive": "timer",
     "src": "u_inc",
     "dst": "v_counter",
-    "rate_ms": 100.0
+    "rate_ms": 100
    },
    {
     "drive": "timer",
     "src": "u_dec",
     "dst": "v_counter",
-    "rate_ms": 200.0
+    "rate_ms": 200
    }
   ],
   "nodes": {
@@ -195,13 +195,13 @@
     "drive": "timer",
     "src": "u_inc",
     "dst": "v_counter",
-    "rate_ms": 100.0
+    "rate_ms": 100
    },
    {
     "drive": "timer",
     "src": "u_dec",
     "dst": "v_counter",
-    "rate_ms": 200.0
+    "rate_ms": 200
    }
   ],
   "nodes": {

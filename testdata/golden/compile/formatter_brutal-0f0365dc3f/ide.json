@@ -170,7 +170,7 @@
     "drive": "timer",
     "src": "u__rule1",
     "dst": "s_mqtt",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    }
   ],
   "nodes": {
@@ -267,19 +267,19 @@
     "drive": "timer",
     "src": "u__rule0",
     "dst": "p_led",
-    "rate_ms": 500.0
+    "rate_ms": 500
    },
    {
     "drive": "timer",
     "src": "u__rule1",
     "dst": "s_weather",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "u__rule1",
     "dst": "s_mqtt",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    }
   ],
   "nodes": {

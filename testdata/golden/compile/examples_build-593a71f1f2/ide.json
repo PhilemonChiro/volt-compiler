@@ -153,19 +153,19 @@
     "drive": "timer",
     "src": "s_mqtt",
     "dst": "u_loop_check",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    },
    {
     "drive": "timer",
     "src": "u_loop_check",
     "dst": "p_led",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    },
    {
     "drive": "timer",
     "src": "u_loop_check",
     "dst": "s_sleep",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    }
   ],
   "nodes": {

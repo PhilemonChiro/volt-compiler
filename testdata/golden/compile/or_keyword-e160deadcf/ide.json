@@ -149,7 +149,7 @@
     "drive": "timer",
     "src": "u_telemetry",
     "dst": "s_mqtt",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    }
   ],
   "nodes": {

@@ -161,13 +161,13 @@
     "drive": "timer",
     "src": "u_wave",
     "dst": "p_arm",
-    "rate_ms": 3000.0
+    "rate_ms": 3000
    },
    {
     "drive": "timer",
     "src": "u_wave",
     "dst": "p_base",
-    "rate_ms": 3000.0
+    "rate_ms": 3000
    }
   ],
   "nodes": {

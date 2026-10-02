@@ -2,11 +2,11 @@
  "compile_full": {
   "diagnostics": [
    {
-    "line": 1,
-    "col": 1,
-    "message": "Unexpected token Token('RPAR', ')') at line 2, column 14.",
+    "line": 2,
+    "col": 14,
+    "message": "Unexpected token \")\" at line 2, column 14.",
     "severity": "error",
-    "hint": ""
+    "hint": "Expected an expression here."
    }
   ],
   "pins": [],

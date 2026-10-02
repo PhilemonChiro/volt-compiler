@@ -153,19 +153,19 @@
     "drive": "timer",
     "src": "s_wifi",
     "dst": "u_sender",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "u_sender",
     "dst": "s_mqtt",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "u_sender",
     "dst": "p_led",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    }
   ],
   "nodes": {

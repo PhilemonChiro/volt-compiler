@@ -626,151 +626,151 @@
     "drive": "timer",
     "src": "u_t1",
     "dst": "v_c0",
-    "rate_ms": 100.0
+    "rate_ms": 100
    },
    {
     "drive": "timer",
     "src": "u_t2",
     "dst": "v_c2",
-    "rate_ms": 200.0
+    "rate_ms": 200
    },
    {
     "drive": "timer",
     "src": "u_t3",
     "dst": "v_c4",
-    "rate_ms": 300.0
+    "rate_ms": 300
    },
    {
     "drive": "timer",
     "src": "u_t4",
     "dst": "v_c5",
-    "rate_ms": 400.0
+    "rate_ms": 400
    },
    {
     "drive": "timer",
     "src": "u_t5",
     "dst": "v_c12",
-    "rate_ms": 500.0
+    "rate_ms": 500
    },
    {
     "drive": "timer",
     "src": "u_t6",
     "dst": "v_c13",
-    "rate_ms": 600.0
+    "rate_ms": 600
    },
    {
     "drive": "timer",
     "src": "u_t7",
     "dst": "v_c14",
-    "rate_ms": 700.0
+    "rate_ms": 700
    },
    {
     "drive": "timer",
     "src": "u_t8",
     "dst": "v_c15",
-    "rate_ms": 800.0
+    "rate_ms": 800
    },
    {
     "drive": "timer",
     "src": "u_t9",
     "dst": "v_c16",
-    "rate_ms": 900.0
+    "rate_ms": 900
    },
    {
     "drive": "timer",
     "src": "u_net",
     "dst": "v_net_count",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "u_net",
     "dst": "s_mqtt",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "v_net_count",
     "dst": "u_net",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "u_net",
     "dst": "s_log",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "u_stress_report",
     "dst": "s_log",
-    "rate_ms": 5000.0
+    "rate_ms": 5000
    },
    {
     "drive": "timer",
     "src": "v_c0",
     "dst": "u_stress_report",
-    "rate_ms": 5000.0
+    "rate_ms": 5000
    },
    {
     "drive": "timer",
     "src": "v_c2",
     "dst": "u_stress_report",
-    "rate_ms": 5000.0
+    "rate_ms": 5000
    },
    {
     "drive": "timer",
     "src": "v_c4",
     "dst": "u_stress_report",
-    "rate_ms": 5000.0
+    "rate_ms": 5000
    },
    {
     "drive": "timer",
     "src": "v_c5",
     "dst": "u_stress_report",
-    "rate_ms": 5000.0
+    "rate_ms": 5000
    },
    {
     "drive": "timer",
     "src": "v_c12",
     "dst": "u_stress_report",
-    "rate_ms": 5000.0
+    "rate_ms": 5000
    },
    {
     "drive": "timer",
     "src": "v_c13",
     "dst": "u_stress_report",
-    "rate_ms": 5000.0
+    "rate_ms": 5000
    },
    {
     "drive": "timer",
     "src": "v_c14",
     "dst": "u_stress_report",
-    "rate_ms": 5000.0
+    "rate_ms": 5000
    },
    {
     "drive": "timer",
     "src": "v_c15",
     "dst": "u_stress_report",
-    "rate_ms": 5000.0
+    "rate_ms": 5000
    },
    {
     "drive": "timer",
     "src": "v_c16",
     "dst": "u_stress_report",
-    "rate_ms": 5000.0
+    "rate_ms": 5000
    },
    {
     "drive": "timer",
     "src": "v_net_count",
     "dst": "u_stress_report",
-    "rate_ms": 5000.0
+    "rate_ms": 5000
    },
    {
     "drive": "timer",
     "src": "s_wifi",
     "dst": "u_stress_report",
-    "rate_ms": 5000.0
+    "rate_ms": 5000
    }
   ],
   "nodes": {
@@ -1078,211 +1078,211 @@
     "drive": "timer",
     "src": "u_t1",
     "dst": "p_p0",
-    "rate_ms": 100.0
+    "rate_ms": 100
    },
    {
     "drive": "timer",
     "src": "u_t1",
     "dst": "v_c0",
-    "rate_ms": 100.0
+    "rate_ms": 100
    },
    {
     "drive": "timer",
     "src": "u_t2",
     "dst": "p_p2",
-    "rate_ms": 200.0
+    "rate_ms": 200
    },
    {
     "drive": "timer",
     "src": "u_t2",
     "dst": "v_c2",
-    "rate_ms": 200.0
+    "rate_ms": 200
    },
    {
     "drive": "timer",
     "src": "u_t3",
     "dst": "p_p4",
-    "rate_ms": 300.0
+    "rate_ms": 300
    },
    {
     "drive": "timer",
     "src": "u_t3",
     "dst": "v_c4",
-    "rate_ms": 300.0
+    "rate_ms": 300
    },
    {
     "drive": "timer",
     "src": "u_t4",
     "dst": "p_p5",
-    "rate_ms": 400.0
+    "rate_ms": 400
    },
    {
     "drive": "timer",
     "src": "u_t4",
     "dst": "v_c5",
-    "rate_ms": 400.0
+    "rate_ms": 400
    },
    {
     "drive": "timer",
     "src": "u_t5",
     "dst": "p_p12",
-    "rate_ms": 500.0
+    "rate_ms": 500
    },
    {
     "drive": "timer",
     "src": "u_t5",
     "dst": "v_c12",
-    "rate_ms": 500.0
+    "rate_ms": 500
    },
    {
     "drive": "timer",
     "src": "u_t6",
     "dst": "p_p13",
-    "rate_ms": 600.0
+    "rate_ms": 600
    },
    {
     "drive": "timer",
     "src": "u_t6",
     "dst": "v_c13",
-    "rate_ms": 600.0
+    "rate_ms": 600
    },
    {
     "drive": "timer",
     "src": "u_t7",
     "dst": "p_p14",
-    "rate_ms": 700.0
+    "rate_ms": 700
    },
    {
     "drive": "timer",
     "src": "u_t7",
     "dst": "v_c14",
-    "rate_ms": 700.0
+    "rate_ms": 700
    },
    {
     "drive": "timer",
     "src": "u_t8",
     "dst": "p_p15",
-    "rate_ms": 800.0
+    "rate_ms": 800
    },
    {
     "drive": "timer",
     "src": "u_t8",
     "dst": "v_c15",
-    "rate_ms": 800.0
+    "rate_ms": 800
    },
    {
     "drive": "timer",
     "src": "u_t9",
     "dst": "p_p16",
-    "rate_ms": 900.0
+    "rate_ms": 900
    },
    {
     "drive": "timer",
     "src": "u_t9",
     "dst": "v_c16",
-    "rate_ms": 900.0
+    "rate_ms": 900
    },
    {
     "drive": "timer",
     "src": "u_net",
     "dst": "v_net_count",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "u_net",
     "dst": "s_mqtt",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "v_net_count",
     "dst": "u_net",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "u_net",
     "dst": "s_log",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "u_stress_report",
     "dst": "s_log",
-    "rate_ms": 5000.0
+    "rate_ms": 5000
    },
    {
     "drive": "timer",
     "src": "v_c0",
     "dst": "u_stress_report",
-    "rate_ms": 5000.0
+    "rate_ms": 5000
    },
    {
     "drive": "timer",
     "src": "v_c2",
     "dst": "u_stress_report",
-    "rate_ms": 5000.0
+    "rate_ms": 5000
    },
    {
     "drive": "timer",
     "src": "v_c4",
     "dst": "u_stress_report",
-    "rate_ms": 5000.0
+    "rate_ms": 5000
    },
    {
     "drive": "timer",
     "src": "v_c5",
     "dst": "u_stress_report",
-    "rate_ms": 5000.0
+    "rate_ms": 5000
    },
    {
     "drive": "timer",
     "src": "v_c12",
     "dst": "u_stress_report",
-    "rate_ms": 5000.0
+    "rate_ms": 5000
    },
    {
     "drive": "timer",
     "src": "v_c13",
     "dst": "u_stress_report",
-    "rate_ms": 5000.0
+    "rate_ms": 5000
    },
    {
     "drive": "timer",
     "src": "v_c14",
     "dst": "u_stress_report",
-    "rate_ms": 5000.0
+    "rate_ms": 5000
    },
    {
     "drive": "timer",
     "src": "v_c15",
     "dst": "u_stress_report",
-    "rate_ms": 5000.0
+    "rate_ms": 5000
    },
    {
     "drive": "timer",
     "src": "v_c16",
     "dst": "u_stress_report",
-    "rate_ms": 5000.0
+    "rate_ms": 5000
    },
    {
     "drive": "timer",
     "src": "v_net_count",
     "dst": "u_stress_report",
-    "rate_ms": 5000.0
+    "rate_ms": 5000
    },
    {
     "drive": "timer",
     "src": "s_wifi",
     "dst": "u_stress_report",
-    "rate_ms": 5000.0
+    "rate_ms": 5000
    },
    {
     "drive": "timer",
     "src": "u_stress_report",
     "dst": "s_system",
-    "rate_ms": 5000.0
+    "rate_ms": 5000
    }
   ],
   "nodes": {

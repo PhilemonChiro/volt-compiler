@@ -146,19 +146,19 @@
     "drive": "timer",
     "src": "u_bg",
     "dst": "v_x",
-    "rate_ms": 500.0
+    "rate_ms": 500
    },
    {
     "drive": "timer",
     "src": "v_x",
     "dst": "u_bg",
-    "rate_ms": 500.0
+    "rate_ms": 500
    },
    {
     "drive": "timer",
     "src": "u_isr",
     "dst": "v_x",
-    "rate_ms": 1.0
+    "rate_ms": 1
    }
   ],
   "nodes": {
@@ -227,19 +227,19 @@
     "drive": "timer",
     "src": "u_bg",
     "dst": "v_x",
-    "rate_ms": 500.0
+    "rate_ms": 500
    },
    {
     "drive": "timer",
     "src": "v_x",
     "dst": "u_bg",
-    "rate_ms": 500.0
+    "rate_ms": 500
    },
    {
     "drive": "timer",
     "src": "u_isr",
     "dst": "v_x",
-    "rate_ms": 1.0
+    "rate_ms": 1
    }
   ],
   "nodes": {

@@ -126,7 +126,7 @@
     "drive": "timer",
     "src": "u_pid",
     "dst": "p_motor",
-    "rate_ms": 1.0
+    "rate_ms": 1
    }
   ],
   "nodes": {

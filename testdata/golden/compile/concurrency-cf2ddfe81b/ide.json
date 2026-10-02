@@ -255,19 +255,19 @@
     "drive": "timer",
     "src": "u_critical_reader",
     "dst": "p_motor",
-    "rate_ms": 1.0
+    "rate_ms": 1
    },
    {
     "drive": "timer",
     "src": "v_read_only_cfg",
     "dst": "u_critical_reader",
-    "rate_ms": 1.0
+    "rate_ms": 1
    },
    {
     "drive": "timer",
     "src": "u_background_reader",
     "dst": "p_led",
-    "rate_ms": 500.0
+    "rate_ms": 500
    }
   ],
   "nodes": {

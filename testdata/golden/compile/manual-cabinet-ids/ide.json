@@ -1152,91 +1152,91 @@
     "drive": "timer",
     "src": "u_sensing",
     "dst": "v_door_open",
-    "rate_ms": 50.0
+    "rate_ms": 50
    },
    {
     "drive": "timer",
     "src": "v_shock",
     "dst": "u_sensing",
-    "rate_ms": 50.0
+    "rate_ms": 50
    },
    {
     "drive": "timer",
     "src": "u_sensing",
     "dst": "v_shock",
-    "rate_ms": 50.0
+    "rate_ms": 50
    },
    {
     "drive": "timer",
     "src": "v_spin",
     "dst": "u_sensing",
-    "rate_ms": 50.0
+    "rate_ms": 50
    },
    {
     "drive": "timer",
     "src": "u_sensing",
     "dst": "v_spin",
-    "rate_ms": 50.0
+    "rate_ms": 50
    },
    {
     "drive": "timer",
     "src": "u__rule0",
     "dst": "v_net_ok",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "u__rule0",
     "dst": "s_gsm",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "u__rule0",
     "dst": "v_sig",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "u__rule0",
     "dst": "s_log",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "v_sig",
     "dst": "u__rule1",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    },
    {
     "drive": "timer",
     "src": "v_net_ok",
     "dst": "u__rule1",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    },
    {
     "drive": "timer",
     "src": "u__rule1",
     "dst": "s_lcd",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    },
    {
     "drive": "timer",
     "src": "v_door_open",
     "dst": "u__rule1",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    },
    {
     "drive": "timer",
     "src": "v_alarm",
     "dst": "u__rule1",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    },
    {
     "drive": "timer",
     "src": "u__rule2",
     "dst": "s_log",
-    "rate_ms": 60000.0
+    "rate_ms": 60000
    },
    {
     "drive": "machine",
@@ -1591,145 +1591,145 @@
     "drive": "timer",
     "src": "u_sensing",
     "dst": "v_door_open",
-    "rate_ms": 50.0
+    "rate_ms": 50
    },
    {
     "drive": "timer",
     "src": "p_door",
     "dst": "u_sensing",
-    "rate_ms": 50.0
+    "rate_ms": 50
    },
    {
     "drive": "timer",
     "src": "u_sensing",
     "dst": "s_accel",
-    "rate_ms": 50.0
+    "rate_ms": 50
    },
    {
     "drive": "timer",
     "src": "u_sensing",
     "dst": "s_int",
-    "rate_ms": 50.0
+    "rate_ms": 50
    },
    {
     "drive": "timer",
     "src": "v_shock",
     "dst": "u_sensing",
-    "rate_ms": 50.0
+    "rate_ms": 50
    },
    {
     "drive": "timer",
     "src": "u_sensing",
     "dst": "v_shock",
-    "rate_ms": 50.0
+    "rate_ms": 50
    },
    {
     "drive": "timer",
     "src": "u_sensing",
     "dst": "s_gyro",
-    "rate_ms": 50.0
+    "rate_ms": 50
    },
    {
     "drive": "timer",
     "src": "v_spin",
     "dst": "u_sensing",
-    "rate_ms": 50.0
+    "rate_ms": 50
    },
    {
     "drive": "timer",
     "src": "u_sensing",
     "dst": "v_spin",
-    "rate_ms": 50.0
+    "rate_ms": 50
    },
    {
     "drive": "timer",
     "src": "u__rule0",
     "dst": "v_net_ok",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "u__rule0",
     "dst": "s_gsm",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "u__rule0",
     "dst": "v_sig",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "u__rule0",
     "dst": "s_log",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "u__rule1",
     "dst": "f_csq_bars",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    },
    {
     "drive": "timer",
     "src": "v_sig",
     "dst": "u__rule1",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    },
    {
     "drive": "timer",
     "src": "v_net_ok",
     "dst": "u__rule1",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    },
    {
     "drive": "timer",
     "src": "v_bars_shown",
     "dst": "u__rule1",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    },
    {
     "drive": "timer",
     "src": "u__rule1",
     "dst": "s_lcd",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    },
    {
     "drive": "timer",
     "src": "u__rule1",
     "dst": "f_cell_row",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    },
    {
     "drive": "timer",
     "src": "u__rule1",
     "dst": "v_bars_shown",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    },
    {
     "drive": "timer",
     "src": "v_door_open",
     "dst": "u__rule1",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    },
    {
     "drive": "timer",
     "src": "v_alarm",
     "dst": "u__rule1",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    },
    {
     "drive": "timer",
     "src": "u__rule2",
     "dst": "s_system",
-    "rate_ms": 60000.0
+    "rate_ms": 60000
    },
    {
     "drive": "timer",
     "src": "u__rule2",
     "dst": "s_log",
-    "rate_ms": 60000.0
+    "rate_ms": 60000
    },
    {
     "drive": "machine",

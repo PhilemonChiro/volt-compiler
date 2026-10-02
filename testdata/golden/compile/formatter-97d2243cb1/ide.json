@@ -135,13 +135,13 @@
     "drive": "timer",
     "src": "u_a",
     "dst": "p_led",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    },
    {
     "drive": "timer",
     "src": "u_b",
     "dst": "p_led",
-    "rate_ms": 2000.0
+    "rate_ms": 2000
    }
   ],
   "nodes": {
@@ -188,13 +188,13 @@
     "drive": "timer",
     "src": "u_a",
     "dst": "p_led",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    },
    {
     "drive": "timer",
     "src": "u_b",
     "dst": "p_led",
-    "rate_ms": 2000.0
+    "rate_ms": 2000
    }
   ],
   "nodes": {

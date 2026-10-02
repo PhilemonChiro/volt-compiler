@@ -1,7 +1,10 @@
 
-[red bold]-- SYNTAX ERROR -- main.volt:1[/red bold]
+[red bold]-- SYNTAX ERROR -- main.volt:3[/red bold]
 
-Unexpected token Token('NAME', 'wifi') at line 3, column 25.
+Unexpected token "wifi" at line 3, column 25.
 
- [dim]1 |[/dim] chip rp2040
- [dim]  |[/dim] [red]^[/red]
+ [dim]2 |[/dim] hardware { pin led: Output = 25 }
+ [dim]3 |[/dim] every 1s { led.toggle() wifi.is_connected() }
+ [dim]  |[/dim] [red]                        ^^^^[/red]
+
+[cyan]Hint: Expected a statement or `}` here.[/cyan]

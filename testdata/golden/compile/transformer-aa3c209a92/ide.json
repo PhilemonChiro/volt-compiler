@@ -161,7 +161,7 @@
     "drive": "timer",
     "src": "u_counter",
     "dst": "p_led",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    }
   ],
   "nodes": {

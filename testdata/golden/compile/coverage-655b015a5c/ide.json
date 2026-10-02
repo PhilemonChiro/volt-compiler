@@ -119,13 +119,13 @@
     "drive": "timer",
     "src": "u_producer",
     "dst": "c_readings",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    },
    {
     "drive": "timer",
     "src": "c_readings",
     "dst": "u_consumer",
-    "rate_ms": 500.0
+    "rate_ms": 500
    }
   ],
   "nodes": {
@@ -172,13 +172,13 @@
     "drive": "timer",
     "src": "u_producer",
     "dst": "c_readings",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    },
    {
     "drive": "timer",
     "src": "c_readings",
     "dst": "u_consumer",
-    "rate_ms": 500.0
+    "rate_ms": 500
    }
   ],
   "nodes": {

@@ -196,7 +196,7 @@
     "drive": "timer",
     "src": "u_worker",
     "dst": "f_blink_once",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    },
    {
     "drive": "func",

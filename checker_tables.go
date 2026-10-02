@@ -235,6 +235,7 @@ var builtinMethodTypes = map[string][]methodSig{
 		{"drain", "int", []SymParam{{"list_name", "string"}}},
 		{"list_count", "int", []SymParam{{"list_name", "string"}}},
 		{"list_clear", "void", []SymParam{{"list_name", "string"}}},
+		{"flush", "void", []SymParam{}},
 	},
 	"System": {
 		{"restart", "void", []SymParam{}},

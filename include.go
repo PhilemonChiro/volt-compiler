@@ -151,7 +151,7 @@ func compileFront(source, filename string, progress ProgressFunc) (*Program, *Er
 	emit("include", 5)
 	prog, err := Parse(source)
 	if err != nil {
-		errs.Error(Region{1, 1, 1, 1}, "SYNTAX ERROR", strings.SplitN(err.Error(), "\n", 2)[0], "")
+		addSyntaxError(errs, err)
 		return nil, errs, nil
 	}
 	emit("parse", 30)
@@ -173,4 +173,14 @@ func compileFront(source, filename string, progress ProgressFunc) (*Program, *Er
 	}
 	emit("analyze", 80)
 	return prog, errs, nil
+}
+
+// addSyntaxError reports a Parse failure at the offending token.
+func addSyntaxError(errs *Errors, err error) {
+	var se *SyntaxError
+	if errors.As(err, &se) {
+		errs.Error(Region{se.Line, se.Col, se.Line, se.EndCol}, "SYNTAX ERROR", se.Error(), se.Hint)
+		return
+	}
+	errs.Error(Region{1, 1, 1, 1}, "SYNTAX ERROR", strings.SplitN(err.Error(), "\n", 2)[0], "")
 }

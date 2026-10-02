@@ -1,7 +1,10 @@
 
-[red bold]-- SYNTAX ERROR -- main.volt:1[/red bold]
+[red bold]-- SYNTAX ERROR -- main.volt:3[/red bold]
 
-Unexpected token Token('NAME', 'state_machine') at line 3, column 1.
+Unexpected token "state_machine" at line 3, column 1.
 
- [dim]1 |[/dim] chip esp32
- [dim]  |[/dim] [red]^[/red]
+ [dim]2 |[/dim] hardware { pin led: Output = 2 }
+ [dim]3 |[/dim] state_machine door {
+ [dim]  |[/dim] [red]^^^^^^^^^^^^^[/red]
+
+[cyan]Hint: Expected a top-level declaration (chip, hardware, task, fn, every, …) here.[/cyan]

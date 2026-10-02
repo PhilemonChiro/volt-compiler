@@ -138,7 +138,7 @@
     "drive": "timer",
     "src": "u_waver",
     "dst": "p_arm",
-    "rate_ms": 2000.0
+    "rate_ms": 2000
    }
   ],
   "nodes": {

@@ -195,19 +195,19 @@
     "drive": "timer",
     "src": "v_shared_counter",
     "dst": "u_fast_control",
-    "rate_ms": 1.0
+    "rate_ms": 1
    },
    {
     "drive": "timer",
     "src": "u_slow_monitor",
     "dst": "v_shared_counter",
-    "rate_ms": 500.0
+    "rate_ms": 500
    },
    {
     "drive": "timer",
     "src": "v_shared_counter",
     "dst": "u_slow_monitor",
-    "rate_ms": 500.0
+    "rate_ms": 500
    }
   ],
   "nodes": {
@@ -288,31 +288,31 @@
     "drive": "timer",
     "src": "u_fast_control",
     "dst": "p_motor",
-    "rate_ms": 1.0
+    "rate_ms": 1
    },
    {
     "drive": "timer",
     "src": "v_shared_counter",
     "dst": "u_fast_control",
-    "rate_ms": 1.0
+    "rate_ms": 1
    },
    {
     "drive": "timer",
     "src": "u_slow_monitor",
     "dst": "v_shared_counter",
-    "rate_ms": 500.0
+    "rate_ms": 500
    },
    {
     "drive": "timer",
     "src": "v_shared_counter",
     "dst": "u_slow_monitor",
-    "rate_ms": 500.0
+    "rate_ms": 500
    },
    {
     "drive": "timer",
     "src": "u_slow_monitor",
     "dst": "p_led",
-    "rate_ms": 500.0
+    "rate_ms": 500
    }
   ],
   "nodes": {

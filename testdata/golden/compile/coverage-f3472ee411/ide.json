@@ -150,13 +150,13 @@
     "drive": "timer",
     "src": "u_t",
     "dst": "c_q",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    },
    {
     "drive": "timer",
     "src": "c_q",
     "dst": "u_t",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    }
   ],
   "nodes": {

@@ -150,25 +150,25 @@
     "drive": "timer",
     "src": "u_slow_task",
     "dst": "v_counter",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    },
    {
     "drive": "timer",
     "src": "v_counter",
     "dst": "u_slow_task",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    },
    {
     "drive": "timer",
     "src": "u_fast_task",
     "dst": "v_counter",
-    "rate_ms": 1.0
+    "rate_ms": 1
    },
    {
     "drive": "timer",
     "src": "v_counter",
     "dst": "u_fast_task",
-    "rate_ms": 1.0
+    "rate_ms": 1
    }
   ],
   "nodes": {
@@ -237,25 +237,25 @@
     "drive": "timer",
     "src": "u_slow_task",
     "dst": "v_counter",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    },
    {
     "drive": "timer",
     "src": "v_counter",
     "dst": "u_slow_task",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    },
    {
     "drive": "timer",
     "src": "u_fast_task",
     "dst": "v_counter",
-    "rate_ms": 1.0
+    "rate_ms": 1
    },
    {
     "drive": "timer",
     "src": "v_counter",
     "dst": "u_fast_task",
-    "rate_ms": 1.0
+    "rate_ms": 1
    }
   ],
   "nodes": {

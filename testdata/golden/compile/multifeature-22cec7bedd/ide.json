@@ -197,7 +197,7 @@
     "drive": "timer",
     "src": "u_telemetry",
     "dst": "s_mqtt",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    }
   ],
   "nodes": {
@@ -283,37 +283,37 @@
     "drive": "timer",
     "src": "u_telemetry",
     "dst": "s_bme",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "u_telemetry",
     "dst": "s_mqtt",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "u_telemetry",
     "dst": "v_readings_count",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "v_readings_count",
     "dst": "u_telemetry",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "u_telemetry",
     "dst": "s_storage",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "u_telemetry",
     "dst": "p_led",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    }
   ],
   "nodes": {

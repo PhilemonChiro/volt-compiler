@@ -127,7 +127,7 @@
     "drive": "timer",
     "src": "s_ble",
     "dst": "u_status",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    }
   ],
   "nodes": {
@@ -184,13 +184,13 @@
     "drive": "timer",
     "src": "s_ble",
     "dst": "u_status",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    },
    {
     "drive": "timer",
     "src": "u_status",
     "dst": "p_led",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    }
   ],
   "nodes": {

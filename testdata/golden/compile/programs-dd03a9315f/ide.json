@@ -366,115 +366,115 @@
     "drive": "timer",
     "src": "u_heartbeat",
     "dst": "v_heartbeat_count",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    },
    {
     "drive": "timer",
     "src": "u_heartbeat",
     "dst": "s_log",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    },
    {
     "drive": "timer",
     "src": "v_heartbeat_count",
     "dst": "u_heartbeat",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    },
    {
     "drive": "timer",
     "src": "u_heartbeat",
     "dst": "s_system",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    },
    {
     "drive": "timer",
     "src": "u_motor_control",
     "dst": "v_motor_isr_count",
-    "rate_ms": 1.0
+    "rate_ms": 1
    },
    {
     "drive": "timer",
     "src": "u_telemetry",
     "dst": "v_telemetry_count",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "u_telemetry",
     "dst": "s_log",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "v_telemetry_count",
     "dst": "u_telemetry",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "u_telemetry",
     "dst": "s_mqtt",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "u_cloud_report",
     "dst": "v_cloud_count",
-    "rate_ms": 60000.0
+    "rate_ms": 60000
    },
    {
     "drive": "timer",
     "src": "u_cloud_report",
     "dst": "s_log",
-    "rate_ms": 60000.0
+    "rate_ms": 60000
    },
    {
     "drive": "timer",
     "src": "v_cloud_count",
     "dst": "u_cloud_report",
-    "rate_ms": 60000.0
+    "rate_ms": 60000
    },
    {
     "drive": "timer",
     "src": "u_stats",
     "dst": "s_log",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "v_heartbeat_count",
     "dst": "u_stats",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "v_motor_isr_count",
     "dst": "u_stats",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "v_telemetry_count",
     "dst": "u_stats",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "v_cloud_count",
     "dst": "u_stats",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "s_wifi",
     "dst": "u_stats",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "u_stats",
     "dst": "s_system",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    }
   ],
   "nodes": {
@@ -650,145 +650,145 @@
     "drive": "timer",
     "src": "u_heartbeat",
     "dst": "p_led",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    },
    {
     "drive": "timer",
     "src": "u_heartbeat",
     "dst": "v_heartbeat_count",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    },
    {
     "drive": "timer",
     "src": "u_heartbeat",
     "dst": "s_log",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    },
    {
     "drive": "timer",
     "src": "v_heartbeat_count",
     "dst": "u_heartbeat",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    },
    {
     "drive": "timer",
     "src": "u_heartbeat",
     "dst": "s_system",
-    "rate_ms": 1000.0
+    "rate_ms": 1000
    },
    {
     "drive": "timer",
     "src": "u_motor_control",
     "dst": "p_motor",
-    "rate_ms": 1.0
+    "rate_ms": 1
    },
    {
     "drive": "timer",
     "src": "u_motor_control",
     "dst": "v_motor_isr_count",
-    "rate_ms": 1.0
+    "rate_ms": 1
    },
    {
     "drive": "timer",
     "src": "p_battery",
     "dst": "u_telemetry",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "p_temp",
     "dst": "u_telemetry",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "u_telemetry",
     "dst": "v_telemetry_count",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "u_telemetry",
     "dst": "s_log",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "v_telemetry_count",
     "dst": "u_telemetry",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "u_telemetry",
     "dst": "s_mqtt",
-    "rate_ms": 30000.0
+    "rate_ms": 30000
    },
    {
     "drive": "timer",
     "src": "u_cloud_report",
     "dst": "v_cloud_count",
-    "rate_ms": 60000.0
+    "rate_ms": 60000
    },
    {
     "drive": "timer",
     "src": "u_cloud_report",
     "dst": "s_log",
-    "rate_ms": 60000.0
+    "rate_ms": 60000
    },
    {
     "drive": "timer",
     "src": "v_cloud_count",
     "dst": "u_cloud_report",
-    "rate_ms": 60000.0
+    "rate_ms": 60000
    },
    {
     "drive": "timer",
     "src": "u_cloud_report",
     "dst": "s_http",
-    "rate_ms": 60000.0
+    "rate_ms": 60000
    },
    {
     "drive": "timer",
     "src": "u_stats",
     "dst": "s_log",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "v_heartbeat_count",
     "dst": "u_stats",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "v_motor_isr_count",
     "dst": "u_stats",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "v_telemetry_count",
     "dst": "u_stats",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "v_cloud_count",
     "dst": "u_stats",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "s_wifi",
     "dst": "u_stats",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    },
    {
     "drive": "timer",
     "src": "u_stats",
     "dst": "s_system",
-    "rate_ms": 10000.0
+    "rate_ms": 10000
    }
   ],
   "nodes": {

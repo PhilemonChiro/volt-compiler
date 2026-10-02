@@ -108,7 +108,7 @@
     "drive": "timer",
     "src": "u_t",
     "dst": "s_log",
-    "rate_ms": 500.0
+    "rate_ms": 500
    }
   ],
   "nodes": {

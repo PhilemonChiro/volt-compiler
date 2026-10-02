@@ -1,6 +1,6 @@
-// Package compiler is the Go port of the Volt compiler (volt/legacy/python/src/volt/compiler).
-// testdata/golden holds the Python compiler's output; this package must
-// reproduce it before the Python compiler is retired.
+// Package compiler is the Volt compiler (a port of the original Python one).
+// testdata/golden holds the expected output of every pass; go test -update
+// rewrites it (see golden_update_test.go).
 package compiler
 
 import (
