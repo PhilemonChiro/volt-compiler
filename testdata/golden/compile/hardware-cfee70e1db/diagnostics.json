@@ -2,8 +2,8 @@
   {
     "severity": "error",
     "category": "HARDWARE ERROR",
-    "message": "I2C address 0x76 on bus `bus` is already used by sensor `bme` (line 4).",
-    "hint": "Each I2C address must be unique per bus. Check the sensor datasheet for alternative addresses.",
+    "message": "I2C address 0x76 on bus `bus` is already used by `bme` (line 4).",
+    "hint": "Each I2C address must be unique per bus. Pick another address below and set the board's address pin (ADDR / SDO / A0) to match.",
     "region": [
       5,
       12,

@@ -1,0 +1,27 @@
+
+[yellow bold]-- DEPRECATION -- main.volt:1[/yellow bold]
+
+Move `chip esp32` to volt.toml: chip = "esp32"
+
+ [dim]1 |[/dim] chip esp32
+ [dim]  |[/dim] [yellow]     ^^^^^[/yellow]
+
+[cyan]Hint: The chip declaration will move to volt.toml in a future version.[/cyan]
+
+
+[yellow bold]-- HARDWARE WARNING -- main.volt:7[/yellow bold]
+
+Strapping pin: GPIO 5 controls boot debug output. Usually safe for general use.
+
+ [dim]6 |[/dim]     device oled:  SSD1306 at 0x3D
+ [dim]7 |[/dim]     device rfid:  MFRC522(cs: 5)
+ [dim]  |[/dim] [yellow]                              ^[/yellow]
+
+
+[yellow bold]-- HARDWARE WARNING -- main.volt:8[/yellow bold]
+
+Strapping pin: GPIO 15 controls boot log output. If pulled LOW, boot messages are suppressed (usually harmless).
+
+ [dim]7 |[/dim]     device rfid:  MFRC522(cs: 5)
+ [dim]8 |[/dim]     device radio: NRF24L01(cs: 15, ce: 4, channel: 90)
+ [dim]  |[/dim] [yellow]                               ^^[/yellow]

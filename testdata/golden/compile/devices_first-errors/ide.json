@@ -1,0 +1,588 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 1,
+    "col": 6,
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "severity": "warning",
+    "hint": "The chip declaration will move to volt.toml in a future version.",
+    "end_line": 1,
+    "end_col": 11
+   },
+   {
+    "line": 8,
+    "col": 30,
+    "message": "`at` sets an I2C address, but MFRC522 is a SPI device.",
+    "severity": "error",
+    "hint": "Name the select pin instead: `device rfid: MFRC522(cs: 5)`",
+    "end_line": 8,
+    "end_col": 31,
+    "code": "device-at-not-i2c",
+    "fixes": [
+     {
+      "title": "Use cs: 5",
+      "line": 8,
+      "col": 26,
+      "end_line": 8,
+      "end_col": 31,
+      "text": "(cs: 5)"
+     }
+    ]
+   },
+   {
+    "line": 9,
+    "col": 58,
+    "message": "`NeoPixel` has no setting `color`.",
+    "severity": "error",
+    "hint": "NeoPixel accepts: pin, leds.",
+    "end_line": 9,
+    "end_col": 59,
+    "code": "device-unknown-arg"
+   },
+   {
+    "line": 9,
+    "col": 43,
+    "message": "`leds` of `NeoPixel` must be an int.",
+    "severity": "error",
+    "hint": "Default: leds: 8",
+    "end_line": 9,
+    "end_col": 49,
+    "code": "device-arg-type"
+   },
+   {
+    "line": 10,
+    "col": 12,
+    "message": "`HCSR04` needs pins trig, echo. Missing: echo.",
+    "severity": "error",
+    "hint": "`device sonar: HCSR04(trig: <gpio>, echo: <gpio>)`",
+    "end_line": 10,
+    "end_col": 17,
+    "code": "device-missing-pin"
+   },
+   {
+    "line": 11,
+    "col": 30,
+    "message": "Pin 4 is already used by `sonar.trig` (line 10).",
+    "severity": "error",
+    "hint": "Each pin can only be used once.",
+    "end_line": 11,
+    "end_col": 31,
+    "code": "pin-conflict",
+    "fixes": [
+     {
+      "title": "Move to GPIO 27",
+      "line": 11,
+      "col": 30,
+      "end_line": 11,
+      "end_col": 31,
+      "text": "27"
+     },
+     {
+      "title": "Move to GPIO 33",
+      "line": 11,
+      "col": 30,
+      "end_line": 11,
+      "end_col": 31,
+      "text": "33"
+     },
+     {
+      "title": "Move to GPIO 14",
+      "line": 11,
+      "col": 30,
+      "end_line": 11,
+      "end_col": 31,
+      "text": "14"
+     }
+    ]
+   },
+   {
+    "line": 14,
+    "col": 12,
+    "message": "No UART left for `m3`: ESP32 has 2 UARTs free for devices (UART1, UART2; UART0 is the USB console).",
+    "severity": "error",
+    "hint": "Remove a serial device, or use an I2C/SPI variant of the part.",
+    "end_line": 14,
+    "end_col": 14,
+    "code": "uart-exhausted"
+   },
+   {
+    "line": 15,
+    "col": 39,
+    "message": "Bus `fast` runs at 400 kHz but `lcd` (HD44780) supports at most 100 kHz.",
+    "severity": "warning",
+    "hint": "",
+    "end_line": 15,
+    "end_col": 43,
+    "code": "bus-too-fast",
+    "fixes": [
+     {
+      "title": "Use 100 kHz",
+      "line": 15,
+      "col": 39,
+      "end_line": 15,
+      "end_col": 43,
+      "text": "100k"
+     }
+    ]
+   },
+   {
+    "line": 5,
+    "col": 12,
+    "message": "GPIO 21 is used by the default I2C bus (sda) but was already declared as pin `led` (line 4).",
+    "severity": "error",
+    "hint": "A pin can only belong to one subsystem. Either remove the `pin` declaration or move the bus signal to a free GPIO.",
+    "end_line": 5,
+    "end_col": 13,
+    "code": "bus-pin-conflict"
+   },
+   {
+    "line": 8,
+    "col": 12,
+    "message": "GPIO 19 is used by the default SPI bus (miso) but is already taken by bus `fast` (scl, line 15).",
+    "severity": "error",
+    "hint": "Two buses cannot share a signal pin.",
+    "end_line": 8,
+    "end_col": 16,
+    "code": "bus-pin-conflict"
+   },
+   {
+    "line": 8,
+    "col": 12,
+    "message": "GPIO 18 is used by the default SPI bus (clk) but is already taken by bus `fast` (sda, line 15).",
+    "severity": "error",
+    "hint": "Two buses cannot share a signal pin.",
+    "end_line": 8,
+    "end_col": 16,
+    "code": "bus-pin-conflict"
+   },
+   {
+    "line": 6,
+    "col": 12,
+    "message": "I2C address 0x76 on the default I2C bus is already used by `a` (line 5).",
+    "severity": "error",
+    "hint": "Each I2C address must be unique per bus. Pick another address below and set the board's address pin (ADDR / SDO / A0) to match.",
+    "end_line": 6,
+    "end_col": 13,
+    "code": "i2c-address-clash",
+    "fixes": [
+     {
+      "title": "Use 0x77",
+      "line": 6,
+      "col": 25,
+      "end_line": 6,
+      "end_col": 25,
+      "text": " at 0x77"
+     }
+    ]
+   },
+   {
+    "line": 7,
+    "col": 29,
+    "message": "BME280 does not answer at 0x50. It can use: 0x76, 0x77.",
+    "severity": "warning",
+    "hint": "",
+    "end_line": 7,
+    "end_col": 33,
+    "code": "i2c-address-unsupported",
+    "fixes": [
+     {
+      "title": "Use 0x76",
+      "line": 7,
+      "col": 29,
+      "end_line": 7,
+      "end_col": 33,
+      "text": "0x76"
+     },
+     {
+      "title": "Use 0x77",
+      "line": 7,
+      "col": 29,
+      "end_line": 7,
+      "end_col": 33,
+      "text": "0x77"
+     }
+    ]
+   }
+  ],
+  "pins": [
+   {
+    "name": "led",
+    "mode": "Output",
+    "gpio": 21
+   }
+  ],
+  "devices": [
+   {
+    "name": "a",
+    "type": "BME280",
+    "bus": "i2c",
+    "address": 118
+   },
+   {
+    "name": "b",
+    "type": "BME280",
+    "bus": "i2c",
+    "address": 118
+   },
+   {
+    "name": "c",
+    "type": "BME280",
+    "bus": "i2c",
+    "address": 80
+   },
+   {
+    "name": "rfid",
+    "type": "MFRC522",
+    "bus": "spi",
+    "address": 5
+   },
+   {
+    "name": "strip",
+    "type": "NeoPixel",
+    "bus": "",
+    "address": 0
+   },
+   {
+    "name": "sonar",
+    "type": "HCSR04",
+    "bus": "",
+    "address": 0
+   },
+   {
+    "name": "beep",
+    "type": "DHT22",
+    "bus": "",
+    "address": 0
+   },
+   {
+    "name": "m1",
+    "type": "SIM800L",
+    "bus": "m1_uart",
+    "address": 0
+   },
+   {
+    "name": "m2",
+    "type": "SIM800L",
+    "bus": "m2_uart",
+    "address": 0
+   },
+   {
+    "name": "m3",
+    "type": "SIM800L",
+    "bus": "m3_uart",
+    "address": 0
+   },
+   {
+    "name": "lcd",
+    "type": "HD44780",
+    "bus": "fast",
+    "address": 39
+   }
+  ],
+  "buses": [
+   {
+    "name": "fast",
+    "type": "i2c"
+   },
+   {
+    "name": "i2c",
+    "type": "i2c"
+   },
+   {
+    "name": "spi",
+    "type": "spi"
+   },
+   {
+    "name": "m1_uart",
+    "type": "uart"
+   },
+   {
+    "name": "m2_uart",
+    "type": "uart"
+   },
+   {
+    "name": "m3_uart",
+    "type": "uart"
+   }
+  ],
+  "tasks": [
+   {
+    "name": "_rule0",
+    "tier": "background",
+    "line": 19
+   }
+  ],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": "esp32"
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ]
+ ],
+ "format_code": "chip esp32\n\nhardware {\n    pin led = 21\n    device a: BME280\n    device b: BME280\n    device c: BME280 at 0x50\n    device rfid: MFRC522 at 0x05\n    device strip: NeoPixel(pin: 13, leds: \"many\", color: 3)\n    device sonar: HCSR04(trig: 4)\n    device beep: DHT22(pin: 4)\n    device m1: SIM800L(tx: 17, rx: 16)\n    device m2: SIM800L(tx: 25, rx: 26)\n    device m3: SIM800L(tx: 32, rx: 34)\n    device lcd: HD44780 on fast\n    i2c fast(sda: 18, scl: 19, speed: 400k)\n}\n\nevery 1s { led.toggle() }\n",
+ "find_symbols": [
+  {
+   "name": "led",
+   "kind": "pin",
+   "def_line": 4,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 20,
+     "col": 5
+    }
+   ]
+  },
+  {
+   "name": "a",
+   "kind": "sensor",
+   "def_line": 5,
+   "def_col": 12,
+   "refs": []
+  },
+  {
+   "name": "b",
+   "kind": "sensor",
+   "def_line": 6,
+   "def_col": 12,
+   "refs": []
+  },
+  {
+   "name": "c",
+   "kind": "sensor",
+   "def_line": 7,
+   "def_col": 12,
+   "refs": []
+  },
+  {
+   "name": "rfid",
+   "kind": "sensor",
+   "def_line": 8,
+   "def_col": 12,
+   "refs": []
+  },
+  {
+   "name": "strip",
+   "kind": "sensor",
+   "def_line": 9,
+   "def_col": 12,
+   "refs": []
+  },
+  {
+   "name": "sonar",
+   "kind": "sensor",
+   "def_line": 10,
+   "def_col": 12,
+   "refs": []
+  },
+  {
+   "name": "beep",
+   "kind": "sensor",
+   "def_line": 11,
+   "def_col": 12,
+   "refs": []
+  },
+  {
+   "name": "m1",
+   "kind": "sensor",
+   "def_line": 12,
+   "def_col": 12,
+   "refs": []
+  },
+  {
+   "name": "m2",
+   "kind": "sensor",
+   "def_line": 13,
+   "def_col": 12,
+   "refs": []
+  },
+  {
+   "name": "m3",
+   "kind": "sensor",
+   "def_line": 14,
+   "def_col": 12,
+   "refs": []
+  },
+  {
+   "name": "lcd",
+   "kind": "sensor",
+   "def_line": 16,
+   "def_col": 12,
+   "refs": []
+  },
+  {
+   "name": "fast",
+   "kind": "bus",
+   "def_line": 15,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 16,
+     "col": 30
+    }
+   ]
+  },
+  {
+   "name": "i2c",
+   "kind": "bus",
+   "def_line": 5,
+   "def_col": 12,
+   "refs": [
+    {
+     "line": 0,
+     "col": 0
+    },
+    {
+     "line": 0,
+     "col": 0
+    },
+    {
+     "line": 0,
+     "col": 0
+    }
+   ]
+  },
+  {
+   "name": "spi",
+   "kind": "bus",
+   "def_line": 8,
+   "def_col": 12,
+   "refs": [
+    {
+     "line": 0,
+     "col": 0
+    }
+   ]
+  },
+  {
+   "name": "m1_uart",
+   "kind": "bus",
+   "def_line": 12,
+   "def_col": 12,
+   "refs": [
+    {
+     "line": 0,
+     "col": 0
+    }
+   ]
+  },
+  {
+   "name": "m2_uart",
+   "kind": "bus",
+   "def_line": 13,
+   "def_col": 12,
+   "refs": [
+    {
+     "line": 0,
+     "col": 0
+    }
+   ]
+  },
+  {
+   "name": "m3_uart",
+   "kind": "bus",
+   "def_line": 14,
+   "def_col": 12,
+   "refs": [
+    {
+     "line": 0,
+     "col": 0
+    }
+   ]
+  },
+  {
+   "name": "_rule0",
+   "kind": "task",
+   "def_line": 19,
+   "def_col": 7,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u__rule0((\"↻ 1s\"))\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u__rule0 timer;",
+  "units": [
+   {
+    "id": "u__rule0",
+    "name": "↻ 1s",
+    "line": 19
+   }
+  ],
+  "loops": [
+   "u__rule0"
+  ],
+  "edges": [],
+  "nodes": {
+   "u__rule0": {
+    "kind": "timer",
+    "label": "↻ 1s",
+    "line": 19,
+    "detail": "every 1s"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 4,
+    "detail": "GPIO 21"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    p_led([\"led\"])\n    u__rule0((\"↻ 1s\"))\n    u__rule0 -->|toggle| p_led\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u__rule0 timer;\n    class p_led pin;",
+  "units": [
+   {
+    "id": "u__rule0",
+    "name": "↻ 1s",
+    "line": 19
+   }
+  ],
+  "loops": [
+   "u__rule0"
+  ],
+  "edges": [
+   {
+    "drive": "timer",
+    "src": "u__rule0",
+    "dst": "p_led",
+    "rate_ms": 1000
+   }
+  ],
+  "nodes": {
+   "u__rule0": {
+    "kind": "timer",
+    "label": "↻ 1s",
+    "line": 19,
+    "detail": "every 1s"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 4,
+    "detail": "GPIO 21"
+   }
+  }
+ }
+}

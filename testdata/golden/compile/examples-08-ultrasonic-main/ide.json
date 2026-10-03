@@ -1,43 +1,6 @@
 {
  "compile_full": {
-  "diagnostics": [
-   {
-    "line": 8,
-    "col": 9,
-    "message": "Strapping pin: GPIO 2 must be LOW during boot for flash programming.",
-    "severity": "warning",
-    "hint": "",
-    "end_line": 8,
-    "end_col": 12,
-    "code": "pin-strapping",
-    "fixes": [
-     {
-      "title": "Move to GPIO 4",
-      "line": 8,
-      "col": 15,
-      "end_line": 8,
-      "end_col": 16,
-      "text": "4"
-     },
-     {
-      "title": "Move to GPIO 18",
-      "line": 8,
-      "col": 15,
-      "end_line": 8,
-      "end_col": 16,
-      "text": "18"
-     },
-     {
-      "title": "Move to GPIO 19",
-      "line": 8,
-      "col": 15,
-      "end_line": 8,
-      "end_col": 16,
-      "text": "19"
-     }
-    ]
-   }
-  ],
+  "diagnostics": [],
   "pins": [
    {
     "name": "led",
@@ -100,7 +63,7 @@
    100
   ]
  ],
- "format_code": "/* Ultrasonic proximity alert — HC-SR04 distance sensor + LED\n*\n* HC-SR04 uses two GPIO pins: TRIG (output pulse) and ECHO (input).\n* ECHO is a 5V line — feed it through a 10k/20k divider into a 3.3V MCU.\n*/\n\nhardware {\n    pin led = 2\n    device dist: HCSR04(trig: 5, echo: 6)\n}\n\nsetup {\n    log(\"boot\", \"ultrasonic ready\")\n}\n\nevery 200ms {\n    var cm: float = dist.distance_cm()\n    log(\"dist\", \"{cm} cm\")\n\n    // Light the LED when something is within 20 cm.\n    if cm < 20.0 {\n        led.on()\n    } else {\n        led.off()\n    }\n}\n",
+ "format_code": "/* Ultrasonic proximity alert — HC-SR04 distance sensor + LED\n*\n* HC-SR04 uses two GPIO pins: TRIG (output pulse) and ECHO (input).\n* ECHO is a 5V line — feed it through a 10k/20k divider into a 3.3V MCU.\n*/\n\nhardware {\n    pin led = 2\n    device dist: HCSR04(trig: 26, echo: 27)\n}\n\nsetup {\n    log(\"boot\", \"ultrasonic ready\")\n}\n\nevery 200ms {\n    var cm: float = dist.distance_cm()\n    log(\"dist\", \"{cm} cm\")\n\n    // Light the LED when something is within 20 cm.\n    if cm < 20.0 {\n        led.on()\n    } else {\n        led.off()\n    }\n}\n",
  "find_symbols": [
   {
    "name": "led",

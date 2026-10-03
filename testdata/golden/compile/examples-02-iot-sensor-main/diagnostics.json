@@ -1,14 +1,1 @@
-[
-  {
-    "severity": "warning",
-    "category": "HARDWARE WARNING",
-    "message": "Strapping pin: GPIO 2 must be LOW during boot for flash programming.",
-    "hint": null,
-    "region": [
-      4,
-      9,
-      4,
-      12
-    ]
-  }
-]
+[]

@@ -1,8 +1,0 @@
-
-[yellow bold]-- HARDWARE WARNING -- main.volt:3[/yellow bold]
-
-GPIO 2: GPIO 2 is a strapping pin. Must be LOW or floating for download mode.
-
- [dim]2 |[/dim] hardware {
- [dim]3 |[/dim]     pin led: Output = 2
- [dim]  |[/dim] [yellow]        ^^^[/yellow]

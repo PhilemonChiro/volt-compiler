@@ -59,6 +59,14 @@ var (
 )
 
 // drivesPin: modes that need an output driver.
+// esp32LEDPin: GPIO 2 drives the on-board LED on ESP32 DevKits. As a
+// strapping pin it must be LOW or floating at boot, which an LED (or any
+// output load to GND) keeps it — so driving it is fine; only inputs that
+// pull it high are a problem.
+func esp32LEDPin(gpio int, mode string) bool {
+	return gpio == 2 && (mode == "" || drivesPin(mode))
+}
+
 func drivesPin(mode string) bool {
 	switch mode {
 	case "Output", "PWM", "Servo", "DAC":
@@ -121,7 +129,7 @@ func (esp32Chip) validatePin(name, mode string) []pinIssue {
 		out = append(out, pinIssue{"error", "pin-no-pullup", fmt.Sprintf("GPIO %s has no internal pull-up resistor (GPIO 34-39).", name),
 			"Use an external pull-up resistor."})
 	}
-	if pin.IsStrapping && pin.StrappingWarning != "" {
+	if pin.IsStrapping && pin.StrappingWarning != "" && !esp32LEDPin(pin.GPIO, mode) {
 		out = append(out, pinIssue{"warning", "pin-strapping", "Strapping pin: " + pin.StrappingWarning, ""})
 	}
 	if pin.IsUART0 {

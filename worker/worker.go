@@ -10,7 +10,7 @@
 //	Ready:    {"id": "_ready", "ok": true} at startup
 //
 // Ops: compile_full, format_code, find_symbols, state_diagram, system_graph,
-// pin_table ({"chip": ...}, no source).
+// pin_table / bus_pins ({"chip": ...}, no source).
 package worker
 
 import (
@@ -109,6 +109,9 @@ var errNoSource = errors.New("missing field: source")
 func run(req request, send func(any)) (any, error) {
 	if req.Op == "pin_table" {
 		return compiler.PinTable(req.Chip), nil
+	}
+	if req.Op == "bus_pins" {
+		return compiler.BusPins(req.Chip), nil
 	}
 	switch req.Op {
 	case "compile_full", "format_code", "find_symbols", "state_diagram", "system_graph":

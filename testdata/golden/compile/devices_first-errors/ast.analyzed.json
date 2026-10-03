@@ -1,0 +1,333 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [1, 6, 1, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [4, 9, 16, 15],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [4, 9, 4, 12],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 21
+   }
+  ],
+  "buses": [
+   {
+    "_": "BusDecl",
+    "region": [15, 9, 15, 13],
+    "bus_type": "i2c",
+    "name": "fast",
+    "params": {
+     "sda": {
+      "_": "IntLiteral",
+      "region": [15, 19, 15, 21],
+      "value": 18
+     },
+     "scl": {
+      "_": "IntLiteral",
+      "region": [15, 28, 15, 30],
+      "value": 19
+     },
+     "speed": {
+      "_": "IntLiteral",
+      "region": [15, 39, 15, 43],
+      "value": 400000
+     }
+    }
+   },
+   {
+    "_": "BusDecl",
+    "region": [5, 12, 5, 13],
+    "bus_type": "i2c",
+    "name": "i2c",
+    "params": {
+     "sda": {
+      "_": "IntLiteral",
+      "region": [5, 12, 5, 13],
+      "value": 21
+     },
+     "scl": {
+      "_": "IntLiteral",
+      "region": [5, 12, 5, 13],
+      "value": 22
+     }
+    }
+   },
+   {
+    "_": "BusDecl",
+    "region": [8, 12, 8, 16],
+    "bus_type": "spi",
+    "name": "spi",
+    "params": {
+     "mosi": {
+      "_": "IntLiteral",
+      "region": [8, 12, 8, 16],
+      "value": 23
+     },
+     "miso": {
+      "_": "IntLiteral",
+      "region": [8, 12, 8, 16],
+      "value": 19
+     },
+     "clk": {
+      "_": "IntLiteral",
+      "region": [8, 12, 8, 16],
+      "value": 18
+     }
+    }
+   },
+   {
+    "_": "BusDecl",
+    "region": [12, 12, 12, 14],
+    "bus_type": "uart",
+    "name": "m1_uart",
+    "params": {
+     "tx": {
+      "_": "IntLiteral",
+      "region": [12, 31, 12, 33],
+      "value": 17
+     },
+     "rx": {
+      "_": "IntLiteral",
+      "region": [12, 39, 12, 41],
+      "value": 16
+     },
+     "baud": {
+      "_": "IntLiteral",
+      "region": [12, 12, 12, 14],
+      "value": 9600
+     }
+    }
+   },
+   {
+    "_": "BusDecl",
+    "region": [13, 12, 13, 14],
+    "bus_type": "uart",
+    "name": "m2_uart",
+    "params": {
+     "tx": {
+      "_": "IntLiteral",
+      "region": [13, 31, 13, 33],
+      "value": 25
+     },
+     "rx": {
+      "_": "IntLiteral",
+      "region": [13, 39, 13, 41],
+      "value": 26
+     },
+     "baud": {
+      "_": "IntLiteral",
+      "region": [13, 12, 13, 14],
+      "value": 9600
+     }
+    }
+   },
+   {
+    "_": "BusDecl",
+    "region": [14, 12, 14, 14],
+    "bus_type": "uart",
+    "name": "m3_uart",
+    "params": {
+     "tx": {
+      "_": "IntLiteral",
+      "region": [14, 31, 14, 33],
+      "value": 32
+     },
+     "rx": {
+      "_": "IntLiteral",
+      "region": [14, 39, 14, 41],
+      "value": 34
+     },
+     "baud": {
+      "_": "IntLiteral",
+      "region": [14, 12, 14, 14],
+      "value": 9600
+     }
+    }
+   }
+  ],
+  "sensors": [
+   {
+    "_": "SensorDecl",
+    "region": [5, 12, 5, 13],
+    "name": "a",
+    "sensor_type": "BME280",
+    "bus_name": "i2c",
+    "address": 118,
+    "pin_params": {}
+   },
+   {
+    "_": "SensorDecl",
+    "region": [6, 12, 6, 13],
+    "name": "b",
+    "sensor_type": "BME280",
+    "bus_name": "i2c",
+    "address": 118,
+    "pin_params": {}
+   },
+   {
+    "_": "SensorDecl",
+    "region": [7, 12, 7, 13],
+    "name": "c",
+    "sensor_type": "BME280",
+    "bus_name": "i2c",
+    "address": 80,
+    "pin_params": {}
+   },
+   {
+    "_": "SensorDecl",
+    "region": [8, 12, 8, 16],
+    "name": "rfid",
+    "sensor_type": "MFRC522",
+    "bus_name": "spi",
+    "address": 5,
+    "pin_params": {}
+   },
+   {
+    "_": "SensorDecl",
+    "region": [9, 12, 9, 17],
+    "name": "strip",
+    "sensor_type": "NeoPixel",
+    "bus_name": "",
+    "address": 0,
+    "pin_params": {
+     "pin": 13,
+     "leds": {
+      "_": "StringLiteral",
+      "region": [9, 43, 9, 49],
+      "value": "many"
+     },
+     "color": 3
+    }
+   },
+   {
+    "_": "SensorDecl",
+    "region": [10, 12, 10, 17],
+    "name": "sonar",
+    "sensor_type": "HCSR04",
+    "bus_name": "",
+    "address": 0,
+    "pin_params": {
+     "trig": 4
+    }
+   },
+   {
+    "_": "SensorDecl",
+    "region": [11, 12, 11, 16],
+    "name": "beep",
+    "sensor_type": "DHT22",
+    "bus_name": "",
+    "address": 0,
+    "pin_params": {
+     "pin": 4
+    }
+   },
+   {
+    "_": "SensorDecl",
+    "region": [12, 12, 12, 14],
+    "name": "m1",
+    "sensor_type": "SIM800L",
+    "bus_name": "m1_uart",
+    "address": 0,
+    "pin_params": {
+     "tx": 17,
+     "rx": 16
+    }
+   },
+   {
+    "_": "SensorDecl",
+    "region": [13, 12, 13, 14],
+    "name": "m2",
+    "sensor_type": "SIM800L",
+    "bus_name": "m2_uart",
+    "address": 0,
+    "pin_params": {
+     "tx": 25,
+     "rx": 26
+    }
+   },
+   {
+    "_": "SensorDecl",
+    "region": [14, 12, 14, 14],
+    "name": "m3",
+    "sensor_type": "SIM800L",
+    "bus_name": "m3_uart",
+    "address": 0,
+    "pin_params": {
+     "tx": 32,
+     "rx": 34
+    }
+   },
+   {
+    "_": "SensorDecl",
+    "region": [16, 12, 16, 15],
+    "name": "lcd",
+    "sensor_type": "HD44780",
+    "bus_name": "fast",
+    "address": 39,
+    "pin_params": {}
+   }
+  ]
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [19, 7, 19, 9],
+   "name": "_rule0",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [19, 7, 19, 9],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [19, 7, 19, 9],
+      "microseconds": 1000000,
+      "original": "1s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [20, 5, 20, 8],
+        "obj": {
+         "_": "VarRef",
+         "region": [20, 5, 20, 8],
+         "name": "led"
+        },
+        "method": "toggle",
+        "args": []
+       }
+      }
+     ],
+     "yield_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

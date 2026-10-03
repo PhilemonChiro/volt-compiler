@@ -2,18 +2,6 @@
   {
     "severity": "warning",
     "category": "HARDWARE WARNING",
-    "message": "GPIO 2: GPIO 2 is a strapping pin. Must be LOW or floating for download mode.",
-    "hint": null,
-    "region": [
-      17,
-      9,
-      17,
-      12
-    ]
-  },
-  {
-    "severity": "warning",
-    "category": "HARDWARE WARNING",
     "message": "GPIO 15: GPIO 15 is a strapping pin. Outputs PWM signal during boot. LOW at boot suppresses UART boot log messages.",
     "hint": null,
     "region": [

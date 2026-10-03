@@ -42,6 +42,7 @@ const (
 	tInt
 	tString
 	tAnnotation // TASK_ANNOTATION: @critical, @priority, @core(0|1)
+	tFreq       // 100k, 1M, 8MHz: an int with a k/M multiplier (bus speeds)
 )
 
 type token struct {
@@ -87,6 +88,7 @@ var (
 
 var (
 	reDuration   = regexp.MustCompile(`^[0-9]+(\.[0-9]+)?(us|ms|seconds|second|sec|minutes|minute|min|hours|hour|hr|s)`)
+	reFreq       = regexp.MustCompile(`^[0-9]+(\.[0-9]+)?[kM](Hz)?\b`)
 	reFloat      = regexp.MustCompile(`^[0-9]+\.[0-9]+`)
 	reHex        = regexp.MustCompile(`^0x[0-9a-fA-F]+`)
 	reBin        = regexp.MustCompile(`^0b[01_]+`)
@@ -187,7 +189,7 @@ func (lx *lexer) lex(off int, ctx lexCtx) token {
 	for _, r := range []struct {
 		k  tokKind
 		re *regexp.Regexp
-	}{{tDuration, reDuration}, {tFloat, reFloat}, {tHex, reHex}, {tBin, reBin}, {tInt, reInt}} {
+	}{{tDuration, reDuration}, {tFreq, reFreq}, {tFloat, reFloat}, {tHex, reHex}, {tBin, reBin}, {tInt, reInt}} {
 		if t, ok := re(r.k, r.re); ok {
 			return t
 		}

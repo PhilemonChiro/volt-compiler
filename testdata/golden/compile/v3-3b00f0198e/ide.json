@@ -2,42 +2,6 @@
  "compile_full": {
   "diagnostics": [
    {
-    "line": 5,
-    "col": 9,
-    "message": "GPIO 2: GPIO 2 is a strapping pin. Must be LOW or floating for download mode.",
-    "severity": "warning",
-    "hint": "",
-    "end_line": 5,
-    "end_col": 12,
-    "code": "pin-strapping",
-    "fixes": [
-     {
-      "title": "Move to GPIO 4",
-      "line": 5,
-      "col": 15,
-      "end_line": 5,
-      "end_col": 16,
-      "text": "4"
-     },
-     {
-      "title": "Move to GPIO 18",
-      "line": 5,
-      "col": 15,
-      "end_line": 5,
-      "end_col": 16,
-      "text": "18"
-     },
-     {
-      "title": "Move to GPIO 19",
-      "line": 5,
-      "col": 15,
-      "end_line": 5,
-      "end_col": 16,
-      "text": "19"
-     }
-    ]
-   },
-   {
     "line": 6,
     "col": 9,
     "message": "GPIO 25: Also DAC channel 1. When DAC is enabled, outputs ~1.6V by default.",
@@ -145,7 +109,7 @@
    100
   ]
  ],
- "format_code": "hardware {\n    pin led = 2\n    pin buzzer: PWM = 25\n    bus s: I2C(sda: 21, scl: 22)\n    device bme: BME280 on s at 0x76\n}\n\nenum AlertLevel { normal, warning, critical }\n\nchannel alerts: int[8]\n\nstorage boot_count: int = 0\n\nevery 10s when wifi.is_connected() {\n    system.watchdog_feed()\n    var temp: float = bme.temperature() or skip\n    mqtt.send_float(\"temp\", temp) or retry(3)\n    if temp > 35 {\n        alerts.send(1)\n        buzzer.beep_warning()\n    }\n}\n\nevery 100ms {\n    if alerts.has_data() {\n        var code: int = alerts.receive()\n        led.on()\n    }\n}\n\nevery 1s { led.toggle() }\n\nsetup {\n    boot_count += 1\n    system.watchdog_enable(15000)\n    wifi.connect(\"net\", \"pass\") or retry(10)\n    mqtt.connect(\"mqtt://broker\") or retry(5)\n    buzzer.beep_startup()\n}\n",
+ "format_code": "hardware {\n    pin led = 2\n    pin buzzer: PWM = 25\n    device bme: BME280 on s at 0x76\n    i2c s(sda: 21, scl: 22)\n}\n\nenum AlertLevel { normal, warning, critical }\n\nchannel alerts: int[8]\n\nstorage boot_count: int = 0\n\nevery 10s when wifi.is_connected() {\n    system.watchdog_feed()\n    var temp: float = bme.temperature() or skip\n    mqtt.send_float(\"temp\", temp) or retry(3)\n    if temp > 35 {\n        alerts.send(1)\n        buzzer.beep_warning()\n    }\n}\n\nevery 100ms {\n    if alerts.has_data() {\n        var code: int = alerts.receive()\n        led.on()\n    }\n}\n\nevery 1s { led.toggle() }\n\nsetup {\n    boot_count += 1\n    system.watchdog_enable(15000)\n    wifi.connect(\"net\", \"pass\") or retry(10)\n    mqtt.connect(\"mqtt://broker\") or retry(5)\n    buzzer.beep_startup()\n}\n",
  "find_symbols": [
   {
    "name": "led",
@@ -191,7 +155,12 @@
    "kind": "bus",
    "def_line": 7,
    "def_col": 9,
-   "refs": []
+   "refs": [
+    {
+     "line": 8,
+     "col": 27
+    }
+   ]
   },
   {
    "name": "_rule0",

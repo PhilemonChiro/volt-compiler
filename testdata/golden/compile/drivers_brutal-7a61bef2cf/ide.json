@@ -9,42 +9,6 @@
     "hint": "The chip declaration will move to volt.toml in a future version.",
     "end_line": 1,
     "end_col": 11
-   },
-   {
-    "line": 3,
-    "col": 9,
-    "message": "Strapping pin: GPIO 2 must be LOW during boot for flash programming.",
-    "severity": "warning",
-    "hint": "",
-    "end_line": 3,
-    "end_col": 12,
-    "code": "pin-strapping",
-    "fixes": [
-     {
-      "title": "Move to GPIO 4",
-      "line": 3,
-      "col": 23,
-      "end_line": 3,
-      "end_col": 24,
-      "text": "4"
-     },
-     {
-      "title": "Move to GPIO 18",
-      "line": 3,
-      "col": 23,
-      "end_line": 3,
-      "end_col": 24,
-      "text": "18"
-     },
-     {
-      "title": "Move to GPIO 19",
-      "line": 3,
-      "col": 23,
-      "end_line": 3,
-      "end_col": 24,
-      "text": "19"
-     }
-    ]
    }
   ],
   "pins": [
@@ -120,7 +84,7 @@
    100
   ]
  ],
- "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n    bus i2c0: I2C(sda: 21, scl: 22)\n    device bme1: BME280 on i2c0 at 0x76\n    device bme2: BME280 on i2c0 at 0x77\n}\n\nevery 1s { led.toggle() }\n",
+ "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n    device bme1: BME280 on i2c0 at 0x76\n    device bme2: BME280 on i2c0 at 0x77\n    i2c i2c0(sda: 21, scl: 22)\n}\n\nevery 1s { led.toggle() }\n",
  "find_symbols": [
   {
    "name": "led",
@@ -153,7 +117,16 @@
    "kind": "bus",
    "def_line": 4,
    "def_col": 9,
-   "refs": []
+   "refs": [
+    {
+     "line": 5,
+     "col": 28
+    },
+    {
+     "line": 6,
+     "col": 28
+    }
+   ]
   },
   {
    "name": "_rule0",

@@ -9,21 +9,12 @@ Move `chip esp32` to volt.toml: chip = "esp32"
 [cyan]Hint: The chip declaration will move to volt.toml in a future version.[/cyan]
 
 
-[yellow bold]-- HARDWARE WARNING -- main.volt:3[/yellow bold]
-
-Strapping pin: GPIO 2 must be LOW during boot for flash programming.
-
- [dim]2 |[/dim] hardware {
- [dim]3 |[/dim]     pin led: Output = 2
- [dim]  |[/dim] [yellow]        ^^^[/yellow]
-
-
 [red bold]-- DEVICE PIN ERROR -- main.volt:5[/red bold]
 
-`HCSR04` needs 2 pins (echo, trig) but the declaration only provides one. Missing: echo, trig.
+`HCSR04` needs pins trig, echo. Missing: trig, echo.
 
  [dim]4 |[/dim]     pin gpio_pin: Output = 4
  [dim]5 |[/dim]     device hcsr04: HCSR04 on gpio_pin at 4
  [dim]  |[/dim] [red]           ^^^^^^[/red]
 
-[cyan]Hint: Use the named-pins syntax: `device hcsr04: HCSR04(echo: <gpio>, trig: <gpio>)`[/cyan]
+[cyan]Hint: `device hcsr04: HCSR04(trig: <gpio>, echo: <gpio>)`[/cyan]

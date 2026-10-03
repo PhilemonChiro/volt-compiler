@@ -9,6 +9,7 @@
 #include "volt/volt.h"
 #include "volt/spi.h"
 #include "volt/sensor.h"
+#include "volt/spi_devices.h"
 
 static char _volt_strbuf[16][128];
 

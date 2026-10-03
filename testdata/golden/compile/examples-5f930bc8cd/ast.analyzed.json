@@ -24,8 +24,8 @@
     "bus_name": "",
     "address": 0,
     "pin_params": {
-     "trig": 5,
-     "echo": 6
+     "trig": 26,
+     "echo": 27
     }
    }
   ]

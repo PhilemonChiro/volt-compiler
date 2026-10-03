@@ -114,7 +114,7 @@
    100
   ]
  ],
- "format_code": "chip rp2040\n\nhardware {\n    pin led: Output = 25\n    bus i2c0: I2C(sda: 4, scl: 5)\n    device bme: BME280 on i2c0 at 0x76\n}\n\ntask reader {\n    every 2s { var temp: float = bme.temperature() }\n}\n",
+ "format_code": "chip rp2040\n\nhardware {\n    pin led: Output = 25\n    device bme: BME280 on i2c0 at 0x76\n    i2c i2c0(sda: 4, scl: 5)\n}\n\ntask reader {\n    every 2s { var temp: float = bme.temperature() }\n}\n",
  "find_symbols": [
   {
    "name": "led",
@@ -140,7 +140,12 @@
    "kind": "bus",
    "def_line": 5,
    "def_col": 9,
-   "refs": []
+   "refs": [
+    {
+     "line": 6,
+     "col": 27
+    }
+   ]
   },
   {
    "name": "reader",

@@ -13,18 +13,6 @@
   },
   {
     "severity": "warning",
-    "category": "HARDWARE WARNING",
-    "message": "Strapping pin: GPIO 2 must be LOW during boot for flash programming.",
-    "hint": null,
-    "region": [
-      4,
-      9,
-      4,
-      12
-    ]
-  },
-  {
-    "severity": "warning",
     "category": "CONCURRENCY",
     "message": "Variable `motor_isr_count` is shared between motor_control (critical) and stats. Each read and write is atomic in the generated C.",
     "hint": "An update spread over several statements can still interleave; keep it in one statement or use a channel.",

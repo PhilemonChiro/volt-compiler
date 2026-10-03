@@ -56,7 +56,7 @@
    100
   ]
  ],
- "format_code": "hardware {\n    bus bus: I2C(sda: 21, scl: 22)\n    device bme: BME280 on bus at 0x76\n}\n\nsetup {\n    storage.save(\"temp\", bme.temperature())\n}\n",
+ "format_code": "hardware {\n    device bme: BME280 on bus at 0x76\n    i2c bus(sda: 21, scl: 22)\n}\n\nsetup {\n    storage.save(\"temp\", bme.temperature())\n}\n",
  "find_symbols": [
   {
    "name": "bme",
@@ -75,7 +75,12 @@
    "kind": "bus",
    "def_line": 3,
    "def_col": 9,
-   "refs": []
+   "refs": [
+    {
+     "line": 4,
+     "col": 27
+    }
+   ]
   }
  ],
  "state_diagram": {

@@ -7,4 +7,4 @@ Unexpected token "every" at line 3, column 1.
  [dim]3 |[/dim] every 1s { led.toggle() }
  [dim]  |[/dim] [red]^^^^^[/red]
 
-[cyan]Hint: Expected `pin`, `bus`, `device` or `}` here.[/cyan]
+[cyan]Hint: Expected `pin`, `device`, `i2c`, `spi`, `uart`, `bus` or `}` here.[/cyan]

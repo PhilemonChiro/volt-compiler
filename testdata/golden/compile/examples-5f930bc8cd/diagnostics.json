@@ -1,14 +1,14 @@
 [
   {
     "severity": "warning",
-    "category": "HARDWARE WARNING",
-    "message": "GPIO 2: GPIO 2 is a strapping pin. Must be LOW or floating for download mode.",
+    "category": "HARDWARE NOTE",
+    "message": "GPIO 26: Also DAC channel 2. When DAC is enabled, outputs ~1.6V by default.",
     "hint": null,
     "region": [
-      8,
       9,
-      8,
-      12
+      31,
+      9,
+      33
     ]
   }
 ]

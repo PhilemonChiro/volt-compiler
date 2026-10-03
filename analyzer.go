@@ -393,12 +393,12 @@ func checkDevicePinParams(program *Program, errs *Errors) {
 	}
 	for _, s := range program.Hardware.Sensors {
 		dev := Registry().Get(s.SensorType)
-		if dev == nil || dev.InitArgs == "" {
-			continue
+		if dev == nil || dev.InitArgs == "" || len(dev.Pins) > 0 {
+			continue // declared pins are checked by validateDevices
 		}
 		var named []string
 		for _, m := range placeholderRe.FindAllStringSubmatch(dev.InitArgs, -1) {
-			if !builtinInitKeys[m[1]] && !slices.Contains(named, m[1]) {
+			if !builtinInitKeys[m[1]] && dev.Param(m[1]) == nil && !slices.Contains(named, m[1]) {
 				named = append(named, m[1])
 			}
 		}

@@ -41,7 +41,7 @@ void app_main(void)
     pin_set_output(5);
     
     // Device: dev (NeoPixel)
-    neopixel_init(&_dev, 5);  // pin=5
+    neopixel_init(&_dev, 5, 8);
     
     
     // Start background tasks

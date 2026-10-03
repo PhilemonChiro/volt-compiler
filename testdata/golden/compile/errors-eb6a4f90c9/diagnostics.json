@@ -12,30 +12,6 @@
     ]
   },
   {
-    "severity": "warning",
-    "category": "HARDWARE WARNING",
-    "message": "Strapping pin: GPIO 2 must be LOW during boot for flash programming.",
-    "hint": null,
-    "region": [
-      4,
-      9,
-      4,
-      12
-    ]
-  },
-  {
-    "severity": "warning",
-    "category": "HARDWARE WARNING",
-    "message": "Strapping pin: GPIO 2 must be LOW during boot for flash programming.",
-    "hint": null,
-    "region": [
-      5,
-      9,
-      5,
-      12
-    ]
-  },
-  {
     "severity": "error",
     "category": "HARDWARE ERROR",
     "message": "Pin 2 is already used by `led` (line 4).",

@@ -11,42 +11,6 @@
     "end_col": 11
    },
    {
-    "line": 3,
-    "col": 16,
-    "message": "Strapping pin: GPIO 2 must be LOW during boot for flash programming.",
-    "severity": "warning",
-    "hint": "",
-    "end_line": 3,
-    "end_col": 19,
-    "code": "pin-strapping",
-    "fixes": [
-     {
-      "title": "Move to GPIO 4",
-      "line": 3,
-      "col": 22,
-      "end_line": 3,
-      "end_col": 23,
-      "text": "4"
-     },
-     {
-      "title": "Move to GPIO 18",
-      "line": 3,
-      "col": 22,
-      "end_line": 3,
-      "end_col": 23,
-      "text": "18"
-     },
-     {
-      "title": "Move to GPIO 19",
-      "line": 3,
-      "col": 22,
-      "end_line": 3,
-      "end_col": 23,
-      "text": "19"
-     }
-    ]
-   },
-   {
     "line": 0,
     "col": 0,
     "message": "Code after `every`/`on` block in task `worker` will never execute.",

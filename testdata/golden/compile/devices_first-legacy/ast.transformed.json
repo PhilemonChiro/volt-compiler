@@ -1,0 +1,183 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [1, 6, 1, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [4, 9, 11, 17],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [4, 9, 4, 12],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   }
+  ],
+  "buses": [
+   {
+    "_": "BusDecl",
+    "region": [5, 9, 5, 13],
+    "bus_type": "i2c",
+    "name": "i2c0",
+    "params": {
+     "sda": {
+      "_": "IntLiteral",
+      "region": [5, 24, 5, 26],
+      "value": 21
+     },
+     "scl": {
+      "_": "IntLiteral",
+      "region": [5, 33, 5, 35],
+      "value": 22
+     }
+    }
+   },
+   {
+    "_": "BusDecl",
+    "region": [6, 9, 6, 13],
+    "bus_type": "spi",
+    "name": "spi0",
+    "params": {
+     "mosi": {
+      "_": "IntLiteral",
+      "region": [6, 25, 6, 27],
+      "value": 23
+     },
+     "miso": {
+      "_": "IntLiteral",
+      "region": [6, 35, 6, 37],
+      "value": 19
+     },
+     "clk": {
+      "_": "IntLiteral",
+      "region": [6, 44, 6, 46],
+      "value": 18
+     }
+    }
+   },
+   {
+    "_": "BusDecl",
+    "region": [7, 9, 7, 12],
+    "bus_type": "uart",
+    "name": "ser",
+    "params": {
+     "tx": {
+      "_": "IntLiteral",
+      "region": [7, 23, 7, 25],
+      "value": 17
+     },
+     "rx": {
+      "_": "IntLiteral",
+      "region": [7, 31, 7, 33],
+      "value": 16
+     },
+     "baud": {
+      "_": "IntLiteral",
+      "region": [7, 41, 7, 45],
+      "value": 9600
+     }
+    }
+   }
+  ],
+  "sensors": [
+   {
+    "_": "SensorDecl",
+    "region": [8, 12, 8, 15],
+    "name": "env",
+    "sensor_type": "BME280",
+    "bus_name": "i2c0",
+    "address": 118,
+    "pin_params": {}
+   },
+   {
+    "_": "SensorDecl",
+    "region": [9, 12, 9, 16],
+    "name": "rfid",
+    "sensor_type": "MFRC522",
+    "bus_name": "spi0",
+    "address": 5,
+    "pin_params": {}
+   },
+   {
+    "_": "SensorDecl",
+    "region": [10, 12, 10, 17],
+    "name": "modem",
+    "sensor_type": "SIM800L",
+    "bus_name": "ser",
+    "address": 0,
+    "pin_params": {}
+   },
+   {
+    "_": "SensorDecl",
+    "region": [11, 12, 11, 17],
+    "name": "sonar",
+    "sensor_type": "HCSR04",
+    "bus_name": "",
+    "address": 0,
+    "pin_params": {
+     "trig": 26,
+     "echo": 27
+    }
+   }
+  ]
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [14, 7, 14, 9],
+   "name": "_rule0",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [14, 7, 14, 9],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [14, 7, 14, 9],
+      "microseconds": 1000000,
+      "original": "1s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [15, 5, 15, 8],
+        "obj": {
+         "_": "VarRef",
+         "region": [15, 5, 15, 8],
+         "name": "led"
+        },
+        "method": "toggle",
+        "args": []
+       }
+      }
+     ],
+     "yield_label": 1
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

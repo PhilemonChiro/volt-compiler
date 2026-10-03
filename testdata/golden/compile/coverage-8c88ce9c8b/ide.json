@@ -59,7 +59,7 @@
    100
   ]
  ],
- "format_code": "chip esp32\n\nhardware {\n    bus com: UART(tx: 17, rx: 16, baud: 115200)\n}\n\nsetup {\n    com.print(\"hello\")\n}\n",
+ "format_code": "chip esp32\n\nhardware {\n    uart com(tx: 17, rx: 16, baud: 115200)\n}\n\nsetup {\n    com.print(\"hello\")\n}\n",
  "find_symbols": [
   {
    "name": "com",

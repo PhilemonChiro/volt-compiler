@@ -90,7 +90,7 @@
    100
   ]
  ],
- "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 4\n    bus i2c0: I2C(sda: 21, scl: 22)\n    device bme: BME280 on i2c0 at 0x76\n}\n\nmachine m {\n    initial state a {\n        enter {\n            try {\n                bme.temperature()\n            } or retry 3 times else skip\n        }\n        after 1s -> b\n    }\n\n    state b {\n        enter { led.on() }\n    }\n}\n",
+ "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 4\n    device bme: BME280 on i2c0 at 0x76\n    i2c i2c0(sda: 21, scl: 22)\n}\n\nmachine m {\n    initial state a {\n        enter {\n            try {\n                bme.temperature()\n            } or retry 3 times else skip\n        }\n        after 1s -> b\n    }\n\n    state b {\n        enter { led.on() }\n    }\n}\n",
  "find_symbols": [
   {
    "name": "led",
@@ -116,7 +116,12 @@
    "kind": "bus",
    "def_line": 4,
    "def_col": 9,
-   "refs": []
+   "refs": [
+    {
+     "line": 5,
+     "col": 27
+    }
+   ]
   },
   {
    "name": "m",

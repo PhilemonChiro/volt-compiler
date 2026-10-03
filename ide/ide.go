@@ -237,6 +237,14 @@ func FindSymbols(source string) []*Symbol {
 			s.Refs = append(s.Refs, Ref{r.StartLine, r.StartCol})
 		}
 	}
+	// `device x: T on <bus> at …` references the bus (or pin).
+	if hw := prog.Hardware; hw != nil {
+		for _, s := range hw.Sensors {
+			if s.BusName != "" {
+				ref(s.BusName, s.BusRegion)
+			}
+		}
+	}
 	var walkExpr func(e compiler.Node)
 	walkExpr = func(e compiler.Node) {
 		switch e := e.(type) {

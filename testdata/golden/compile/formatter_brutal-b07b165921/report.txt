@@ -1,13 +1,4 @@
 
-[yellow bold]-- HARDWARE WARNING -- main.volt:17[/yellow bold]
-
-GPIO 2: GPIO 2 is a strapping pin. Must be LOW or floating for download mode.
-
- [dim]16 |[/dim] hardware {
- [dim]17 |[/dim]     pin led = 2
- [dim]   |[/dim] [yellow]        ^^^[/yellow]
-
-
 [yellow bold]-- HARDWARE WARNING -- main.volt:19[/yellow bold]
 
 GPIO 15: GPIO 15 is a strapping pin. Outputs PWM signal during boot. LOW at boot suppresses UART boot log messages.

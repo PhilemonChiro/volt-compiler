@@ -1,17 +1,5 @@
 [
   {
-    "severity": "warning",
-    "category": "HARDWARE WARNING",
-    "message": "GPIO 2: GPIO 2 is a strapping pin. Must be LOW or floating for download mode.",
-    "hint": null,
-    "region": [
-      3,
-      9,
-      3,
-      12
-    ]
-  },
-  {
     "severity": "error",
     "category": "HARDWARE ERROR",
     "message": "GPIO 2 is already used by pin `led` (line 3).",

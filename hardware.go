@@ -38,10 +38,12 @@ func validateHardware(program *Program, errs *Errors, chip chipSpec) {
 		}
 	}
 
+	h.validateDevices(program, chip, usedPins, legacyUsed)
 	for g, p := range legacyUsed {
 		usedPins[strconv.Itoa(g)] = p
 	}
 	h.validateBusPinConflicts(program, usedPins)
+	h.validateBusPinCaps(program, chip)
 
 	busKinds := map[string]string{}
 	for _, b := range hw.Buses {
@@ -50,6 +52,9 @@ func validateHardware(program *Program, errs *Errors, chip chipSpec) {
 	usedAddrs := map[string]map[int]*SensorDecl{}
 	for _, s := range hw.Sensors {
 		validateSensor(s, usedAddrs, busKinds, errs)
+		if busKinds[s.BusName] == "i2c" {
+			validateAddressList(s, errs)
+		}
 	}
 	for _, b := range hw.Buses {
 		validateBus(b, errs)
@@ -179,7 +184,7 @@ func (h *hwCheck) validatePinLegacy(pin *PinDecl, used map[int]*PinDecl) {
 		return
 	}
 
-	if info.IsStrapping && info.StrappingWarning != "" {
+	if info.IsStrapping && info.StrappingWarning != "" && !esp32LEDPin(gpio, mode) {
 		h.pinWarning(pin, "pin-strapping", fmt.Sprintf("GPIO %d: %s", gpio, info.StrappingWarning), "")
 	}
 	if info.IsUART0 {
@@ -206,17 +211,22 @@ func (h *hwCheck) validatePinLegacy(pin *PinDecl, used map[int]*PinDecl) {
 	}
 }
 
-// validateSensor checks I2C address range and per-bus uniqueness. The
-// named-pins form (HCSR04(trig: 5, echo: 6)) has no address to check.
+// validateSensor checks I2C address range and per-bus uniqueness (and, on
+// legacy SPI/UART buses, uniqueness of the `at` number). GPIO devices and
+// SPI devices with a named select pin have no address to check.
 func validateSensor(s *SensorDecl, used map[string]map[int]*SensorDecl, busKinds map[string]string, errs *Errors) {
-	if len(s.PinParams.Keys) > 0 {
+	bus, addr := s.BusName, s.Address
+	if busKinds[bus] != "i2c" && (!s.HasAddress || len(s.PinParams.Keys) > 0) || bus == "" {
 		return
 	}
-	bus, addr := s.BusName, s.Address
+	busText := fmt.Sprintf("bus `%s`", bus)
+	if !s.HasBus {
+		busText = "the default I2C bus"
+	}
 	// 0x00..0x07 and 0x78..0x7F are reserved by the I2C spec.
 	if busKinds[bus] == "i2c" && (addr < 0x08 || addr > 0x77) {
 		errs.add(Diagnostic{Region: s.Region, Category: "HARDWARE ERROR", Severity: "error", Code: "i2c-address-range",
-			Message: fmt.Sprintf("I2C address 0x%02X on bus `%s` is outside the 7-bit device range 0x08..0x77.", addr, bus),
+			Message: fmt.Sprintf("I2C address 0x%02X on %s is outside the 7-bit device range 0x08..0x77.", addr, busText),
 			Hint:    "0x00..0x07 and 0x78..0x7F are reserved by the I²C spec. Check the device datasheet — most parts have a fixed address or an A0/A1 strap option."})
 		return
 	}
@@ -224,9 +234,28 @@ func validateSensor(s *SensorDecl, used map[string]map[int]*SensorDecl, busKinds
 		used[bus] = map[int]*SensorDecl{}
 	}
 	if first, ok := used[bus][addr]; ok {
+		// Quick fixes: the device's other selectable addresses still free on this bus.
+		var fixes []Fix
+		if dev := Registry().Get(s.SensorType); dev != nil {
+			for _, a := range dev.Addresses {
+				v, err := strconv.ParseInt(strings.TrimPrefix(strings.ToLower(a), "0x"), 16, 32)
+				if _, taken := used[bus][int(v)]; err != nil || taken || int(v) == addr || len(fixes) == 3 {
+					continue
+				}
+				fix := Fix{Title: fmt.Sprintf("Use 0x%02X", v), Region: s.AddressRegion, Text: fmt.Sprintf("0x%02X", v)}
+				if !s.HasAddress { // default address: write one
+					fix.Region, fix.Text = s.EndRegion, " at "+fix.Text
+				}
+				fixes = append(fixes, fix)
+			}
+		}
+		hint := "Each I2C address must be unique per bus. Check the sensor datasheet for alternative addresses."
+		if len(fixes) > 0 {
+			hint = "Each I2C address must be unique per bus. Pick another address below and set the board's address pin (ADDR / SDO / A0) to match."
+		}
 		errs.add(Diagnostic{Region: s.Region, Category: "HARDWARE ERROR", Severity: "error", Code: "i2c-address-clash",
-			Message: fmt.Sprintf("I2C address 0x%02X on bus `%s` is already used by sensor `%s` (line %d).", addr, bus, first.Name, first.Region.StartLine),
-			Hint:    "Each I2C address must be unique per bus. Check the sensor datasheet for alternative addresses."})
+			Message: fmt.Sprintf("I2C address 0x%02X on %s is already used by `%s` (line %d).", addr, busText, first.Name, first.Region.StartLine),
+			Hint:    hint, Fixes: fixes})
 		return
 	}
 	used[bus][addr] = s
@@ -254,10 +283,10 @@ func (h *hwCheck) validateBusPinConflicts(program *Program, usedPins map[string]
 			}
 			if first, ok := usedPins[strconv.Itoa(gpio)]; ok {
 				h.report("error", "HARDWARE ERROR", "bus-pin-conflict", bus.Region,
-					fmt.Sprintf("GPIO %d is used by bus `%s` (%s) but was already declared as pin `%s` (line %d).",
-						gpio, bus.Name, pname, first.Name, first.Region.StartLine),
+					fmt.Sprintf("GPIO %d is used by %s (%s) but was already declared as pin `%s` (line %d).",
+						gpio, busLabel(bus), pname, first.Name, first.Region.StartLine),
 					"A pin can only belong to one subsystem. Either remove the `pin` declaration or move the bus signal to a free GPIO.",
-					true, regionOf(bus.Params.Vals[pname].(Node)), "Output")
+					sigMovable(bus, pname), regionOf(bus.Params.Vals[pname].(Node)), "Output")
 			}
 		}
 	}
@@ -274,12 +303,12 @@ func (h *hwCheck) validateBusPinConflicts(program *Program, usedPins map[string]
 			}
 			if prev, ok := owners[gpio]; ok {
 				h.report("error", "HARDWARE ERROR", "bus-pin-conflict", bus.Region,
-					fmt.Sprintf("GPIO %d is used by bus `%s` (%s) but is already taken by bus `%s` (%s, line %d).",
-						gpio, bus.Name, pname, prev.bus, prev.role, prev.line),
+					fmt.Sprintf("GPIO %d is used by %s (%s) but is already taken by %s (%s, line %d).",
+						gpio, busLabel(bus), pname, prev.bus, prev.role, prev.line),
 					"Two buses cannot share a signal pin.",
-					true, regionOf(bus.Params.Vals[pname].(Node)), "Output")
+					sigMovable(bus, pname), regionOf(bus.Params.Vals[pname].(Node)), "Output")
 			} else {
-				owners[gpio] = owner{bus.Name, pname, bus.Region.StartLine}
+				owners[gpio] = owner{busLabel(bus), pname, bus.Region.StartLine}
 			}
 		}
 	}

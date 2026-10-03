@@ -48,7 +48,7 @@ void app_main(void)
     pin_set_output(2);
     
     // Device: dist (HCSR04)
-    hcsr04_init(&_dist, 5, 6);
+    hcsr04_init(&_dist, 26, 27);
     
     
     // Setup

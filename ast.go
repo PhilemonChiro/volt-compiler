@@ -69,6 +69,8 @@ type HardwareBlock struct {
 	Pins    []*PinDecl    `json:"pins"`
 	Buses   []*BusDecl    `json:"buses"`
 	Sensors []*SensorDecl `json:"sensors"`
+	// normalized: implicit buses and default addresses are filled in.
+	normalized bool `json:"-"`
 }
 
 type PinDecl struct {
@@ -85,19 +87,35 @@ type BusDecl struct {
 	BusType string `json:"bus_type"`
 	Name    string `json:"name"`
 	Params  Dict   `json:"params"` // name -> Node
+	// Implicit marks a bus the compiler made for devices declared without
+	// `on` (chip-native pins, or a UART device's own port). Never printed.
+	Implicit bool `json:"-"`
 }
 
-// SensorDecl is `device x: T on bus at addr` (BusName/Address set) or
-// `device x: T(p: v, ...)` (PinParams set: int, or Node if not an int literal).
+// SensorDecl is a device: `device x: T(p: v, ...) on bus at addr`, every
+// part optional. PinParams holds the named args (int, or Node if not an int
+// literal); BusName/Address are filled in for implicit buses and default
+// addresses before the hardware checks.
 type SensorDecl struct {
 	Base
 	Name       string `json:"name"`
 	SensorType string `json:"sensor_type"`
 	BusName    string `json:"bus_name"`
 	Address    int    `json:"address"`
+	// BusRegion spans the `on` bus name (rename / find references).
+	BusRegion Region `json:"-"`
 	// AddressRegion spans the `at` expression (for quick fixes).
 	AddressRegion Region `json:"-"`
 	PinParams     Dict   `json:"pin_params"`
+	// ArgRegions spans each named arg's value (pin checks, quick fixes).
+	ArgRegions map[string]Region `json:"-"`
+	// HasAddress / HasBus: `at` / `on` were written.
+	HasAddress bool `json:"-"`
+	HasBus     bool `json:"-"`
+	// TypeRegion spans the device type name.
+	TypeRegion Region `json:"-"`
+	// EndRegion is the empty span just past the declaration (insert fixes).
+	EndRegion Region `json:"-"`
 }
 
 type PowerBlock struct {

@@ -3,12 +3,16 @@
 
 #include <stdint.h>
 #include <stdatomic.h>
+#include "pico/stdlib.h"
 #include <stdbool.h>
 #include <string.h>
 #include <stdio.h>
 #include "volt/volt.h"
+#include "volt/i2c.h"
 #include "volt/spi.h"
+#include "volt/uart.h"
 #include "volt/sensor.h"
+#include "volt/spi_devices.h"
 
 static char _volt_strbuf[16][128];
 
@@ -18,31 +22,42 @@ static void _rule0_run(volt_task_t *_vt);
 static volt_task_t __rule0_t = {0};
 
 // Sensor instances
-static nrf24l01_t _nrf24l01 = {0};
+static bme280_t _env = {0};
+static mfrc522_t _rfid = {0};
+static sim800l_t _modem = {0};
 
 // Background task: _rule0 (protothread)
 static void _rule0_run(volt_task_t *_vt)
 {
     VOLT_TASK_BEGIN(_vt);
     for (;;) {
-        pin_toggle(2);
+        pin_toggle(25);
         VOLT_YIELD_LABEL(_vt, 1, 1000);
     }
     VOLT_TASK_END(_vt);
 }
 
-void app_main(void)
+int main(void)
 {
+    stdio_init_all();
     volt_init();
     
     // Hardware initialization
-    pin_set_output(2);
+    pin_set_output(25);
     
-    // SPI bus: spi0
-    volt_spi_init(0, 23, 19, 18, 1000000);
+    // I2C bus: i2c (hw controller 0)
+    volt_i2c_init(0, 4, 5, 400000);
+    // SPI bus: spi
+    volt_spi_init(0, 19, 16, 18, 1000000);
+    // UART/Serial: modem_uart (port 0)
+    volt_uart_init(0, 8, 9, 9600);
     
-    // Device: nrf24l01 (NRF24L01)
-    nrf24l01_init(&_nrf24l01, 0, 5);  // cs_pin=5
+    // Device: env (BME280)
+    bme280_init(&_env, 0, 118);  // bus 0, i2c_addr=0x76
+    // Device: rfid (MFRC522)
+    mfrc522_init(&_rfid, 0, 17);  // cs_pin=17
+    // Device: modem (SIM800L)
+    sim800l_init(&_modem, 0);
     
     
     // Start background tasks

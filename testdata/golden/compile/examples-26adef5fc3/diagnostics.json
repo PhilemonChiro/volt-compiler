@@ -1,18 +1,6 @@
 [
   {
     "severity": "warning",
-    "category": "HARDWARE WARNING",
-    "message": "GPIO 2: GPIO 2 is a strapping pin. Must be LOW or floating for download mode.",
-    "hint": null,
-    "region": [
-      2,
-      9,
-      2,
-      12
-    ]
-  },
-  {
-    "severity": "warning",
     "category": "HARDWARE NOTE",
     "message": "GPIO 32: Also 32kHz crystal pin (XTAL_32K_P). If external 32kHz crystal is used, this pin is unavailable.",
     "hint": null,

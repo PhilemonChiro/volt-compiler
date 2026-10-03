@@ -11,50 +11,24 @@
     "end_col": 11
    },
    {
-    "line": 3,
-    "col": 9,
-    "message": "Strapping pin: GPIO 2 must be LOW during boot for flash programming.",
-    "severity": "warning",
-    "hint": "",
-    "end_line": 3,
-    "end_col": 12,
-    "code": "pin-strapping",
-    "fixes": [
-     {
-      "title": "Move to GPIO 4",
-      "line": 3,
-      "col": 23,
-      "end_line": 3,
-      "end_col": 24,
-      "text": "4"
-     },
-     {
-      "title": "Move to GPIO 18",
-      "line": 3,
-      "col": 23,
-      "end_line": 3,
-      "end_col": 24,
-      "text": "18"
-     },
-     {
-      "title": "Move to GPIO 19",
-      "line": 3,
-      "col": 23,
-      "end_line": 3,
-      "end_col": 24,
-      "text": "19"
-     }
-    ]
-   },
-   {
     "line": 6,
     "col": 12,
-    "message": "I2C address 0x76 on bus `i2c0` is already used by sensor `a` (line 5).",
+    "message": "I2C address 0x76 on bus `i2c0` is already used by `a` (line 5).",
     "severity": "error",
-    "hint": "Each I2C address must be unique per bus. Check the sensor datasheet for alternative addresses.",
+    "hint": "Each I2C address must be unique per bus. Pick another address below and set the board's address pin (ADDR / SDO / A0) to match.",
     "end_line": 6,
     "end_col": 13,
-    "code": "i2c-address-clash"
+    "code": "i2c-address-clash",
+    "fixes": [
+     {
+      "title": "Use 0x77",
+      "line": 6,
+      "col": 33,
+      "end_line": 6,
+      "end_col": 37,
+      "text": "0x77"
+     }
+    ]
    }
   ],
   "pins": [
@@ -118,7 +92,7 @@
    70
   ]
  ],
- "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n    bus i2c0: I2C(sda: 21, scl: 22)\n    device a: BME280 on i2c0 at 0x76\n    device b: BME280 on i2c0 at 0x76\n}\n\nevery 1s { led.toggle() }\n",
+ "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n    device a: BME280 on i2c0 at 0x76\n    device b: BME280 on i2c0 at 0x76\n    i2c i2c0(sda: 21, scl: 22)\n}\n\nevery 1s { led.toggle() }\n",
  "find_symbols": [
   {
    "name": "led",
@@ -151,7 +125,16 @@
    "kind": "bus",
    "def_line": 4,
    "def_col": 9,
-   "refs": []
+   "refs": [
+    {
+     "line": 5,
+     "col": 25
+    },
+    {
+     "line": 6,
+     "col": 25
+    }
+   ]
   },
   {
    "name": "_rule0",

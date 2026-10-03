@@ -1,10 +1,10 @@
 
 [red bold]-- HARDWARE ERROR -- i2c_addr_conflict.volt:5[/red bold]
 
-I2C address 0x76 on bus `bus` is already used by sensor `a` (line 4).
+I2C address 0x76 on bus `bus` is already used by `a` (line 4).
 
  [dim]4 |[/dim]     device a: BME280 on bus at 0x76
  [dim]5 |[/dim]     device b: BME280 on bus at 0x76
  [dim]  |[/dim] [red]           ^[/red]
 
-[cyan]Hint: Each I2C address must be unique per bus. Check the sensor datasheet for alternative addresses.[/cyan]
+[cyan]Hint: Each I2C address must be unique per bus. Pick another address below and set the board's address pin (ADDR / SDO / A0) to match.[/cyan]

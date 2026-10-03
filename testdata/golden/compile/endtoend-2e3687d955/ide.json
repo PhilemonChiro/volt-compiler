@@ -4,12 +4,22 @@
    {
     "line": 5,
     "col": 12,
-    "message": "I2C address 0x76 on bus `bus` is already used by sensor `a` (line 4).",
+    "message": "I2C address 0x76 on bus `bus` is already used by `a` (line 4).",
     "severity": "error",
-    "hint": "Each I2C address must be unique per bus. Check the sensor datasheet for alternative addresses.",
+    "hint": "Each I2C address must be unique per bus. Pick another address below and set the board's address pin (ADDR / SDO / A0) to match.",
     "end_line": 5,
     "end_col": 13,
-    "code": "i2c-address-clash"
+    "code": "i2c-address-clash",
+    "fixes": [
+     {
+      "title": "Use 0x77",
+      "line": 5,
+      "col": 32,
+      "end_line": 5,
+      "end_col": 36,
+      "text": "0x77"
+     }
+    ]
    }
   ],
   "pins": [],
@@ -61,7 +71,7 @@
    70
   ]
  ],
- "format_code": "hardware {\n    bus bus: I2C(sda: 21, scl: 22)\n    device a: BME280 on bus at 0x76\n    device b: BME280 on bus at 0x76\n}\n",
+ "format_code": "hardware {\n    device a: BME280 on bus at 0x76\n    device b: BME280 on bus at 0x76\n    i2c bus(sda: 21, scl: 22)\n}\n",
  "find_symbols": [
   {
    "name": "a",
@@ -82,7 +92,16 @@
    "kind": "bus",
    "def_line": 3,
    "def_col": 9,
-   "refs": []
+   "refs": [
+    {
+     "line": 4,
+     "col": 25
+    },
+    {
+     "line": 5,
+     "col": 25
+    }
+   ]
   }
  ],
  "state_diagram": {

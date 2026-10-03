@@ -14,18 +14,6 @@
   {
     "severity": "warning",
     "category": "HARDWARE WARNING",
-    "message": "Strapping pin: GPIO 2 must be LOW during boot for flash programming.",
-    "hint": null,
-    "region": [
-      4,
-      9,
-      4,
-      12
-    ]
-  },
-  {
-    "severity": "warning",
-    "category": "HARDWARE WARNING",
     "message": "Strapping pin: GPIO 0 must be HIGH during boot (pulled up by default). If driven LOW externally, the chip enters bootloader mode.",
     "hint": null,
     "region": [

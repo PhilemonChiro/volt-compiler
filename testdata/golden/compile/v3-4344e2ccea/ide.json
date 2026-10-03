@@ -1,43 +1,6 @@
 {
  "compile_full": {
-  "diagnostics": [
-   {
-    "line": 2,
-    "col": 16,
-    "message": "GPIO 2: GPIO 2 is a strapping pin. Must be LOW or floating for download mode.",
-    "severity": "warning",
-    "hint": "",
-    "end_line": 2,
-    "end_col": 19,
-    "code": "pin-strapping",
-    "fixes": [
-     {
-      "title": "Move to GPIO 4",
-      "line": 2,
-      "col": 22,
-      "end_line": 2,
-      "end_col": 23,
-      "text": "4"
-     },
-     {
-      "title": "Move to GPIO 18",
-      "line": 2,
-      "col": 22,
-      "end_line": 2,
-      "end_col": 23,
-      "text": "18"
-     },
-     {
-      "title": "Move to GPIO 19",
-      "line": 2,
-      "col": 22,
-      "end_line": 2,
-      "end_col": 23,
-      "text": "19"
-     }
-    ]
-   }
-  ],
+  "diagnostics": [],
   "pins": [
    {
     "name": "led",

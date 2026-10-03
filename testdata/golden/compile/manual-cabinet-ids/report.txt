@@ -1,8 +1,0 @@
-
-[yellow bold]-- HARDWARE WARNING -- main.volt:13[/yellow bold]
-
-Strapping pin: GPIO 2 must be LOW during boot for flash programming.
-
- [dim]12 |[/dim] hardware {
- [dim]13 |[/dim]     pin led = 2
- [dim]   |[/dim] [yellow]        ^^^[/yellow]

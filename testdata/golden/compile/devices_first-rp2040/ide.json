@@ -1,0 +1,282 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 1,
+    "col": 6,
+    "message": "Move `chip rp2040` to volt.toml: chip = \"rp2040\"",
+    "severity": "warning",
+    "hint": "The chip declaration will move to volt.toml in a future version.",
+    "end_line": 1,
+    "end_col": 12
+   },
+   {
+    "line": 4,
+    "col": 9,
+    "message": "GP25 is the onboard LED on Pico. On Pico W, GP25 is used for WiFi SPI — not available as GPIO.",
+    "severity": "warning",
+    "hint": "",
+    "end_line": 4,
+    "end_col": 12,
+    "code": "pin-board-reserved",
+    "fixes": [
+     {
+      "title": "Move to GPIO 2",
+      "line": 4,
+      "col": 15,
+      "end_line": 4,
+      "end_col": 17,
+      "text": "2"
+     },
+     {
+      "title": "Move to GPIO 3",
+      "line": 4,
+      "col": 15,
+      "end_line": 4,
+      "end_col": 17,
+      "text": "3"
+     },
+     {
+      "title": "Move to GPIO 6",
+      "line": 4,
+      "col": 15,
+      "end_line": 4,
+      "end_col": 17,
+      "text": "6"
+     }
+    ]
+   }
+  ],
+  "pins": [
+   {
+    "name": "led",
+    "mode": "Output",
+    "gpio": 25
+   }
+  ],
+  "devices": [
+   {
+    "name": "env",
+    "type": "BME280",
+    "bus": "i2c",
+    "address": 118
+   },
+   {
+    "name": "rfid",
+    "type": "MFRC522",
+    "bus": "spi",
+    "address": 0
+   },
+   {
+    "name": "modem",
+    "type": "SIM800L",
+    "bus": "modem_uart",
+    "address": 0
+   }
+  ],
+  "buses": [
+   {
+    "name": "i2c",
+    "type": "i2c"
+   },
+   {
+    "name": "spi",
+    "type": "spi"
+   },
+   {
+    "name": "modem_uart",
+    "type": "uart"
+   }
+  ],
+  "tasks": [
+   {
+    "name": "_rule0",
+    "tier": "background",
+    "line": 10
+   }
+  ],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": "rp2040"
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "chip rp2040\n\nhardware {\n    pin led = 25\n    device env: BME280\n    device rfid: MFRC522(cs: 17)\n    device modem: SIM800L\n}\n\nevery 1s { led.toggle() }\n",
+ "find_symbols": [
+  {
+   "name": "led",
+   "kind": "pin",
+   "def_line": 4,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 11,
+     "col": 5
+    }
+   ]
+  },
+  {
+   "name": "env",
+   "kind": "sensor",
+   "def_line": 5,
+   "def_col": 12,
+   "refs": []
+  },
+  {
+   "name": "rfid",
+   "kind": "sensor",
+   "def_line": 6,
+   "def_col": 12,
+   "refs": []
+  },
+  {
+   "name": "modem",
+   "kind": "sensor",
+   "def_line": 7,
+   "def_col": 12,
+   "refs": []
+  },
+  {
+   "name": "i2c",
+   "kind": "bus",
+   "def_line": 5,
+   "def_col": 12,
+   "refs": [
+    {
+     "line": 0,
+     "col": 0
+    }
+   ]
+  },
+  {
+   "name": "spi",
+   "kind": "bus",
+   "def_line": 6,
+   "def_col": 12,
+   "refs": [
+    {
+     "line": 0,
+     "col": 0
+    }
+   ]
+  },
+  {
+   "name": "modem_uart",
+   "kind": "bus",
+   "def_line": 7,
+   "def_col": 12,
+   "refs": [
+    {
+     "line": 0,
+     "col": 0
+    }
+   ]
+  },
+  {
+   "name": "_rule0",
+   "kind": "task",
+   "def_line": 10,
+   "def_col": 7,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u__rule0((\"↻ 1s\"))\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u__rule0 timer;",
+  "units": [
+   {
+    "id": "u__rule0",
+    "name": "↻ 1s",
+    "line": 10
+   }
+  ],
+  "loops": [
+   "u__rule0"
+  ],
+  "edges": [],
+  "nodes": {
+   "u__rule0": {
+    "kind": "timer",
+    "label": "↻ 1s",
+    "line": 10,
+    "detail": "every 1s"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 4,
+    "detail": "GPIO 25"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    p_led([\"led\"])\n    u__rule0((\"↻ 1s\"))\n    u__rule0 -->|toggle| p_led\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u__rule0 timer;\n    class p_led pin;",
+  "units": [
+   {
+    "id": "u__rule0",
+    "name": "↻ 1s",
+    "line": 10
+   }
+  ],
+  "loops": [
+   "u__rule0"
+  ],
+  "edges": [
+   {
+    "drive": "timer",
+    "src": "u__rule0",
+    "dst": "p_led",
+    "rate_ms": 1000
+   }
+  ],
+  "nodes": {
+   "u__rule0": {
+    "kind": "timer",
+    "label": "↻ 1s",
+    "line": 10,
+    "detail": "every 1s"
+   },
+   "p_led": {
+    "kind": "pin",
+    "label": "led",
+    "line": 4,
+    "detail": "GPIO 25"
+   }
+  }
+ }
+}

@@ -1,13 +1,4 @@
 
-[yellow bold]-- HARDWARE WARNING -- v3_combined.volt:5[/yellow bold]
-
-GPIO 2: GPIO 2 is a strapping pin. Must be LOW or floating for download mode.
-
- [dim]4 |[/dim] hardware {
- [dim]5 |[/dim]     pin led = 2
- [dim]  |[/dim] [yellow]        ^^^[/yellow]
-
-
 [yellow bold]-- HARDWARE NOTE -- v3_combined.volt:6[/yellow bold]
 
 GPIO 25: Also DAC channel 1. When DAC is enabled, outputs ~1.6V by default.

@@ -13,18 +13,6 @@
   },
   {
     "severity": "warning",
-    "category": "HARDWARE WARNING",
-    "message": "Strapping pin: GPIO 2 must be LOW during boot for flash programming.",
-    "hint": null,
-    "region": [
-      3,
-      16,
-      3,
-      19
-    ]
-  },
-  {
-    "severity": "warning",
     "category": "TASK WARNING",
     "message": "Task `main` has no yield points (no every/on/sleep). It will run once and complete.",
     "hint": null,

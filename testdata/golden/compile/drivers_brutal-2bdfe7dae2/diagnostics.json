@@ -12,15 +12,15 @@
     ]
   },
   {
-    "severity": "warning",
-    "category": "HARDWARE WARNING",
-    "message": "Strapping pin: GPIO 2 must be LOW during boot for flash programming.",
-    "hint": null,
+    "severity": "error",
+    "category": "DEVICE PIN ERROR",
+    "message": "`NRF24L01` needs pins cs, ce. Missing: cs, ce.",
+    "hint": "`device dev: NRF24L01(cs: <gpio>, ce: <gpio>)`",
     "region": [
-      3,
-      9,
-      3,
-      12
+      5,
+      12,
+      5,
+      15
     ]
   }
 ]

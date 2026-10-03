@@ -1,0 +1,137 @@
+
+[yellow bold]-- DEPRECATION -- main.volt:1[/yellow bold]
+
+Move `chip esp32` to volt.toml: chip = "esp32"
+
+ [dim]1 |[/dim] chip esp32
+ [dim]  |[/dim] [yellow]     ^^^^^[/yellow]
+
+[cyan]Hint: The chip declaration will move to volt.toml in a future version.[/cyan]
+
+
+[red bold]-- HARDWARE ERROR -- main.volt:5[/red bold]
+
+GPIO 21 is used by the default I2C bus (sda) but was already declared as pin `led` (line 4).
+
+ [dim]4 |[/dim]     pin led = 21
+ [dim]5 |[/dim]     device a:     BME280
+ [dim]  |[/dim] [red]           ^[/red]
+
+[cyan]Hint: A pin can only belong to one subsystem. Either remove the `pin` declaration or move the bus signal to a free GPIO.[/cyan]
+
+
+[red bold]-- HARDWARE ERROR -- main.volt:6[/red bold]
+
+I2C address 0x76 on the default I2C bus is already used by `a` (line 5).
+
+ [dim]5 |[/dim]     device a:     BME280
+ [dim]6 |[/dim]     device b:     BME280
+ [dim]  |[/dim] [red]           ^[/red]
+
+[cyan]Hint: Each I2C address must be unique per bus. Pick another address below and set the board's address pin (ADDR / SDO / A0) to match.[/cyan]
+
+
+[yellow bold]-- HARDWARE WARNING -- main.volt:7[/yellow bold]
+
+BME280 does not answer at 0x50. It can use: 0x76, 0x77.
+
+ [dim]6 |[/dim]     device b:     BME280
+ [dim]7 |[/dim]     device c:     BME280 at 0x50
+ [dim]  |[/dim] [yellow]                            ^^^^[/yellow]
+
+
+[red bold]-- DEVICE ERROR -- main.volt:8[/red bold]
+
+`at` sets an I2C address, but MFRC522 is a SPI device.
+
+ [dim]7 |[/dim]     device c:     BME280 at 0x50
+ [dim]8 |[/dim]     device rfid:  MFRC522 at 5
+ [dim]  |[/dim] [red]                             ^[/red]
+
+[cyan]Hint: Name the select pin instead: `device rfid: MFRC522(cs: 5)`[/cyan]
+
+
+[red bold]-- HARDWARE ERROR -- main.volt:8[/red bold]
+
+GPIO 19 is used by the default SPI bus (miso) but is already taken by bus `fast` (scl, line 15).
+
+ [dim]7 |[/dim]     device c:     BME280 at 0x50
+ [dim]8 |[/dim]     device rfid:  MFRC522 at 5
+ [dim]  |[/dim] [red]           ^^^^[/red]
+
+[cyan]Hint: Two buses cannot share a signal pin.[/cyan]
+
+
+[red bold]-- HARDWARE ERROR -- main.volt:8[/red bold]
+
+GPIO 18 is used by the default SPI bus (clk) but is already taken by bus `fast` (sda, line 15).
+
+ [dim]7 |[/dim]     device c:     BME280 at 0x50
+ [dim]8 |[/dim]     device rfid:  MFRC522 at 5
+ [dim]  |[/dim] [red]           ^^^^[/red]
+
+[cyan]Hint: Two buses cannot share a signal pin.[/cyan]
+
+
+[red bold]-- DEVICE ERROR -- main.volt:9[/red bold]
+
+`NeoPixel` has no setting `color`.
+
+ [dim]8 |[/dim]     device rfid:  MFRC522 at 5
+ [dim]9 |[/dim]     device strip: NeoPixel(pin: 13, leds: "many", color: 3)
+ [dim]  |[/dim] [red]                                                         ^[/red]
+
+[cyan]Hint: NeoPixel accepts: pin, leds.[/cyan]
+
+
+[red bold]-- DEVICE ERROR -- main.volt:9[/red bold]
+
+`leds` of `NeoPixel` must be an int.
+
+ [dim]8 |[/dim]     device rfid:  MFRC522 at 5
+ [dim]9 |[/dim]     device strip: NeoPixel(pin: 13, leds: "many", color: 3)
+ [dim]  |[/dim] [red]                                          ^^^^^^[/red]
+
+[cyan]Hint: Default: leds: 8[/cyan]
+
+
+[red bold]-- DEVICE PIN ERROR -- main.volt:10[/red bold]
+
+`HCSR04` needs pins trig, echo. Missing: echo.
+
+ [dim] 9 |[/dim]     device strip: NeoPixel(pin: 13, leds: "many", color: 3)
+ [dim]10 |[/dim]     device sonar: HCSR04(trig: 4)
+ [dim]   |[/dim] [red]           ^^^^^[/red]
+
+[cyan]Hint: `device sonar: HCSR04(trig: <gpio>, echo: <gpio>)`[/cyan]
+
+
+[red bold]-- HARDWARE ERROR -- main.volt:11[/red bold]
+
+Pin 4 is already used by `sonar.trig` (line 10).
+
+ [dim]10 |[/dim]     device sonar: HCSR04(trig: 4)
+ [dim]11 |[/dim]     device beep:  DHT22(pin: 4)
+ [dim]   |[/dim] [red]                             ^[/red]
+
+[cyan]Hint: Each pin can only be used once.[/cyan]
+
+
+[red bold]-- HARDWARE ERROR -- main.volt:14[/red bold]
+
+No UART left for `m3`: ESP32 has 2 UARTs free for devices (UART1, UART2; UART0 is the USB console).
+
+ [dim]13 |[/dim]     device m2:    SIM800L(tx: 25, rx: 26)
+ [dim]14 |[/dim]     device m3:    SIM800L(tx: 32, rx: 34)
+ [dim]   |[/dim] [red]           ^^[/red]
+
+[cyan]Hint: Remove a serial device, or use an I2C/SPI variant of the part.[/cyan]
+
+
+[yellow bold]-- HARDWARE WARNING -- main.volt:15[/yellow bold]
+
+Bus `fast` runs at 400 kHz but `lcd` (HD44780) supports at most 100 kHz.
+
+ [dim]14 |[/dim]     device m3:    SIM800L(tx: 32, rx: 34)
+ [dim]15 |[/dim]     i2c fast(sda: 18, scl: 19, speed: 400k)
+ [dim]   |[/dim] [yellow]                                      ^^^^[/yellow]

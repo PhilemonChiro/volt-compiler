@@ -1,13 +1,4 @@
 
-[yellow bold]-- HARDWARE WARNING -- main.volt:2[/yellow bold]
-
-GPIO 2: GPIO 2 is a strapping pin. Must be LOW or floating for download mode.
-
- [dim]1 |[/dim] hardware {
- [dim]2 |[/dim]     pin led = 2
- [dim]  |[/dim] [yellow]        ^^^[/yellow]
-
-
 [yellow bold]-- HARDWARE NOTE -- main.volt:3[/yellow bold]
 
 GPIO 32: Also 32kHz crystal pin (XTAL_32K_P). If external 32kHz crystal is used, this pin is unavailable.

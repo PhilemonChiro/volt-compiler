@@ -12,22 +12,10 @@
     ]
   },
   {
-    "severity": "warning",
-    "category": "HARDWARE WARNING",
-    "message": "Strapping pin: GPIO 2 must be LOW during boot for flash programming.",
-    "hint": null,
-    "region": [
-      3,
-      9,
-      3,
-      12
-    ]
-  },
-  {
     "severity": "error",
     "category": "DEVICE PIN ERROR",
-    "message": "`HCSR04` needs 2 pins (echo, trig) but the declaration only provides one. Missing: echo, trig.",
-    "hint": "Use the named-pins syntax: `device hcsr04: HCSR04(echo: <gpio>, trig: <gpio>)`",
+    "message": "`HCSR04` needs pins trig, echo. Missing: trig, echo.",
+    "hint": "`device hcsr04: HCSR04(trig: <gpio>, echo: <gpio>)`",
     "region": [
       5,
       12,

@@ -99,7 +99,12 @@
    "kind": "bus",
    "def_line": 14,
    "def_col": 9,
-   "refs": []
+   "refs": [
+    {
+     "line": 15,
+     "col": 31
+    }
+   ]
   },
   {
    "name": "_rule0",

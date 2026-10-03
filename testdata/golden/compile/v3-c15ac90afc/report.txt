@@ -1,8 +1,0 @@
-
-[yellow bold]-- HARDWARE WARNING -- enum_when_guard.volt:3[/yellow bold]
-
-GPIO 2: GPIO 2 is a strapping pin. Must be LOW or floating for download mode.
-
- [dim]2 |[/dim] enum State { idle, active }
- [dim]3 |[/dim] hardware { pin led = 2 }
- [dim]  |[/dim] [yellow]               ^^^[/yellow]

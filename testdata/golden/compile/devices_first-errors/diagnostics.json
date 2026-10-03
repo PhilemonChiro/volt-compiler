@@ -1,0 +1,158 @@
+[
+  {
+    "severity": "warning",
+    "category": "DEPRECATION",
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "hint": "The chip declaration will move to volt.toml in a future version.",
+    "region": [
+      1,
+      6,
+      1,
+      11
+    ]
+  },
+  {
+    "severity": "error",
+    "category": "DEVICE ERROR",
+    "message": "`at` sets an I2C address, but MFRC522 is a SPI device.",
+    "hint": "Name the select pin instead: `device rfid: MFRC522(cs: 5)`",
+    "region": [
+      8,
+      30,
+      8,
+      31
+    ]
+  },
+  {
+    "severity": "error",
+    "category": "DEVICE ERROR",
+    "message": "`NeoPixel` has no setting `color`.",
+    "hint": "NeoPixel accepts: pin, leds.",
+    "region": [
+      9,
+      58,
+      9,
+      59
+    ]
+  },
+  {
+    "severity": "error",
+    "category": "DEVICE ERROR",
+    "message": "`leds` of `NeoPixel` must be an int.",
+    "hint": "Default: leds: 8",
+    "region": [
+      9,
+      43,
+      9,
+      49
+    ]
+  },
+  {
+    "severity": "error",
+    "category": "DEVICE PIN ERROR",
+    "message": "`HCSR04` needs pins trig, echo. Missing: echo.",
+    "hint": "`device sonar: HCSR04(trig: <gpio>, echo: <gpio>)`",
+    "region": [
+      10,
+      12,
+      10,
+      17
+    ]
+  },
+  {
+    "severity": "error",
+    "category": "HARDWARE ERROR",
+    "message": "Pin 4 is already used by `sonar.trig` (line 10).",
+    "hint": "Each pin can only be used once.",
+    "region": [
+      11,
+      30,
+      11,
+      31
+    ]
+  },
+  {
+    "severity": "error",
+    "category": "HARDWARE ERROR",
+    "message": "No UART left for `m3`: ESP32 has 2 UARTs free for devices (UART1, UART2; UART0 is the USB console).",
+    "hint": "Remove a serial device, or use an I2C/SPI variant of the part.",
+    "region": [
+      14,
+      12,
+      14,
+      14
+    ]
+  },
+  {
+    "severity": "warning",
+    "category": "HARDWARE WARNING",
+    "message": "Bus `fast` runs at 400 kHz but `lcd` (HD44780) supports at most 100 kHz.",
+    "hint": null,
+    "region": [
+      15,
+      39,
+      15,
+      43
+    ]
+  },
+  {
+    "severity": "error",
+    "category": "HARDWARE ERROR",
+    "message": "GPIO 21 is used by the default I2C bus (sda) but was already declared as pin `led` (line 4).",
+    "hint": "A pin can only belong to one subsystem. Either remove the `pin` declaration or move the bus signal to a free GPIO.",
+    "region": [
+      5,
+      12,
+      5,
+      13
+    ]
+  },
+  {
+    "severity": "error",
+    "category": "HARDWARE ERROR",
+    "message": "GPIO 19 is used by the default SPI bus (miso) but is already taken by bus `fast` (scl, line 15).",
+    "hint": "Two buses cannot share a signal pin.",
+    "region": [
+      8,
+      12,
+      8,
+      16
+    ]
+  },
+  {
+    "severity": "error",
+    "category": "HARDWARE ERROR",
+    "message": "GPIO 18 is used by the default SPI bus (clk) but is already taken by bus `fast` (sda, line 15).",
+    "hint": "Two buses cannot share a signal pin.",
+    "region": [
+      8,
+      12,
+      8,
+      16
+    ]
+  },
+  {
+    "severity": "error",
+    "category": "HARDWARE ERROR",
+    "message": "I2C address 0x76 on the default I2C bus is already used by `a` (line 5).",
+    "hint": "Each I2C address must be unique per bus. Pick another address below and set the board's address pin (ADDR / SDO / A0) to match.",
+    "region": [
+      6,
+      12,
+      6,
+      13
+    ]
+  },
+  {
+    "severity": "warning",
+    "category": "HARDWARE WARNING",
+    "message": "BME280 does not answer at 0x50. It can use: 0x76, 0x77.",
+    "hint": null,
+    "region": [
+      7,
+      29,
+      7,
+      33
+    ]
+  }
+]

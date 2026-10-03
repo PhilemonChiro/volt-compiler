@@ -2,18 +2,6 @@
   {
     "severity": "warning",
     "category": "HARDWARE WARNING",
-    "message": "Strapping pin: GPIO 2 must be LOW during boot for flash programming.",
-    "hint": null,
-    "region": [
-      17,
-      9,
-      17,
-      12
-    ]
-  },
-  {
-    "severity": "warning",
-    "category": "HARDWARE WARNING",
     "message": "Strapping pin: GPIO 15 controls boot log output. If pulled LOW, boot messages are suppressed (usually harmless).",
     "hint": null,
     "region": [

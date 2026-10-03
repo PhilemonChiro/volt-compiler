@@ -10,15 +10,6 @@ Move `chip esp32` to volt.toml: chip = "esp32"
 [cyan]Hint: The chip declaration will move to volt.toml in a future version.[/cyan]
 
 
-[yellow bold]-- HARDWARE WARNING -- all_pin_modes.volt:4[/yellow bold]
-
-Strapping pin: GPIO 2 must be LOW during boot for flash programming.
-
- [dim]3 |[/dim] hardware {
- [dim]4 |[/dim]     pin led: Output = 2
- [dim]  |[/dim] [yellow]        ^^^[/yellow]
-
-
 [yellow bold]-- HARDWARE WARNING -- all_pin_modes.volt:5[/yellow bold]
 
 Strapping pin: GPIO 0 must be HIGH during boot (pulled up by default). If driven LOW externally, the chip enters bootloader mode.

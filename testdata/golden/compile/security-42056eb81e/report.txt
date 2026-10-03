@@ -10,15 +10,6 @@ Move `chip esp32` to volt.toml: chip = "esp32"
 [cyan]Hint: The chip declaration will move to volt.toml in a future version.[/cyan]
 
 
-[yellow bold]-- HARDWARE WARNING -- log_one.volt:3[/yellow bold]
-
-Strapping pin: GPIO 2 must be LOW during boot for flash programming.
-
- [dim]2 |[/dim] chip esp32
- [dim]3 |[/dim] hardware { pin led = 2 }
- [dim]  |[/dim] [yellow]               ^^^[/yellow]
-
-
 [yellow bold]-- TASK WARNING -- log_one.volt:4[/yellow bold]
 
 Task `main` has no yield points (no every/on/sleep). It will run once and complete.

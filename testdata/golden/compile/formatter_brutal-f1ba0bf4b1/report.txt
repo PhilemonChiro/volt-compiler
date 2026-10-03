@@ -1,8 +1,8 @@
 
-[yellow bold]-- HARDWARE WARNING -- main.volt:8[/yellow bold]
+[yellow bold]-- HARDWARE NOTE -- main.volt:9[/yellow bold]
 
-GPIO 2: GPIO 2 is a strapping pin. Must be LOW or floating for download mode.
+GPIO 26: Also DAC channel 2. When DAC is enabled, outputs ~1.6V by default.
 
- [dim]7 |[/dim] hardware {
  [dim]8 |[/dim]     pin led = 2
- [dim]  |[/dim] [yellow]        ^^^[/yellow]
+ [dim]9 |[/dim]     device dist: HCSR04(trig: 26, echo: 27)
+ [dim]  |[/dim] [yellow]                              ^^[/yellow]

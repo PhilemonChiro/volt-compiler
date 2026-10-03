@@ -257,7 +257,7 @@ func (p *parser) hardwareBlock() *HardwareBlock {
 	hw := &HardwareBlock{}
 	var items []Node
 	for done := false; !done; {
-		t := p.peek(prefixCtx("pin", "bus", "device"))
+		t := p.peek(prefixCtx("pin", "bus", "device", "i2c", "spi", "uart"))
 		switch {
 		case t.kind == tNL:
 			p.take(t)
@@ -270,7 +270,7 @@ func (p *parser) hardwareBlock() *HardwareBlock {
 			d := p.pinDecl()
 			hw.Pins = append(hw.Pins, d)
 			items = append(items, d)
-		case t.word("bus"):
+		case t.word("bus"), t.word("i2c"), t.word("spi"), t.word("uart"):
 			d := p.busDecl()
 			hw.Buses = append(hw.Buses, d)
 			items = append(items, d)
@@ -279,7 +279,7 @@ func (p *parser) hardwareBlock() *HardwareBlock {
 			hw.Sensors = append(hw.Sensors, d)
 			items = append(items, d)
 		default:
-			p.unexpectedWant(t, "`pin`, `bus`, `device` or `}`")
+			p.unexpectedWant(t, "`pin`, `device`, `i2c`, `spi`, `uart`, `bus` or `}`")
 		}
 		switch t := p.next(ctxName); {
 		case t.kind == tNL:
@@ -351,47 +351,61 @@ func isDigits(s string) bool {
 func isAlpha(c byte) bool { return c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' }
 
 // bus_decl: "bus" NAME ":" NAME "(" named_args? ")"
+//
+//	| ("i2c" | "spi" | "uart") NAME "(" named_args? ")"
 func (p *parser) busDecl() *BusDecl {
-	p.take(p.peek(prefixCtx("bus")))
+	kw := p.peek(prefixCtx("bus", "i2c", "spi", "uart"))
+	p.take(kw)
 	name := p.name()
-	p.expectSym(":")
-	typ := p.name()
+	typ := kw.text
+	if kw.text == "bus" {
+		p.expectSym(":")
+		typ = p.name().text
+	}
 	p.expectSym("(")
 	return &BusDecl{
-		Base: Base{p.region(name)}, BusType: strings.ToLower(typ.text), Name: name.text,
+		Base: Base{p.region(name)}, BusType: strings.ToLower(typ), Name: name.text,
 		Params: p.namedArgs(),
 	}
 }
 
-// sensor_decl: "device" NAME ":" NAME "on" NAME "at" expr
-//
-//	| "device" NAME ":" NAME "(" named_args? ")" -> sensor_decl_named
+// sensor_decl: "device" NAME ":" NAME ("(" named_args? ")")? ("on" NAME)? ("at" expr)?
 func (p *parser) sensorDecl() *SensorDecl {
 	p.take(p.peek(prefixCtx("device")))
 	name := p.name()
 	p.expectSym(":")
-	d := &SensorDecl{Base: Base{p.region(name)}, Name: name.text, SensorType: p.name().text}
-	switch t := p.next(prefixCtx("on")); {
-	case t.word("on"):
-		d.BusName = p.name().text
-		p.expectKw("at")
-		addr := p.expr()
-		d.AddressRegion = regionOf(addr)
-		if lit, ok := addr.(*IntLiteral); ok {
-			d.Address = lit.Value
-		}
-	case t.sym("("):
+	typ := p.name()
+	d := &SensorDecl{Base: Base{p.region(name)}, Name: name.text, SensorType: typ.text, TypeRegion: p.region(typ)}
+	t := p.peek(prefixCtx("on", "at"))
+	if t.sym("(") {
+		p.take(t)
 		args := p.namedArgs()
+		d.ArgRegions = map[string]Region{}
 		for _, k := range args.Keys {
 			v := args.Vals[k]
+			d.ArgRegions[k] = regionOf(v.(Node))
 			if lit, ok := v.(*IntLiteral); ok {
 				v = lit.Value
 			}
 			d.PinParams.Set(k, v)
 		}
-	default:
-		p.unexpectedWant(t, "`on` or `(`")
+		t = p.peek(prefixCtx("on", "at"))
 	}
+	if t.word("on") {
+		p.take(t)
+		bus := p.name()
+		d.BusName, d.BusRegion, d.HasBus = bus.text, p.region(bus), true
+		t = p.peek(prefixCtx("at"))
+	}
+	if t.word("at") {
+		p.take(t)
+		addr := p.expr()
+		d.AddressRegion, d.HasAddress = regionOf(addr), true
+		if lit, ok := addr.(*IntLiteral); ok {
+			d.Address = lit.Value
+		}
+	}
+	d.EndRegion = p.region(token{start: p.off, end: p.off})
 	return d
 }
 
@@ -1150,7 +1164,7 @@ func (p *parser) argList(optional bool) []Node {
 	}
 }
 
-// primary: DURATION | FLOAT | HEX_INT | BIN_INT | INT | ESCAPED_STRING
+// primary: DURATION | FREQ | FLOAT | HEX_INT | BIN_INT | INT | ESCAPED_STRING
 //
 //	| "true" | "false" | NAME | "(" expr ")" | array_literal
 func (p *parser) primary() Node {
@@ -1172,6 +1186,14 @@ func (p *parser) primary() Node {
 		return &IntLiteral{r, p.parseInt(t, strings.ReplaceAll(t.text[2:], "_", ""), 2)}
 	case tInt:
 		return &IntLiteral{r, p.parseInt(t, t.text, 10)}
+	case tFreq:
+		num := strings.TrimSuffix(t.text, "Hz")
+		mult := 1e3
+		if num[len(num)-1] == 'M' {
+			mult = 1e6
+		}
+		f, _ := strconv.ParseFloat(num[:len(num)-1], 64)
+		return &IntLiteral{r, int(f*mult + 0.5)}
 	case tString:
 		return &StringLiteral{r, t.text[1 : len(t.text)-1]}
 	case tName:

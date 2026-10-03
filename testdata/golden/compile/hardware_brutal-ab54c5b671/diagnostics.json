@@ -12,18 +12,6 @@
     ]
   },
   {
-    "severity": "warning",
-    "category": "HARDWARE WARNING",
-    "message": "Strapping pin: GPIO 2 must be LOW during boot for flash programming.",
-    "hint": null,
-    "region": [
-      3,
-      9,
-      3,
-      12
-    ]
-  },
-  {
     "severity": "error",
     "category": "HARDWARE ERROR",
     "message": "I2C address 0x78 on bus `i2c0` is outside the 7-bit device range 0x08..0x77.",

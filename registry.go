@@ -7,6 +7,7 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"sync"
 )
@@ -36,12 +37,75 @@ type DeviceInfo struct {
 	Name           string
 	Category       string
 	Interface      string
-	DefaultAddress any // string or number, as written in the JSON
+	DefaultAddress any      // string or number, as written in the JSON
+	Addresses      []string // every selectable I2C address, default first ("0x76", "0x77")
 	Description    string
 	CPrefix        string
 	CSource        string
-	InitArgs       string // placeholders: {pin}, {addr}, {bus_id}
-	Methods        []*DeviceMethod
+	InitArgs       string // placeholders: {pin}, {addr}, {bus_id}, {uart_id}, pin roles, params
+	// Pins are the device's own GPIO connections (not bus signals), in
+	// declaration order: `HCSR04(trig: 26, echo: 27)`.
+	Pins []DevicePin
+	// Params are non-pin settings with defaults: `NeoPixel(pin: 32, leds: 30)`.
+	Params []DeviceParam
+	// MaxSpeed is the fastest bus clock (Hz) the part supports; 0 = no limit.
+	MaxSpeed int
+	Methods  []*DeviceMethod
+}
+
+type DevicePin struct {
+	Name string
+	Dir  string // "out", "in" or "io"
+}
+
+type DeviceParam struct {
+	Name    string
+	Type    string // "int", "float", "bool" or "string"
+	Default any
+}
+
+// Pin returns the device pin named name, or nil.
+func (d *DeviceInfo) Pin(name string) *DevicePin {
+	for i := range d.Pins {
+		if d.Pins[i].Name == name {
+			return &d.Pins[i]
+		}
+	}
+	return nil
+}
+
+// Param returns the device parameter named name, or nil.
+func (d *DeviceInfo) Param(name string) *DeviceParam {
+	for i := range d.Params {
+		if d.Params[i].Name == name {
+			return &d.Params[i]
+		}
+	}
+	return nil
+}
+
+// DefaultAddr is the default I2C address as a number (-1 if none).
+func (d *DeviceInfo) DefaultAddr() int {
+	switch v := d.DefaultAddress.(type) {
+	case float64:
+		return int(v)
+	case string:
+		if n, ok := parseAddr(v); ok {
+			return n
+		}
+	}
+	return -1
+}
+
+// parseAddr reads "0x76" or "118".
+func parseAddr(s string) (int, bool) {
+	s = strings.ToLower(strings.TrimSpace(s))
+	base := 10
+	if strings.HasPrefix(s, "0x") {
+		s, base = s[2:], 16
+	}
+	n, err := strconv.ParseInt(s, base, 32)
+	return int(n), err == nil && s != ""
 }
 
 type DeviceMethod struct {
@@ -126,10 +190,14 @@ func parseDevice(path string) (*DeviceInfo, error) {
 		Category       *string         `json:"category"`
 		Interface      *string         `json:"interface"`
 		DefaultAddress any             `json:"default_address"`
+		Addresses      []string        `json:"addresses"`
 		Description    string          `json:"description"`
 		CPrefix        *string         `json:"c_prefix"`
 		CSource        string          `json:"c_source"`
 		InitArgs       string          `json:"init_args"`
+		Pins           json.RawMessage `json:"pins"`
+		Params         json.RawMessage `json:"params"`
+		MaxSpeed       int             `json:"max_speed"`
 		Methods        json.RawMessage `json:"methods"`
 	}
 	if err := json.Unmarshal(b, &raw); err != nil {
@@ -140,11 +208,49 @@ func parseDevice(path string) (*DeviceInfo, error) {
 	}
 	dev := &DeviceInfo{
 		Name: *raw.Name, Category: deref(raw.Category, "sensor"), Interface: deref(raw.Interface, "i2c"),
-		DefaultAddress: raw.DefaultAddress, Description: raw.Description,
+		DefaultAddress: raw.DefaultAddress, Addresses: raw.Addresses, Description: raw.Description,
 		CPrefix: deref(raw.CPrefix, strings.ToLower(*raw.Name)), CSource: raw.CSource, InitArgs: raw.InitArgs,
 	}
 	if dev.DefaultAddress == nil {
 		dev.DefaultAddress = ""
+	}
+	dev.MaxSpeed = raw.MaxSpeed
+	if len(raw.Pins) > 0 {
+		names, vals, err := orderedObject(raw.Pins)
+		if err != nil {
+			return nil, fmt.Errorf("pins: %v", err)
+		}
+		for i, name := range names {
+			var p struct {
+				Dir string `json:"dir"`
+			}
+			if err := json.Unmarshal(vals[i], &p); err != nil {
+				return nil, fmt.Errorf("pin %s: %v", name, err)
+			}
+			if p.Dir == "" {
+				p.Dir = "io"
+			}
+			dev.Pins = append(dev.Pins, DevicePin{name, p.Dir})
+		}
+	}
+	if len(raw.Params) > 0 {
+		names, vals, err := orderedObject(raw.Params)
+		if err != nil {
+			return nil, fmt.Errorf("params: %v", err)
+		}
+		for i, name := range names {
+			var p struct {
+				Type    string `json:"type"`
+				Default any    `json:"default"`
+			}
+			if err := json.Unmarshal(vals[i], &p); err != nil {
+				return nil, fmt.Errorf("param %s: %v", name, err)
+			}
+			if p.Type == "" {
+				p.Type = "int"
+			}
+			dev.Params = append(dev.Params, DeviceParam{name, p.Type, p.Default})
+		}
 	}
 	if len(raw.Methods) == 0 {
 		return dev, nil

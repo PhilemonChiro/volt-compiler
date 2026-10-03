@@ -1,0 +1,267 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [1, 6, 1, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [4, 9, 14, 15],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [4, 9, 4, 12],
+    "name": "led",
+    "mode": "Output",
+    "gpio": 2
+   }
+  ],
+  "buses": [
+   {
+    "_": "BusDecl",
+    "region": [12, 9, 12, 16],
+    "bus_type": "i2c",
+    "name": "sensors",
+    "params": {
+     "sda": {
+      "_": "IntLiteral",
+      "region": [12, 22, 12, 24],
+      "value": 32
+     },
+     "scl": {
+      "_": "IntLiteral",
+      "region": [12, 31, 12, 33],
+      "value": 33
+     },
+     "speed": {
+      "_": "IntLiteral",
+      "region": [12, 42, 12, 46],
+      "value": 100000
+     }
+    }
+   },
+   {
+    "_": "BusDecl",
+    "region": [5, 12, 5, 15],
+    "bus_type": "i2c",
+    "name": "i2c",
+    "params": {
+     "sda": {
+      "_": "IntLiteral",
+      "region": [5, 12, 5, 15],
+      "value": 21
+     },
+     "scl": {
+      "_": "IntLiteral",
+      "region": [5, 12, 5, 15],
+      "value": 22
+     }
+    }
+   },
+   {
+    "_": "BusDecl",
+    "region": [7, 12, 7, 16],
+    "bus_type": "spi",
+    "name": "spi",
+    "params": {
+     "mosi": {
+      "_": "IntLiteral",
+      "region": [7, 12, 7, 16],
+      "value": 23
+     },
+     "miso": {
+      "_": "IntLiteral",
+      "region": [7, 12, 7, 16],
+      "value": 19
+     },
+     "clk": {
+      "_": "IntLiteral",
+      "region": [7, 12, 7, 16],
+      "value": 18
+     }
+    }
+   },
+   {
+    "_": "BusDecl",
+    "region": [9, 12, 9, 17],
+    "bus_type": "uart",
+    "name": "modem_uart",
+    "params": {
+     "tx": {
+      "_": "IntLiteral",
+      "region": [9, 31, 9, 33],
+      "value": 17
+     },
+     "rx": {
+      "_": "IntLiteral",
+      "region": [9, 39, 9, 41],
+      "value": 16
+     },
+     "baud": {
+      "_": "IntLiteral",
+      "region": [9, 49, 9, 55],
+      "value": 115200
+     }
+    }
+   }
+  ],
+  "sensors": [
+   {
+    "_": "SensorDecl",
+    "region": [5, 12, 5, 15],
+    "name": "env",
+    "sensor_type": "BME280",
+    "bus_name": "i2c",
+    "address": 118,
+    "pin_params": {}
+   },
+   {
+    "_": "SensorDecl",
+    "region": [6, 12, 6, 16],
+    "name": "oled",
+    "sensor_type": "SSD1306",
+    "bus_name": "i2c",
+    "address": 61,
+    "pin_params": {}
+   },
+   {
+    "_": "SensorDecl",
+    "region": [7, 12, 7, 16],
+    "name": "rfid",
+    "sensor_type": "MFRC522",
+    "bus_name": "spi",
+    "address": 0,
+    "pin_params": {
+     "cs": 5
+    }
+   },
+   {
+    "_": "SensorDecl",
+    "region": [8, 12, 8, 17],
+    "name": "radio",
+    "sensor_type": "NRF24L01",
+    "bus_name": "spi",
+    "address": 0,
+    "pin_params": {
+     "cs": 15,
+     "ce": 4,
+     "channel": 90
+    }
+   },
+   {
+    "_": "SensorDecl",
+    "region": [9, 12, 9, 17],
+    "name": "modem",
+    "sensor_type": "SIM800L",
+    "bus_name": "modem_uart",
+    "address": 0,
+    "pin_params": {
+     "tx": 17,
+     "rx": 16,
+     "baud": 115200
+    }
+   },
+   {
+    "_": "SensorDecl",
+    "region": [10, 12, 10, 17],
+    "name": "strip",
+    "sensor_type": "NeoPixel",
+    "bus_name": "",
+    "address": 0,
+    "pin_params": {
+     "pin": 13,
+     "leds": 30
+    }
+   },
+   {
+    "_": "SensorDecl",
+    "region": [11, 12, 11, 17],
+    "name": "sonar",
+    "sensor_type": "HCSR04",
+    "bus_name": "",
+    "address": 0,
+    "pin_params": {
+     "trig": 26,
+     "echo": 27
+    }
+   },
+   {
+    "_": "SensorDecl",
+    "region": [13, 12, 13, 16],
+    "name": "env2",
+    "sensor_type": "BME280",
+    "bus_name": "sensors",
+    "address": 119,
+    "pin_params": {}
+   },
+   {
+    "_": "SensorDecl",
+    "region": [14, 12, 14, 15],
+    "name": "lcd",
+    "sensor_type": "HD44780",
+    "bus_name": "sensors",
+    "address": 39,
+    "pin_params": {
+     "cols": 20,
+     "rows": 4
+    }
+   }
+  ]
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [17, 7, 17, 9],
+   "name": "_rule0",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [17, 7, 17, 9],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [17, 7, 17, 9],
+      "microseconds": 1000000,
+      "original": "1s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "MethodCall",
+        "region": [18, 5, 18, 8],
+        "obj": {
+         "_": "VarRef",
+         "region": [18, 5, 18, 8],
+         "name": "led"
+        },
+        "method": "toggle",
+        "args": []
+       }
+      }
+     ],
+     "yield_label": 1
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": null,
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

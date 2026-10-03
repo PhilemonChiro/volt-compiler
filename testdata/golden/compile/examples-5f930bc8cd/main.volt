@@ -6,7 +6,7 @@
 
 hardware {
     pin led = 2
-    device dist: HCSR04(trig: 5, echo: 6)
+    device dist: HCSR04(trig: 26, echo: 27)
 }
 
 setup {

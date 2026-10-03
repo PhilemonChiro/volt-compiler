@@ -39,7 +39,7 @@ func takenGPIOs(hw *HardwareBlock) map[int]bool {
 		}
 	}
 	for _, s := range hw.Sensors {
-		for _, k := range s.PinParams.Keys {
+		for _, k := range devicePinKeys(s) {
 			if g, ok := s.PinParams.Vals[k].(int); ok {
 				taken[g] = true
 			}
@@ -158,6 +158,8 @@ func PinTable(chip string) []GPIOInfo {
 		switch {
 		case p.Blocked || p.IsFlashPin:
 			set("unavailable", "unavailable", p.BlockedReason)
+		case p.IsStrapping && g == 2 && !strings.Contains(strings.ToLower(chip), "8266"):
+			set("caution", "on-board LED", "Drives the on-board LED. Fine for outputs; don't wire a button or sensor that pulls it HIGH at power-up.")
 		case p.IsStrapping:
 			set("risky", "strapping", p.StrappingWarning)
 		case p.IsUART0:
@@ -191,4 +193,30 @@ func noteCatch(n string) string {
 		return "not on DevKit"
 	}
 	return ""
+}
+
+// BusPins are the pins to suggest for a new bus, by bus type and signal: the
+// chip's native peripheral pins. ESP32 suggests UART2 (17/16) because UART0
+// (1/3) is the USB console.
+func BusPins(chip string) map[string]map[string]int {
+	t := strings.ToLower(chip)
+	switch {
+	case strings.Contains(t, "rp2040") || strings.Contains(t, "pico"):
+		return map[string]map[string]int{
+			"i2c":  {"sda": 4, "scl": 5},
+			"spi":  {"mosi": 19, "miso": 16, "clk": 18},
+			"uart": {"tx": 8, "rx": 9}, // UART1
+		}
+	case strings.Contains(t, "8266"):
+		return map[string]map[string]int{
+			"i2c":  {"sda": 4, "scl": 5},
+			"spi":  {"mosi": 13, "miso": 12, "clk": 14},
+			"uart": {"tx": 15, "rx": 13},
+		}
+	}
+	return map[string]map[string]int{
+		"i2c":  {"sda": 21, "scl": 22},
+		"spi":  {"mosi": 23, "miso": 19, "clk": 18},
+		"uart": {"tx": 17, "rx": 16},
+	}
 }

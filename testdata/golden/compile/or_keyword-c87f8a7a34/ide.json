@@ -72,7 +72,7 @@
    100
   ]
  ],
- "format_code": "chip esp32\n\nhardware {\n    bus sensors: I2C(sda: 21, scl: 22)\n    device bme: BME280 on sensors at 0x76\n}\n\ntask monitor {\n    every 10s {\n        var temp: float = bme.temperature() or skip\n    }\n}\n",
+ "format_code": "chip esp32\n\nhardware {\n    device bme: BME280 on sensors at 0x76\n    i2c sensors(sda: 21, scl: 22)\n}\n\ntask monitor {\n    every 10s {\n        var temp: float = bme.temperature() or skip\n    }\n}\n",
  "find_symbols": [
   {
    "name": "bme",
@@ -86,7 +86,12 @@
    "kind": "bus",
    "def_line": 4,
    "def_col": 9,
-   "refs": []
+   "refs": [
+    {
+     "line": 5,
+     "col": 27
+    }
+   ]
   },
   {
    "name": "monitor",

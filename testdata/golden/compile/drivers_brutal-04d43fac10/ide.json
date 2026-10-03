@@ -76,7 +76,7 @@
    45
   ]
  ],
- "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n    bus uart0: UART(tx: 17, rx: 16)\n    device dev: HC05 on uart0 at 0\n}\n\nevery 1s {\n    led.toggle()\n    dev.read_at_response(0, 0)\n}\n",
+ "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n    device dev: HC05 on uart0\n    uart uart0(tx: 17, rx: 16)\n}\n\nevery 1s {\n    led.toggle()\n    dev.read_at_response(0, 0)\n}\n",
  "find_symbols": [
   {
    "name": "led",
@@ -107,7 +107,12 @@
    "kind": "bus",
    "def_line": 4,
    "def_col": 9,
-   "refs": []
+   "refs": [
+    {
+     "line": 5,
+     "col": 25
+    }
+   ]
   },
   {
    "name": "_rule0",

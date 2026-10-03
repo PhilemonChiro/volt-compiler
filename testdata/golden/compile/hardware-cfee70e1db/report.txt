@@ -1,10 +1,10 @@
 
 [red bold]-- HARDWARE ERROR -- main.volt:5[/red bold]
 
-I2C address 0x76 on bus `bus` is already used by sensor `bme` (line 4).
+I2C address 0x76 on bus `bus` is already used by `bme` (line 4).
 
  [dim]4 |[/dim]     device bme: BME280 on bus at 0x76
  [dim]5 |[/dim]     device bmp: BME280 on bus at 0x76
  [dim]  |[/dim] [red]           ^^^[/red]
 
-[cyan]Hint: Each I2C address must be unique per bus. Check the sensor datasheet for alternative addresses.[/cyan]
+[cyan]Hint: Each I2C address must be unique per bus. Pick another address below and set the board's address pin (ADDR / SDO / A0) to match.[/cyan]

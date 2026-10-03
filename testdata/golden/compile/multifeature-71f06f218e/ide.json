@@ -9,42 +9,6 @@
     "hint": "The chip declaration will move to volt.toml in a future version.",
     "end_line": 2,
     "end_col": 11
-   },
-   {
-    "line": 4,
-    "col": 9,
-    "message": "Strapping pin: GPIO 2 must be LOW during boot for flash programming.",
-    "severity": "warning",
-    "hint": "",
-    "end_line": 4,
-    "end_col": 15,
-    "code": "pin-strapping",
-    "fixes": [
-     {
-      "title": "Move to GPIO 18",
-      "line": 4,
-      "col": 26,
-      "end_line": 4,
-      "end_col": 27,
-      "text": "18"
-     },
-     {
-      "title": "Move to GPIO 19",
-      "line": 4,
-      "col": 26,
-      "end_line": 4,
-      "end_col": 27,
-      "text": "19"
-     },
-     {
-      "title": "Move to GPIO 23",
-      "line": 4,
-      "col": 26,
-      "end_line": 4,
-      "end_col": 27,
-      "text": "23"
-     }
-    ]
    }
   ],
   "pins": [
@@ -129,7 +93,7 @@
    100
   ]
  ],
- "format_code": "chip esp32\n\nhardware {\n    pin heater: Output = 2\n    pin fan: Output = 4\n    bus i2c0: I2C(sda: 21, scl: 22)\n    device bme: BME280 on i2c0 at 0x76\n}\n\nstorage target_temp: int = 22\n\ntask sensor_reader {\n    every 2s { var temp: float = bme.temperature() }\n}\n\nmachine thermostat {\n    initial state idle {\n        enter {\n            heater.off()\n            fan.off()\n        }\n        after 5s -> heating\n    }\n\n    state heating {\n        enter { heater.on() }\n        exit { heater.off() }\n        after 30s -> cooling\n    }\n\n    state cooling {\n        enter { fan.on() }\n        exit { fan.off() }\n        after 30s -> idle\n    }\n}\n",
+ "format_code": "chip esp32\n\nhardware {\n    pin heater: Output = 2\n    pin fan: Output = 4\n    device bme: BME280 on i2c0 at 0x76\n    i2c i2c0(sda: 21, scl: 22)\n}\n\nstorage target_temp: int = 22\n\ntask sensor_reader {\n    every 2s { var temp: float = bme.temperature() }\n}\n\nmachine thermostat {\n    initial state idle {\n        enter {\n            heater.off()\n            fan.off()\n        }\n        after 5s -> heating\n    }\n\n    state heating {\n        enter { heater.on() }\n        exit { heater.off() }\n        after 30s -> cooling\n    }\n\n    state cooling {\n        enter { fan.on() }\n        exit { fan.off() }\n        after 30s -> idle\n    }\n}\n",
  "find_symbols": [
   {
    "name": "heater",
@@ -188,7 +152,12 @@
    "kind": "bus",
    "def_line": 6,
    "def_col": 9,
-   "refs": []
+   "refs": [
+    {
+     "line": 7,
+     "col": 27
+    }
+   ]
   },
   {
    "name": "sensor_reader",

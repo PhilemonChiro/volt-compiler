@@ -11,42 +11,6 @@
     "end_col": 11
    },
    {
-    "line": 3,
-    "col": 14,
-    "message": "Strapping pin: GPIO 2 must be LOW during boot for flash programming.",
-    "severity": "warning",
-    "hint": "",
-    "end_line": 3,
-    "end_col": 17,
-    "code": "pin-strapping",
-    "fixes": [
-     {
-      "title": "Move to GPIO 4",
-      "line": 3,
-      "col": 25,
-      "end_line": 3,
-      "end_col": 26,
-      "text": "4"
-     },
-     {
-      "title": "Move to GPIO 18",
-      "line": 3,
-      "col": 25,
-      "end_line": 3,
-      "end_col": 26,
-      "text": "18"
-     },
-     {
-      "title": "Move to GPIO 19",
-      "line": 3,
-      "col": 25,
-      "end_line": 3,
-      "end_col": 26,
-      "text": "19"
-     }
-    ]
-   },
-   {
     "line": 4,
     "col": 5,
     "message": "Strapping pin: GPIO 0 must be HIGH during boot (pulled up by default). If driven LOW externally, the chip enters bootloader mode.",
@@ -149,7 +113,7 @@
    100
   ]
  ],
- "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n    pin btn: PullUpInput = 0\n    bus i2c0: I2C(sda: 21, scl: 22)\n    device bme: BME280 on i2c0 at 0x76\n}\n",
+ "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n    pin btn: PullUpInput = 0\n    device bme: BME280 on i2c0 at 0x76\n    i2c i2c0(sda: 21, scl: 22)\n}\n",
  "find_symbols": [
   {
    "name": "led",
@@ -177,7 +141,12 @@
    "kind": "bus",
    "def_line": 5,
    "def_col": 5,
-   "refs": []
+   "refs": [
+    {
+     "line": 6,
+     "col": 22
+    }
+   ]
   }
  ],
  "state_diagram": {

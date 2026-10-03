@@ -1,43 +1,6 @@
 {
  "compile_full": {
-  "diagnostics": [
-   {
-    "line": 13,
-    "col": 9,
-    "message": "Strapping pin: GPIO 2 must be LOW during boot for flash programming.",
-    "severity": "warning",
-    "hint": "",
-    "end_line": 13,
-    "end_col": 12,
-    "code": "pin-strapping",
-    "fixes": [
-     {
-      "title": "Move to GPIO 4",
-      "line": 13,
-      "col": 15,
-      "end_line": 13,
-      "end_col": 16,
-      "text": "4"
-     },
-     {
-      "title": "Move to GPIO 18",
-      "line": 13,
-      "col": 15,
-      "end_line": 13,
-      "end_col": 16,
-      "text": "18"
-     },
-     {
-      "title": "Move to GPIO 19",
-      "line": 13,
-      "col": 15,
-      "end_line": 13,
-      "end_col": 16,
-      "text": "19"
-     }
-    ]
-   }
-  ],
+  "diagnostics": [],
   "pins": [
    {
     "name": "led",
@@ -319,14 +282,32 @@
    "kind": "bus",
    "def_line": 16,
    "def_col": 9,
-   "refs": []
+   "refs": [
+    {
+     "line": 19,
+     "col": 28
+    },
+    {
+     "line": 20,
+     "col": 30
+    },
+    {
+     "line": 21,
+     "col": 29
+    }
+   ]
   },
   {
    "name": "gsm_uart",
    "kind": "bus",
    "def_line": 17,
    "def_col": 9,
-   "refs": []
+   "refs": [
+    {
+     "line": 22,
+     "col": 28
+    }
+   ]
   },
   {
    "name": "csq_bars",

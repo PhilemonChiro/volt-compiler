@@ -169,38 +169,81 @@ func emitHardware(hw *HardwareBlock) string {
 			lines = append(lines, fmtIndent+"pin "+pin.Name+" = "+strconv.Itoa(pin.GPIO))
 		}
 	}
+	// Devices first; explicit buses after them (implicit ones aren't source).
+	busKinds := map[string]string{}
 	for _, bus := range hw.Buses {
-		params := make([]string, len(bus.Params.Keys))
-		for i, k := range bus.Params.Keys {
-			params[i] = k + ": " + emitExpr(bus.Params.Vals[k])
-		}
-		// Parser lowercases; display as I2C, SPI.
-		lines = append(lines, fmtIndent+"bus "+bus.Name+": "+strings.ToUpper(bus.BusType)+"("+strings.Join(params, ", ")+")")
+		busKinds[bus.Name] = bus.BusType
 	}
 	for _, s := range hw.Sensors {
-		lines = append(lines, fmtIndent+emitSensorDecl(s))
+		lines = append(lines, fmtIndent+emitSensorDecl(s, busKinds[s.BusName]))
+	}
+	for _, bus := range hw.Buses {
+		if bus.Implicit {
+			continue
+		}
+		params := make([]string, len(bus.Params.Keys))
+		for i, k := range bus.Params.Keys {
+			v := emitExpr(bus.Params.Vals[k])
+			if lit, ok := bus.Params.Vals[k].(*IntLiteral); ok && k == "speed" {
+				v = freqLiteral(lit.Value)
+			}
+			params[i] = k + ": " + v
+		}
+		switch bus.BusType {
+		case "i2c", "spi", "uart":
+			lines = append(lines, fmtIndent+bus.BusType+" "+bus.Name+"("+strings.Join(params, ", ")+")")
+		default: // Parser lowercases; display as SOFTI2C, SERIAL.
+			lines = append(lines, fmtIndent+"bus "+bus.Name+": "+strings.ToUpper(bus.BusType)+"("+strings.Join(params, ", ")+")")
+		}
 	}
 	lines = append(lines, "}")
 	return strings.Join(lines, "\n")
 }
 
-func emitSensorDecl(s *SensorDecl) string {
-	if len(s.PinParams.Keys) > 0 {
-		parts := make([]string, len(s.PinParams.Keys))
-		for i, k := range s.PinParams.Keys {
-			parts[i] = k + ": " + pyStr(s.PinParams.Vals[k])
-		}
-		return "device " + s.Name + ": " + s.SensorType + "(" + strings.Join(parts, ", ") + ")"
+// emitSensorDecl prints `device x: T(args) on bus at addr`, modernizing the
+// legacy numbers: SPI `at <cs>` becomes `cs: <cs>`, UART `at 0` is dropped.
+func emitSensorDecl(s *SensorDecl, busKind string) string {
+	var args []string
+	for _, k := range s.PinParams.Keys {
+		args = append(args, k+": "+argText(s.PinParams.Vals[k]))
 	}
-	// I2C addresses as hex (convention); address 0 goes through str().
-	addr := strconv.Itoa(s.Address)
-	if s.Address > 0 {
-		addr = "0x" + strings.ToUpper(strconv.FormatInt(int64(s.Address), 16))
-		if len(addr) < 4 {
-			addr = "0x0" + addr[2:]
+	hasAddr := s.HasAddress
+	if s.HasBus && hasAddr {
+		_, hasCS := s.PinParams.Vals["cs"]
+		switch dev := Registry().Get(s.SensorType); {
+		case busKind == "spi" && dev != nil && dev.Pin("cs") != nil && !hasCS:
+			args = append([]string{"cs: " + strconv.Itoa(s.Address)}, args...)
+			hasAddr = false
+		case busKind == "uart" || busKind == "serial":
+			hasAddr = false
 		}
 	}
-	return "device " + s.Name + ": " + s.SensorType + " on " + s.BusName + " at " + addr
+	out := "device " + s.Name + ": " + s.SensorType
+	if len(args) > 0 {
+		out += "(" + strings.Join(args, ", ") + ")"
+	}
+	if s.HasBus {
+		out += " on " + s.BusName
+	}
+	if hasAddr {
+		// I2C addresses as hex (convention); address 0 goes through str().
+		addr := strconv.Itoa(s.Address)
+		if s.Address > 0 {
+			addr = "0x" + strings.ToUpper(strconv.FormatInt(int64(s.Address), 16))
+			if len(addr) < 4 {
+				addr = "0x0" + addr[2:]
+			}
+		}
+		out += " at " + addr
+	}
+	return out
+}
+
+func argText(v any) string {
+	if n, ok := v.(Node); ok {
+		return emitExpr(n)
+	}
+	return pyStr(v)
 }
 
 func emitEnum(e *EnumDecl) string {

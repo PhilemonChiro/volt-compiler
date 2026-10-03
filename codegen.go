@@ -265,6 +265,15 @@ func (g *codegen) buildMaps(p *Program) {
 // ============================================================
 
 // chipFamily returns "esp32", "esp8266", "rp2040" or "stm32" (default esp32).
+// namedPin: a device's `key: N` pin parameter (`NeoPixel(pin: 4)`), else
+// its `at N` address (`NeoPixel on gpio at 4`).
+func namedPin(s *SensorDecl, key string) string {
+	if v, ok := s.PinParams.Vals[key]; ok {
+		return pyStr(v)
+	}
+	return strconv.Itoa(s.Address)
+}
+
 func chipFamily(p *Program) string {
 	if p.Chip != nil {
 		t := strings.ToLower(p.Chip.Target)
@@ -337,8 +346,10 @@ func (g *codegen) emitHeader(p *Program) {
 	}
 	if hw != nil && len(hw.Sensors) > 0 {
 		g.out(`#include "volt/sensor.h"`)
+		// SPI devices (MFRC522, NRF24L01, …) live in a separate header.
 		if slices.ContainsFunc(hw.Sensors, func(s *SensorDecl) bool {
-			return s.SensorType == "MAX31855" || s.SensorType == "MCP3008" || s.SensorType == "W25Q"
+			d := Registry().Get(s.SensorType)
+			return d != nil && strings.EqualFold(d.Interface, "spi")
 		}) {
 			g.out(`#include "volt/spi_devices.h"`)
 		}
@@ -1075,6 +1086,11 @@ func (g *codegen) emitAppMain(p *Program) {
 					"bus_id":  strconv.Itoa(busID),
 					"uart_id": strconv.Itoa(g.uartPorts[s.BusName]),
 				}
+				if dev != nil {
+					for i := range dev.Params {
+						vals[dev.Params[i].Name] = paramValue(s, &dev.Params[i])
+					}
+				}
 				for _, k := range s.PinParams.Keys {
 					vals[k] = pyStr(s.PinParams.Vals[k])
 				}
@@ -1096,9 +1112,11 @@ func (g *codegen) emitAppMain(p *Program) {
 				}
 				g.out(stype + "_init(&_" + s.Name + ", " + args + ");")
 			case iface == "spi":
-				g.out(fmt.Sprintf("%s_init(&_%s, 0, %d);  // cs_pin=%d", stype, s.Name, s.Address, s.Address))
+				cs := namedPin(s, "cs")
+				g.out(fmt.Sprintf("%s_init(&_%s, 0, %s);  // cs_pin=%s", stype, s.Name, cs, cs))
 			case iface == "gpio":
-				g.out(fmt.Sprintf("%s_init(&_%s, %d);  // pin=%d", stype, s.Name, s.Address, s.Address))
+				pin := namedPin(s, "pin")
+				g.out(fmt.Sprintf("%s_init(&_%s, %s);  // pin=%s", stype, s.Name, pin, pin))
 			case iface == "uart" || iface == "serial":
 				g.out(stype + "_init(&_" + s.Name + ", 0);  // uart bus")
 			default:

@@ -29,6 +29,7 @@ func Resolve(program *Program, errs *Errors) *Scope {
 	for _, b := range builtins {
 		global.Declare(&Symbol{Name: b[0], Kind: "builtin", TypeName: b[1]})
 	}
+	normalizeHardware(program)
 	collectDeclarations(program, global, errs)
 	resolveBodies(program, global, errs)
 	return global
@@ -44,6 +45,9 @@ func collectDeclarations(program *Program, scope *Scope, errs *Errors) {
 			decl(&Symbol{Name: pin.Name, Kind: "pin", TypeName: pin.Mode, Region: pin.Region})
 		}
 		for _, bus := range hw.Buses {
+			if bus.Implicit {
+				continue
+			}
 			decl(&Symbol{Name: bus.Name, Kind: "bus", TypeName: bus.BusType, Region: bus.Region})
 		}
 		for _, s := range hw.Sensors {

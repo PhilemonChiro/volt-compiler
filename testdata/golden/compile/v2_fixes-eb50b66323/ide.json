@@ -9,42 +9,6 @@
     "hint": "The chip declaration will move to volt.toml in a future version.",
     "end_line": 1,
     "end_col": 11
-   },
-   {
-    "line": 2,
-    "col": 16,
-    "message": "Strapping pin: GPIO 2 must be LOW during boot for flash programming.",
-    "severity": "warning",
-    "hint": "",
-    "end_line": 2,
-    "end_col": 19,
-    "code": "pin-strapping",
-    "fixes": [
-     {
-      "title": "Move to GPIO 4",
-      "line": 2,
-      "col": 30,
-      "end_line": 2,
-      "end_col": 31,
-      "text": "4"
-     },
-     {
-      "title": "Move to GPIO 18",
-      "line": 2,
-      "col": 30,
-      "end_line": 2,
-      "end_col": 31,
-      "text": "18"
-     },
-     {
-      "title": "Move to GPIO 19",
-      "line": 2,
-      "col": 30,
-      "end_line": 2,
-      "end_col": 31,
-      "text": "19"
-     }
-    ]
    }
   ],
   "pins": [
