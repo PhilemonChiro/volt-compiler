@@ -27,4 +27,5 @@ void app_main(void)
 #line 7 "main.volt"
     int32_t result = (mask & 15);
 }
+#line 31 "main.c"
 

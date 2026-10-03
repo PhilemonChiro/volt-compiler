@@ -6,7 +6,9 @@
     "col": 9,
     "message": "Critical task `pid` calls `log()` which is not safe in ISR context (hardware timer interrupt).",
     "severity": "error",
-    "hint": "Remove `log()` from this task, or remove `strict` to make it a Background task."
+    "hint": "Remove `log()` from this task, or remove `strict` to make it a Background task.",
+    "end_line": 4,
+    "end_col": 12
    }
   ],
   "pins": [],

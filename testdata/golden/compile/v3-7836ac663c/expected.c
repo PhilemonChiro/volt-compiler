@@ -25,4 +25,5 @@ void app_main(void)
 #line 4 "hw_single_pullup.volt"
     bool p = (pin_read(0) == LOW);
 }
+#line 29 "main.c"
 

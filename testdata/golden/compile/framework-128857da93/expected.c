@@ -28,6 +28,7 @@ static void lights_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 32 "main.c"
 
 void app_main(void)
 {

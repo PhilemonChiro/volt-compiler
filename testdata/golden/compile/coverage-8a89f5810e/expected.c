@@ -26,4 +26,5 @@ void app_main(void)
         log_info("step", "%s", "i");
     }
 }
+#line 30 "main.c"
 

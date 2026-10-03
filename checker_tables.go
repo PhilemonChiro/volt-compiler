@@ -242,6 +242,8 @@ var builtinMethodTypes = map[string][]methodSig{
 		{"id", "int", []SymParam{}},
 		{"uptime", "int", []SymParam{}},
 		{"free_heap", "int", []SymParam{}},
+		{"micros", "int", []SymParam{}},
+		{"min_free_heap", "int", []SymParam{}},
 		{"watchdog_enable", "void", []SymParam{{"timeout_ms", "int"}}},
 		{"watchdog_feed", "void", []SymParam{}},
 		{"watchdog_disable", "void", []SymParam{}},

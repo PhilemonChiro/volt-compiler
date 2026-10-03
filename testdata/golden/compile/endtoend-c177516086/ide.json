@@ -6,7 +6,9 @@
     "col": 1,
     "message": "Unexpected token \"!\" at line 1, column 1.",
     "severity": "error",
-    "hint": "Expected a top-level declaration (chip, hardware, task, fn, every, …) here."
+    "hint": "Expected a top-level declaration (chip, hardware, task, fn, every, …) here.",
+    "end_line": 1,
+    "end_col": 2
    }
   ],
   "pins": [],

@@ -28,6 +28,7 @@ static void IRAM_ATTR control_isr(void *arg)
 #line 7 "multiple_global_vars_mixed.volt"
     shared_flag = 1;
 }
+#line 32 "main.c"
 
 // Background task: monitor (protothread)
 static void monitor_run(volt_task_t *_vt)
@@ -40,6 +41,7 @@ static void monitor_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 45 "main.c"
 
 void app_main(void)
 {

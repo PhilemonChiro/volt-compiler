@@ -40,4 +40,5 @@ void app_main(void)
     const char* msg = (snprintf(_volt_strbuf[2], sizeof(_volt_strbuf[2]), "Boot #%ld", (long)(log_count)), _volt_strbuf[2]);
     log_info("boot", "%s", msg);
 }
+#line 44 "main.c"
 

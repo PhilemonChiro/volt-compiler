@@ -6,7 +6,36 @@
     "col": 9,
     "message": "GPIO 50 does not exist on ESP32 (valid: 0-39).",
     "severity": "error",
-    "hint": ""
+    "hint": "",
+    "end_line": 2,
+    "end_col": 10,
+    "code": "pin-unknown",
+    "fixes": [
+     {
+      "title": "Move to GPIO 4",
+      "line": 2,
+      "col": 21,
+      "end_line": 2,
+      "end_col": 23,
+      "text": "4"
+     },
+     {
+      "title": "Move to GPIO 18",
+      "line": 2,
+      "col": 21,
+      "end_line": 2,
+      "end_col": 23,
+      "text": "18"
+     },
+     {
+      "title": "Move to GPIO 19",
+      "line": 2,
+      "col": 21,
+      "end_line": 2,
+      "end_col": 23,
+      "text": "19"
+     }
+    ]
    }
   ],
   "pins": [

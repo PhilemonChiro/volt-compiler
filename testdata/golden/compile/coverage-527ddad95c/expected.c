@@ -29,4 +29,5 @@ void app_main(void)
 #line 6 "storage_str.volt"
     const char* n = (storage_load_str("name", _volt_storage_strbuf[0], sizeof(_volt_storage_strbuf[0]), ""), (const char*)_volt_storage_strbuf[0]);
 }
+#line 33 "main.c"
 

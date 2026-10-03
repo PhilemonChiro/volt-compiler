@@ -31,4 +31,5 @@ void app_main(void)
 #line 8 "no_inline_non_yield.volt"
     int32_t x = helper(5);
 }
+#line 35 "main.c"
 

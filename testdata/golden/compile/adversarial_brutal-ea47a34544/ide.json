@@ -6,21 +6,27 @@
     "col": 6,
     "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
     "severity": "warning",
-    "hint": "The chip declaration will move to volt.toml in a future version."
+    "hint": "The chip declaration will move to volt.toml in a future version.",
+    "end_line": 1,
+    "end_col": 11
    },
    {
     "line": 4,
     "col": 5,
     "message": "Name `x` is already declared.",
     "severity": "error",
-    "hint": "First declared at line 3."
+    "hint": "First declared at line 3.",
+    "end_line": 4,
+    "end_col": 6
    },
    {
     "line": 5,
     "col": 5,
     "message": "Name `x` is already declared.",
     "severity": "error",
-    "hint": "First declared at line 3."
+    "hint": "First declared at line 3.",
+    "end_line": 5,
+    "end_col": 6
    }
   ],
   "pins": [

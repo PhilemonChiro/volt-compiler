@@ -25,4 +25,5 @@ void app_main(void)
 #line 6 "main.volt"
     uint8_t mask = 255;
 }
+#line 29 "main.c"
 

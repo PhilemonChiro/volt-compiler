@@ -29,4 +29,5 @@ void app_main(void)
         volt_delay_ms(100);
     }
 }
+#line 33 "main.c"
 

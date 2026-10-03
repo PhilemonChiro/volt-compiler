@@ -36,6 +36,7 @@ static void main_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 40 "main.c"
 
 void app_main(void)
 {
@@ -58,4 +59,5 @@ void app_main(void)
     };
     volt_run(_tasks, 1);
 }
+#line 63 "main.c"
 

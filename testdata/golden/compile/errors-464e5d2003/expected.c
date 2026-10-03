@@ -28,4 +28,5 @@ void app_main(void)
 #line 7 "has_return.volt"
     int32_t x = add(1, 2);
 }
+#line 32 "main.c"
 

@@ -23,4 +23,5 @@ void app_main(void)
     float x = 3.14f;
     // or 0.0f — fallback on failure
 }
+#line 27 "main.c"
 

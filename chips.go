@@ -2,6 +2,7 @@ package compiler
 
 import (
 	"fmt"
+	"slices"
 	"strconv"
 	"strings"
 )
@@ -10,13 +11,14 @@ import (
 // validation uses. Pin databases are generated into chips_tables.go.
 
 // pinIssue is one finding from chipSpec.validatePin; hint "" means none.
-type pinIssue struct{ severity, message, hint string }
+type pinIssue struct{ severity, code, message, hint string }
 
 type chipSpec interface {
 	displayName() string
 	supports(feature string) bool
 	validatePin(pinName, mode string) []pinIssue
 	adc2GPIOs() []int
+	caps() pinCaps
 }
 
 // getChip looks up a chip by name or alias, ignoring case, '-' and '_'.
@@ -50,6 +52,21 @@ func pinByNumber(db map[int]*pinInfo, name string) *pinInfo {
 	return db[n]
 }
 
+// ESP32 DAC and capacitive-touch GPIOs (same on the legacy table).
+var (
+	esp32DACPins   = []int{25, 26}
+	esp32TouchPins = []int{0, 2, 4, 12, 13, 14, 15, 27, 32, 33}
+)
+
+// drivesPin: modes that need an output driver.
+func drivesPin(mode string) bool {
+	switch mode {
+	case "Output", "PWM", "Servo", "DAC":
+		return true
+	}
+	return false
+}
+
 func uartDir(p *pinInfo) string {
 	if p.GPIO == 1 {
 		return "TX"
@@ -75,33 +92,40 @@ func (esp32Chip) supports(f string) bool {
 func (esp32Chip) validatePin(name, mode string) []pinIssue {
 	pin := pinByNumber(esp32Pins, name)
 	if pin == nil {
-		return []pinIssue{{"error", fmt.Sprintf("GPIO %s does not exist on ESP32.", name),
+		return []pinIssue{{"error", "pin-unknown", fmt.Sprintf("GPIO %s does not exist on ESP32.", name),
 			"Available pins: 0-39 (excluding 20, 24, 28-31)"}}
 	}
 	if pin.Blocked {
-		return []pinIssue{{"error", pin.BlockedReason, ""}}
+		return []pinIssue{{"error", "pin-blocked", pin.BlockedReason, ""}}
 	}
 	var out []pinIssue
 	safe := "Available output pins: " + joinInts(esp32SafeOutput, "")
 	if pin.IsFlashPin {
-		out = append(out, pinIssue{"error", fmt.Sprintf("GPIO %s is connected to SPI flash — using it will crash the chip.", name), safe})
+		out = append(out, pinIssue{"error", "pin-flash", fmt.Sprintf("GPIO %s is connected to SPI flash — using it will crash the chip.", name), safe})
 	}
-	if mode == "Output" && !pin.CanOutput {
-		out = append(out, pinIssue{"error", fmt.Sprintf("GPIO %s is input-only (GPIO 34-39 cannot output).", name), safe})
+	if drivesPin(mode) && !pin.CanOutput {
+		out = append(out, pinIssue{"error", "pin-input-only", fmt.Sprintf("GPIO %s is input-only (GPIO 34-39 cannot output).", name), safe})
+	}
+	if mode == "DAC" && !slices.Contains(esp32DACPins, pin.GPIO) {
+		out = append(out, pinIssue{"error", "pin-no-dac", fmt.Sprintf("GPIO %s has no DAC channel.", name), "DAC pins: 25, 26"})
+	}
+	if mode == "Touch" && !slices.Contains(esp32TouchPins, pin.GPIO) {
+		out = append(out, pinIssue{"error", "pin-no-touch", fmt.Sprintf("GPIO %s is not a touch pin.", name),
+			"Touch pins: " + joinInts(esp32TouchPins, "")})
 	}
 	if mode == "Analog" && !pin.CanAnalog {
-		out = append(out, pinIssue{"error", fmt.Sprintf("GPIO %s has no ADC channel.", name),
+		out = append(out, pinIssue{"error", "pin-no-adc", fmt.Sprintf("GPIO %s has no ADC channel.", name),
 			"Pins with ADC: " + joinInts(esp32ADCPins, "")})
 	}
 	if (mode == "PullUpInput" || mode == "InputPullUp") && !pin.HasInternalPullup {
-		out = append(out, pinIssue{"error", fmt.Sprintf("GPIO %s has no internal pull-up resistor (GPIO 34-39).", name),
+		out = append(out, pinIssue{"error", "pin-no-pullup", fmt.Sprintf("GPIO %s has no internal pull-up resistor (GPIO 34-39).", name),
 			"Use an external pull-up resistor."})
 	}
 	if pin.IsStrapping && pin.StrappingWarning != "" {
-		out = append(out, pinIssue{"warning", "Strapping pin: " + pin.StrappingWarning, ""})
+		out = append(out, pinIssue{"warning", "pin-strapping", "Strapping pin: " + pin.StrappingWarning, ""})
 	}
 	if pin.IsUART0 {
-		out = append(out, pinIssue{"warning", fmt.Sprintf("GPIO %s is UART0 (%s) — using it may break serial communication.", name, uartDir(pin)), ""})
+		out = append(out, pinIssue{"warning", "pin-uart0", fmt.Sprintf("GPIO %s is UART0 (%s) — using it may break serial communication.", name, uartDir(pin)), ""})
 	}
 	return out
 }
@@ -125,42 +149,42 @@ func (esp8266Chip) validatePin(name, mode string) []pinIssue {
 	safe := "Available output pins: " + joinInts(esp8266SafeOutput, "")
 	pin := pinByNumber(esp8266Pins, name)
 	if pin == nil {
-		return []pinIssue{{"error", fmt.Sprintf("GPIO %s does not exist on ESP8266. ESP8266 has GPIO 0-16 only.", name), safe}}
+		return []pinIssue{{"error", "pin-unknown", fmt.Sprintf("GPIO %s does not exist on ESP8266. ESP8266 has GPIO 0-16 only.", name), safe}}
 	}
 	if pin.Blocked {
-		return []pinIssue{{"error", pin.BlockedReason, ""}}
+		return []pinIssue{{"error", "pin-blocked", pin.BlockedReason, ""}}
 	}
 	var out []pinIssue
 	if pin.IsFlashPin {
-		out = append(out, pinIssue{"error", fmt.Sprintf("GPIO %s is connected to SPI flash — using it will crash.", name), safe})
+		out = append(out, pinIssue{"error", "pin-flash", fmt.Sprintf("GPIO %s is connected to SPI flash — using it will crash.", name), safe})
 	}
 	if mode == "Output" && !pin.CanOutput {
-		out = append(out, pinIssue{"error", fmt.Sprintf("GPIO %s cannot be used as output.", name), safe})
+		out = append(out, pinIssue{"error", "pin-input-only", fmt.Sprintf("GPIO %s cannot be used as output.", name), safe})
 	}
 	if mode == "Analog" {
-		out = append(out, pinIssue{"error", fmt.Sprintf("GPIO %s is not an analog pin. ESP8266 has only one ADC input (A0/TOUT) which is not a GPIO.", name),
+		out = append(out, pinIssue{"error", "pin-no-adc", fmt.Sprintf("GPIO %s is not an analog pin. ESP8266 has only one ADC input (A0/TOUT) which is not a GPIO.", name),
 			"Use the dedicated A0 pin for analog reads."})
 	}
 	if mode == "Touch" {
-		out = append(out, pinIssue{"error", "ESP8266 does not have capacitive touch pins.", "Capacitive touch is available on ESP32."})
+		out = append(out, pinIssue{"error", "pin-no-touch", "ESP8266 does not have capacitive touch pins.", "Capacitive touch is available on ESP32."})
 	}
 	if (mode == "PullDownInput" || mode == "InputPullDown") && pin.GPIO != 16 {
-		out = append(out, pinIssue{"error", "ESP8266 GPIOs 0-15 do not support pull-down. Only GPIO 16 (RTC domain) has internal pull-down.",
+		out = append(out, pinIssue{"error", "pin-no-pulldown", "ESP8266 GPIOs 0-15 do not support pull-down. Only GPIO 16 (RTC domain) has internal pull-down.",
 			"Use an external pull-down resistor."})
 	}
 	if (mode == "PullUpInput" || mode == "InputPullUp") && !pin.HasInternalPullup {
-		out = append(out, pinIssue{"error", fmt.Sprintf("GPIO %s has no internal pull-up (GPIO 16 is RTC domain).", name),
+		out = append(out, pinIssue{"error", "pin-no-pullup", fmt.Sprintf("GPIO %s has no internal pull-up (GPIO 16 is RTC domain).", name),
 			"Use an external pull-up resistor."})
 	}
 	if pin.GPIO == 16 && mode == "PWM" {
-		out = append(out, pinIssue{"error", "GPIO 16 does not support PWM (RTC domain, different hardware).",
+		out = append(out, pinIssue{"error", "pin-no-pwm", "GPIO 16 does not support PWM (RTC domain, different hardware).",
 			"PWM-capable pins: " + joinInts(esp8266SafeOutput, "")})
 	}
 	if pin.IsStrapping && pin.StrappingWarning != "" {
-		out = append(out, pinIssue{"warning", "Strapping pin: " + pin.StrappingWarning, ""})
+		out = append(out, pinIssue{"warning", "pin-strapping", "Strapping pin: " + pin.StrappingWarning, ""})
 	}
 	if pin.IsUART0 {
-		out = append(out, pinIssue{"warning", fmt.Sprintf("GPIO %s is UART0 (%s) — using it will break serial communication.", name, uartDir(pin)), ""})
+		out = append(out, pinIssue{"warning", "pin-uart0", fmt.Sprintf("GPIO %s is UART0 (%s) — using it will break serial communication.", name, uartDir(pin)), ""})
 	}
 	return out
 }
@@ -190,29 +214,29 @@ func (rp2040Chip) getPin(name string) *pinInfo {
 func (c rp2040Chip) validatePin(name, mode string) []pinIssue {
 	pin := c.getPin(name)
 	if pin == nil {
-		return []pinIssue{{"error", fmt.Sprintf("Pin %s does not exist on RP2040. RP2040 has GP0-GP28.", name),
+		return []pinIssue{{"error", "pin-unknown", fmt.Sprintf("Pin %s does not exist on RP2040. RP2040 has GP0-GP28.", name),
 			"Available pins: GP0-GP22, GP25-GP28"}}
 	}
 	if pin.Blocked {
-		return []pinIssue{{"error", pin.BlockedReason, ""}}
+		return []pinIssue{{"error", "pin-blocked", pin.BlockedReason, ""}}
 	}
 	var out []pinIssue
 	if mode == "Output" && !pin.CanOutput {
-		out = append(out, pinIssue{"error", pin.Name + " cannot be used as output.",
+		out = append(out, pinIssue{"error", "pin-input-only", pin.Name + " cannot be used as output.",
 			"Available output pins: " + joinInts(rp2040SafeOutput, "GP")})
 	}
 	if mode == "Analog" && !pin.CanAnalog {
-		out = append(out, pinIssue{"error", pin.Name + " is not an analog pin. RP2040 ADC is on GP26, GP27, GP28 only.",
+		out = append(out, pinIssue{"error", "pin-no-adc", pin.Name + " is not an analog pin. RP2040 ADC is on GP26, GP27, GP28 only.",
 			"Analog pins: " + joinInts(rp2040ADCPins, "GP")})
 	}
 	if mode == "Touch" {
-		out = append(out, pinIssue{"error", "RP2040 does not have capacitive touch pins.", "Capacitive touch is available on ESP32."})
+		out = append(out, pinIssue{"error", "pin-no-touch", "RP2040 does not have capacitive touch pins.", "Capacitive touch is available on ESP32."})
 	}
 	if pin.GPIO == 25 {
-		out = append(out, pinIssue{"warning", "GP25 is the onboard LED on Pico. On Pico W, GP25 is used for WiFi SPI — not available as GPIO.", ""})
+		out = append(out, pinIssue{"warning", "pin-board-reserved", "GP25 is the onboard LED on Pico. On Pico W, GP25 is used for WiFi SPI — not available as GPIO.", ""})
 	}
 	if pin.GPIO == 23 || pin.GPIO == 24 {
-		out = append(out, pinIssue{"warning", pin.Name + " is used by the Pico board's power circuit. Using it may affect power management.", ""})
+		out = append(out, pinIssue{"warning", "pin-board-reserved", pin.Name + " is used by the Pico board's power circuit. Using it may affect power management.", ""})
 	}
 	return out
 }

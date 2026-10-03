@@ -68,6 +68,7 @@ static void producer_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 72 "main.c"
 
 // Background task: consumer (protothread)
 static void consumer_run(volt_task_t *_vt)
@@ -85,6 +86,7 @@ static void consumer_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 90 "main.c"
 
 void app_main(void)
 {

@@ -1,12 +1,4 @@
 
-[yellow bold]-- CONCURRENCY -- main.volt:0[/yellow bold]
-
-Variable `counter` is shared between critical task (isr_task, isr_task, isr_task) and task (slow_task). The compiler will mark it `volatile` in generated C.
-
-
-[cyan]Hint: For multi-word values, consider using atomic operations.[/cyan]
-
-
 [yellow bold]-- DEPRECATION -- main.volt:1[/yellow bold]
 
 Move `chip esp32` to volt.toml: chip = "esp32"
@@ -15,3 +7,14 @@ Move `chip esp32` to volt.toml: chip = "esp32"
  [dim]  |[/dim] [yellow]     ^^^^^[/yellow]
 
 [cyan]Hint: The chip declaration will move to volt.toml in a future version.[/cyan]
+
+
+[yellow bold]-- CONCURRENCY -- main.volt:6[/yellow bold]
+
+Variable `counter` is shared between isr_task (critical) and slow_task. Each read and write is atomic in the generated C.
+
+ [dim]5 |[/dim] }
+ [dim]6 |[/dim] var counter = 0
+ [dim]  |[/dim] [yellow]    ^^^^^^^[/yellow]
+
+[cyan]Hint: An update spread over several statements can still interleave; keep it in one statement or use a channel.[/cyan]

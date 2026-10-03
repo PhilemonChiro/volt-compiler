@@ -6,7 +6,9 @@
     "col": 25,
     "message": "Unexpected token \"wifi\" at line 3, column 25.",
     "severity": "error",
-    "hint": "Expected a statement or `}` here."
+    "hint": "Expected a statement or `}` here.",
+    "end_line": 3,
+    "end_col": 29
    }
   ],
   "pins": [],

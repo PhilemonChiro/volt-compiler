@@ -46,4 +46,5 @@ void app_main(void)
     };
     volt_run(_tasks, 1);
 }
+#line 50 "main.c"
 

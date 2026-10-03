@@ -79,6 +79,7 @@ static void sensor_poll_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 83 "main.c"
 
 // Critical task: pid_control (hardware timer ISR)
 static void IRAM_ATTR pid_control_isr(void *arg)
@@ -87,6 +88,7 @@ static void IRAM_ATTR pid_control_isr(void *arg)
 #line 56 "05_complex_all_features.volt"
     atomic_fetch_add(&motor_isr_count, 1);
 }
+#line 92 "main.c"
 
 // Background task: button_monitor (protothread)
 static void button_monitor_run(volt_task_t *_vt)
@@ -110,6 +112,7 @@ static void button_monitor_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 116 "main.c"
 
 // Background task: data_logger (protothread)
 static void data_logger_run(volt_task_t *_vt)
@@ -126,6 +129,7 @@ static void data_logger_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 133 "main.c"
 
 // Priority task: cloud_sync (FreeRTOS)
 static void cloud_sync_run(void *arg)
@@ -146,6 +150,7 @@ static void cloud_sync_run(void *arg)
         volt_delay_ms(60000);
     }
 }
+#line 154 "main.c"
 
 // Background task: health_report (protothread)
 static void health_report_run(volt_task_t *_vt)
@@ -272,7 +277,7 @@ static void StatusLED_run(volt_task_t *_vt)
             default: break;
         }
         
-        VOLT_YIELD_LABEL(_vt, 1, 10); // poll every 10ms
+        VOLT_YIELD_LABEL(_vt, 1, 1); // poll every 1ms
     }
     VOLT_TASK_END(_vt);
 }

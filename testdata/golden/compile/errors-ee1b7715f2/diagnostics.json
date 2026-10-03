@@ -15,7 +15,7 @@
     "severity": "error",
     "category": "TYPE MISMATCH",
     "message": "Type `System` has no method `nonexistent`.",
-    "hint": "Available: restart, id, uptime, free_heap, watchdog_enable, watchdog_feed, watchdog_disable",
+    "hint": "Available: restart, id, uptime, free_heap, micros, min_free_heap, watchdog_enable, watchdog_feed, watchdog_disable",
     "region": [
       4,
       5,

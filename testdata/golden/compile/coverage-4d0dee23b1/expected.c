@@ -24,4 +24,5 @@ void app_main(void)
 #line 5 "float_cast.volt"
     float f = (float)(x);
 }
+#line 28 "main.c"
 

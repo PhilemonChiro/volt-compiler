@@ -26,6 +26,7 @@ static void IRAM_ATTR expr_task_isr(void *arg)
 #line 7 "global_var_in_expression_x_plus_y_times_z.volt"
     x = (x + (y * z));
 }
+#line 30 "main.c"
 
 void app_main(void)
 {

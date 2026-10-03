@@ -103,6 +103,7 @@ static void sequencer_transition(sequencer_ctx_t *ctx, sequencer_state_t new_sta
         default: break;
     }
 }
+#line 107 "main.c"
 
 // State machine task: sequencer (runs as protothread)
 static void sequencer_run(volt_task_t *_vt)
@@ -145,7 +146,7 @@ static void sequencer_run(volt_task_t *_vt)
             default: break;
         }
         
-        VOLT_YIELD_LABEL(_vt, 1, 10); // poll every 10ms
+        VOLT_YIELD_LABEL(_vt, 1, 1); // poll every 1ms
     }
     VOLT_TASK_END(_vt);
 }

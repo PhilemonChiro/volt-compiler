@@ -6,7 +6,9 @@
     "col": 42,
     "message": "Unexpected token \"fail\" at line 3, column 42.",
     "severity": "error",
-    "hint": "Expected `retry`, `skip` or `restart` here."
+    "hint": "Expected `retry`, `skip` or `restart` here.",
+    "end_line": 3,
+    "end_col": 46
    }
   ],
   "pins": [],

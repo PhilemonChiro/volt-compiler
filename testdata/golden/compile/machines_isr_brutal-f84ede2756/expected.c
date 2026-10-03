@@ -26,6 +26,7 @@ static void IRAM_ATTR tick_isr(void *arg)
 #line 6 "main.volt"
     counter = (counter + 1);
 }
+#line 30 "main.c"
 
 // Background task: slow (protothread)
 static void slow_run(volt_task_t *_vt)

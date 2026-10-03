@@ -71,6 +71,7 @@ static void t1_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 75 "main.c"
 
 // Background task: t2 (protothread)
 static void t2_run(volt_task_t *_vt)
@@ -84,6 +85,7 @@ static void t2_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 89 "main.c"
 
 // Background task: t3 (protothread)
 static void t3_run(volt_task_t *_vt)
@@ -97,6 +99,7 @@ static void t3_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 103 "main.c"
 
 // Background task: t4 (protothread)
 static void t4_run(volt_task_t *_vt)
@@ -110,6 +113,7 @@ static void t4_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 117 "main.c"
 
 // Background task: t5 (protothread)
 static void t5_run(volt_task_t *_vt)
@@ -123,6 +127,7 @@ static void t5_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 131 "main.c"
 
 // Background task: t6 (protothread)
 static void t6_run(volt_task_t *_vt)
@@ -136,6 +141,7 @@ static void t6_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 145 "main.c"
 
 // Background task: t7 (protothread)
 static void t7_run(volt_task_t *_vt)
@@ -149,6 +155,7 @@ static void t7_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 159 "main.c"
 
 // Background task: t8 (protothread)
 static void t8_run(volt_task_t *_vt)
@@ -162,6 +169,7 @@ static void t8_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 173 "main.c"
 
 // Background task: t9 (protothread)
 static void t9_run(volt_task_t *_vt)
@@ -175,6 +183,7 @@ static void t9_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 187 "main.c"
 
 // Background task: t10 (protothread)
 static void t10_run(volt_task_t *_vt)
@@ -188,6 +197,7 @@ static void t10_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 201 "main.c"
 
 // Critical task: isr1 (hardware timer ISR)
 static void IRAM_ATTR isr1_isr(void *arg)
@@ -196,6 +206,7 @@ static void IRAM_ATTR isr1_isr(void *arg)
 #line 112 "06_stress_max_tasks.volt"
     atomic_fetch_add(&isr1_count, 1);
 }
+#line 210 "main.c"
 
 // Critical task: isr2 (hardware timer ISR)
 static void IRAM_ATTR isr2_isr(void *arg)
@@ -204,6 +215,7 @@ static void IRAM_ATTR isr2_isr(void *arg)
 #line 119 "06_stress_max_tasks.volt"
     atomic_fetch_add(&isr2_count, 1);
 }
+#line 219 "main.c"
 
 // Background task: adc_poll (protothread)
 static void adc_poll_run(volt_task_t *_vt)
@@ -232,6 +244,7 @@ static void adc_poll_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 248 "main.c"
 
 // Priority task: net_report (FreeRTOS)
 static void net_report_run(void *arg)
@@ -246,6 +259,7 @@ static void net_report_run(void *arg)
         volt_delay_ms(10000);
     }
 }
+#line 263 "main.c"
 
 // Background task: stress_report (protothread)
 static void stress_report_run(volt_task_t *_vt)

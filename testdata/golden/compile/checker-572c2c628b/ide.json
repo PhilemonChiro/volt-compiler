@@ -6,7 +6,9 @@
     "col": 9,
     "message": "Variable `x` declared as `float` but assigned `bool`.",
     "severity": "error",
-    "hint": "Change the type to `bool` or convert the value with `float(value)`."
+    "hint": "Change the type to `bool` or convert the value with `float(value)`.",
+    "end_line": 3,
+    "end_col": 10
    }
   ],
   "pins": [],

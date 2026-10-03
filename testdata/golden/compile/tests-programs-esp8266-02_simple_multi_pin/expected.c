@@ -40,6 +40,7 @@ static void blink_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 44 "main.c"
 
 // Background task: read_button (protothread)
 static void read_button_run(volt_task_t *_vt)
@@ -68,6 +69,7 @@ static void read_button_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 73 "main.c"
 
 // Background task: health (protothread)
 static void health_run(volt_task_t *_vt)

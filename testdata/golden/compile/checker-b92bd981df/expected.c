@@ -27,4 +27,5 @@ void app_main(void)
 #line 6 "main.volt"
     bool connected = wifi_is_connected();
 }
+#line 31 "main.c"
 

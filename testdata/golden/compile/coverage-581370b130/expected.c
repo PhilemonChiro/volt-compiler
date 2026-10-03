@@ -24,4 +24,5 @@ void app_main(void)
 #line 5 "compound__.volt"
     x *= 2;
 }
+#line 28 "main.c"
 

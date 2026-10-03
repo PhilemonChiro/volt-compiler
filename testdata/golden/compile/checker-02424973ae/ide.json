@@ -6,7 +6,9 @@
     "col": 18,
     "message": "Argument 1 of `connect` expects `string`, got `int`.",
     "severity": "error",
-    "hint": ""
+    "hint": "",
+    "end_line": 3,
+    "end_col": 20
    },
    {
     "line": 0,

@@ -23,4 +23,5 @@ void app_main(void)
 #line 4 "ble_scan.volt"
     int32_t count = ble_scan(3000);
 }
+#line 27 "main.c"
 

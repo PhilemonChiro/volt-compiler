@@ -29,6 +29,7 @@ static void IRAM_ATTR isr_task_isr(void *arg)
 #line 16 "main.volt"
     private_a = (private_a + 1);
 }
+#line 33 "main.c"
 
 // Background task: bg_task (protothread)
 static void bg_task_run(volt_task_t *_vt)
@@ -44,6 +45,7 @@ static void bg_task_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 49 "main.c"
 
 void app_main(void)
 {

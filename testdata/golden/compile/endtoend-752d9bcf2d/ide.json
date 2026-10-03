@@ -6,14 +6,18 @@
     "col": 9,
     "message": "Critical task `pid` calls `wifi.connect()` which is not safe in ISR context (may block on I2C/SPI/UART).",
     "severity": "error",
-    "hint": "Move this to a Background or Priority task. Share data with the critical task via a volatile variable."
+    "hint": "Move this to a Background or Priority task. Share data with the critical task via a volatile variable.",
+    "end_line": 4,
+    "end_col": 13
    },
    {
     "line": 2,
     "col": 6,
     "message": "Critical task `pid` estimated at ~100000 cycles (~416us at 240MHz), may exceed ISR time budget. Top costs: wifi.connect()(~100000 cycles)",
     "severity": "warning",
-    "hint": "Keep critical tasks under ~20us. Move heavy work to a Background task."
+    "hint": "Keep critical tasks under ~20us. Move heavy work to a Background task.",
+    "end_line": 2,
+    "end_col": 9
    }
   ],
   "pins": [],

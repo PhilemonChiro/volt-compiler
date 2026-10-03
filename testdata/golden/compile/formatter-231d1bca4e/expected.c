@@ -31,4 +31,5 @@ void app_main(void)
         pin_write(2, HIGH);
     }
 }
+#line 35 "main.c"
 

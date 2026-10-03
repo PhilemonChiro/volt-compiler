@@ -49,6 +49,10 @@ type DeviceMethod struct {
 	Returns     string
 	Params      []SymParam
 	Description string
+	// Blocking marks calls that can wait on I/O for seconds (modem, network).
+	// A task that calls one runs as its own FreeRTOS task (priority tier), so
+	// it cannot stall the background scheduler.
+	Blocking bool
 }
 
 // DeviceRegistry holds every device type, in load order.
@@ -157,6 +161,7 @@ func parseDevice(path string) (*DeviceInfo, error) {
 				Type *string `json:"type"`
 			} `json:"params"`
 			Description string `json:"description"`
+			Blocking    bool   `json:"blocking"`
 		}
 		if err := json.Unmarshal(vals[i], &m); err != nil {
 			return nil, err
@@ -164,7 +169,7 @@ func parseDevice(path string) (*DeviceInfo, error) {
 		if m.Returns == nil {
 			return nil, fmt.Errorf("method %s: missing \"returns\"", name)
 		}
-		dm := &DeviceMethod{Name: name, Returns: mapDeviceType(*m.Returns), Description: m.Description}
+		dm := &DeviceMethod{Name: name, Returns: mapDeviceType(*m.Returns), Description: m.Description, Blocking: m.Blocking}
 		for _, p := range m.Params {
 			if p.Name == nil || p.Type == nil {
 				return nil, fmt.Errorf("method %s: param missing name/type", name)

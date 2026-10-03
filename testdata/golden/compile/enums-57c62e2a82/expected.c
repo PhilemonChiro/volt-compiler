@@ -31,4 +31,5 @@ void app_main(void)
         log_info("status", "%s", "not active");
     }
 }
+#line 35 "main.c"
 

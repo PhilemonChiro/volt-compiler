@@ -98,6 +98,7 @@ static void _rule0_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 102 "main.c"
 
 // Background task: _rule1 (protothread)
 static void _rule1_run(volt_task_t *_vt)
@@ -135,6 +136,7 @@ static void _rule1_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 140 "main.c"
 
 // Priority task: _rule2 (FreeRTOS)
 static void _rule2_run(void *arg)
@@ -168,6 +170,7 @@ static void _rule3_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 174 "main.c"
 
 // Background task: _rule4 (protothread)
 static void _rule4_run(volt_task_t *_vt)
@@ -217,4 +220,5 @@ void app_main(void)
     };
     volt_run(_tasks, 5);
 }
+#line 224 "main.c"
 

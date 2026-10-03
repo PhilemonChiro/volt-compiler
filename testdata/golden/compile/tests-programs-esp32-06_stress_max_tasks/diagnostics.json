@@ -38,25 +38,25 @@
   {
     "severity": "warning",
     "category": "CONCURRENCY",
-    "message": "Variable `isr1_count` is shared between critical task (isr1) and task (stress_report). The compiler will mark it `volatile` in generated C.",
-    "hint": "For multi-word values, consider using atomic operations.",
+    "message": "Variable `isr1_count` is shared between isr1 (critical) and stress_report. Each read and write is atomic in the generated C.",
+    "hint": "An update spread over several statements can still interleave; keep it in one statement or use a channel.",
     "region": [
-      0,
-      0,
-      0,
-      0
+      34,
+      5,
+      34,
+      15
     ]
   },
   {
     "severity": "warning",
     "category": "CONCURRENCY",
-    "message": "Variable `isr2_count` is shared between critical task (isr2) and task (stress_report). The compiler will mark it `volatile` in generated C.",
-    "hint": "For multi-word values, consider using atomic operations.",
+    "message": "Variable `isr2_count` is shared between isr2 (critical) and stress_report. Each read and write is atomic in the generated C.",
+    "hint": "An update spread over several statements can still interleave; keep it in one statement or use a channel.",
     "region": [
-      0,
-      0,
-      0,
-      0
+      35,
+      5,
+      35,
+      15
     ]
   }
 ]

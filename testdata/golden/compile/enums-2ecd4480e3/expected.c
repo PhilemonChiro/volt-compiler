@@ -30,4 +30,5 @@ int main(void)
 #line 9 "enum_rp2040.volt"
     mode_t m = MODE_STANDBY;
 }
+#line 34 "main.c"
 

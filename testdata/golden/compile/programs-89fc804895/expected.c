@@ -46,6 +46,7 @@ static void check_button_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 50 "main.c"
 
 // Priority task: report (FreeRTOS)
 static void report_run(void *arg)

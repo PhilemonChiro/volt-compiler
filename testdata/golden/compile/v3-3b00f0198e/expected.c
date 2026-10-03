@@ -98,6 +98,7 @@ static void _rule0_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 102 "main.c"
 
 // Background task: _rule1 (protothread)
 static void _rule1_run(volt_task_t *_vt)
@@ -114,6 +115,7 @@ static void _rule1_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 119 "main.c"
 
 // Background task: _rule2 (protothread)
 static void _rule2_run(volt_task_t *_vt)
@@ -167,4 +169,5 @@ void app_main(void)
     };
     volt_run(_tasks, 3);
 }
+#line 173 "main.c"
 

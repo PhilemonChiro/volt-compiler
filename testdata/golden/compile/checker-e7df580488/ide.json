@@ -6,7 +6,9 @@
     "col": 13,
     "message": "Cannot use `-` between `string` and `int`.",
     "severity": "error",
-    "hint": "Convert to string with string interpolation: \"{value}\"."
+    "hint": "Convert to string with string interpolation: \"{value}\".",
+    "end_line": 3,
+    "end_col": 20
    }
   ],
   "pins": [],

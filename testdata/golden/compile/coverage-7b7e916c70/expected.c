@@ -31,6 +31,7 @@ static void a_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 35 "main.c"
 
 // Background task: b (protothread)
 static void b_run(volt_task_t *_vt)
@@ -43,6 +44,7 @@ static void b_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 48 "main.c"
 
 void app_main(void)
 {

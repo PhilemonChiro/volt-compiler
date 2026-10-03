@@ -6,7 +6,9 @@
     "col": 9,
     "message": "Name `led` is already declared.",
     "severity": "error",
-    "hint": "First declared at line 3."
+    "hint": "First declared at line 3.",
+    "end_line": 4,
+    "end_col": 12
    }
   ],
   "pins": [

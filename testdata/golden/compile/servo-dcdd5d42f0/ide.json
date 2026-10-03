@@ -6,7 +6,9 @@
     "col": 6,
     "message": "Move `chip esp8266` to volt.toml: chip = \"esp8266\"",
     "severity": "warning",
-    "hint": "The chip declaration will move to volt.toml in a future version."
+    "hint": "The chip declaration will move to volt.toml in a future version.",
+    "end_line": 2,
+    "end_col": 13
    }
   ],
   "pins": [

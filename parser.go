@@ -321,7 +321,9 @@ func (p *parser) pinDecl() *PinDecl {
 	}
 	// GPIO number from an int, a GP-prefixed name (GP25) or, with an
 	// explicit mode only, an STM32-style name (PA5 -> port*16 + pin).
-	switch e := p.expr().(type) {
+	gpio := p.expr()
+	d.GPIORegion = regionOf(gpio)
+	switch e := gpio.(type) {
 	case *IntLiteral:
 		d.GPIO = e.Value
 	case *VarRef:
@@ -373,7 +375,9 @@ func (p *parser) sensorDecl() *SensorDecl {
 	case t.word("on"):
 		d.BusName = p.name().text
 		p.expectKw("at")
-		if lit, ok := p.expr().(*IntLiteral); ok {
+		addr := p.expr()
+		d.AddressRegion = regionOf(addr)
+		if lit, ok := addr.(*IntLiteral); ok {
 			d.Address = lit.Value
 		}
 	case t.sym("("):

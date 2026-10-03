@@ -1,0 +1,14 @@
+[
+  {
+    "severity": "warning",
+    "category": "CONCURRENCY WARNING",
+    "message": "Variable `last_event` is written by 2 tasks: worker, logger. Each write is atomic, but the last one wins.",
+    "hint": "Consider using a channel for inter-task communication.",
+    "region": [
+      4,
+      5,
+      4,
+      15
+    ]
+  }
+]

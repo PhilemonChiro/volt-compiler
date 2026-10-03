@@ -27,4 +27,5 @@ void app_main(void)
 #line 8 "enum_two_variants.volt"
     onoff_t state = ONOFF_OFF;
 }
+#line 31 "main.c"
 

@@ -50,6 +50,7 @@ static void heartbeat_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 54 "main.c"
 
 // Background task: sensor_check (protothread)
 static void sensor_check_run(volt_task_t *_vt)
@@ -71,6 +72,7 @@ static void sensor_check_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 76 "main.c"
 
 // Priority task: mqtt_report (FreeRTOS)
 static void mqtt_report_run(void *arg)
@@ -84,6 +86,7 @@ static void mqtt_report_run(void *arg)
         volt_delay_ms(30000);
     }
 }
+#line 90 "main.c"
 
 // Background task: data_buffer (protothread)
 static void data_buffer_run(volt_task_t *_vt)
@@ -98,6 +101,7 @@ static void data_buffer_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 105 "main.c"
 
 // Priority task: sync (FreeRTOS)
 static void sync_run(void *arg)
@@ -115,6 +119,7 @@ static void sync_run(void *arg)
         volt_delay_ms(60000);
     }
 }
+#line 123 "main.c"
 
 // Background task: health (protothread)
 static void health_run(volt_task_t *_vt)

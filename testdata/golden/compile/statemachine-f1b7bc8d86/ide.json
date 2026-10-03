@@ -6,7 +6,9 @@
     "col": 12,
     "message": "Transition target `nonexistent` does not exist. Available states: a.",
     "severity": "error",
-    "hint": ""
+    "hint": "",
+    "end_line": 4,
+    "end_col": 13
    }
   ],
   "pins": [],

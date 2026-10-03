@@ -76,6 +76,8 @@ type PinDecl struct {
 	Name string `json:"name"`
 	Mode string `json:"mode"` // "Output", "Input", ... ("" = inferred)
 	GPIO int    `json:"gpio"`
+	// GPIORegion spans the pin number in the source (for quick fixes).
+	GPIORegion Region `json:"-"`
 }
 
 type BusDecl struct {
@@ -93,7 +95,9 @@ type SensorDecl struct {
 	SensorType string `json:"sensor_type"`
 	BusName    string `json:"bus_name"`
 	Address    int    `json:"address"`
-	PinParams  Dict   `json:"pin_params"`
+	// AddressRegion spans the `at` expression (for quick fixes).
+	AddressRegion Region `json:"-"`
+	PinParams     Dict   `json:"pin_params"`
 }
 
 type PowerBlock struct {

@@ -37,6 +37,7 @@ static void sensor_reader_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 41 "main.c"
 
 // State machine: thermostat
 typedef enum {
@@ -118,7 +119,7 @@ static void thermostat_run(volt_task_t *_vt)
             default: break;
         }
         
-        VOLT_YIELD_LABEL(_vt, 1, 10); // poll every 10ms
+        VOLT_YIELD_LABEL(_vt, 1, 1); // poll every 1ms
     }
     VOLT_TASK_END(_vt);
 }

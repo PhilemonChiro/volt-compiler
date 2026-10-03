@@ -30,4 +30,5 @@ void app_main(void)
     boot_count = (boot_count + 1);
     storage_save_int("boot_count", boot_count);
 }
+#line 34 "main.c"
 

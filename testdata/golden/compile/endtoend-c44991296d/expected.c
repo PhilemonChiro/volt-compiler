@@ -29,4 +29,5 @@ void app_main(void)
 #line 8 "wifi_mqtt_methods.volt"
     bool connected = wifi_is_connected();
 }
+#line 33 "main.c"
 

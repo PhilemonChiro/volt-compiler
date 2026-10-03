@@ -6,7 +6,9 @@
     "col": 13,
     "message": "Unknown name `oops`.",
     "severity": "error",
-    "hint": ""
+    "hint": "",
+    "end_line": 3,
+    "end_col": 17
    }
   ],
   "pins": [],

@@ -6,14 +6,18 @@
     "col": 6,
     "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
     "severity": "warning",
-    "hint": "The chip declaration will move to volt.toml in a future version."
+    "hint": "The chip declaration will move to volt.toml in a future version.",
+    "end_line": 1,
+    "end_col": 11
    },
    {
     "line": 6,
     "col": 12,
     "message": "Unknown name `ghost`.",
     "severity": "error",
-    "hint": ""
+    "hint": "",
+    "end_line": 6,
+    "end_col": 17
    }
   ],
   "pins": [

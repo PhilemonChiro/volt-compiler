@@ -1,12 +1,4 @@
 
-[yellow bold]-- CONCURRENCY -- 05_complex_all_features.volt:0[/yellow bold]
-
-Variable `motor_isr_count` is shared between critical task (pid_control) and task (health_report). The compiler will mark it `volatile` in generated C.
-
-
-[cyan]Hint: For multi-word values, consider using atomic operations.[/cyan]
-
-
 [yellow bold]-- DEPRECATION -- 05_complex_all_features.volt:1[/yellow bold]
 
 Move `chip esp32` to volt.toml: chip = "esp32"
@@ -33,3 +25,14 @@ Strapping pin: GPIO 15 controls boot log output. If pulled LOW, boot messages ar
  [dim]8 |[/dim]     pin fan: Output = 5
  [dim]9 |[/dim]     pin button: PullUpInput = 15
  [dim]  |[/dim] [yellow]        ^^^^^^[/yellow]
+
+
+[yellow bold]-- CONCURRENCY -- 05_complex_all_features.volt:20[/yellow bold]
+
+Variable `motor_isr_count` is shared between pid_control (critical) and health_report. Each read and write is atomic in the generated C.
+
+ [dim]19 |[/dim] var total_syncs: int = 0
+ [dim]20 |[/dim] var motor_isr_count: int = 0
+ [dim]   |[/dim] [yellow]    ^^^^^^^^^^^^^^^[/yellow]
+
+[cyan]Hint: An update spread over several statements can still interleave; keep it in one statement or use a channel.[/cyan]

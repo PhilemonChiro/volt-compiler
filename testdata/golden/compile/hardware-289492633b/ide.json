@@ -6,7 +6,36 @@
     "col": 9,
     "message": "GPIO 2: GPIO 2 is a strapping pin. Must be LOW or floating for download mode.",
     "severity": "warning",
-    "hint": ""
+    "hint": "",
+    "end_line": 2,
+    "end_col": 10,
+    "code": "pin-strapping",
+    "fixes": [
+     {
+      "title": "Move to GPIO 4",
+      "line": 2,
+      "col": 21,
+      "end_line": 2,
+      "end_col": 22,
+      "text": "4"
+     },
+     {
+      "title": "Move to GPIO 18",
+      "line": 2,
+      "col": 21,
+      "end_line": 2,
+      "end_col": 22,
+      "text": "18"
+     },
+     {
+      "title": "Move to GPIO 19",
+      "line": 2,
+      "col": 21,
+      "end_line": 2,
+      "end_col": 22,
+      "text": "19"
+     }
+    ]
    }
   ],
   "pins": [

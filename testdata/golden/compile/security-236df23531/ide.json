@@ -6,21 +6,27 @@
     "col": 6,
     "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
     "severity": "warning",
-    "hint": "The chip declaration will move to volt.toml in a future version."
+    "hint": "The chip declaration will move to volt.toml in a future version.",
+    "end_line": 2,
+    "end_col": 11
    },
    {
     "line": 3,
     "col": 9,
     "message": "Channel `data` capacity 9999 exceeds maximum (1024).",
     "severity": "error",
-    "hint": "Embedded devices have limited RAM. Use 1-1024."
+    "hint": "Embedded devices have limited RAM. Use 1-1024.",
+    "end_line": 3,
+    "end_col": 13
    },
    {
     "line": 3,
     "col": 9,
     "message": "Channel `data` is sent to but never consumed (no receive/has_data call).",
     "severity": "warning",
-    "hint": "Add `data.receive()` or `on data.has_data()` in a task to process the data."
+    "hint": "Add `data.receive()` or `on data.has_data()` in a task to process the data.",
+    "end_line": 3,
+    "end_col": 13
    }
   ],
   "pins": [],

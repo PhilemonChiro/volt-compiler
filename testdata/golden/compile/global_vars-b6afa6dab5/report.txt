@@ -1,7 +1,10 @@
 
-[yellow bold]-- CONCURRENCY -- volatile_shared_across_tiers.volt:0[/yellow bold]
+[yellow bold]-- CONCURRENCY -- volatile_shared_across_tiers.volt:2[/yellow bold]
 
-Variable `counter` is shared between critical task (fast_task, fast_task, fast_task) and task (slow_task, slow_task, slow_task). The compiler will mark it `volatile` in generated C.
+Variable `counter` is shared between fast_task (critical) and slow_task. Each read and write is atomic in the generated C.
 
+ [dim]1 |[/dim] 
+ [dim]2 |[/dim] var counter: int = 0
+ [dim]  |[/dim] [yellow]    ^^^^^^^[/yellow]
 
-[cyan]Hint: For multi-word values, consider using atomic operations.[/cyan]
+[cyan]Hint: An update spread over several statements can still interleave; keep it in one statement or use a channel.[/cyan]

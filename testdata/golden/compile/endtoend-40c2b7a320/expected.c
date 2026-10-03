@@ -24,4 +24,5 @@ void app_main(void)
         log_info("tick", "%s", "");
     }
 }
+#line 28 "main.c"
 

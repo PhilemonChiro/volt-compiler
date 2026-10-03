@@ -24,4 +24,5 @@ void app_main(void)
         log_info("x", "%s", "y");
     }
 }
+#line 28 "main.c"
 

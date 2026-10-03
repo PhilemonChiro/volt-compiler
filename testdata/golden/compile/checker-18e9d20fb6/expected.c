@@ -24,4 +24,5 @@ void app_main(void)
 #line 6 "main.volt"
     int32_t val = pin_read_analog(36);
 }
+#line 28 "main.c"
 

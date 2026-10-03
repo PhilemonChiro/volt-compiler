@@ -14,13 +14,13 @@
   {
     "severity": "warning",
     "category": "CONCURRENCY",
-    "message": "Variable `counter` is shared between critical task (isr_task, isr_task, isr_task) and task (slow_task). The compiler will mark it `volatile` in generated C.",
-    "hint": "For multi-word values, consider using atomic operations.",
+    "message": "Variable `counter` is shared between isr_task (critical) and slow_task. Each read and write is atomic in the generated C.",
+    "hint": "An update spread over several statements can still interleave; keep it in one statement or use a channel.",
     "region": [
-      0,
-      0,
-      0,
-      0
+      6,
+      5,
+      6,
+      12
     ]
   }
 ]

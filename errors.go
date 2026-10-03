@@ -19,6 +19,15 @@ type Diagnostic struct {
 	Message  string
 	Hint     string // "" means no hint
 	Severity string // "error" or "warning"
+	Code     string // stable id for tooling, e.g. "pin-strapping"; "" = none
+	Fixes    []Fix  // suggested edits, best first
+}
+
+// Fix is a suggested edit: replace Region with Text.
+type Fix struct {
+	Title  string
+	Region Region
+	Text   string
 }
 
 // Errors accumulates diagnostics across all compiler passes.
@@ -33,12 +42,15 @@ func (e *Errors) SetSource(source string) {
 }
 
 func (e *Errors) Error(r Region, category, message, hint string) {
-	e.List = append(e.List, Diagnostic{r, category, message, hint, "error"})
+	e.List = append(e.List, Diagnostic{Region: r, Category: category, Message: message, Hint: hint, Severity: "error"})
 }
 
 func (e *Errors) Warning(r Region, category, message, hint string) {
-	e.List = append(e.List, Diagnostic{r, category, message, hint, "warning"})
+	e.List = append(e.List, Diagnostic{Region: r, Category: category, Message: message, Hint: hint, Severity: "warning"})
 }
+
+// add appends a fully built diagnostic (code, fixes).
+func (e *Errors) add(d Diagnostic) { e.List = append(e.List, d) }
 
 // HasErrors reports whether any error (not just warnings) was reported.
 func (e *Errors) HasErrors() bool {

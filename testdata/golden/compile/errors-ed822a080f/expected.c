@@ -24,4 +24,5 @@ void app_main(void)
 #line 5 "assign_to_var.volt"
     x = 10;
 }
+#line 28 "main.c"
 

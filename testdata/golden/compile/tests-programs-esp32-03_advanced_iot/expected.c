@@ -43,6 +43,7 @@ static void heartbeat_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 47 "main.c"
 
 // Critical task: motor_control (hardware timer ISR)
 static void IRAM_ATTR motor_control_isr(void *arg)
@@ -51,6 +52,7 @@ static void IRAM_ATTR motor_control_isr(void *arg)
 #line 26 "03_advanced_iot.volt"
     atomic_fetch_add(&motor_isr_count, 1);
 }
+#line 56 "main.c"
 
 // Priority task: telemetry (FreeRTOS)
 static void telemetry_run(void *arg)
@@ -68,6 +70,7 @@ static void telemetry_run(void *arg)
         volt_delay_ms(30000);
     }
 }
+#line 74 "main.c"
 
 // Priority task: cloud_report (FreeRTOS)
 static void cloud_report_run(void *arg)
@@ -80,6 +83,7 @@ static void cloud_report_run(void *arg)
         volt_delay_ms(60000);
     }
 }
+#line 87 "main.c"
 
 // Background task: stats (protothread)
 static void stats_run(volt_task_t *_vt)

@@ -6,7 +6,9 @@
     "col": 6,
     "message": "Function `retry` contains a yield (sleep/every/on) and calls itself recursively. Recursive yielding functions cannot be inlined into protothreads.",
     "severity": "error",
-    "hint": "Rewrite as a while loop instead of recursion."
+    "hint": "Rewrite as a while loop instead of recursion.",
+    "end_line": 2,
+    "end_col": 11
    }
   ],
   "pins": [],

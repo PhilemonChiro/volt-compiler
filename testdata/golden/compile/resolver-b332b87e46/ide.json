@@ -6,7 +6,9 @@
     "col": 5,
     "message": "Unknown function `nonexistent_func`.",
     "severity": "error",
-    "hint": ""
+    "hint": "",
+    "end_line": 3,
+    "end_col": 21
    }
   ],
   "pins": [],

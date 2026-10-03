@@ -27,4 +27,5 @@ void app_main(void)
         pin_toggle(2);
     }
 }
+#line 31 "main.c"
 

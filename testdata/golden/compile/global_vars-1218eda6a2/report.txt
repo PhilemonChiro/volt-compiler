@@ -1,7 +1,10 @@
 
-[yellow bold]-- CONCURRENCY -- global_var_in_nested_if_while.volt:0[/yellow bold]
+[yellow bold]-- CONCURRENCY -- global_var_in_nested_if_while.volt:2[/yellow bold]
 
-Variable `depth` is shared between critical task (isr, isr, isr) and task (deep, deep, deep, deep, deep). The compiler will mark it `volatile` in generated C.
+Variable `depth` is shared between isr (critical) and deep. Each read and write is atomic in the generated C.
 
+ [dim]1 |[/dim] 
+ [dim]2 |[/dim] var depth: int = 0
+ [dim]  |[/dim] [yellow]    ^^^^^[/yellow]
 
-[cyan]Hint: For multi-word values, consider using atomic operations.[/cyan]
+[cyan]Hint: An update spread over several statements can still interleave; keep it in one statement or use a channel.[/cyan]

@@ -20,20 +20,28 @@ func validateHardware(program *Program, errs *Errors, chip chipSpec) {
 	}
 
 	// Pins by GPIO, for conflict detection. Python keys the chip path by
-	// str(gpio) and the legacy path by int, and the bus check looks up
-	// str(gpio) — so it never sees legacy pins. Two maps keep that.
+	// str(gpio) and the legacy path by int, and its bus check only saw
+	// chip-path pins; legacy pins are copied over so both paths catch
+	// pin/bus clashes.
 	usedPins := map[string]*PinDecl{}
 	legacyUsed := map[int]*PinDecl{}
-	usesWifi := containsMethodCall(program, "wifi", "connect")
+	h := &hwCheck{errs: errs, caps: legacyCaps, taken: takenGPIOs(hw),
+		usesWifi: containsMethodCall(program, "wifi", "connect")}
+	if chip != nil {
+		h.caps = chip.caps()
+	}
 	for _, pin := range hw.Pins {
 		if chip != nil {
-			validatePinChip(pin, usedPins, usesWifi, chip, errs)
+			h.validatePinChip(pin, usedPins, chip)
 		} else {
-			validatePinLegacy(pin, legacyUsed, usesWifi, errs)
+			h.validatePinLegacy(pin, legacyUsed)
 		}
 	}
 
-	validateBusPinConflicts(program, usedPins, errs)
+	for g, p := range legacyUsed {
+		usedPins[strconv.Itoa(g)] = p
+	}
+	h.validateBusPinConflicts(program, usedPins)
 
 	busKinds := map[string]string{}
 	for _, b := range hw.Buses {
@@ -66,49 +74,75 @@ func validateCapabilities(program *Program, chip chipSpec, errs *Errors) {
 	}
 }
 
-func validatePinChip(pin *PinDecl, used map[string]*PinDecl, usesWifi bool, chip chipSpec, errs *Errors) {
+// hwCheck carries what pin diagnostics need to suggest fixes.
+type hwCheck struct {
+	errs     *Errors
+	caps     pinCaps
+	taken    map[int]bool
+	usesWifi bool
+}
+
+// report adds a hardware diagnostic; with move set, it offers moving the
+// number at at (a pin or bus signal) to free GPIOs that suit mode.
+func (h *hwCheck) report(sev, cat, code string, r Region, msg, hint string, move bool, at Region, mode string) {
+	d := Diagnostic{Region: r, Category: cat, Message: msg, Hint: hint, Severity: sev, Code: code}
+	if move {
+		d.Fixes = moveFixes(at, h.caps.suggestPins(mode, h.taken, h.usesWifi, 3))
+	}
+	h.errs.add(d)
+}
+
+func (h *hwCheck) pinError(pin *PinDecl, code, msg, hint string) {
+	h.report("error", "HARDWARE ERROR", code, pin.Region, msg, hint, true, pin.GPIORegion, pin.Mode)
+}
+
+func (h *hwCheck) pinWarning(pin *PinDecl, code, msg, hint string) {
+	h.report("warning", "HARDWARE WARNING", code, pin.Region, msg, hint, true, pin.GPIORegion, pin.Mode)
+}
+
+func (h *hwCheck) validatePinChip(pin *PinDecl, used map[string]*PinDecl, chip chipSpec) {
 	name := strconv.Itoa(pin.GPIO)
 	issues := chip.validatePin(name, pin.Mode)
 	failed := false
 	for _, is := range issues {
 		if is.severity == "error" {
-			errs.Error(pin.Region, "HARDWARE ERROR", is.message, is.hint)
+			h.pinError(pin, is.code, is.message, is.hint)
 			failed = true
 		} else {
-			errs.Warning(pin.Region, "HARDWARE WARNING", is.message, is.hint)
+			h.pinWarning(pin, is.code, is.message, is.hint)
 		}
 	}
 	if failed {
 		return
 	}
 	if first, ok := used[name]; ok {
-		errs.Error(pin.Region, "HARDWARE ERROR",
+		h.pinError(pin, "pin-conflict",
 			fmt.Sprintf("Pin %s is already used by `%s` (line %d).", name, first.Name, first.Region.StartLine),
 			"Each pin can only be used once.")
 		return
 	}
 	used[name] = pin
-	if pin.Mode == "Analog" && usesWifi && slices.Contains(chip.adc2GPIOs(), pin.GPIO) {
-		errs.Warning(pin.Region, "HARDWARE WARNING",
+	if pin.Mode == "Analog" && h.usesWifi && slices.Contains(chip.adc2GPIOs(), pin.GPIO) {
+		h.pinWarning(pin, "pin-adc2-wifi",
 			fmt.Sprintf("Pin %s is on ADC2, which is blocked while WiFi is active. Analog reads will return errors.", name),
 			"Use ADC1 pins instead.")
 	}
 }
 
-func validatePinLegacy(pin *PinDecl, used map[int]*PinDecl, usesWifi bool, errs *Errors) {
+func (h *hwCheck) validatePinLegacy(pin *PinDecl, used map[int]*PinDecl) {
 	gpio, r := pin.GPIO, pin.Region
 	info := legacyPins[gpio]
 	safe := joinInts(legacySafeOutput, "")
 	if info == nil {
-		errs.Error(r, "HARDWARE ERROR", fmt.Sprintf("GPIO %d does not exist on ESP32 (valid: 0-39).", gpio), "")
+		h.pinError(pin, "pin-unknown", fmt.Sprintf("GPIO %d does not exist on ESP32 (valid: 0-39).", gpio), "")
 		return
 	}
 	if info.Blocked {
-		errs.Error(r, "HARDWARE ERROR", info.BlockedReason, "Available output pins: "+safe)
+		h.pinError(pin, "pin-blocked", info.BlockedReason, "Available output pins: "+safe)
 		return
 	}
 	if first, ok := used[gpio]; ok {
-		errs.Error(r, "HARDWARE ERROR",
+		h.pinError(pin, "pin-conflict",
 			fmt.Sprintf("GPIO %d is already used by pin `%s` (line %d).", gpio, first.Name, first.Region.StartLine),
 			"Each GPIO can only be used once.")
 		return
@@ -118,49 +152,57 @@ func validatePinLegacy(pin *PinDecl, used map[int]*PinDecl, usesWifi bool, errs 
 	mode := pin.Mode
 	switch {
 	case mode == "Output" && !info.CanOutput:
-		errs.Error(r, "HARDWARE ERROR", fmt.Sprintf("GPIO %d is input-only — cannot be used as Output.", gpio),
+		h.pinError(pin, "pin-input-only", fmt.Sprintf("GPIO %d is input-only — cannot be used as Output.", gpio),
 			"Input-only pins: 34-39. Available output pins: "+safe)
 		return
-	case mode == "PWM" && !info.CanPWM:
-		errs.Error(r, "HARDWARE ERROR", fmt.Sprintf("GPIO %d cannot be used as PWM (input-only pin).", gpio), "")
+	case (mode == "PWM" || mode == "Servo") && !info.CanPWM:
+		h.pinError(pin, "pin-input-only", fmt.Sprintf("GPIO %d cannot be used as %s (input-only pin).", gpio, mode), "")
+		return
+	case mode == "DAC" && !slices.Contains(esp32DACPins, gpio):
+		h.pinError(pin, "pin-no-dac", fmt.Sprintf("GPIO %d has no DAC channel — cannot be used as DAC.", gpio), "DAC pins: 25, 26")
+		return
+	case mode == "Touch" && !slices.Contains(esp32TouchPins, gpio):
+		h.pinError(pin, "pin-no-touch", fmt.Sprintf("GPIO %d is not a touch pin.", gpio),
+			"Touch pins: "+joinInts(esp32TouchPins, ""))
 		return
 	case mode == "Analog" && !info.CanAnalog:
-		errs.Error(r, "HARDWARE ERROR", fmt.Sprintf("GPIO %d does not have an ADC channel — cannot be used as Analog.", gpio),
+		h.pinError(pin, "pin-no-adc", fmt.Sprintf("GPIO %d does not have an ADC channel — cannot be used as Analog.", gpio),
 			"ADC1 (safe with WiFi): GPIO 32-39. ADC2 (blocked by WiFi): GPIO 0, 2, 4, 12-15, 25-27.")
 		return
 	case strings.Contains(mode, "PullUp") && !info.HasInternalPullup:
-		errs.Error(r, "HARDWARE ERROR", fmt.Sprintf("GPIO %d has no internal pull-up resistor (input-only pins 34-39).", gpio),
+		h.pinError(pin, "pin-no-pullup", fmt.Sprintf("GPIO %d has no internal pull-up resistor (input-only pins 34-39).", gpio),
 			"Use an external pull-up resistor, or use a different pin.")
 		return
 	case strings.Contains(mode, "PullDown") && !info.HasInternalPulldown:
-		errs.Error(r, "HARDWARE ERROR", fmt.Sprintf("GPIO %d has no internal pull-down resistor (input-only pins 34-39).", gpio),
+		h.pinError(pin, "pin-no-pulldown", fmt.Sprintf("GPIO %d has no internal pull-down resistor (input-only pins 34-39).", gpio),
 			"Use an external pull-down resistor, or use a different pin.")
 		return
 	}
 
 	if info.IsStrapping && info.StrappingWarning != "" {
-		errs.Warning(r, "HARDWARE WARNING", fmt.Sprintf("GPIO %d: %s", gpio, info.StrappingWarning), "")
+		h.pinWarning(pin, "pin-strapping", fmt.Sprintf("GPIO %d: %s", gpio, info.StrappingWarning), "")
 	}
 	if info.IsUART0 {
-		errs.Warning(r, "HARDWARE WARNING",
+		h.pinWarning(pin, "pin-uart0",
 			fmt.Sprintf("GPIO %d is used by UART0 (USB serial). Using it will break serial monitor and firmware flashing.", gpio),
 			"Use a different pin unless you specifically intend to disable serial output.")
 	}
-	if mode == "Analog" && usesWifi && slices.Contains(legacyADC2, gpio) {
-		errs.Warning(r, "HARDWARE WARNING",
+	if mode == "Analog" && h.usesWifi && slices.Contains(legacyADC2, gpio) {
+		h.pinWarning(pin, "pin-adc2-wifi",
 			fmt.Sprintf("GPIO %d is on ADC2, which is BLOCKED while WiFi is active. Analog reads will return errors or garbage.", gpio),
 			"Use ADC1 pins instead (GPIO 32-39) which work with WiFi.")
 	}
 	if gpio == 36 || gpio == 39 {
-		errs.Warning(r, "HARDWARE WARNING",
+		h.pinWarning(pin, "pin-errata",
 			fmt.Sprintf("GPIO %d has a hardware errata: interrupts may fire spuriously during WiFi/BT light sleep. Use a different pin for interrupt-driven input.", gpio),
 			"GPIO 34, 35 do not have this errata.")
 	}
 	if info.IsJTAG {
-		errs.Warning(r, "HARDWARE WARNING", fmt.Sprintf("GPIO %d is a JTAG pin. Using it disables JTAG debugging.", gpio), "")
+		h.pinWarning(pin, "pin-jtag", fmt.Sprintf("GPIO %d is a JTAG pin. Using it disables JTAG debugging.", gpio), "")
 	}
 	for _, note := range info.Notes {
-		errs.Warning(r, "HARDWARE NOTE", fmt.Sprintf("GPIO %d: %s", gpio, note), "")
+		h.errs.add(Diagnostic{Region: r, Category: "HARDWARE NOTE", Message: fmt.Sprintf("GPIO %d: %s", gpio, note),
+			Severity: "warning", Code: "pin-note"})
 	}
 }
 
@@ -173,18 +215,18 @@ func validateSensor(s *SensorDecl, used map[string]map[int]*SensorDecl, busKinds
 	bus, addr := s.BusName, s.Address
 	// 0x00..0x07 and 0x78..0x7F are reserved by the I2C spec.
 	if busKinds[bus] == "i2c" && (addr < 0x08 || addr > 0x77) {
-		errs.Error(s.Region, "HARDWARE ERROR",
-			fmt.Sprintf("I2C address 0x%02X on bus `%s` is outside the 7-bit device range 0x08..0x77.", addr, bus),
-			"0x00..0x07 and 0x78..0x7F are reserved by the I²C spec. Check the device datasheet — most parts have a fixed address or an A0/A1 strap option.")
+		errs.add(Diagnostic{Region: s.Region, Category: "HARDWARE ERROR", Severity: "error", Code: "i2c-address-range",
+			Message: fmt.Sprintf("I2C address 0x%02X on bus `%s` is outside the 7-bit device range 0x08..0x77.", addr, bus),
+			Hint:    "0x00..0x07 and 0x78..0x7F are reserved by the I²C spec. Check the device datasheet — most parts have a fixed address or an A0/A1 strap option."})
 		return
 	}
 	if used[bus] == nil {
 		used[bus] = map[int]*SensorDecl{}
 	}
 	if first, ok := used[bus][addr]; ok {
-		errs.Error(s.Region, "HARDWARE ERROR",
-			fmt.Sprintf("I2C address 0x%02X on bus `%s` is already used by sensor `%s` (line %d).", addr, bus, first.Name, first.Region.StartLine),
-			"Each I2C address must be unique per bus. Check the sensor datasheet for alternative addresses.")
+		errs.add(Diagnostic{Region: s.Region, Category: "HARDWARE ERROR", Severity: "error", Code: "i2c-address-clash",
+			Message: fmt.Sprintf("I2C address 0x%02X on bus `%s` is already used by sensor `%s` (line %d).", addr, bus, first.Name, first.Region.StartLine),
+			Hint:    "Each I2C address must be unique per bus. Check the sensor datasheet for alternative addresses."})
 		return
 	}
 	used[bus][addr] = s
@@ -202,7 +244,7 @@ func busParamGPIO(v any) (int, bool) {
 
 // validateBusPinConflicts: a GPIO can't be both a `pin` and a bus signal,
 // nor a signal of two buses.
-func validateBusPinConflicts(program *Program, usedPins map[string]*PinDecl, errs *Errors) {
+func (h *hwCheck) validateBusPinConflicts(program *Program, usedPins map[string]*PinDecl) {
 	buses := program.Hardware.Buses
 	for _, bus := range buses {
 		for _, pname := range bus.Params.Keys {
@@ -211,10 +253,11 @@ func validateBusPinConflicts(program *Program, usedPins map[string]*PinDecl, err
 				continue
 			}
 			if first, ok := usedPins[strconv.Itoa(gpio)]; ok {
-				errs.Error(bus.Region, "HARDWARE ERROR",
+				h.report("error", "HARDWARE ERROR", "bus-pin-conflict", bus.Region,
 					fmt.Sprintf("GPIO %d is used by bus `%s` (%s) but was already declared as pin `%s` (line %d).",
 						gpio, bus.Name, pname, first.Name, first.Region.StartLine),
-					"A pin can only belong to one subsystem. Either remove the `pin` declaration or move the bus signal to a free GPIO.")
+					"A pin can only belong to one subsystem. Either remove the `pin` declaration or move the bus signal to a free GPIO.",
+					true, regionOf(bus.Params.Vals[pname].(Node)), "Output")
 			}
 		}
 	}
@@ -230,10 +273,11 @@ func validateBusPinConflicts(program *Program, usedPins map[string]*PinDecl, err
 				continue
 			}
 			if prev, ok := owners[gpio]; ok {
-				errs.Error(bus.Region, "HARDWARE ERROR",
+				h.report("error", "HARDWARE ERROR", "bus-pin-conflict", bus.Region,
 					fmt.Sprintf("GPIO %d is used by bus `%s` (%s) but is already taken by bus `%s` (%s, line %d).",
 						gpio, bus.Name, pname, prev.bus, prev.role, prev.line),
-					"Two buses cannot share a signal pin.")
+					"Two buses cannot share a signal pin.",
+					true, regionOf(bus.Params.Vals[pname].(Node)), "Output")
 			} else {
 				owners[gpio] = owner{bus.Name, pname, bus.Region.StartLine}
 			}

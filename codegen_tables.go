@@ -70,6 +70,8 @@ var staticMethodMap = map[[2]string]*string{
 	{"System", "restart"}:             ptr("system_restart()"),
 	{"System", "free_heap"}:           ptr("system_free_heap()"),
 	{"System", "uptime"}:              ptr("system_uptime()"),
+	{"System", "micros"}:              ptr("((int32_t)system_micros())"),
+	{"System", "min_free_heap"}:       ptr("system_min_free_heap()"),
 	{"System", "id"}:                  ptr("system_id()"),
 	{"System", "watchdog_enable"}:     ptr("volt_wdt_enable({args})"),
 	{"System", "watchdog_feed"}:       ptr("volt_wdt_feed()"),

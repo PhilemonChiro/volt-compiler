@@ -24,4 +24,5 @@ void app_main(void)
 #line 5 "int_cast.volt"
     int32_t x = (int32_t)(f);
 }
+#line 28 "main.c"
 

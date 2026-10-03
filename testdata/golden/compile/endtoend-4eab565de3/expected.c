@@ -28,4 +28,5 @@ void app_main(void)
         }
     }
 }
+#line 32 "main.c"
 

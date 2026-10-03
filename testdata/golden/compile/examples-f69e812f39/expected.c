@@ -40,6 +40,7 @@ static int32_t clamp(int32_t val, int32_t lo, int32_t hi)
     }
     return val;
 }
+#line 44 "main.c"
 
 static int32_t scale(int32_t raw)
 {
@@ -82,6 +83,7 @@ static void slow_counter_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 87 "main.c"
 
 // State machine: power_manager
 typedef enum {
@@ -132,6 +134,7 @@ static void power_manager_transition(power_manager_ctx_t *ctx, power_manager_sta
         default: break;
     }
 }
+#line 138 "main.c"
 
 // State machine task: power_manager (runs as protothread)
 static void power_manager_run(volt_task_t *_vt)
@@ -164,7 +167,7 @@ static void power_manager_run(volt_task_t *_vt)
             default: break;
         }
         
-        VOLT_YIELD_LABEL(_vt, 1, 10); // poll every 10ms
+        VOLT_YIELD_LABEL(_vt, 1, 1); // poll every 1ms
     }
     VOLT_TASK_END(_vt);
 }

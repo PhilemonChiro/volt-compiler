@@ -9,7 +9,8 @@
 //	          (compile_full with "emit_progress": true)
 //	Ready:    {"id": "_ready", "ok": true} at startup
 //
-// Ops: compile_full, format_code, find_symbols, state_diagram, system_graph.
+// Ops: compile_full, format_code, find_symbols, state_diagram, system_graph,
+// pin_table ({"chip": ...}, no source).
 package worker
 
 import (
@@ -30,6 +31,7 @@ type request struct {
 	Op           string          `json:"op"`
 	Source       *string         `json:"source"`
 	Filename     string          `json:"filename"`
+	Chip         string          `json:"chip"`
 	Expanded     []string        `json:"expanded"`
 	EmitProgress bool            `json:"emit_progress"`
 }
@@ -105,6 +107,9 @@ func handle(line string, send func(any)) (resp any) {
 var errNoSource = errors.New("missing field: source")
 
 func run(req request, send func(any)) (any, error) {
+	if req.Op == "pin_table" {
+		return compiler.PinTable(req.Chip), nil
+	}
 	switch req.Op {
 	case "compile_full", "format_code", "find_symbols", "state_diagram", "system_graph":
 	default:

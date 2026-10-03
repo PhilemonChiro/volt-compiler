@@ -6,7 +6,9 @@
     "col": 14,
     "message": "Cannot negate `string` with `-`.",
     "severity": "error",
-    "hint": ""
+    "hint": "",
+    "end_line": 2,
+    "end_col": 21
    }
   ],
   "pins": [],

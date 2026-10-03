@@ -27,4 +27,5 @@ void app_main(void)
         x = 0;
     }
 }
+#line 31 "main.c"
 

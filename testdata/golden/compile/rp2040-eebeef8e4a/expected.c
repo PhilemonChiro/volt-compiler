@@ -35,4 +35,5 @@ int main(void)
     boot_count = (boot_count + 1);
     storage_save_int("boots", boot_count);
 }
+#line 39 "main.c"
 

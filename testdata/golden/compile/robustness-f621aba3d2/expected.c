@@ -25,4 +25,5 @@ void app_main(void)
 #line 7 "dac_read.volt"
     int32_t level = pin_dac_read(25);
 }
+#line 29 "main.c"
 

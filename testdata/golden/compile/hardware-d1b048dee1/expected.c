@@ -28,4 +28,5 @@ void app_main(void)
 #line 14 "main.volt"
     int32_t bat = pin_read_analog(36);
 }
+#line 32 "main.c"
 

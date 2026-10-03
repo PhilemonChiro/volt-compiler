@@ -6,7 +6,9 @@
     "col": 19,
     "message": "State `a`: multiple unguarded transitions for event `x`. Add guards [condition] to distinguish them.",
     "severity": "error",
-    "hint": ""
+    "hint": "",
+    "end_line": 3,
+    "end_col": 20
    }
   ],
   "pins": [],

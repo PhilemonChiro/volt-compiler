@@ -25,6 +25,7 @@ static void IRAM_ATTR inc_isr(void *arg)
 #line 7 "shared_compound.volt"
     atomic_fetch_add(&counter, 1);
 }
+#line 29 "main.c"
 
 // Critical task: dec (hardware timer ISR)
 static void IRAM_ATTR dec_isr(void *arg)
@@ -32,6 +33,7 @@ static void IRAM_ATTR dec_isr(void *arg)
 #line 12 "shared_compound.volt"
     atomic_fetch_sub(&counter, 1);
 }
+#line 37 "main.c"
 
 void app_main(void)
 {

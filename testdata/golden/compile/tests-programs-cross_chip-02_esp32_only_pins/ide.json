@@ -6,14 +6,19 @@
     "col": 6,
     "message": "Move `chip esp8266` to volt.toml: chip = \"esp8266\"",
     "severity": "warning",
-    "hint": "The chip declaration will move to volt.toml in a future version."
+    "hint": "The chip declaration will move to volt.toml in a future version.",
+    "end_line": 1,
+    "end_col": 13
    },
    {
     "line": 4,
     "col": 9,
     "message": "GPIO 34 does not exist on ESP8266. ESP8266 has GPIO 0-16 only.",
     "severity": "error",
-    "hint": "Available output pins: 4, 5, 12, 13, 14, 16"
+    "hint": "Available output pins: 4, 5, 12, 13, 14, 16",
+    "end_line": 4,
+    "end_col": 15,
+    "code": "pin-unknown"
    }
   ],
   "pins": [

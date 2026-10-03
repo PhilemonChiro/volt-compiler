@@ -31,6 +31,7 @@ static void slow_task_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 35 "main.c"
 
 // Critical task: fast_task (hardware timer ISR)
 static void IRAM_ATTR fast_task_isr(void *arg)
@@ -38,6 +39,7 @@ static void IRAM_ATTR fast_task_isr(void *arg)
 #line 10 "volatile_shared_across_tiers.volt"
     counter = (counter + 1);
 }
+#line 43 "main.c"
 
 void app_main(void)
 {

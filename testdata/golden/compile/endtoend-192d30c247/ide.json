@@ -6,7 +6,36 @@
     "col": 9,
     "message": "GPIO 34 has no internal pull-up resistor (input-only pins 34-39).",
     "severity": "error",
-    "hint": "Use an external pull-up resistor, or use a different pin."
+    "hint": "Use an external pull-up resistor, or use a different pin.",
+    "end_line": 2,
+    "end_col": 10,
+    "code": "pin-no-pullup",
+    "fixes": [
+     {
+      "title": "Move to GPIO 4",
+      "line": 2,
+      "col": 26,
+      "end_line": 2,
+      "end_col": 28,
+      "text": "4"
+     },
+     {
+      "title": "Move to GPIO 18",
+      "line": 2,
+      "col": 26,
+      "end_line": 2,
+      "end_col": 28,
+      "text": "18"
+     },
+     {
+      "title": "Move to GPIO 19",
+      "line": 2,
+      "col": 26,
+      "end_line": 2,
+      "end_col": 28,
+      "text": "19"
+     }
+    ]
    }
   ],
   "pins": [

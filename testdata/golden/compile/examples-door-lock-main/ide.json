@@ -6,14 +6,72 @@
     "col": 9,
     "message": "Strapping pin: GPIO 2 must be LOW during boot for flash programming.",
     "severity": "warning",
-    "hint": ""
+    "hint": "",
+    "end_line": 17,
+    "end_col": 12,
+    "code": "pin-strapping",
+    "fixes": [
+     {
+      "title": "Move to GPIO 19",
+      "line": 17,
+      "col": 15,
+      "end_line": 17,
+      "end_col": 16,
+      "text": "19"
+     },
+     {
+      "title": "Move to GPIO 21",
+      "line": 17,
+      "col": 15,
+      "end_line": 17,
+      "end_col": 16,
+      "text": "21"
+     },
+     {
+      "title": "Move to GPIO 22",
+      "line": 17,
+      "col": 15,
+      "end_line": 17,
+      "end_col": 16,
+      "text": "22"
+     }
+    ]
    },
    {
     "line": 19,
     "col": 9,
     "message": "Strapping pin: GPIO 15 controls boot log output. If pulled LOW, boot messages are suppressed (usually harmless).",
     "severity": "warning",
-    "hint": ""
+    "hint": "",
+    "end_line": 19,
+    "end_col": 15,
+    "code": "pin-strapping",
+    "fixes": [
+     {
+      "title": "Move to GPIO 19",
+      "line": 19,
+      "col": 31,
+      "end_line": 19,
+      "end_col": 33,
+      "text": "19"
+     },
+     {
+      "title": "Move to GPIO 21",
+      "line": 19,
+      "col": 31,
+      "end_line": 19,
+      "end_col": 33,
+      "text": "21"
+     },
+     {
+      "title": "Move to GPIO 22",
+      "line": 19,
+      "col": 31,
+      "end_line": 19,
+      "end_col": 33,
+      "text": "22"
+     }
+    ]
    }
   ],
   "pins": [

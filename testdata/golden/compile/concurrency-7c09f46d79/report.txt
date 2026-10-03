@@ -1,12 +1,4 @@
 
-[yellow bold]-- CONCURRENCY WARNING -- main.volt:0[/yellow bold]
-
-Variable `counter` is written by multiple tasks: task_a, task_b. This may cause unexpected behavior.
-
-
-[cyan]Hint: Consider using a channel for inter-task communication.[/cyan]
-
-
 [yellow bold]-- DEPRECATION -- main.volt:2[/yellow bold]
 
 Move `chip esp32` to volt.toml: chip = "esp32"
@@ -34,3 +26,14 @@ Strapping pin: GPIO 0 must be HIGH during boot (pulled up by default). If driven
  [dim]5 |[/dim]     pin led: Output = 2
  [dim]6 |[/dim]     pin button: PullUpInput = 0
  [dim]  |[/dim] [yellow]        ^^^^^^[/yellow]
+
+
+[yellow bold]-- CONCURRENCY WARNING -- main.volt:9[/yellow bold]
+
+Variable `counter` is written by 2 tasks: task_a, task_b. Each write is atomic, but the last one wins.
+
+ [dim]8 |[/dim] 
+ [dim]9 |[/dim] var counter = 0
+ [dim]  |[/dim] [yellow]    ^^^^^^^[/yellow]
+
+[cyan]Hint: Consider using a channel for inter-task communication.[/cyan]

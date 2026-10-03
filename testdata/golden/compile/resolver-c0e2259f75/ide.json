@@ -6,7 +6,9 @@
     "col": 9,
     "message": "Cannot assign to `count` — it was declared with `let` (immutable).",
     "severity": "error",
-    "hint": "Use `var` instead of `let` to make it mutable."
+    "hint": "Use `var` instead of `let` to make it mutable.",
+    "end_line": 5,
+    "end_col": 14
    }
   ],
   "pins": [],

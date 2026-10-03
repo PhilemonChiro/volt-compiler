@@ -23,6 +23,7 @@ static int32_t max(int32_t a, int32_t b)
     }
     return b;
 }
+#line 27 "main.c"
 
 static int32_t min(int32_t a, int32_t b)
 {
@@ -32,6 +33,7 @@ static int32_t min(int32_t a, int32_t b)
     }
     return b;
 }
+#line 37 "main.c"
 
 void app_main(void)
 {
@@ -44,4 +46,5 @@ void app_main(void)
 #line 19 "function_with_logic.volt"
     int32_t small = min(10, 20);
 }
+#line 50 "main.c"
 

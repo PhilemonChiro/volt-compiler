@@ -22,4 +22,5 @@ void app_main(void)
 #line 2 "main.volt"
     bool x = (true && false);
 }
+#line 26 "main.c"
 

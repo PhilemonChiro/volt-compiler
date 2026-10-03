@@ -22,4 +22,5 @@ void app_main(void)
 #line 3 "no_global_vars_no_section.volt"
     int32_t local = 5;
 }
+#line 26 "main.c"
 

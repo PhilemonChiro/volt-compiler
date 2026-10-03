@@ -25,4 +25,5 @@ void app_main(void)
 #line 6 "main.volt"
     int32_t x = (256 >> 2);
 }
+#line 29 "main.c"
 

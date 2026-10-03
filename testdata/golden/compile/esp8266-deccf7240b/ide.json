@@ -6,14 +6,45 @@
     "col": 6,
     "message": "Move `chip esp8266` to volt.toml: chip = \"esp8266\"",
     "severity": "warning",
-    "hint": "The chip declaration will move to volt.toml in a future version."
+    "hint": "The chip declaration will move to volt.toml in a future version.",
+    "end_line": 2,
+    "end_col": 13
    },
    {
     "line": 4,
     "col": 9,
     "message": "GPIO 9 is connected to the SPI flash chip. Using it will crash the ESP8266.",
     "severity": "error",
-    "hint": ""
+    "hint": "",
+    "end_line": 4,
+    "end_col": 10,
+    "code": "pin-blocked",
+    "fixes": [
+     {
+      "title": "Move to GPIO 4",
+      "line": 4,
+      "col": 21,
+      "end_line": 4,
+      "end_col": 22,
+      "text": "4"
+     },
+     {
+      "title": "Move to GPIO 5",
+      "line": 4,
+      "col": 21,
+      "end_line": 4,
+      "end_col": 22,
+      "text": "5"
+     },
+     {
+      "title": "Move to GPIO 12",
+      "line": 4,
+      "col": 21,
+      "end_line": 4,
+      "end_col": 22,
+      "text": "12"
+     }
+    ]
    }
   ],
   "pins": [

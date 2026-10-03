@@ -6,7 +6,9 @@
     "col": 1,
     "message": "Unexpected end of input at line 3, column 1.",
     "severity": "error",
-    "hint": "Expected an expression here."
+    "hint": "Expected an expression here.",
+    "end_line": 3,
+    "end_col": 2
    }
   ],
   "pins": [],

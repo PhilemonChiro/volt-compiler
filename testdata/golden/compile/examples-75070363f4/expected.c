@@ -58,6 +58,7 @@ static void _rule1_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 62 "main.c"
 
 void app_main(void)
 {

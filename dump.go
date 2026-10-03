@@ -47,6 +47,9 @@ func nodeFields(v reflect.Value, repr bool) []astField {
 				walk(v.Field(i))
 				continue
 			}
+			if f.Tag.Get("json") == "-" {
+				continue
+			}
 			af := astField{f.Tag.Get("json"), v.Field(i)}
 			if f.Tag.Get("volt") != "extra" {
 				fields = append(fields, af)

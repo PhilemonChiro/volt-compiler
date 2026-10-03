@@ -37,6 +37,7 @@ static void deep_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 41 "main.c"
 
 // Critical task: isr (hardware timer ISR)
 static void IRAM_ATTR isr_isr(void *arg)
@@ -44,6 +45,7 @@ static void IRAM_ATTR isr_isr(void *arg)
 #line 14 "global_var_in_nested_if_while.volt"
     depth = (depth + 1);
 }
+#line 49 "main.c"
 
 void app_main(void)
 {

@@ -18,4 +18,4 @@ Type `System` has no method `nonexistent`.
  [dim]4 |[/dim]     system.nonexistent()
  [dim]  |[/dim] [red]    ^^^^^^[/red]
 
-[cyan]Hint: Available: restart, id, uptime, free_heap, watchdog_enable, watchdog_feed, watchdog_disable[/cyan]
+[cyan]Hint: Available: restart, id, uptime, free_heap, micros, min_free_heap, watchdog_enable, watchdog_feed, watchdog_disable[/cyan]

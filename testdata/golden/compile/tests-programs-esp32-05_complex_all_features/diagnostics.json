@@ -38,13 +38,13 @@
   {
     "severity": "warning",
     "category": "CONCURRENCY",
-    "message": "Variable `motor_isr_count` is shared between critical task (pid_control) and task (health_report). The compiler will mark it `volatile` in generated C.",
-    "hint": "For multi-word values, consider using atomic operations.",
+    "message": "Variable `motor_isr_count` is shared between pid_control (critical) and health_report. Each read and write is atomic in the generated C.",
+    "hint": "An update spread over several statements can still interleave; keep it in one statement or use a channel.",
     "region": [
-      0,
-      0,
-      0,
-      0
+      20,
+      5,
+      20,
+      20
     ]
   }
 ]

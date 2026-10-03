@@ -34,4 +34,5 @@ void app_main(void)
         log_info("normal", "%s", "yes");
     }
 }
+#line 38 "main.c"
 

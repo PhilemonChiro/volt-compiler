@@ -26,6 +26,7 @@ static int32_t clamp(int32_t val, int32_t lo, int32_t hi)
     }
     return val;
 }
+#line 30 "main.c"
 
 void app_main(void)
 {
@@ -36,4 +37,5 @@ void app_main(void)
 #line 12 "func_with_return.volt"
     int32_t x = clamp(42, 0, 100);
 }
+#line 41 "main.c"
 

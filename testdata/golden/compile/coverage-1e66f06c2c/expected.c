@@ -26,6 +26,7 @@ static void net_run(void *arg)
         volt_delay_ms(5000);
     }
 }
+#line 30 "main.c"
 
 void app_main(void)
 {

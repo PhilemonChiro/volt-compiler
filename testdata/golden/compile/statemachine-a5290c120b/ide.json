@@ -6,7 +6,9 @@
     "col": 11,
     "message": "State `dead` in machine `Bad` has no outgoing transitions (dead-end state).",
     "severity": "warning",
-    "hint": "Add a transition or mark with @terminal if intentional."
+    "hint": "Add a transition or mark with @terminal if intentional.",
+    "end_line": 6,
+    "end_col": 15
    }
   ],
   "pins": [],

@@ -1,7 +1,10 @@
 
-[yellow bold]-- CONCURRENCY -- multiple_global_vars_mixed.volt:0[/yellow bold]
+[yellow bold]-- CONCURRENCY -- multiple_global_vars_mixed.volt:4[/yellow bold]
 
-Variable `shared_flag` is shared between critical task (control, control) and task (monitor). The compiler will mark it `volatile` in generated C.
+Variable `shared_flag` is shared between control (critical) and monitor. Each read and write is atomic in the generated C.
 
+ [dim]3 |[/dim] var speed: int = 0
+ [dim]4 |[/dim] var shared_flag: int = 0
+ [dim]  |[/dim] [yellow]    ^^^^^^^^^^^[/yellow]
 
-[cyan]Hint: For multi-word values, consider using atomic operations.[/cyan]
+[cyan]Hint: An update spread over several statements can still interleave; keep it in one statement or use a channel.[/cyan]

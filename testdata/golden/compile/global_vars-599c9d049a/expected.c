@@ -31,6 +31,7 @@ static void bg_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 35 "main.c"
 
 // Critical task: isr (hardware timer ISR)
 static void IRAM_ATTR isr_isr(void *arg)
@@ -38,6 +39,7 @@ static void IRAM_ATTR isr_isr(void *arg)
 #line 10 "global_var_via_assignment.volt"
     x = 0;
 }
+#line 43 "main.c"
 
 void app_main(void)
 {

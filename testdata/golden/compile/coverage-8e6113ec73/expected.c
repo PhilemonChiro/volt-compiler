@@ -29,4 +29,5 @@ void app_main(void)
 #line 6 "storage_float.volt"
     float t = storage_load_float("temp", 0.0f);
 }
+#line 33 "main.c"
 

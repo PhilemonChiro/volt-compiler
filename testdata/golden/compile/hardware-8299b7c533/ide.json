@@ -6,7 +6,36 @@
     "col": 9,
     "message": "GPIO 36 is input-only — cannot be used as Output.",
     "severity": "error",
-    "hint": "Input-only pins: 34-39. Available output pins: 2, 4, 5, 12, 13, 14, 15, 16, 17, 18, 19, 21, 22, 23, 25, 26, 27, 32, 33"
+    "hint": "Input-only pins: 34-39. Available output pins: 2, 4, 5, 12, 13, 14, 15, 16, 17, 18, 19, 21, 22, 23, 25, 26, 27, 32, 33",
+    "end_line": 2,
+    "end_col": 10,
+    "code": "pin-input-only",
+    "fixes": [
+     {
+      "title": "Move to GPIO 4",
+      "line": 2,
+      "col": 21,
+      "end_line": 2,
+      "end_col": 23,
+      "text": "4"
+     },
+     {
+      "title": "Move to GPIO 18",
+      "line": 2,
+      "col": 21,
+      "end_line": 2,
+      "end_col": 23,
+      "text": "18"
+     },
+     {
+      "title": "Move to GPIO 19",
+      "line": 2,
+      "col": 21,
+      "end_line": 2,
+      "end_col": 23,
+      "text": "19"
+     }
+    ]
    }
   ],
   "pins": [

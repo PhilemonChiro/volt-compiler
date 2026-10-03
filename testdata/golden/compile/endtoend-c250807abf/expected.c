@@ -26,4 +26,5 @@ void app_main(void)
     float temp = 25.5f;
     storage_save_float("temp", temp);
 }
+#line 30 "main.c"
 

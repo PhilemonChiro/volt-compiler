@@ -6,14 +6,18 @@
     "col": 6,
     "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
     "severity": "warning",
-    "hint": "The chip declaration will move to volt.toml in a future version."
+    "hint": "The chip declaration will move to volt.toml in a future version.",
+    "end_line": 1,
+    "end_col": 11
    },
    {
     "line": 3,
     "col": 19,
     "message": "`try` block has no error-returning statements; `or retry` is dead code.",
     "severity": "warning",
-    "hint": "Remove the `try` wrapper, or add a call that can fail (wifi/mqtt/storage/device-init)."
+    "hint": "Remove the `try` wrapper, or add a call that can fail (wifi/mqtt/storage/device-init).",
+    "end_line": 3,
+    "end_col": 20
    }
   ],
   "pins": [

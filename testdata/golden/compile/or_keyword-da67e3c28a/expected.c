@@ -23,4 +23,5 @@ void app_main(void)
     int32_t x = 42;
     // or 0 — fallback on failure
 }
+#line 27 "main.c"
 

@@ -6,14 +6,46 @@
     "col": 9,
     "message": "GPIO 36 has a hardware errata: interrupts may fire spuriously during WiFi/BT light sleep. Use a different pin for interrupt-driven input.",
     "severity": "warning",
-    "hint": "GPIO 34, 35 do not have this errata."
+    "hint": "GPIO 34, 35 do not have this errata.",
+    "end_line": 3,
+    "end_col": 16,
+    "code": "pin-errata",
+    "fixes": [
+     {
+      "title": "Move to GPIO 34",
+      "line": 3,
+      "col": 27,
+      "end_line": 3,
+      "end_col": 29,
+      "text": "34"
+     },
+     {
+      "title": "Move to GPIO 35",
+      "line": 3,
+      "col": 27,
+      "end_line": 3,
+      "end_col": 29,
+      "text": "35"
+     },
+     {
+      "title": "Move to GPIO 4",
+      "line": 3,
+      "col": 27,
+      "end_line": 3,
+      "end_col": 29,
+      "text": "4"
+     }
+    ]
    },
    {
     "line": 3,
     "col": 9,
     "message": "GPIO 36: Hardware errata: interrupts on GPIO 36 may fire spuriously during WiFi/BT light sleep.",
     "severity": "warning",
-    "hint": ""
+    "hint": "",
+    "end_line": 3,
+    "end_col": 16,
+    "code": "pin-note"
    }
   ],
   "pins": [

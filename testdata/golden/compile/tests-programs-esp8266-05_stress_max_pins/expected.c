@@ -60,6 +60,7 @@ static void t1_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 64 "main.c"
 
 // Background task: t2 (protothread)
 static void t2_run(volt_task_t *_vt)
@@ -73,6 +74,7 @@ static void t2_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 78 "main.c"
 
 // Background task: t3 (protothread)
 static void t3_run(volt_task_t *_vt)
@@ -86,6 +88,7 @@ static void t3_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 92 "main.c"
 
 // Background task: t4 (protothread)
 static void t4_run(volt_task_t *_vt)
@@ -99,6 +102,7 @@ static void t4_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 106 "main.c"
 
 // Background task: t5 (protothread)
 static void t5_run(volt_task_t *_vt)
@@ -112,6 +116,7 @@ static void t5_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 120 "main.c"
 
 // Background task: t6 (protothread)
 static void t6_run(volt_task_t *_vt)
@@ -125,6 +130,7 @@ static void t6_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 134 "main.c"
 
 // Background task: t7 (protothread)
 static void t7_run(volt_task_t *_vt)
@@ -138,6 +144,7 @@ static void t7_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 148 "main.c"
 
 // Background task: t8 (protothread)
 static void t8_run(volt_task_t *_vt)
@@ -151,6 +158,7 @@ static void t8_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 162 "main.c"
 
 // Background task: t9 (protothread)
 static void t9_run(volt_task_t *_vt)
@@ -164,6 +172,7 @@ static void t9_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 176 "main.c"
 
 // Priority task: net (FreeRTOS)
 static void net_run(void *arg)
@@ -176,6 +185,7 @@ static void net_run(void *arg)
         volt_delay_ms(10000);
     }
 }
+#line 189 "main.c"
 
 // Background task: stress_report (protothread)
 static void stress_report_run(volt_task_t *_vt)

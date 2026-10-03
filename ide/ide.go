@@ -13,6 +13,20 @@ type Diagnostic struct {
 	Message  string `json:"message"`
 	Severity string `json:"severity"`
 	Hint     string `json:"hint"`
+	EndLine  int    `json:"end_line,omitempty"`
+	EndCol   int    `json:"end_col,omitempty"`
+	Code     string `json:"code,omitempty"`
+	Fixes    []Fix  `json:"fixes,omitempty"`
+}
+
+// Fix is a suggested edit: replace line:col..end_line:end_col with text.
+type Fix struct {
+	Title   string `json:"title"`
+	Line    int    `json:"line"`
+	Col     int    `json:"col"`
+	EndLine int    `json:"end_line"`
+	EndCol  int    `json:"end_col"`
+	Text    string `json:"text"`
 }
 
 type Pin struct {
@@ -84,8 +98,14 @@ func CompileFull(source, filename string, progress compiler.ProgressFunc) (*Comp
 		Machines: []Machine{}, Channels: []Channel{}, Enums: []Enum{},
 	}
 	for _, d := range errs.List {
-		res.Diagnostics = append(res.Diagnostics, Diagnostic{
-			d.Region.StartLine, d.Region.StartCol, d.Message, d.Severity, d.Hint})
+		r := d.Region
+		dd := Diagnostic{Line: r.StartLine, Col: r.StartCol, Message: d.Message, Severity: d.Severity, Hint: d.Hint,
+			EndLine: r.EndLine, EndCol: r.EndCol, Code: d.Code}
+		for _, f := range d.Fixes {
+			fr := f.Region
+			dd.Fixes = append(dd.Fixes, Fix{f.Title, fr.StartLine, fr.StartCol, fr.EndLine, fr.EndCol, f.Text})
+		}
+		res.Diagnostics = append(res.Diagnostics, dd)
 	}
 
 	prog, err := compiler.Parse(source)

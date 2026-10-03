@@ -6,21 +6,27 @@
     "col": 8,
     "message": "Unknown name `x`.",
     "severity": "error",
-    "hint": ""
+    "hint": "",
+    "end_line": 3,
+    "end_col": 9
    },
    {
     "line": 8,
     "col": 11,
     "message": "Unknown name `running`.",
     "severity": "error",
-    "hint": ""
+    "hint": "",
+    "end_line": 8,
+    "end_col": 18
    },
    {
     "line": 9,
     "col": 9,
     "message": "Unknown function `tick`.",
     "severity": "error",
-    "hint": ""
+    "hint": "",
+    "end_line": 9,
+    "end_col": 13
    }
   ],
   "pins": [],

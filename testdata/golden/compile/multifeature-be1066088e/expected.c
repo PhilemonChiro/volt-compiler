@@ -70,6 +70,7 @@ static void sampler_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 74 "main.c"
 
 // Background task: processor (protothread)
 static void processor_run(volt_task_t *_vt)
@@ -89,6 +90,7 @@ static void processor_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 94 "main.c"
 
 // Background task: monitor (protothread)
 static void monitor_run(volt_task_t *_vt)

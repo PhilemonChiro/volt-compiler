@@ -6,14 +6,46 @@
     "col": 9,
     "message": "GPIO 1 is used by UART0 (USB serial). Using it will break serial monitor and firmware flashing.",
     "severity": "warning",
-    "hint": "Use a different pin unless you specifically intend to disable serial output."
+    "hint": "Use a different pin unless you specifically intend to disable serial output.",
+    "end_line": 2,
+    "end_col": 10,
+    "code": "pin-uart0",
+    "fixes": [
+     {
+      "title": "Move to GPIO 4",
+      "line": 2,
+      "col": 21,
+      "end_line": 2,
+      "end_col": 22,
+      "text": "4"
+     },
+     {
+      "title": "Move to GPIO 18",
+      "line": 2,
+      "col": 21,
+      "end_line": 2,
+      "end_col": 22,
+      "text": "18"
+     },
+     {
+      "title": "Move to GPIO 19",
+      "line": 2,
+      "col": 21,
+      "end_line": 2,
+      "end_col": 22,
+      "text": "19"
+     }
+    ]
    },
    {
     "line": 2,
     "col": 9,
     "message": "GPIO 1: Connected to USB-serial on DevKit. Using this pin breaks serial monitor/flashing.",
     "severity": "warning",
-    "hint": ""
+    "hint": "",
+    "end_line": 2,
+    "end_col": 10,
+    "code": "pin-note"
    }
   ],
   "pins": [

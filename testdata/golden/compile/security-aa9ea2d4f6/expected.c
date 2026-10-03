@@ -22,4 +22,5 @@ void app_main(void)
 #line 3 "deep.volt"
     int32_t x = 1;
 }
+#line 26 "main.c"
 

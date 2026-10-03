@@ -25,4 +25,5 @@ void app_main(void)
     int32_t up = system_uptime();
     system_restart();
 }
+#line 29 "main.c"
 

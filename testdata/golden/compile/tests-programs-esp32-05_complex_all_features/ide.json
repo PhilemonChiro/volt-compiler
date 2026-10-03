@@ -6,28 +6,90 @@
     "col": 6,
     "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
     "severity": "warning",
-    "hint": "The chip declaration will move to volt.toml in a future version."
+    "hint": "The chip declaration will move to volt.toml in a future version.",
+    "end_line": 1,
+    "end_col": 11
    },
    {
     "line": 8,
     "col": 9,
     "message": "Strapping pin: GPIO 5 controls boot debug output. Usually safe for general use.",
     "severity": "warning",
-    "hint": ""
+    "hint": "",
+    "end_line": 8,
+    "end_col": 12,
+    "code": "pin-strapping",
+    "fixes": [
+     {
+      "title": "Move to GPIO 18",
+      "line": 8,
+      "col": 23,
+      "end_line": 8,
+      "end_col": 24,
+      "text": "18"
+     },
+     {
+      "title": "Move to GPIO 19",
+      "line": 8,
+      "col": 23,
+      "end_line": 8,
+      "end_col": 24,
+      "text": "19"
+     },
+     {
+      "title": "Move to GPIO 25",
+      "line": 8,
+      "col": 23,
+      "end_line": 8,
+      "end_col": 24,
+      "text": "25"
+     }
+    ]
    },
    {
     "line": 9,
     "col": 9,
     "message": "Strapping pin: GPIO 15 controls boot log output. If pulled LOW, boot messages are suppressed (usually harmless).",
     "severity": "warning",
-    "hint": ""
+    "hint": "",
+    "end_line": 9,
+    "end_col": 15,
+    "code": "pin-strapping",
+    "fixes": [
+     {
+      "title": "Move to GPIO 18",
+      "line": 9,
+      "col": 31,
+      "end_line": 9,
+      "end_col": 33,
+      "text": "18"
+     },
+     {
+      "title": "Move to GPIO 19",
+      "line": 9,
+      "col": 31,
+      "end_line": 9,
+      "end_col": 33,
+      "text": "19"
+     },
+     {
+      "title": "Move to GPIO 25",
+      "line": 9,
+      "col": 31,
+      "end_line": 9,
+      "end_col": 33,
+      "text": "25"
+     }
+    ]
    },
    {
-    "line": 0,
-    "col": 0,
-    "message": "Variable `motor_isr_count` is shared between critical task (pid_control) and task (health_report). The compiler will mark it `volatile` in generated C.",
+    "line": 20,
+    "col": 5,
+    "message": "Variable `motor_isr_count` is shared between pid_control (critical) and health_report. Each read and write is atomic in the generated C.",
     "severity": "warning",
-    "hint": "For multi-word values, consider using atomic operations."
+    "hint": "An update spread over several statements can still interleave; keep it in one statement or use a channel.",
+    "end_line": 20,
+    "end_col": 20
    }
   ],
   "pins": [

@@ -6,7 +6,36 @@
     "col": 9,
     "message": "GPIO 21 does not have an ADC channel — cannot be used as Analog.",
     "severity": "error",
-    "hint": "ADC1 (safe with WiFi): GPIO 32-39. ADC2 (blocked by WiFi): GPIO 0, 2, 4, 12-15, 25-27."
+    "hint": "ADC1 (safe with WiFi): GPIO 32-39. ADC2 (blocked by WiFi): GPIO 0, 2, 4, 12-15, 25-27.",
+    "end_line": 2,
+    "end_col": 10,
+    "code": "pin-no-adc",
+    "fixes": [
+     {
+      "title": "Move to GPIO 34",
+      "line": 2,
+      "col": 21,
+      "end_line": 2,
+      "end_col": 23,
+      "text": "34"
+     },
+     {
+      "title": "Move to GPIO 35",
+      "line": 2,
+      "col": 21,
+      "end_line": 2,
+      "end_col": 23,
+      "text": "35"
+     },
+     {
+      "title": "Move to GPIO 4",
+      "line": 2,
+      "col": 21,
+      "end_line": 2,
+      "end_col": 23,
+      "text": "4"
+     }
+    ]
    }
   ],
   "pins": [

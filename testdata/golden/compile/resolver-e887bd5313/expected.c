@@ -29,4 +29,5 @@ void app_main(void)
 #line 5 "main.volt"
     boot_count = (boot_count + 1);
 }
+#line 33 "main.c"
 

@@ -24,6 +24,7 @@ static void main_run(volt_task_t *_vt)
     log_info("app", "%s", msg);
     VOLT_TASK_END(_vt);
 }
+#line 28 "main.c"
 
 void app_main(void)
 {

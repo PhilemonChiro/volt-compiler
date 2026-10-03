@@ -43,6 +43,7 @@ static void telemetry_run(void *arg)
         volt_delay_ms(30000);
     }
 }
+#line 47 "main.c"
 
 void app_main(void)
 {

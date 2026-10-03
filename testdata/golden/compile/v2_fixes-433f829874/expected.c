@@ -25,4 +25,5 @@ void app_main(void)
 #line 6 "main.volt"
     uint16_t val = 1024;
 }
+#line 29 "main.c"
 

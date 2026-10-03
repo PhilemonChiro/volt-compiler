@@ -6,7 +6,9 @@
     "col": 6,
     "message": "Task `onetime` has no yield points (no every/on/sleep). It will run once and complete.",
     "severity": "warning",
-    "hint": ""
+    "hint": "",
+    "end_line": 2,
+    "end_col": 13
    }
   ],
   "pins": [],

@@ -112,6 +112,7 @@ type codegen struct {
 	funcReturnTypes map[string]string
 	enumNames       []string // insertion order of enumTypes
 	enumTypes       map[string][]string
+	locals          map[string]bool // locals/params of the body being emitted; shadow enum variants
 
 	sprintfBufIdx      int
 	chipFamily         string
@@ -142,6 +143,7 @@ func Generate(program *Program, sourceFile string) (code string, err error) {
 		varTypes:        map[string]string{},
 		funcReturnTypes: map[string]string{},
 		enumTypes:       map[string][]string{},
+		locals:          map[string]bool{},
 		skipCounters:    map[string]bool{},
 	}
 	return g.generate(program), nil
@@ -180,7 +182,28 @@ func (g *codegen) generate(p *Program) string {
 		output = strings.ReplaceAll(output, "static char _volt_strbuf[16][128];\n",
 			"static char _volt_strbuf[16][128];\n\n// Skip counters (or-skip observability)\n"+strings.Join(decls, "\n")+"\n")
 	}
-	return output
+	return resetLineMapping(output)
+}
+
+// resetLineMapping ends each function that carries #line directives with
+// `#line N "main.c"`, so the scaffolding after it (app_main, ISR wrappers,
+// helpers) maps to the generated file instead of continuing to count
+// main.volt lines. N is the next line's own number in the output.
+func resetLineMapping(code string) string {
+	lines := strings.Split(code, "\n")
+	out := make([]string, 0, len(lines)+8)
+	mapped := false
+	for _, l := range lines {
+		out = append(out, l)
+		switch {
+		case strings.HasPrefix(l, "#line "):
+			mapped = true
+		case l == "}" && mapped:
+			out = append(out, fmt.Sprintf(`#line %d "main.c"`, len(out)+2))
+			mapped = false
+		}
+	}
+	return strings.Join(out, "\n")
 }
 
 // ============================================================
@@ -224,6 +247,10 @@ func (g *codegen) buildMaps(p *Program) {
 	for _, gv := range p.GlobalVars {
 		if gv.TypeName != nil && *gv.TypeName != "" {
 			g.varTypes[gv.Name] = *gv.TypeName
+		} else if gv.Value != nil {
+			if t := g.inferValueType(gv.Value); t != "int" {
+				g.varTypes[gv.Name] = t
+			}
 		}
 	}
 	for _, f := range p.Functions {
@@ -350,16 +377,20 @@ func (g *codegen) emitEnums(p *Program) {
 	}
 }
 
-func funcSignature(f *FuncDecl) string {
+func (g *codegen) funcSignature(f *FuncDecl) string {
 	params := make([]string, len(f.Params))
 	for i, p := range f.Params {
-		params[i] = cType(p.TypeName, "int32_t") + " " + cName(p.Name)
+		params[i] = g.cType(p.TypeName) + " " + cName(p.Name)
 	}
 	ps := strings.Join(params, ", ")
 	if ps == "" {
 		ps = "void"
 	}
-	return "static " + cTypeP(f.ReturnType, "void") + " " + cName(f.Name) + "(" + ps + ")"
+	ret := "void"
+	if f.ReturnType != nil && *f.ReturnType != "" {
+		ret = g.cType(*f.ReturnType)
+	}
+	return "static " + ret + " " + cName(f.Name) + "(" + ps + ")"
 }
 
 func (g *codegen) emitForwardDecls(p *Program) {
@@ -376,7 +407,7 @@ func (g *codegen) emitForwardDecls(p *Program) {
 	}
 	for _, f := range p.Functions {
 		if !f.ContainsYield {
-			g.out(funcSignature(f) + ";")
+			g.out(g.funcSignature(f) + ";")
 		}
 	}
 	for _, m := range p.Machines {
@@ -420,11 +451,19 @@ func (g *codegen) emitGlobalVars(p *Program) {
 	g.sharedVars = shared
 	for _, v := range p.GlobalVars {
 		ct := cTypeP(v.TypeName, "int32_t")
+		if v.TypeName == nil || *v.TypeName == "" {
+			ct = cType(g.varType(v.Name), "int32_t")
+		}
 		init := ""
 		if v.Value != nil {
 			init = " = " + g.expr(v.Value, "", nil)
 		}
-		if v.Shared || shared[v.Name] {
+		if ct == "const char*" {
+			delete(shared, v.Name)
+		}
+		if v.Shared && ct != "const char*" || shared[v.Name] {
+			// Strings stay plain: a word-sized pointer store is already atomic on
+			// every target, and _Atomic const char* breaks string APIs.
 			g.out("static _Atomic " + ct + " " + cName(v.Name) + init + ";")
 		} else {
 			g.out("static " + ct + " " + cName(v.Name) + init + ";")
@@ -573,7 +612,11 @@ func (g *codegen) emitFunctions(p *Program) {
 		if f.ContainsYield {
 			continue // yielding functions are inlined
 		}
-		g.out(funcSignature(f))
+		g.out(g.funcSignature(f))
+		g.locals = map[string]bool{}
+		for _, p := range f.Params {
+			g.locals[p.Name] = true
+		}
 		g.out("{")
 		g.indent++
 		g.stmts(f.Body, "", nil, false)
@@ -585,6 +628,7 @@ func (g *codegen) emitFunctions(p *Program) {
 
 func (g *codegen) emitTasks(p *Program) {
 	for _, t := range p.Tasks {
+		g.locals = map[string]bool{}
 		switch t.Tier {
 		case "background":
 			hasCtx := len(t.CrossingVars) > 0
@@ -641,6 +685,7 @@ func (g *codegen) emitMachine(m *MachineDecl) {
 	name := m.Name
 	up := strings.ToUpper(name)
 	g.currentMachine = name // for BecomeStmt; Python never resets it
+	g.locals = map[string]bool{}
 	states := m.States
 	initial := states[0] // Python: next(..., states[0]) evaluates states[0] eagerly
 	for _, s := range states {
@@ -825,7 +870,7 @@ func (g *codegen) emitMachine(m *MachineDecl) {
 	g.indent--
 	g.out("}")
 	g.out("")
-	g.out("VOLT_YIELD_LABEL(_vt, 1, 10); // poll every 10ms")
+	g.out("VOLT_YIELD_LABEL(_vt, 1, 1); // poll every 1ms")
 	g.indent--
 	g.out("}")
 	g.out("VOLT_TASK_END(_vt);")
@@ -896,6 +941,7 @@ const softI2CBase = 100
 var initPlaceholderRe = regexp.MustCompile(`\{([A-Za-z_][A-Za-z0-9_]*)\}`)
 
 func (g *codegen) emitAppMain(p *Program) {
+	g.locals = map[string]bool{}
 	chip := chipFamily(p)
 	if chip == "rp2040" {
 		g.out("int main(void)")
@@ -1278,6 +1324,7 @@ func (g *codegen) stmt(s Node, ctx string, cv []string, freertos bool) {
 	switch s := s.(type) {
 	case *VarDecl:
 		g.lineDirective(s)
+		g.locals[s.Name] = true
 		ct := "int32_t"
 		if s.TypeName != nil && *s.TypeName != "" {
 			ct = g.cType(*s.TypeName)
@@ -1553,8 +1600,9 @@ func (g *codegen) expr(e Node, ctx string, cv []string) string {
 		if c, ok := easingConstants[e.Name]; ok {
 			return c
 		}
+		shadowed := g.locals[e.Name] || slices.Contains(cv, e.Name)
 		for _, en := range g.enumNames {
-			if slices.Contains(g.enumTypes[en], e.Name) {
+			if !shadowed && slices.Contains(g.enumTypes[en], e.Name) {
 				return strings.ToUpper(en) + "_" + strings.ToUpper(e.Name)
 			}
 		}
@@ -1926,6 +1974,9 @@ func (g *codegen) interpolatedString(text, ctx string, cv []string) string {
 		case "bool":
 			fmts = append(fmts, "%s")
 			args = append(args, "("+c+` ? "true" : "false")`)
+		case "string":
+			fmts = append(fmts, "%s")
+			args = append(args, c)
 		default:
 			fmts = append(fmts, "%ld")
 			args = append(args, "(long)("+c+")")

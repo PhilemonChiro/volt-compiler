@@ -22,4 +22,5 @@ void app_main(void)
 #line 3 "main.volt"
     float x = (1 + 3.14f);
 }
+#line 26 "main.c"
 

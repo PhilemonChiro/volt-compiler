@@ -24,6 +24,7 @@ static void IRAM_ATTR isr_task_isr(void *arg)
 #line 5 "volatile_critical_only.volt"
     isr_count = (isr_count + 1);
 }
+#line 28 "main.c"
 
 void app_main(void)
 {

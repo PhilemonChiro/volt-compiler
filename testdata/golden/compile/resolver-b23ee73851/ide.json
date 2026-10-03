@@ -6,7 +6,9 @@
     "col": 5,
     "message": "Unknown name `lde`.",
     "severity": "error",
-    "hint": "Did you mean `ble`?"
+    "hint": "Did you mean `ble`?",
+    "end_line": 6,
+    "end_col": 8
    }
   ],
   "pins": [

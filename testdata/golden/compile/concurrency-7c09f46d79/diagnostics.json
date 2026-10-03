@@ -38,13 +38,13 @@
   {
     "severity": "warning",
     "category": "CONCURRENCY WARNING",
-    "message": "Variable `counter` is written by multiple tasks: task_a, task_b. This may cause unexpected behavior.",
+    "message": "Variable `counter` is written by 2 tasks: task_a, task_b. Each write is atomic, but the last one wins.",
     "hint": "Consider using a channel for inter-task communication.",
     "region": [
-      0,
-      0,
-      0,
-      0
+      9,
+      5,
+      9,
+      12
     ]
   }
 ]

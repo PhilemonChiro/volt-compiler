@@ -1,0 +1,388 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 4,
+    "col": 5,
+    "message": "Variable `last_event` is written by 2 tasks: worker, logger. Each write is atomic, but the last one wins.",
+    "severity": "warning",
+    "hint": "Consider using a channel for inter-task communication.",
+    "end_line": 4,
+    "end_col": 15
+   }
+  ],
+  "pins": [],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "worker",
+    "tier": "background",
+    "line": 13
+   },
+   {
+    "name": "logger",
+    "tier": "background",
+    "line": 23
+   }
+  ],
+  "machines": [],
+  "channels": [],
+  "enums": [
+   {
+    "name": "Mode",
+    "variants": [
+     "idle",
+     "running"
+    ]
+   },
+   {
+    "name": "Severity",
+    "variants": [
+     "info",
+     "critical"
+    ]
+   }
+  ],
+  "chip": ""
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "enum Mode { idle, running }\n\nenum Severity { info, critical }\n\nvar last_event: string = \"boot\"\n\nvar mode: Mode = Mode.idle\n\nvar crit_count: int = 0\n\nfunc severity_of(code: int) -> Severity {\n    if code >= 100 {\n        return Severity.critical\n    }\n    return Severity.info\n}\n\ntask worker {\n    every 100ms {\n        var running: int = 0\n        running += 1\n        mode = Mode.running\n        last_event = \"tick {running}\"\n        if severity_of(running) == Severity.critical {\n            crit_count += 1\n        }\n    }\n}\n\ntask logger {\n    every 1s {\n        let seen: string = last_event\n        last_event = \"logged\"\n    }\n}\n",
+ "find_symbols": [
+  {
+   "name": "severity_of",
+   "kind": "func",
+   "def_line": 8,
+   "def_col": 6,
+   "refs": [
+    {
+     "line": 19,
+     "col": 12
+    }
+   ]
+  },
+  {
+   "name": "code",
+   "kind": "param",
+   "def_line": 8,
+   "def_col": 18,
+   "refs": [
+    {
+     "line": 9,
+     "col": 8
+    }
+   ]
+  },
+  {
+   "name": "worker",
+   "kind": "task",
+   "def_line": 13,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "logger",
+   "kind": "task",
+   "def_line": 23,
+   "def_col": 6,
+   "refs": []
+  },
+  {
+   "name": "last_event",
+   "kind": "var",
+   "def_line": 4,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 18,
+     "col": 9
+    },
+    {
+     "line": 25,
+     "col": 28
+    },
+    {
+     "line": 26,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "mode",
+   "kind": "var",
+   "def_line": 5,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 17,
+     "col": 9
+    }
+   ]
+  },
+  {
+   "name": "crit_count",
+   "kind": "var",
+   "def_line": 6,
+   "def_col": 5,
+   "refs": [
+    {
+     "line": 19,
+     "col": 56
+    }
+   ]
+  },
+  {
+   "name": "running",
+   "kind": "var",
+   "def_line": 15,
+   "def_col": 13,
+   "refs": [
+    {
+     "line": 16,
+     "col": 9
+    },
+    {
+     "line": 19,
+     "col": 24
+    }
+   ]
+  },
+  {
+   "name": "seen",
+   "kind": "var",
+   "def_line": 25,
+   "def_col": 13,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    v_last_event(\"last_event\")\n    u_severity_of(\"severity_of()\")\n    u_worker((\"worker<br>↻ 100ms\"))\n    u_logger((\"logger<br>↻ 1s\"))\n    u_worker -->|write| v_last_event\n    v_last_event -.->|read| u_logger\n    u_logger -->|write| v_last_event\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_worker timer;\n    class v_last_event shared;\n    class u_logger timer;\n    class u_severity_of func;",
+  "units": [
+   {
+    "id": "u_worker",
+    "name": "worker<br>↻ 100ms",
+    "line": 13
+   },
+   {
+    "id": "u_logger",
+    "name": "logger<br>↻ 1s",
+    "line": 23
+   },
+   {
+    "id": "u_severity_of",
+    "name": "severity_of()",
+    "line": 8
+   }
+  ],
+  "loops": [
+   "u_worker",
+   "u_logger"
+  ],
+  "edges": [
+   {
+    "drive": "timer",
+    "src": "u_worker",
+    "dst": "v_last_event",
+    "rate_ms": 100
+   },
+   {
+    "drive": "timer",
+    "src": "v_last_event",
+    "dst": "u_logger",
+    "rate_ms": 1000
+   },
+   {
+    "drive": "timer",
+    "src": "u_logger",
+    "dst": "v_last_event",
+    "rate_ms": 1000
+   }
+  ],
+  "nodes": {
+   "u_worker": {
+    "kind": "timer",
+    "label": "worker<br>↻ 100ms",
+    "line": 13,
+    "detail": "every 100ms"
+   },
+   "v_mode": {
+    "kind": "var",
+    "label": "mode",
+    "line": 5,
+    "detail": "Mode"
+   },
+   "v_last_event": {
+    "kind": "var",
+    "label": "last_event",
+    "line": 4,
+    "detail": "string"
+   },
+   "f_severity_of": {
+    "kind": "func",
+    "label": "severity_of()",
+    "line": 8,
+    "detail": "function"
+   },
+   "v_crit_count": {
+    "kind": "var",
+    "label": "crit_count",
+    "line": 6,
+    "detail": "int"
+   },
+   "u_logger": {
+    "kind": "timer",
+    "label": "logger<br>↻ 1s",
+    "line": 23,
+    "detail": "every 1s"
+   },
+   "u_severity_of": {
+    "kind": "func",
+    "label": "severity_of()",
+    "line": 8,
+    "detail": "function"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    v_mode(\"mode\")\n    v_last_event(\"last_event\")\n    f_severity_of(\"severity_of()\")\n    v_crit_count(\"crit_count\")\n    u_severity_of(\"severity_of()\")\n    u_worker((\"worker<br>↻ 100ms\"))\n    u_logger((\"logger<br>↻ 1s\"))\n    u_worker -->|write| v_mode\n    u_worker -->|write| v_last_event\n    u_worker -->|call| f_severity_of\n    u_worker -->|write| v_crit_count\n    v_last_event -.->|read| u_logger\n    u_logger -->|write| v_last_event\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_worker timer;\n    class v_mode var;\n    class v_last_event shared;\n    class f_severity_of func;\n    class v_crit_count var;\n    class u_logger timer;\n    class u_severity_of func;",
+  "units": [
+   {
+    "id": "u_worker",
+    "name": "worker<br>↻ 100ms",
+    "line": 13
+   },
+   {
+    "id": "u_logger",
+    "name": "logger<br>↻ 1s",
+    "line": 23
+   },
+   {
+    "id": "u_severity_of",
+    "name": "severity_of()",
+    "line": 8
+   }
+  ],
+  "loops": [
+   "u_worker",
+   "u_logger"
+  ],
+  "edges": [
+   {
+    "drive": "timer",
+    "src": "u_worker",
+    "dst": "v_mode",
+    "rate_ms": 100
+   },
+   {
+    "drive": "timer",
+    "src": "u_worker",
+    "dst": "v_last_event",
+    "rate_ms": 100
+   },
+   {
+    "drive": "timer",
+    "src": "u_worker",
+    "dst": "f_severity_of",
+    "rate_ms": 100
+   },
+   {
+    "drive": "timer",
+    "src": "u_worker",
+    "dst": "v_crit_count",
+    "rate_ms": 100
+   },
+   {
+    "drive": "timer",
+    "src": "v_last_event",
+    "dst": "u_logger",
+    "rate_ms": 1000
+   },
+   {
+    "drive": "timer",
+    "src": "u_logger",
+    "dst": "v_last_event",
+    "rate_ms": 1000
+   }
+  ],
+  "nodes": {
+   "u_worker": {
+    "kind": "timer",
+    "label": "worker<br>↻ 100ms",
+    "line": 13,
+    "detail": "every 100ms"
+   },
+   "v_mode": {
+    "kind": "var",
+    "label": "mode",
+    "line": 5,
+    "detail": "Mode"
+   },
+   "v_last_event": {
+    "kind": "var",
+    "label": "last_event",
+    "line": 4,
+    "detail": "string"
+   },
+   "f_severity_of": {
+    "kind": "func",
+    "label": "severity_of()",
+    "line": 8,
+    "detail": "function"
+   },
+   "v_crit_count": {
+    "kind": "var",
+    "label": "crit_count",
+    "line": 6,
+    "detail": "int"
+   },
+   "u_logger": {
+    "kind": "timer",
+    "label": "logger<br>↻ 1s",
+    "line": 23,
+    "detail": "every 1s"
+   },
+   "u_severity_of": {
+    "kind": "func",
+    "label": "severity_of()",
+    "line": 8,
+    "detail": "function"
+   }
+  }
+ }
+}

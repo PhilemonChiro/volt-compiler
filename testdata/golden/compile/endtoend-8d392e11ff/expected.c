@@ -38,6 +38,7 @@ static int32_t clamp(int32_t val, int32_t lo, int32_t hi)
     }
     return val;
 }
+#line 42 "main.c"
 
 // Background task: blink (protothread)
 static void blink_run(volt_task_t *_vt)
@@ -77,6 +78,7 @@ static void monitor_run(void *arg)
         volt_delay_ms(5000);
     }
 }
+#line 82 "main.c"
 
 void app_main(void)
 {

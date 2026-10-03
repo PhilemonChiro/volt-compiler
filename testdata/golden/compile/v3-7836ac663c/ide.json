@@ -6,7 +6,36 @@
     "col": 16,
     "message": "GPIO 0: GPIO 0 is a strapping pin. LOW at boot = download mode. Ensure pull-up (internal or external) for normal boot.",
     "severity": "warning",
-    "hint": ""
+    "hint": "",
+    "end_line": 2,
+    "end_col": 19,
+    "code": "pin-strapping",
+    "fixes": [
+     {
+      "title": "Move to GPIO 4",
+      "line": 2,
+      "col": 35,
+      "end_line": 2,
+      "end_col": 36,
+      "text": "4"
+     },
+     {
+      "title": "Move to GPIO 18",
+      "line": 2,
+      "col": 35,
+      "end_line": 2,
+      "end_col": 36,
+      "text": "18"
+     },
+     {
+      "title": "Move to GPIO 19",
+      "line": 2,
+      "col": 35,
+      "end_line": 2,
+      "end_col": 36,
+      "text": "19"
+     }
+    ]
    }
   ],
   "pins": [

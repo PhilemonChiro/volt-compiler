@@ -27,4 +27,5 @@ void app_main(void)
 #line 8 "pulldown_basic.volt"
     int32_t level = pin_read(4);
 }
+#line 31 "main.c"
 

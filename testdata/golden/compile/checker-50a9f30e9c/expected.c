@@ -22,4 +22,5 @@ void app_main(void)
 #line 2 "main.volt"
     const char* x = ("a" + "b");
 }
+#line 26 "main.c"
 

@@ -6,7 +6,10 @@
     "col": 12,
     "message": "I2C address 0x76 on bus `bus` is already used by sensor `a` (line 4).",
     "severity": "error",
-    "hint": "Each I2C address must be unique per bus. Check the sensor datasheet for alternative addresses."
+    "hint": "Each I2C address must be unique per bus. Check the sensor datasheet for alternative addresses.",
+    "end_line": 5,
+    "end_col": 13,
+    "code": "i2c-address-clash"
    }
   ],
   "pins": [],

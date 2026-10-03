@@ -1,12 +1,4 @@
 
-[yellow bold]-- CONCURRENCY -- main.volt:0[/yellow bold]
-
-Variable `shared_counter` is shared between critical task (fast_control) and task (slow_monitor, slow_monitor, slow_monitor). The compiler will mark it `volatile` in generated C.
-
-
-[cyan]Hint: For multi-word values, consider using atomic operations.[/cyan]
-
-
 [yellow bold]-- DEPRECATION -- main.volt:2[/yellow bold]
 
 Move `chip esp32` to volt.toml: chip = "esp32"
@@ -25,3 +17,14 @@ Strapping pin: GPIO 2 must be LOW during boot for flash programming.
  [dim]4 |[/dim] hardware {
  [dim]5 |[/dim]     pin led: Output = 2
  [dim]  |[/dim] [yellow]        ^^^[/yellow]
+
+
+[yellow bold]-- CONCURRENCY -- main.volt:9[/yellow bold]
+
+Variable `shared_counter` is shared between fast_control (critical) and slow_monitor. Each read and write is atomic in the generated C.
+
+ [dim]8 |[/dim] 
+ [dim]9 |[/dim] var shared_counter = 0
+ [dim]  |[/dim] [yellow]    ^^^^^^^^^^^^^^[/yellow]
+
+[cyan]Hint: An update spread over several statements can still interleave; keep it in one statement or use a channel.[/cyan]

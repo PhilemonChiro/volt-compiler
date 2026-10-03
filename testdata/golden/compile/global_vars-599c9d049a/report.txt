@@ -1,7 +1,10 @@
 
-[yellow bold]-- CONCURRENCY -- global_var_via_assignment.volt:0[/yellow bold]
+[yellow bold]-- CONCURRENCY -- global_var_via_assignment.volt:2[/yellow bold]
 
-Variable `x` is shared between critical task (isr, isr) and task (bg, bg, bg). The compiler will mark it `volatile` in generated C.
+Variable `x` is shared between isr (critical) and bg. Each read and write is atomic in the generated C.
 
+ [dim]1 |[/dim] 
+ [dim]2 |[/dim] var x: int = 0
+ [dim]  |[/dim] [yellow]    ^[/yellow]
 
-[cyan]Hint: For multi-word values, consider using atomic operations.[/cyan]
+[cyan]Hint: An update spread over several statements can still interleave; keep it in one statement or use a channel.[/cyan]

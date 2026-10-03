@@ -6,7 +6,9 @@
     "col": 14,
     "message": "Unexpected token \")\" at line 2, column 14.",
     "severity": "error",
-    "hint": "Expected an expression here."
+    "hint": "Expected an expression here.",
+    "end_line": 2,
+    "end_col": 15
    }
   ],
   "pins": [],

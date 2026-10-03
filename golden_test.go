@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"reflect"
 	"strings"
 	"testing"
 )
@@ -133,7 +134,10 @@ func checkDiagnostics(t *testing.T, got []Diagnostic, want []goldenDiag) {
 		case i >= len(want):
 			t.Errorf("diagnostic %d unexpected: %+v", i, got[i])
 		default:
-			if g, w := got[i], want[i].toDiagnostic(); g != w {
+			// Code and Fixes are Go-only; the goldens hold the Python fields.
+			g, w := got[i], want[i].toDiagnostic()
+			g.Code, g.Fixes = "", nil
+			if !reflect.DeepEqual(g, w) {
 				t.Errorf("diagnostic %d:\n got %+v\nwant %+v", i, got[i], w)
 			}
 		}

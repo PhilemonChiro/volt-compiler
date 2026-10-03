@@ -6,21 +6,27 @@
     "col": 13,
     "message": "Unknown name `unknown1`.",
     "severity": "error",
-    "hint": ""
+    "hint": "",
+    "end_line": 3,
+    "end_col": 21
    },
    {
     "line": 4,
     "col": 13,
     "message": "Unknown name `unknown2`.",
     "severity": "error",
-    "hint": ""
+    "hint": "",
+    "end_line": 4,
+    "end_col": 21
    },
    {
     "line": 5,
     "col": 13,
     "message": "Unknown name `unknown3`.",
     "severity": "error",
-    "hint": ""
+    "hint": "",
+    "end_line": 5,
+    "end_col": 21
    }
   ],
   "pins": [],

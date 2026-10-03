@@ -27,4 +27,5 @@ void app_main(void)
 #line 8 "touch_read_threshold.volt"
     int32_t raw = touch_read(15);
 }
+#line 31 "main.c"
 

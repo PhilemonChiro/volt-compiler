@@ -6,7 +6,9 @@
     "col": 9,
     "message": "Variable `x` declared as `int` but assigned `string`.",
     "severity": "error",
-    "hint": "Change the type to `string` or convert the value with `int(value)`."
+    "hint": "Change the type to `string` or convert the value with `int(value)`.",
+    "end_line": 2,
+    "end_col": 10
    }
   ],
   "pins": [],

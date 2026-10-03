@@ -132,6 +132,7 @@ static void keypad_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 136 "main.c"
 
 // Background task: command_processor (protothread)
 static void command_processor_run(volt_task_t *_vt)
@@ -160,6 +161,7 @@ static void command_processor_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 165 "main.c"
 
 // Priority task: _rule0 (FreeRTOS)
 static void _rule0_run(void *arg)
@@ -173,6 +175,7 @@ static void _rule0_run(void *arg)
         volt_delay_ms(30000);
     }
 }
+#line 179 "main.c"
 
 // State machine: door_lock
 typedef enum {
@@ -233,6 +236,7 @@ static void door_lock_transition(door_lock_ctx_t *ctx, door_lock_state_t new_sta
         default: break;
     }
 }
+#line 240 "main.c"
 
 // State machine task: door_lock (runs as protothread)
 static void door_lock_run(volt_task_t *_vt)
@@ -270,10 +274,11 @@ static void door_lock_run(volt_task_t *_vt)
             default: break;
         }
         
-        VOLT_YIELD_LABEL(_vt, 1, 10); // poll every 10ms
+        VOLT_YIELD_LABEL(_vt, 1, 1); // poll every 1ms
     }
     VOLT_TASK_END(_vt);
 }
+#line 282 "main.c"
 
 void app_main(void)
 {

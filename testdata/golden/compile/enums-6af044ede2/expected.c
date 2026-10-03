@@ -30,4 +30,5 @@ void app_main(void)
 #line 10 "enum_reassign.volt"
     light = TRAFFICLIGHT_GREEN;
 }
+#line 34 "main.c"
 

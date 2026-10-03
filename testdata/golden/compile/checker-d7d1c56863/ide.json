@@ -6,7 +6,9 @@
     "col": 9,
     "message": "Storage `count` declared as `int` but default value is `string`.",
     "severity": "error",
-    "hint": ""
+    "hint": "",
+    "end_line": 2,
+    "end_col": 14
    }
   ],
   "pins": [],

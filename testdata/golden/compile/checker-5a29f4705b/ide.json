@@ -6,7 +6,9 @@
     "col": 8,
     "message": "Condition must be `bool`, got `int`.",
     "severity": "error",
-    "hint": "Use a comparison like `x > 0` or a boolean function."
+    "hint": "Use a comparison like `x > 0` or a boolean function.",
+    "end_line": 3,
+    "end_col": 10
    }
   ],
   "pins": [],

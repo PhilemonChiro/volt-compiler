@@ -6,7 +6,9 @@
     "col": 5,
     "message": "Type `Output` has no method `read`.",
     "severity": "error",
-    "hint": "Available: on, off, toggle, write, is_on, blink, blink_once"
+    "hint": "Available: on, off, toggle, write, is_on, blink, blink_once",
+    "end_line": 6,
+    "end_col": 8
    }
   ],
   "pins": [

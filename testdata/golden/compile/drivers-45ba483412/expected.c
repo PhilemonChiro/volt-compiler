@@ -29,4 +29,5 @@ void app_main(void)
     int32_t level = pin_dac_read(25);
     pin_dac_write(26, 255);
 }
+#line 33 "main.c"
 

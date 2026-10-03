@@ -54,6 +54,7 @@ static void monitor_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 58 "main.c"
 
 // Background task: heartbeat (protothread)
 static void heartbeat_run(volt_task_t *_vt)
@@ -103,4 +104,5 @@ void app_main(void)
     };
     volt_run(_tasks, 2);
 }
+#line 108 "main.c"
 

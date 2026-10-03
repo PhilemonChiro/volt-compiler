@@ -6,7 +6,9 @@
     "col": 13,
     "message": "Unknown name `unknown`.",
     "severity": "error",
-    "hint": ""
+    "hint": "",
+    "end_line": 2,
+    "end_col": 20
    }
   ],
   "pins": [],

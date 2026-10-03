@@ -28,4 +28,5 @@ void app_main(void)
         log_info("low", "%s", "");
     }
 }
+#line 32 "main.c"
 

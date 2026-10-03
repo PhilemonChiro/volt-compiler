@@ -6,7 +6,9 @@
     "col": 5,
     "message": "`add` expects 2 arguments, got 1.",
     "severity": "error",
-    "hint": ""
+    "hint": "",
+    "end_line": 6,
+    "end_col": 8
    }
   ],
   "pins": [],

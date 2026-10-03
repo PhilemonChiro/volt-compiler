@@ -6,14 +6,18 @@
     "col": 6,
     "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
     "severity": "warning",
-    "hint": "The chip declaration will move to volt.toml in a future version."
+    "hint": "The chip declaration will move to volt.toml in a future version.",
+    "end_line": 2,
+    "end_col": 11
    },
    {
     "line": 7,
     "col": 5,
     "message": "Type `Output` has no method `read`.",
     "severity": "error",
-    "hint": "Available: on, off, toggle, write, is_on, blink, blink_once"
+    "hint": "Available: on, off, toggle, write, is_on, blink, blink_once",
+    "end_line": 7,
+    "end_col": 8
    }
   ],
   "pins": [

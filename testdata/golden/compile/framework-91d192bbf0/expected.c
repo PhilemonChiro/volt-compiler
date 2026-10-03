@@ -26,4 +26,5 @@ void app_main(void)
     int32_t count = 42;
     log_info("app", "%s", (snprintf(_volt_strbuf[1], sizeof(_volt_strbuf[1]), "count is %ld", (long)(count)), _volt_strbuf[1]));
 }
+#line 30 "main.c"
 

@@ -6,7 +6,9 @@
     "col": 14,
     "message": "Cannot negate `int` with `!`. Only `bool` allowed.",
     "severity": "error",
-    "hint": ""
+    "hint": "",
+    "end_line": 2,
+    "end_col": 16
    }
   ],
   "pins": [],

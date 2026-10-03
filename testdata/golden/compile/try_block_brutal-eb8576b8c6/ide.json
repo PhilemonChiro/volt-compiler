@@ -6,7 +6,9 @@
     "col": 56,
     "message": "Unexpected token \"}\" at line 3, column 56.",
     "severity": "error",
-    "hint": "Expected `else` here."
+    "hint": "Expected `else` here.",
+    "end_line": 3,
+    "end_col": 57
    }
   ],
   "pins": [],

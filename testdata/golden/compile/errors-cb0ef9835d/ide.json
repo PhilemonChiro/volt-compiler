@@ -6,7 +6,9 @@
     "col": 1,
     "message": "Multiple chip declarations — already declared 'esp32' (line 2) at line 4, column 1.",
     "severity": "error",
-    "hint": ""
+    "hint": "",
+    "end_line": 4,
+    "end_col": 6
    }
   ],
   "pins": [],

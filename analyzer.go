@@ -67,6 +67,7 @@ func Analyze(program *Program, scope *Scope, errs *Errors) {
 	validateHardware(program, errs, chip)
 
 	// 1. Classify tasks
+	blockingDeviceCalls = deviceBlockingCalls(program)
 	for _, t := range program.Tasks {
 		t.Tier = classifyTask(t)
 		t.HasStrict = hasStrictBlock(t.Body)
@@ -197,11 +198,35 @@ func classifyTask(t *TaskDecl) string {
 		return "critical"
 	}
 	for _, c := range allCalls(t.Body) {
-		if blockingAPIs[callFullName(c)] {
+		name := callFullName(c)
+		if blockingAPIs[name] || blockingDeviceCalls[name] {
 			return "priority"
 		}
 	}
 	return "background"
+}
+
+// blockingDeviceCalls holds "<device>.<method>" for declared devices whose
+// device.json marks the method "blocking" (set per Analyze call).
+var blockingDeviceCalls = map[string]bool{}
+
+func deviceBlockingCalls(program *Program) map[string]bool {
+	out := map[string]bool{}
+	if program.Hardware == nil {
+		return out
+	}
+	for _, s := range program.Hardware.Sensors {
+		dev := Registry().Get(s.SensorType)
+		if dev == nil {
+			continue
+		}
+		for _, m := range dev.Methods {
+			if m.Blocking {
+				out[s.Name+"."+m.Name] = true
+			}
+		}
+	}
+	return out
 }
 
 func hasStrictBlock(stmts []Node) bool {
@@ -578,14 +603,32 @@ func walkMutations(stmts []Node, outer, channels map[string]bool) []mutation {
 // ---- 5. Shared state ----
 
 // detectSharedState warns about globals used by several tasks: shared with
-// a critical task (made volatile), or written by more than one task.
+// a critical task, or written by more than one task. Codegen makes such
+// globals _Atomic, so the warning sits on the variable's declaration.
 func detectSharedState(program *Program, errs *Errors) {
 	globals := map[string]bool{}
+	decl := map[string]Region{}
 	for _, v := range program.GlobalVars {
 		globals[v.Name] = true
+		decl[v.Name] = v.Region
 	}
 	for _, s := range program.StorageVars {
 		globals[s.Name] = true
+		decl[s.Name] = s.Region
+	}
+	// Top-level every/on blocks are auto-named _ruleN; name them by line instead.
+	label := map[string]string{}
+	for _, t := range program.Tasks {
+		label[t.Name] = t.Name
+		if strings.HasPrefix(t.Name, "_rule") {
+			label[t.Name] = fmt.Sprintf("the block at line %d", t.Region.StartLine)
+		}
+	}
+	where := func(name string) Region {
+		if r, ok := decl[name]; ok && r.StartLine > 0 {
+			return r
+		}
+		return program.Region
 	}
 	type access struct{ task, tier, kind string }
 	var names []string
@@ -628,18 +671,22 @@ func detectSharedState(program *Program, errs *Errors) {
 			var crit, other []string
 			for _, a := range acc {
 				if a.tier == "critical" {
-					crit = append(crit, a.task)
+					crit = append(crit, label[a.task])
 				} else {
-					other = append(other, a.task)
+					other = append(other, label[a.task])
 				}
 			}
-			errs.Warning(program.Region, "CONCURRENCY",
-				fmt.Sprintf("Variable `%s` is shared between critical task (%s) and task (%s). The compiler will mark it `volatile` in generated C.",
+			crit, other = uniqueStrings(crit), uniqueStrings(other)
+			errs.Warning(where(name), "CONCURRENCY",
+				fmt.Sprintf("Variable `%s` is shared between %s (critical) and %s. Each read and write is atomic in the generated C.",
 					name, strings.Join(crit, ", "), strings.Join(other, ", ")),
-				"For multi-word values, consider using atomic operations.")
+				"An update spread over several statements can still interleave; keep it in one statement or use a channel.")
 		} else if uniq := uniqueStrings(writers); len(writers) > 1 && len(uniq) > 1 {
-			errs.Warning(program.Region, "CONCURRENCY WARNING",
-				fmt.Sprintf("Variable `%s` is written by multiple tasks: %s. This may cause unexpected behavior.", name, strings.Join(uniq, ", ")),
+			for i, w := range uniq {
+				uniq[i] = label[w]
+			}
+			errs.Warning(where(name), "CONCURRENCY WARNING",
+				fmt.Sprintf("Variable `%s` is written by %d tasks: %s. Each write is atomic, but the last one wins.", name, len(uniq), strings.Join(uniq, ", ")),
 				"Consider using a channel for inter-task communication.")
 		}
 	}

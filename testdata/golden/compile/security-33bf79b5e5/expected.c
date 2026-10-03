@@ -22,4 +22,5 @@ void app_main(void)
 #line 4 "long_var_name.volt"
     int32_t abcdefghijklmnopqrstuvwxyz_abcdefghijklmnopqrstuvwxyz = 42;
 }
+#line 26 "main.c"
 

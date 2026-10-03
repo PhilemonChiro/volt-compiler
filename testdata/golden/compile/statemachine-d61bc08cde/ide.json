@@ -6,7 +6,9 @@
     "col": 11,
     "message": "State `orphan` in machine `Bad` is unreachable from initial state `a`.",
     "severity": "warning",
-    "hint": ""
+    "hint": "",
+    "end_line": 9,
+    "end_col": 17
    }
   ],
   "pins": [],

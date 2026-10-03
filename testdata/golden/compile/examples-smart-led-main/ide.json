@@ -6,7 +6,36 @@
     "col": 9,
     "message": "GP25 is the onboard LED on Pico. On Pico W, GP25 is used for WiFi SPI — not available as GPIO.",
     "severity": "warning",
-    "hint": ""
+    "hint": "",
+    "end_line": 15,
+    "end_col": 12,
+    "code": "pin-board-reserved",
+    "fixes": [
+     {
+      "title": "Move to GPIO 2",
+      "line": 15,
+      "col": 20,
+      "end_line": 15,
+      "end_col": 24,
+      "text": "2"
+     },
+     {
+      "title": "Move to GPIO 3",
+      "line": 15,
+      "col": 20,
+      "end_line": 15,
+      "end_col": 24,
+      "text": "3"
+     },
+     {
+      "title": "Move to GPIO 4",
+      "line": 15,
+      "col": 20,
+      "end_line": 15,
+      "end_col": 24,
+      "text": "4"
+     }
+    ]
    }
   ],
   "pins": [

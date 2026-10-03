@@ -28,4 +28,5 @@ void app_main(void)
 #line 7 "float_int_arithmetic.volt"
     float result2 = (f * x);
 }
+#line 32 "main.c"
 

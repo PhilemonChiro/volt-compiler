@@ -1,20 +1,4 @@
 
-[yellow bold]-- CONCURRENCY -- 06_stress_max_tasks.volt:0[/yellow bold]
-
-Variable `isr1_count` is shared between critical task (isr1) and task (stress_report). The compiler will mark it `volatile` in generated C.
-
-
-[cyan]Hint: For multi-word values, consider using atomic operations.[/cyan]
-
-
-[yellow bold]-- CONCURRENCY -- 06_stress_max_tasks.volt:0[/yellow bold]
-
-Variable `isr2_count` is shared between critical task (isr2) and task (stress_report). The compiler will mark it `volatile` in generated C.
-
-
-[cyan]Hint: For multi-word values, consider using atomic operations.[/cyan]
-
-
 [yellow bold]-- DEPRECATION -- 06_stress_max_tasks.volt:1[/yellow bold]
 
 Move `chip esp32` to volt.toml: chip = "esp32"
@@ -41,3 +25,25 @@ Strapping pin: GPIO 5 controls boot debug output. Usually safe for general use.
  [dim]5 |[/dim]     pin p2: Output = 4
  [dim]6 |[/dim]     pin p3: Output = 5
  [dim]  |[/dim] [yellow]        ^^[/yellow]
+
+
+[yellow bold]-- CONCURRENCY -- 06_stress_max_tasks.volt:34[/yellow bold]
+
+Variable `isr1_count` is shared between isr1 (critical) and stress_report. Each read and write is atomic in the generated C.
+
+ [dim]33 |[/dim] var t10_count: int = 0
+ [dim]34 |[/dim] var isr1_count: int = 0
+ [dim]   |[/dim] [yellow]    ^^^^^^^^^^[/yellow]
+
+[cyan]Hint: An update spread over several statements can still interleave; keep it in one statement or use a channel.[/cyan]
+
+
+[yellow bold]-- CONCURRENCY -- 06_stress_max_tasks.volt:35[/yellow bold]
+
+Variable `isr2_count` is shared between isr2 (critical) and stress_report. Each read and write is atomic in the generated C.
+
+ [dim]34 |[/dim] var isr1_count: int = 0
+ [dim]35 |[/dim] var isr2_count: int = 0
+ [dim]   |[/dim] [yellow]    ^^^^^^^^^^[/yellow]
+
+[cyan]Hint: An update spread over several statements can still interleave; keep it in one statement or use a channel.[/cyan]

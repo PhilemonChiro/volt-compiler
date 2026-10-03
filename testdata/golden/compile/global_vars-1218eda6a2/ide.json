@@ -2,11 +2,13 @@
  "compile_full": {
   "diagnostics": [
    {
-    "line": 0,
-    "col": 0,
-    "message": "Variable `depth` is shared between critical task (isr, isr, isr) and task (deep, deep, deep, deep, deep). The compiler will mark it `volatile` in generated C.",
+    "line": 2,
+    "col": 5,
+    "message": "Variable `depth` is shared between isr (critical) and deep. Each read and write is atomic in the generated C.",
     "severity": "warning",
-    "hint": "For multi-word values, consider using atomic operations."
+    "hint": "An update spread over several statements can still interleave; keep it in one statement or use a channel.",
+    "end_line": 2,
+    "end_col": 10
    }
   ],
   "pins": [],

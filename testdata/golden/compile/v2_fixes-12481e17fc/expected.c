@@ -25,4 +25,5 @@ void app_main(void)
 #line 6 "main.volt"
     uint32_t counter = 0;
 }
+#line 29 "main.c"
 

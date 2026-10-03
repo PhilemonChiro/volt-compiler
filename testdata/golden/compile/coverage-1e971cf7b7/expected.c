@@ -24,4 +24,5 @@ void app_main(void)
 #line 5 "string_concat_int.volt"
     const char* s = (snprintf(_volt_strbuf[0], sizeof(_volt_strbuf[0]), "value=%ld", (long)x), _volt_strbuf[0]);
 }
+#line 28 "main.c"
 

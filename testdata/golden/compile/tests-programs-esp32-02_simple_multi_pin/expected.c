@@ -43,6 +43,7 @@ static void blink_red_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 47 "main.c"
 
 // Background task: blink_green (protothread)
 static void blink_green_run(volt_task_t *_vt)
@@ -57,6 +58,7 @@ static void blink_green_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 62 "main.c"
 
 // Background task: read_button (protothread)
 static void read_button_run(volt_task_t *_vt)
@@ -83,6 +85,7 @@ static void read_button_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 89 "main.c"
 
 // Background task: adc_monitor (protothread)
 static void adc_monitor_run(volt_task_t *_vt)
@@ -96,6 +99,7 @@ static void adc_monitor_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 103 "main.c"
 
 void app_main(void)
 {

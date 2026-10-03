@@ -87,6 +87,7 @@ static int32_t csq_bars(int32_t csq, int32_t reg)
     }
     return 4;
 }
+#line 91 "main.c"
 
 static int32_t bar_px(int32_t r, int32_t lvl, int32_t bar, int32_t bits)
 {
@@ -100,6 +101,7 @@ static int32_t bar_px(int32_t r, int32_t lvl, int32_t bar, int32_t bits)
     }
     return 0;
 }
+#line 105 "main.c"
 
 static int32_t antenna_row(int32_t r)
 {
@@ -113,6 +115,7 @@ static int32_t antenna_row(int32_t r)
     }
     return 8;
 }
+#line 119 "main.c"
 
 static int32_t x_row(int32_t r)
 {
@@ -130,6 +133,7 @@ static int32_t x_row(int32_t r)
     }
     return 0;
 }
+#line 137 "main.c"
 
 static int32_t cell_row(int32_t r, int32_t lvl, int32_t cell)
 {
@@ -147,6 +151,7 @@ static int32_t cell_row(int32_t r, int32_t lvl, int32_t cell)
     }
     return ((bar_px(r, lvl, 2, 16) + bar_px(r, lvl, 3, 4)) + bar_px(r, lvl, 4, 1));
 }
+#line 155 "main.c"
 
 // Background task: sensing (protothread)
 static void sensing_run(volt_task_t *_vt)
@@ -196,6 +201,7 @@ static void sensing_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 205 "main.c"
 
 // Background task: _rule0 (protothread)
 static void _rule0_run(volt_task_t *_vt)
@@ -216,6 +222,7 @@ static void _rule0_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 226 "main.c"
 
 // Background task: _rule1 (protothread)
 static void _rule1_run(volt_task_t *_vt)
@@ -261,6 +268,7 @@ static void _rule1_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 272 "main.c"
 
 // Background task: _rule2 (protothread)
 static void _rule2_run(volt_task_t *_vt)
@@ -274,6 +282,7 @@ static void _rule2_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 286 "main.c"
 
 // State machine: detector
 typedef enum {
@@ -339,6 +348,7 @@ static void detector_transition(detector_ctx_t *ctx, detector_state_t new_state)
         default: break;
     }
 }
+#line 352 "main.c"
 
 // State machine task: detector (runs as protothread)
 static void detector_run(volt_task_t *_vt)
@@ -382,7 +392,7 @@ static void detector_run(volt_task_t *_vt)
             default: break;
         }
         
-        VOLT_YIELD_LABEL(_vt, 1, 10); // poll every 10ms
+        VOLT_YIELD_LABEL(_vt, 1, 1); // poll every 1ms
     }
     VOLT_TASK_END(_vt);
 }

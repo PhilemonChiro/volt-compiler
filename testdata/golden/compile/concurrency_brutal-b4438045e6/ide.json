@@ -6,7 +6,9 @@
     "col": 16,
     "message": "Unexpected token \"-\" at line 3, column 16.",
     "severity": "error",
-    "hint": "Expected an integer capacity here."
+    "hint": "Expected an integer capacity here.",
+    "end_line": 3,
+    "end_col": 17
    }
   ],
   "pins": [],

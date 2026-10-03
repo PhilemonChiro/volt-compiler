@@ -6,21 +6,81 @@
     "col": 6,
     "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
     "severity": "warning",
-    "hint": "The chip declaration will move to volt.toml in a future version."
+    "hint": "The chip declaration will move to volt.toml in a future version.",
+    "end_line": 1,
+    "end_col": 11
    },
    {
     "line": 3,
     "col": 9,
     "message": "Strapping pin: GPIO 2 must be LOW during boot for flash programming.",
     "severity": "warning",
-    "hint": ""
+    "hint": "",
+    "end_line": 3,
+    "end_col": 12,
+    "code": "pin-strapping",
+    "fixes": [
+     {
+      "title": "Move to GPIO 4",
+      "line": 3,
+      "col": 23,
+      "end_line": 3,
+      "end_col": 24,
+      "text": "4"
+     },
+     {
+      "title": "Move to GPIO 18",
+      "line": 3,
+      "col": 23,
+      "end_line": 3,
+      "end_col": 24,
+      "text": "18"
+     },
+     {
+      "title": "Move to GPIO 19",
+      "line": 3,
+      "col": 23,
+      "end_line": 3,
+      "end_col": 24,
+      "text": "19"
+     }
+    ]
    },
    {
     "line": 4,
     "col": 9,
     "message": "Strapping pin: GPIO 5 controls boot debug output. Usually safe for general use.",
     "severity": "warning",
-    "hint": ""
+    "hint": "",
+    "end_line": 4,
+    "end_col": 12,
+    "code": "pin-strapping",
+    "fixes": [
+     {
+      "title": "Move to GPIO 34",
+      "line": 4,
+      "col": 22,
+      "end_line": 4,
+      "end_col": 23,
+      "text": "34"
+     },
+     {
+      "title": "Move to GPIO 35",
+      "line": 4,
+      "col": 22,
+      "end_line": 4,
+      "end_col": 23,
+      "text": "35"
+     },
+     {
+      "title": "Move to GPIO 4",
+      "line": 4,
+      "col": 22,
+      "end_line": 4,
+      "end_col": 23,
+      "text": "4"
+     }
+    ]
    }
   ],
   "pins": [

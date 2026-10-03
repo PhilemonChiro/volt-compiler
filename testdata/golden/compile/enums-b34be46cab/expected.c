@@ -36,4 +36,5 @@ void app_main(void)
 #line 15 "multiple_enums.volt"
     size_t s = SIZE_MEDIUM;
 }
+#line 40 "main.c"
 

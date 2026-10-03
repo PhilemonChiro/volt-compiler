@@ -27,4 +27,5 @@ void app_main(void)
 #line 7 "main.volt"
     x += 10;
 }
+#line 31 "main.c"
 

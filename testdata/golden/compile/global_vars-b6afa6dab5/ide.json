@@ -2,11 +2,13 @@
  "compile_full": {
   "diagnostics": [
    {
-    "line": 0,
-    "col": 0,
-    "message": "Variable `counter` is shared between critical task (fast_task, fast_task, fast_task) and task (slow_task, slow_task, slow_task). The compiler will mark it `volatile` in generated C.",
+    "line": 2,
+    "col": 5,
+    "message": "Variable `counter` is shared between fast_task (critical) and slow_task. Each read and write is atomic in the generated C.",
     "severity": "warning",
-    "hint": "For multi-word values, consider using atomic operations."
+    "hint": "An update spread over several statements can still interleave; keep it in one statement or use a channel.",
+    "end_line": 2,
+    "end_col": 12
    }
   ],
   "pins": [],

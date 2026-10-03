@@ -28,4 +28,5 @@ void app_main(void)
 #line 9 "enum_basic.volt"
     color_t c = COLOR_RED;
 }
+#line 32 "main.c"
 

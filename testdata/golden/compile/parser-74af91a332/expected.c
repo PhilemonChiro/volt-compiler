@@ -36,4 +36,5 @@ void app_main(void)
 #line 10 "main.volt"
     uint32_t h = 86400000;
 }
+#line 40 "main.c"
 

@@ -31,6 +31,7 @@ static void inc_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 35 "main.c"
 
 // Background task: reader (protothread)
 static void reader_run(volt_task_t *_vt)
@@ -45,6 +46,7 @@ static void reader_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 50 "main.c"
 
 void app_main(void)
 {

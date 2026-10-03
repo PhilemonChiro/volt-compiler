@@ -19,6 +19,7 @@ static int32_t add(int32_t a, int32_t b)
 #line 4 "missing_return.volt"
     int32_t c = (a + b);
 }
+#line 23 "main.c"
 
 void app_main(void)
 {
@@ -29,4 +30,5 @@ void app_main(void)
 #line 7 "missing_return.volt"
     int32_t x = add(1, 2);
 }
+#line 34 "main.c"
 

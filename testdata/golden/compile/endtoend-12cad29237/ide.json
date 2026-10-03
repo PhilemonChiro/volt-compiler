@@ -6,7 +6,9 @@
     "col": 5,
     "message": "Cannot assign to `x` — it was declared with `let` (immutable).",
     "severity": "error",
-    "hint": "Use `var` instead of `let` to make it mutable."
+    "hint": "Use `var` instead of `let` to make it mutable.",
+    "end_line": 4,
+    "end_col": 6
    }
   ],
   "pins": [],

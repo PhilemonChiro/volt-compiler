@@ -6,14 +6,72 @@
     "col": 9,
     "message": "GPIO 12: GPIO 12 is a CRITICAL strapping pin. If pulled HIGH at boot, VDD_SDIO switches to 1.8V, which CRASHES 3.3V flash chips. Never connect a pull-up resistor. If using SD card on this pin, burn the VDD_SDIO eFuse: espefuse.py set_flash_voltage 3.3V",
     "severity": "warning",
-    "hint": ""
+    "hint": "",
+    "end_line": 2,
+    "end_col": 10,
+    "code": "pin-strapping",
+    "fixes": [
+     {
+      "title": "Move to GPIO 4",
+      "line": 2,
+      "col": 21,
+      "end_line": 2,
+      "end_col": 23,
+      "text": "4"
+     },
+     {
+      "title": "Move to GPIO 18",
+      "line": 2,
+      "col": 21,
+      "end_line": 2,
+      "end_col": 23,
+      "text": "18"
+     },
+     {
+      "title": "Move to GPIO 19",
+      "line": 2,
+      "col": 21,
+      "end_line": 2,
+      "end_col": 23,
+      "text": "19"
+     }
+    ]
    },
    {
     "line": 2,
     "col": 9,
     "message": "GPIO 12 is a JTAG pin. Using it disables JTAG debugging.",
     "severity": "warning",
-    "hint": ""
+    "hint": "",
+    "end_line": 2,
+    "end_col": 10,
+    "code": "pin-jtag",
+    "fixes": [
+     {
+      "title": "Move to GPIO 4",
+      "line": 2,
+      "col": 21,
+      "end_line": 2,
+      "end_col": 23,
+      "text": "4"
+     },
+     {
+      "title": "Move to GPIO 18",
+      "line": 2,
+      "col": 21,
+      "end_line": 2,
+      "end_col": 23,
+      "text": "18"
+     },
+     {
+      "title": "Move to GPIO 19",
+      "line": 2,
+      "col": 21,
+      "end_line": 2,
+      "end_col": 23,
+      "text": "19"
+     }
+    ]
    }
   ],
   "pins": [

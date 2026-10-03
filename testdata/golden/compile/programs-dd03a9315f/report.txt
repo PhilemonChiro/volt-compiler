@@ -1,12 +1,4 @@
 
-[yellow bold]-- CONCURRENCY -- adv_iot.volt:0[/yellow bold]
-
-Variable `motor_isr_count` is shared between critical task (motor_control) and task (stats). The compiler will mark it `volatile` in generated C.
-
-
-[cyan]Hint: For multi-word values, consider using atomic operations.[/cyan]
-
-
 [yellow bold]-- DEPRECATION -- adv_iot.volt:1[/yellow bold]
 
 Move `chip esp32` to volt.toml: chip = "esp32"
@@ -24,3 +16,14 @@ Strapping pin: GPIO 2 must be LOW during boot for flash programming.
  [dim]3 |[/dim] hardware {
  [dim]4 |[/dim]     pin led: Output = 2
  [dim]  |[/dim] [yellow]        ^^^[/yellow]
+
+
+[yellow bold]-- CONCURRENCY -- adv_iot.volt:11[/yellow bold]
+
+Variable `motor_isr_count` is shared between motor_control (critical) and stats. Each read and write is atomic in the generated C.
+
+ [dim]10 |[/dim] var heartbeat_count: int = 0
+ [dim]11 |[/dim] var motor_isr_count: int = 0
+ [dim]   |[/dim] [yellow]    ^^^^^^^^^^^^^^^[/yellow]
+
+[cyan]Hint: An update spread over several statements can still interleave; keep it in one statement or use a channel.[/cyan]

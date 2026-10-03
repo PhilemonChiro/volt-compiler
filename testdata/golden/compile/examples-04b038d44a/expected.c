@@ -104,6 +104,7 @@ static void button_watcher_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 108 "main.c"
 
 // Background task: mode_controller (protothread)
 static void mode_controller_run(volt_task_t *_vt)
@@ -119,6 +120,7 @@ static void mode_controller_run(volt_task_t *_vt)
     pin_toggle(0);
     VOLT_TASK_END(_vt);
 }
+#line 124 "main.c"
 
 // Background task: led_driver (protothread)
 static void led_driver_run(volt_task_t *_vt)
@@ -213,6 +215,7 @@ static void led_driver_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
+#line 219 "main.c"
 
 // Background task: health (protothread)
 static void health_run(volt_task_t *_vt)

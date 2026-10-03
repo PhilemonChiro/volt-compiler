@@ -6,14 +6,18 @@
     "col": 9,
     "message": "Argument 1 of `add` expects `int`, got `string`.",
     "severity": "error",
-    "hint": ""
+    "hint": "",
+    "end_line": 6,
+    "end_col": 12
    },
    {
     "line": 6,
     "col": 14,
     "message": "Argument 2 of `add` expects `int`, got `string`.",
     "severity": "error",
-    "hint": ""
+    "hint": "",
+    "end_line": 6,
+    "end_col": 17
    }
   ],
   "pins": [],

@@ -32,4 +32,5 @@ void app_main(void)
 #line 8 "variables.volt"
     count = (count + 1);
 }
+#line 36 "main.c"
 
