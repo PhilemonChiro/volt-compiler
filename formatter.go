@@ -481,20 +481,28 @@ func emitMatch(s *MatchStmt, depth int) string {
 	lines := []string{ind + "match(" + emitExpr(s.Expr) + ") {"}
 	for _, arm := range s.Arms {
 		pat := arm.Pattern
-		if !strings.HasPrefix(pat, ".") && !strings.HasPrefix(pat, "_") && !pyIsDigit(pat) {
-			pat = "." + pat
+		if pat != "" && (pat[0] == '_' && len(pat) > 1 || pat[0] >= 'a' && pat[0] <= 'z' || pat[0] >= 'A' && pat[0] <= 'Z') {
+			pat = "." + pat // enum variant
 		}
-		var body string
-		if list, ok := arm.Body.([]Node); ok {
-			parts := make([]string, len(list))
-			for i, b := range list {
-				parts[i] = pystr.Strip(emitStmt(b, 0))
+		list, isBlock := arm.Body.([]Node)
+		if !isBlock {
+			lines = append(lines, ind+fmtIndent+pat+" -> "+emitExpr(arm.Body))
+			continue
+		}
+		// A block arm stays a block unless it is one expression (calls and
+		// plain assignments parse as an arm body; `x += 1` does not).
+		if len(list) == 1 {
+			switch list[0].(type) {
+			case *ExprStmt, *AssignExpr:
+				lines = append(lines, ind+fmtIndent+pat+" -> "+pystr.Strip(emitStmt(list[0], 0)))
+				continue
 			}
-			body = strings.Join(parts, "; ")
-		} else {
-			body = emitExpr(arm.Body)
 		}
-		lines = append(lines, ind+fmtIndent+pat+" -> "+body)
+		lines = append(lines, ind+fmtIndent+pat+" -> {")
+		for _, b := range list {
+			lines = append(lines, emitStmt(b, depth+2))
+		}
+		lines = append(lines, ind+fmtIndent+"}")
 	}
 	return strings.Join(append(lines, ind+"}"), "\n")
 }
