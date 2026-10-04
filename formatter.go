@@ -535,16 +535,19 @@ func emitExpr(expr any) string {
 	case *VarRef:
 		return e.Name
 	case *BinaryExpr:
-		// No parentheses: (a + b) * c prints as a + b * c, as in Python.
-		return emitExpr(e.Left) + " " + e.Op + " " + emitExpr(e.Right)
+		// Operators are left-associative: the right operand parses one
+		// level tighter, so an equal-precedence right child keeps its
+		// parentheses (a - (b - c)).
+		prec := binaryPrec[e.Op]
+		return emitOperand(e.Left, prec) + " " + e.Op + " " + emitOperand(e.Right, prec+1)
 	case *UnaryExpr:
-		return e.Op + emitExpr(e.Operand)
+		return e.Op + emitOperand(e.Operand, unaryPrec)
 	case *FuncCall:
 		return e.Name + "(" + emitArgs(e.Args) + ")"
 	case *MethodCall:
-		return emitExpr(e.Obj) + "." + e.Method + "(" + emitArgs(e.Args) + ")"
+		return emitOperand(e.Obj, recvPrec) + "." + e.Method + "(" + emitArgs(e.Args) + ")"
 	case *DotAccess:
-		return emitExpr(e.Obj) + "." + e.FieldName
+		return emitOperand(e.Obj, recvPrec) + "." + e.FieldName
 	case *AssignExpr:
 		return emitExpr(e.Target) + " = " + emitExpr(e.Value)
 	case *OrExpr:
@@ -564,6 +567,32 @@ func emitExpr(expr any) string {
 		return "[" + emitArgs(e.Elements) + "]"
 	}
 	return pyRepr(reflect.ValueOf(expr)) // Python: str(expr)
+}
+
+// Contexts tighter than every binary operator: a unary operand, and a
+// method/field receiver (which a unary operator doesn't bind tight enough
+// for: (-x).abs()).
+const (
+	unaryPrec = 1 << 29
+	recvPrec  = 1 << 30
+)
+
+// emitOperand prints n, parenthesised when it would otherwise bind looser
+// than a context that needs precedence minPrec.
+func emitOperand(n Node, minPrec int) string {
+	switch e := n.(type) {
+	case *BinaryExpr:
+		if binaryPrec[e.Op] < minPrec {
+			return "(" + emitExpr(e) + ")"
+		}
+	case *UnaryExpr:
+		if minPrec > unaryPrec {
+			return "(" + emitExpr(e) + ")"
+		}
+	case *AssignExpr, *OrExpr:
+		return "(" + emitExpr(e) + ")"
+	}
+	return emitExpr(n)
 }
 
 func emitArgs(args []Node) string {
