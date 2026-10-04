@@ -184,7 +184,7 @@ setup {
 }
 ```
 
-`for i in a..b` excludes `b`. `match` arms are `.variant`, an int, an int
+`a..b` excludes `b`, in `for` loops and in `match` ranges. `match` arms are `.variant`, an int, an int
 range `a..b`, or `_`. `break`, `continue` and `return` work as usual.
 
 ## Periodic blocks and tasks

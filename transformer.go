@@ -751,6 +751,8 @@ func desugarMatch(m *MatchStmt) *IfStmt {
 		switch b := arm.Body.(type) {
 		case []Node:
 			body = b
+		case *AssignExpr:
+			body = []Node{b} // `0 -> x = 1`: an assignment statement, not an expression
 		case Node:
 			body = []Node{&ExprStmt{Base: Base{arm.Region}, Expr: b}}
 		}
@@ -760,8 +762,14 @@ func desugarMatch(m *MatchStmt) *IfStmt {
 		}
 		pattern := strings.TrimSpace(arm.Pattern)
 		var cond Node
+		lo, hi, isRange := matchRange(pattern)
 		if pattern == "_" {
 			cond = &BoolLiteral{Base: Base{arm.Region}, Value: true}
+		} else if isRange {
+			// a..b excludes b, as in for loops.
+			cond = &BinaryExpr{Base: Base{arm.Region}, Op: "&&",
+				Left:  &BinaryExpr{Base: Base{arm.Region}, Left: m.Expr, Op: ">=", Right: &IntLiteral{Base: Base{arm.Region}, Value: lo}},
+				Right: &BinaryExpr{Base: Base{arm.Region}, Left: m.Expr, Op: "<", Right: &IntLiteral{Base: Base{arm.Region}, Value: hi}}}
 		} else {
 			var right Node
 			if n, ok := pyInt(pattern); ok {
@@ -774,6 +782,17 @@ func desugarMatch(m *MatchStmt) *IfStmt {
 		chain = &IfStmt{Base: Base{arm.Region}, Condition: cond, ThenBody: body, ElseBody: elseBody}
 	}
 	return chain
+}
+
+// matchRange parses an `a..b` match pattern.
+func matchRange(pattern string) (lo, hi int, ok bool) {
+	a, b, found := strings.Cut(pattern, "..")
+	if !found {
+		return 0, 0, false
+	}
+	lo, okA := pyInt(strings.TrimSpace(a))
+	hi, okB := pyInt(strings.TrimSpace(b))
+	return lo, hi, okA && okB
 }
 
 // pyInt is Python's int(s) for a stripped string: optional sign, digits,
