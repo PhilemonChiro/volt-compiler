@@ -9,7 +9,7 @@
 //	          (compile_full with "emit_progress": true)
 //	Ready:    {"id": "_ready", "ok": true} at startup
 //
-// Ops: compile_full, format_code, find_symbols, state_diagram, system_graph,
+// Ops: compile_full, check, format_code, find_symbols, state_diagram, system_graph, sequence_diagram,
 // pin_table / bus_pins ({"chip": ...}, no source).
 package worker
 
@@ -114,7 +114,7 @@ func run(req request, send func(any)) (any, error) {
 		return compiler.BusPins(req.Chip), nil
 	}
 	switch req.Op {
-	case "compile_full", "format_code", "find_symbols", "state_diagram", "system_graph":
+	case "compile_full", "check", "format_code", "find_symbols", "state_diagram", "system_graph", "sequence_diagram":
 	default:
 		return nil, fmt.Errorf("unknown op: %s", req.Op)
 	}
@@ -137,6 +137,12 @@ func run(req request, send func(any)) (any, error) {
 			}
 		}
 		return ide.CompileFull(src, filename, cb)
+	case "check":
+		filename := req.Filename
+		if filename == "" {
+			filename = "main.volt"
+		}
+		return ide.Check(src, filename)
 	case "format_code":
 		return ide.FormatCode(src)
 	case "find_symbols":
@@ -145,5 +151,7 @@ func run(req request, send func(any)) (any, error) {
 		return ide.StateDiagram(src), nil
 	default:
 		return ide.SystemGraph(src, req.Expanded), nil
+	case "sequence_diagram":
+		return ide.SequenceDiagram(src), nil
 	}
 }

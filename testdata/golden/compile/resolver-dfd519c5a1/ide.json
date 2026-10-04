@@ -110,7 +110,7 @@
    100
   ]
  ],
- "format_code": "hardware {\n    pin led: Output = 2\n    pin button: PullUpInput = 0\n}\n\nmachine DeviceState {\n    initial state idle {\n        on button.press() -> running\n    }\n\n    state running {\n    }\n}\n",
+ "format_code": "hardware {\n    pin led: Output = 2\n    pin button: PullUpInput = 0\n}\n\nmachine DeviceState {\n    initial state idle {\n        on button.press() -> running\n    }\n\n    state running {\n        every 1second { led.toggle() }\n    }\n}\n",
  "find_symbols": [
   {
    "name": "led",

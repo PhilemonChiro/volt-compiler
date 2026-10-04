@@ -54,7 +54,7 @@
    100
   ]
  ],
- "format_code": "machine Good {\n    initial state a {\n        on x() [n < 5] -> b\n        on x() -> c\n    }\n\n    state b {\n        on y() -> a\n    }\n\n    state c {\n        on y() -> a\n    }\n}\n",
+ "format_code": "machine Good {\n    var n = 0\n\n    initial state a {\n        on x() [n < 5] -> b\n        on x() -> c\n    }\n\n    state b {\n        on y() -> a\n    }\n\n    state c {\n        on y() -> a\n    }\n}\n",
  "find_symbols": [
   {
    "name": "Good",

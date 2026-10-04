@@ -269,11 +269,12 @@ func emitStruct(s *StructDecl) string {
 }
 
 func emitMachine(m *MachineDecl) string {
-	// Python reads getattr(machine, 'vars', []) but the field is
-	// `variables`, so machine variables are never emitted.
 	lines := []string{"machine " + m.Name + " {"}
+	for _, v := range m.Variables {
+		lines = append(lines, fmtIndent+emitVarDecl(v))
+	}
 	for i, st := range m.States {
-		if i > 0 {
+		if i > 0 || len(m.Variables) > 0 {
 			lines = append(lines, "")
 		}
 		lines = append(lines, emitState(st, 1)...)
@@ -282,7 +283,6 @@ func emitMachine(m *MachineDecl) string {
 	return strings.Join(lines, "\n")
 }
 
-// emitState drops state.Body, as Python does.
 func emitState(st *StateDecl, depth int) []string {
 	ind := strings.Repeat(fmtIndent, depth)
 	prefix := ""
@@ -309,17 +309,33 @@ func emitState(st *StateDecl, depth int) []string {
 			lines = append(lines, ind+fmtIndent+"}")
 		}
 	}
+	for _, stmt := range st.Body {
+		lines = append(lines, emitStmt(stmt, depth+1))
+	}
 	for _, t := range st.Transitions {
-		lines = append(lines, strings.Repeat(fmtIndent, depth+1)+"on "+emitExpr(t.Event)+emitGuard(t.Guard)+" -> "+t.TargetState)
+		lines = append(lines, strings.Repeat(fmtIndent, depth+1)+"on "+emitExpr(t.Event)+emitGuard(t.Guard)+" -> "+t.TargetState+emitAction(t.Action, depth+1))
 	}
 	for _, t := range st.TimedTransitions {
 		dur := "0ms"
 		if !isNone(t.Duration) {
 			dur = emitExpr(t.Duration)
 		}
-		lines = append(lines, strings.Repeat(fmtIndent, depth+1)+"after "+dur+emitGuard(t.Guard)+" -> "+t.TargetState)
+		lines = append(lines, strings.Repeat(fmtIndent, depth+1)+"after "+dur+emitGuard(t.Guard)+" -> "+t.TargetState+emitAction(t.Action, depth+1))
 	}
 	return append(lines, ind+"}")
+}
+
+// emitAction renders a transition's action block (after the target state),
+// inline when it is one short statement.
+func emitAction(action []Node, depth int) string {
+	s := emitBodyMaybeInline(action, depth)
+	if s == "" {
+		return ""
+	}
+	if !strings.Contains(s, "\n") {
+		return " { " + s + " }"
+	}
+	return " {\n" + s + "\n" + strings.Repeat(fmtIndent, depth) + "}"
 }
 
 func emitGuard(g Node) string {
@@ -486,6 +502,9 @@ func emitMatch(s *MatchStmt, depth int) string {
 // ============================================================
 // Expressions
 // ============================================================
+
+// ExprText prints an expression as the formatter would (diagram labels).
+func ExprText(expr Node) string { return emitExpr(expr) }
 
 func emitExpr(expr any) string {
 	if isNone(expr) {

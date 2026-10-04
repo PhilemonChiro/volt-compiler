@@ -1,0 +1,79 @@
+sequenceDiagram
+    participant u0 as setup
+    participant G as shared vars
+    participant rt as runtime
+    participant u1 as every 1s
+    participant s_env as env
+    participant c_events as events (channel)
+    participant u2 as watchdog
+    participant f_step as step()
+    participant p_alarm as alarm (pin)
+    participant u3 as logger
+    participant u4 as every 2s
+    participant u5 as line_alpha
+    participant u6 as line_bravo
+    participant u7 as line_charlie
+    rect rgba(43, 124, 179, 0.08)
+    u0->>G: mode = 1
+    u0->>rt: log("boot", "ready")
+    end
+    rect rgba(43, 124, 179, 0.08)
+    loop every 1s
+    u1->>s_env: temperature()
+    u1->>G: temp = (result)
+    u1->>c_events: send(1)
+    end
+    end
+    rect rgba(43, 124, 179, 0.08)
+    loop every 100ms
+    u2->>f_step: step()
+    alt step() > 2
+    u2->>p_alarm: on()
+    end
+    end
+    end
+    rect rgba(43, 124, 179, 0.08)
+    loop every 500ms
+    u3->>c_events: has_data()
+    c_events-->>u3: has_data
+    alt events.has_data()
+    u3->>c_events: receive()
+    c_events-->>u3: e
+    u3->>rt: log("event", "got {e} at {t}")
+    end
+    end
+    end
+    rect rgba(43, 124, 179, 0.08)
+    loop every 2s
+    alt alpha_on && bravo_on && charlie_on
+    u4->>G: mode = 2
+    end
+    end
+    end
+    rect rgba(43, 124, 179, 0.08)
+    rect rgba(122, 58, 192, 0.10)
+    Note over u5: state idle (start)
+    opt on enter
+    u5->>G: alpha_on = mode > 0
+    end
+    Note over u5: after 1s → idle
+    end
+    end
+    rect rgba(43, 124, 179, 0.08)
+    rect rgba(122, 58, 192, 0.10)
+    Note over u6: state idle (start)
+    opt on enter
+    u6->>G: bravo_on = mode > 0
+    end
+    Note over u6: after 1s → idle
+    end
+    end
+    rect rgba(43, 124, 179, 0.08)
+    rect rgba(122, 58, 192, 0.10)
+    Note over u7: state idle (start)
+    opt on enter
+    u7->>G: charlie_on = mode > 0
+    end
+    Note over u7: after 1s → idle
+    end
+    end

@@ -53,7 +53,7 @@
    100
   ]
  ],
- "format_code": "machine Conn {\n    initial state disconnected {\n        on connect_event() -> connected\n    }\n\n    state connected {\n        on disconnect_event() -> disconnected\n    }\n}\n",
+ "format_code": "machine Conn {\n    var attempts = 0\n\n    initial state disconnected {\n        on connect_event() -> connected { attempts = 0 }\n    }\n\n    state connected {\n        on disconnect_event() -> disconnected { attempts = attempts + 1 }\n    }\n}\n",
  "find_symbols": [
   {
    "name": "Conn",

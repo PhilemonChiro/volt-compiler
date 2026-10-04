@@ -64,7 +64,7 @@
    100
   ]
  ],
- "format_code": "machine Retry {\n    initial state trying {\n        on fail() [count < 3] -> trying\n        on fail() -> gave_up\n        on succeed() -> done\n    }\n\n    state gave_up {\n        after 10seconds -> trying\n    }\n\n    state done {\n    }\n}\n",
+ "format_code": "machine Retry {\n    var count = 0\n\n    initial state trying {\n        on fail() [count < 3] -> trying\n        on fail() -> gave_up\n        on succeed() -> done\n    }\n\n    state gave_up {\n        after 10seconds -> trying\n    }\n\n    state done {\n    }\n}\n",
  "find_symbols": [
   {
    "name": "Retry",

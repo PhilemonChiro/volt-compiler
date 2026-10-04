@@ -1,0 +1,66 @@
+start: (_NL | top_level)*
+include_decl: "include" ESCAPED_STRING _NL
+raw_block: "raw" "{" ESCAPED_STRING "}"
+hardware_block: "hardware" "{" (_NL | hardware_item)* _hw_inline? "}"
+hardware_item: (pin_decl | bus_decl | sensor_decl) _NL
+pin_decl: "pin" NAME ":" pin_mode "=" expr
+    | "pin" NAME "=" expr -> pin_decl_inferred
+pin_mode: NAME ("." NAME)*
+bus_decl: "bus" NAME ":" NAME "(" named_args? ")"
+    | ("i2c" | "spi" | "uart") NAME "(" named_args? ")"
+sensor_decl: "device" NAME ":" NAME ("(" named_args? ")")? ("on" NAME)? ("at" expr)?
+named_arg: NAME ":" expr
+power_block: "power" "{" (_NL | power_item)* "}"
+power_item: NAME ":" power_value _NL
+power_value: NAME "(" arg_list ")" | NAME
+struct_decl: "struct" NAME "{" (_NL | struct_field)* "}"
+struct_field: NAME ":" type_name _NL
+enum_decl: "enum" NAME "{" enum_body "}"
+enum_body: (_NL | enum_variant)*
+enum_variant: NAME ","? _NL?
+func_decl: "func" NAME "(" param_list? ")" return_type? block
+param: NAME ":" type_name;  return_type: "->" type_name
+task_decl: TASK_ANNOTATION* "task" NAME block
+machine_decl: "machine" NAME "{" (_NL | state_decl | var_decl _NL)* "}"
+state_decl: INITIAL? "state" NAME "{" (_NL | state_item)* "}"
+state_item: state_enter | state_exit | state_on _NL | state_after _NL
+    | become_stmt _NL | statement
+state_on: "on" expr state_guard? "->" NAME state_action?
+state_after: "after" expr state_guard? "->" NAME state_action?
+state_guard: "[" expr "]";  state_action: block
+storage_decl: "storage" NAME ":" type_name "=" expr
+channel_decl: "channel" NAME ":" type_name ("[" INT "]")?
+type_name: NAME | NAME "<" type_name ">" | NAME "<" INT ">"
+var_decl: VAR_KEYWORD NAME type_annotation? "=" expr
+    | "shared" VAR_KEYWORD NAME type_annotation? "=" expr
+block: "{" (_NL | statement)* _inline_stmt? "}"
+_inline_stmt: a simple statement (or become_stmt) right before the "}".
+return_stmt: "return" expr?
+while_stmt: "while" expr block
+loop_stmt: "loop" block — an infinite while.
+expr_stmt: expr  |  assign_stmt: postfix ASSIGN_OP expr
+if_stmt: "if" expr block else_clause?
+else_clause: "else" if_stmt | "else" block
+for_stmt: "for" NAME "in" expr ".." expr step_clause? block
+step_clause: "step" expr
+every_block: "every" expr STRICT? when_clause? block (after "every")
+when_clause: "when" expr
+on_block: "on" expr debounce_clause? throttle_clause? block
+timeout_block: "timeout" expr block TIMEOUT_ELSE? block
+try_block: "try" block try_or_clause
+try_or_clause: "or" "retry" [INT "times" "else" terminal_policy]
+    | "or" "skip" | "or" "restart"
+terminal_policy: "skip" | "restart" | "fail"
+match_stmt: "match" "(" expr ")" "{" (_NL | match_arm)* "}"
+match_arm: match_pattern "->" match_body _NL
+match_pattern: "." NAME | INT | INT ".." INT | "_"
+match_body: expr | block
+expr: assign_expr
+assign_expr: or_expr | postfix "=" or_expr -> assign_op
+unary: "!" unary | "-" unary | "~" unary | postfix
+postfix: primary | postfix "." NAME | postfix "(" arg_list? ")"
+    | postfix "or" or_fallback
+or_fallback: "skip" | "restart" | "retry" "(" expr ")" | expr
+primary: DURATION | FREQ | FLOAT | HEX_INT | BIN_INT | INT | ESCAPED_STRING
+    | "true" | "false" | NAME | "(" expr ")" | array_literal
+array_literal: "[" (expr ("," expr)*)? "]"

@@ -52,7 +52,7 @@
    100
   ]
  ],
- "format_code": "machine Counter {\n    initial state counting {\n        after 1seconds -> counting\n    }\n}\n",
+ "format_code": "machine Counter {\n    var count = 0\n    var max_count = 10\n\n    initial state counting {\n        after 1seconds -> counting\n    }\n}\n",
  "find_symbols": [
   {
    "name": "Counter",

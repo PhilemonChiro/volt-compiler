@@ -112,7 +112,7 @@
    100
   ]
  ],
- "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n    pin button: PullUpInput = 0\n}\n\nmachine DeviceState {\n    initial state idle {\n        enter { led.off() }\n        on button.press() -> connecting\n    }\n\n    state connecting {\n        enter {\n            retry_count = retry_count + 1\n            led.on()\n        }\n        on wifi.connected() -> online\n        on wifi.disconnected() [retry_count < 5] -> connecting\n        on wifi.disconnected() -> error\n        after 10seconds -> error\n    }\n\n    state online {\n        enter { led.on() }\n        exit { led.off() }\n        on wifi.disconnected() -> connecting\n    }\n\n    state error {\n        enter { led.off() }\n        after 30seconds -> idle\n    }\n}\n",
+ "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n    pin button: PullUpInput = 0\n}\n\nmachine DeviceState {\n    var retry_count = 0\n\n    initial state idle {\n        enter { led.off() }\n        on button.press() -> connecting\n    }\n\n    state connecting {\n        enter {\n            retry_count = retry_count + 1\n            led.on()\n        }\n        on wifi.connected() -> online\n        on wifi.disconnected() [retry_count < 5] -> connecting\n        on wifi.disconnected() -> error\n        after 10seconds -> error\n    }\n\n    state online {\n        enter { led.on() }\n        exit { led.off() }\n        on wifi.disconnected() -> connecting { retry_count = 0 }\n    }\n\n    state error {\n        enter { led.off() }\n        after 30seconds -> idle { retry_count = 0 }\n    }\n}\n",
  "find_symbols": [
   {
    "name": "led",
