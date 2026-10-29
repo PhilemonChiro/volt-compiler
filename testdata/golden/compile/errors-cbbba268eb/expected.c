@@ -20,7 +20,7 @@ void app_main(void)
     
     // Setup
 #line 4 "string_plus_bool.volt"
-    const char* x = (snprintf(_volt_strbuf[0], sizeof(_volt_strbuf[0]), "hello%s", "true"), _volt_strbuf[0]);
+    const char* x = (snprintf(_volt_strbuf[0], sizeof(_volt_strbuf[0]), "hello%s", "true") < 0 ? "" : _volt_strbuf[0]);
 }
 #line 26 "main.c"
 

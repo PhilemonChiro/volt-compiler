@@ -158,7 +158,7 @@ static void health_report_run(volt_task_t *_vt)
     VOLT_TASK_BEGIN(_vt);
     for (;;) {
         log_info("health", "%s", (snprintf(_volt_strbuf[9], sizeof(_volt_strbuf[9]), "reads=%ld isr=%ld btn=%ld pushes=%ld syncs=%ld", (long)total_sensor_reads, (long)motor_isr_count, (long)button_presses, (long)total_pushes, (long)total_syncs), _volt_strbuf[9]));
-        log_info("health", "%s", (snprintf(_volt_strbuf[11], sizeof(_volt_strbuf[11]), "wifi=%s heap=%ld fan=%ld", (wifi_is_connected() ? "true" : "false"), (long)system_free_heap(), (long)fan_on), _volt_strbuf[11]));
+        log_info("health", "%s", (snprintf(_volt_strbuf[11], sizeof(_volt_strbuf[11]), "wifi=%s heap=%ld fan=%ld", (wifi_is_connected() ? "true" : "false"), (long)system_free_heap(), (long)fan_on) < 0 ? "" : _volt_strbuf[11]));
         VOLT_YIELD_LABEL(_vt, 1, 10000);
     }
     VOLT_TASK_END(_vt);

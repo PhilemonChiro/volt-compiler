@@ -45,6 +45,15 @@
       "text": "4"
      }
     ]
+   },
+   {
+    "line": 4,
+    "col": 9,
+    "message": "Storage variable `boot_count` is never saved, so it resets to its default on every boot.",
+    "severity": "warning",
+    "hint": "Call `storage.save(\"boot_count\", boot_count)` after changing it.",
+    "end_line": 4,
+    "end_col": 19
    }
   ],
   "pins": [

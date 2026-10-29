@@ -269,7 +269,7 @@ static void stress_report_run(volt_task_t *_vt)
         log_info("stress", "%s", (snprintf(_volt_strbuf[5], sizeof(_volt_strbuf[5]), "t1=%ld t2=%ld t3=%ld t4=%ld t5=%ld", (long)t1_count, (long)t2_count, (long)t3_count, (long)t4_count, (long)t5_count), _volt_strbuf[5]));
         log_info("stress", "%s", (snprintf(_volt_strbuf[7], sizeof(_volt_strbuf[7]), "t6=%ld t7=%ld t8=%ld t9=%ld t10=%ld", (long)t6_count, (long)t7_count, (long)t8_count, (long)t9_count, (long)t10_count), _volt_strbuf[7]));
         log_info("stress", "%s", (snprintf(_volt_strbuf[9], sizeof(_volt_strbuf[9]), "isr1=%ld isr2=%ld adc=%ld net=%ld", (long)isr1_count, (long)isr2_count, (long)adc_count, (long)net_count), _volt_strbuf[9]));
-        log_info("stress", "%s", (snprintf(_volt_strbuf[11], sizeof(_volt_strbuf[11]), "heap=%ld wifi=%s", (long)system_free_heap(), (wifi_is_connected() ? "true" : "false")), _volt_strbuf[11]));
+        log_info("stress", "%s", (snprintf(_volt_strbuf[11], sizeof(_volt_strbuf[11]), "heap=%ld wifi=%s", (long)system_free_heap(), (wifi_is_connected() ? "true" : "false")) < 0 ? "" : _volt_strbuf[11]));
         VOLT_YIELD_LABEL(_vt, 1, 5000);
     }
     VOLT_TASK_END(_vt);

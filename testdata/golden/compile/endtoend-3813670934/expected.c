@@ -19,6 +19,6 @@ void app_main(void)
     
     
     // Setup
-    log_info((snprintf(_volt_strbuf[1], sizeof(_volt_strbuf[1]), "connected: %s", (wifi_is_connected() ? "true" : "false")), _volt_strbuf[1]), "%s", "");
+    log_info((snprintf(_volt_strbuf[1], sizeof(_volt_strbuf[1]), "connected: %s", (wifi_is_connected() ? "true" : "false")) < 0 ? "" : _volt_strbuf[1]), "%s", "");
 }
 

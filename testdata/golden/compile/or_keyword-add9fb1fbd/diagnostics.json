@@ -10,5 +10,17 @@
       2,
       11
     ]
+  },
+  {
+    "severity": "warning",
+    "category": "UNSAVED STORAGE",
+    "message": "Storage variable `boot_count` is never saved, so it resets to its default on every boot.",
+    "hint": "Call `storage.save(\"boot_count\", boot_count)` after changing it.",
+    "region": [
+      8,
+      9,
+      8,
+      19
+    ]
   }
 ]

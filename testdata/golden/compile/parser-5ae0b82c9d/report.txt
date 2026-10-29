@@ -7,7 +7,7 @@ Unknown name `led`.
  [dim]3 |[/dim]     led.toggle()
  [dim]  |[/dim] [red]    ^^^[/red]
 
-[cyan]Hint: Did you mean `ble`?[/cyan]
+[cyan]Hint: Did you mean `len`?[/cyan]
 
 
 [red bold]-- NAME ERROR -- main.volt:5[/red bold]

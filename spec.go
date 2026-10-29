@@ -3,6 +3,7 @@ package compiler
 import (
 	_ "embed"
 	"fmt"
+	"slices"
 	"sort"
 	"strings"
 )
@@ -161,4 +162,55 @@ func writeDevice(b *strings.Builder, d *DeviceInfo) {
 		}
 		b.WriteString(line + "\n")
 	}
+}
+
+// DeviceCard renders one device's reference section, or "" if it is unknown.
+func DeviceCard(name string) string {
+	for _, d := range Registry().Devices {
+		if strings.EqualFold(d.Name, name) {
+			var b strings.Builder
+			writeDevice(&b, d)
+			return strings.TrimSpace(b.String())
+		}
+	}
+	return ""
+}
+
+// DeviceNames lists every device in the loaded registry.
+func DeviceNames() []string {
+	var out []string
+	for _, d := range Registry().Devices {
+		out = append(out, d.Name)
+	}
+	return out
+}
+
+// MethodSig is a method's name and parameters, for tools.
+type MethodSig struct {
+	Name   string
+	Params []SymParam
+}
+
+// MethodsOf lists the methods the checker accepts on a value of type typ
+// (a pin mode, device, bus or built-in object type).
+func MethodsOf(typ string) []MethodSig {
+	var out []MethodSig
+	for _, m := range methodTypesFor(typ) {
+		out = append(out, MethodSig{m.Name, m.Params})
+	}
+	return out
+}
+
+// PinModes lists the pin modes in reference order.
+func PinModes() []string { return slices.Clone(specPinModes) }
+
+// BuiltinObjects maps each built-in object (wifi, mqtt, …) to its type.
+func BuiltinObjects() map[string]string {
+	out := map[string]string{}
+	for _, b := range builtins {
+		if _, ok := builtinMethodTypes[b[1]]; ok {
+			out[b[0]] = b[1]
+		}
+	}
+	return out
 }

@@ -194,7 +194,7 @@ static void stress_report_run(volt_task_t *_vt)
     for (;;) {
         log_info("stress", "%s", (snprintf(_volt_strbuf[3], sizeof(_volt_strbuf[3]), "GPIO0=%ld GPIO2=%ld GPIO4=%ld GPIO5=%ld", (long)c0, (long)c2, (long)c4, (long)c5), _volt_strbuf[3]));
         log_info("stress", "%s", (snprintf(_volt_strbuf[5], sizeof(_volt_strbuf[5]), "GPIO12=%ld GPIO13=%ld GPIO14=%ld GPIO15=%ld GPIO16=%ld", (long)c12, (long)c13, (long)c14, (long)c15, (long)c16), _volt_strbuf[5]));
-        log_info("stress", "%s", (snprintf(_volt_strbuf[7], sizeof(_volt_strbuf[7]), "net=%ld wifi=%s heap=%ld", (long)net_count, (wifi_is_connected() ? "true" : "false"), (long)system_free_heap()), _volt_strbuf[7]));
+        log_info("stress", "%s", (snprintf(_volt_strbuf[7], sizeof(_volt_strbuf[7]), "net=%ld wifi=%s heap=%ld", (long)net_count, (wifi_is_connected() ? "true" : "false"), (long)system_free_heap()) < 0 ? "" : _volt_strbuf[7]));
         VOLT_YIELD_LABEL(_vt, 1, 5000);
     }
     VOLT_TASK_END(_vt);

@@ -17,3 +17,14 @@ GP25 is the onboard LED on Pico. On Pico W, GP25 is used for WiFi SPI — not av
  [dim]2 |[/dim] chip rp2040
  [dim]3 |[/dim] hardware { pin led: Output = 25 }
  [dim]  |[/dim] [yellow]               ^^^[/yellow]
+
+
+[yellow bold]-- UNSAVED STORAGE -- rp2040_storage.volt:4[/yellow bold]
+
+Storage variable `boot_count` is never saved, so it resets to its default on every boot.
+
+ [dim]3 |[/dim] hardware { pin led: Output = 25 }
+ [dim]4 |[/dim] storage boot_count: int = 0
+ [dim]  |[/dim] [yellow]        ^^^^^^^^^^[/yellow]
+
+[cyan]Hint: Call `storage.save("boot_count", boot_count)` after changing it.[/cyan]

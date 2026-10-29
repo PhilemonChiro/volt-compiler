@@ -1,0 +1,21 @@
+
+[yellow bold]-- UNSAVED STORAGE -- main.volt:2[/yellow bold]
+
+Storage variable `boot_count` is never saved, so it resets to its default on every boot.
+
+ [dim]1 |[/dim] 
+ [dim]2 |[/dim] storage boot_count: int = 0
+ [dim]  |[/dim] [yellow]        ^^^^^^^^^^[/yellow]
+
+[cyan]Hint: Call `storage.save("boot_count", boot_count)` after changing it.[/cyan]
+
+
+[yellow bold]-- UNSAVED STORAGE -- main.volt:3[/yellow bold]
+
+Storage variable `last_temp` is never saved, so it resets to its default on every boot.
+
+ [dim]2 |[/dim] storage boot_count: int = 0
+ [dim]3 |[/dim] storage last_temp: float = 0.0
+ [dim]  |[/dim] [yellow]        ^^^^^^^^^[/yellow]
+
+[cyan]Hint: Call `storage.save("last_temp", last_temp)` after changing it.[/cyan]

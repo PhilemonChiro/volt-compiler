@@ -153,6 +153,20 @@ setup {
 
 `storage` variables persist across reboots once saved with `storage.save`.
 
+Strings join with `+` (numbers and bools convert; results are cut at 127
+characters). Built-ins: `len(s)`, `contains(s, part)`, `starts_with(s, prefix)`,
+`ends_with(s, suffix)`, `to_int(s)`, `to_float(s)`; compare with `==` / `!=`.
+
+```volt
+setup {
+    let line: string = "set 42"
+    if starts_with(line, "set ") {
+        let n: int = to_int("42")
+        log("cmd", "value " + n + " from " + len(line) + " chars")
+    }
+}
+```
+
 ## Control flow
 
 ```volt
@@ -309,5 +323,31 @@ every 10s {
 setup {
     wifi.connect("ssid", "password") or retry(5)
     mqtt.connect("mqtt://broker.local") or retry(3)
+}
+```
+
+## Networking
+
+`wifi`, `mqtt` and `http` are built in. `http.get(url)` and
+`http.post(url, body)` return the response body as a string (empty on
+failure, cut at 1023 characters). `mqtt.on_receive(topic)` subscribes; the
+latest message is read with `mqtt.has_message()`, `mqtt.payload()` (marks it
+read) and `mqtt.topic()`.
+
+```volt
+on mqtt.has_message() {
+    let cmd: string = mqtt.payload()
+    log("mqtt", mqtt.topic() + ": " + cmd)
+}
+
+every 60s when wifi.is_connected() {
+    let body: string = http.get("http://example.com/status")
+    log("http", body)
+}
+
+setup {
+    wifi.connect("ssid", "password") or retry(5)
+    mqtt.connect("mqtt://broker.local") or retry(3)
+    mqtt.on_receive("home/cmd")
 }
 ```

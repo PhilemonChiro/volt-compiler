@@ -9,6 +9,15 @@
     "hint": "The chip declaration will move to volt.toml in a future version.",
     "end_line": 2,
     "end_col": 11
+   },
+   {
+    "line": 9,
+    "col": 9,
+    "message": "Storage variable `readings_count` is never saved, so it resets to its default on every boot.",
+    "severity": "warning",
+    "hint": "Call `storage.save(\"readings_count\", readings_count)` after changing it.",
+    "end_line": 9,
+    "end_col": 23
    }
   ],
   "pins": [

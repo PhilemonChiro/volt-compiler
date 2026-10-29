@@ -3,7 +3,7 @@
     "severity": "error",
     "category": "NAME ERROR",
     "message": "Unknown name `led`.",
-    "hint": "Did you mean `ble`?",
+    "hint": "Did you mean `len`?",
     "region": [
       3,
       5,

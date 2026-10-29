@@ -9,6 +9,15 @@
     "hint": "The chip declaration will move to volt.toml in a future version.",
     "end_line": 2,
     "end_col": 11
+   },
+   {
+    "line": 10,
+    "col": 9,
+    "message": "Storage variable `target_temp` is never saved, so it resets to its default on every boot.",
+    "severity": "warning",
+    "hint": "Call `storage.save(\"target_temp\", target_temp)` after changing it.",
+    "end_line": 10,
+    "end_col": 20
    }
   ],
   "pins": [

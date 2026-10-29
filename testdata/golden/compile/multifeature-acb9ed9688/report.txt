@@ -8,3 +8,14 @@ Move `chip esp32` to volt.toml: chip = "esp32"
  [dim]  |[/dim] [yellow]     ^^^^^[/yellow]
 
 [cyan]Hint: The chip declaration will move to volt.toml in a future version.[/cyan]
+
+
+[yellow bold]-- UNSAVED STORAGE -- data_logger.volt:7[/yellow bold]
+
+Storage variable `log_count` is never saved, so it resets to its default on every boot.
+
+ [dim]6 |[/dim] 
+ [dim]7 |[/dim] storage log_count: int = 0
+ [dim]  |[/dim] [yellow]        ^^^^^^^^^[/yellow]
+
+[cyan]Hint: Call `storage.save("log_count", log_count)` after changing it.[/cyan]

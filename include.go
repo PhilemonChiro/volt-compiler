@@ -172,6 +172,8 @@ func compileFront(source, filename string, progress ProgressFunc) (*Program, *Er
 		return nil, errs, nil
 	}
 	emit("analyze", 80)
+	// Go-only lints, after the ported analysis so its parity holds.
+	warnUnsavedStorage(prog, errs)
 	return prog, errs, nil
 }
 

@@ -127,7 +127,7 @@ static void health_run(volt_task_t *_vt)
     VOLT_TASK_BEGIN(_vt);
     for (;;) {
         log_info("health", "%s", (snprintf(_volt_strbuf[11], sizeof(_volt_strbuf[11]), "heartbeats=%ld sensor_reads=%ld mqtt=%ld pushes=%ld syncs=%ld", (long)heartbeat_count, (long)sensor_reads, (long)mqtt_sends, (long)push_count, (long)sync_count), _volt_strbuf[11]));
-        log_info("health", "%s", (snprintf(_volt_strbuf[13], sizeof(_volt_strbuf[13]), "wifi=%s heap=%ld", (wifi_is_connected() ? "true" : "false"), (long)system_free_heap()), _volt_strbuf[13]));
+        log_info("health", "%s", (snprintf(_volt_strbuf[13], sizeof(_volt_strbuf[13]), "wifi=%s heap=%ld", (wifi_is_connected() ? "true" : "false"), (long)system_free_heap()) < 0 ? "" : _volt_strbuf[13]));
         VOLT_YIELD_LABEL(_vt, 1, 15000);
     }
     VOLT_TASK_END(_vt);

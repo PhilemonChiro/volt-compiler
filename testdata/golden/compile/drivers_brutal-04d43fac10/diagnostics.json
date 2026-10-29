@@ -14,25 +14,13 @@
   {
     "severity": "error",
     "category": "TYPE MISMATCH",
-    "message": "Argument 1 of `read_at_response` expects `char *`, got `int`.",
-    "hint": null,
+    "message": "Type `HC05` has no method `read_at_response`.",
+    "hint": "Available: send_at_command, send_data, set_baud_rate, set_name, set_password, send, send_line, available, read_line",
     "region": [
       9,
-      26,
+      5,
       9,
-      27
-    ]
-  },
-  {
-    "severity": "error",
-    "category": "TYPE MISMATCH",
-    "message": "Argument 2 of `read_at_response` expects `uint16_t`, got `int`.",
-    "hint": null,
-    "region": [
-      9,
-      29,
-      9,
-      30
+      8
     ]
   }
 ]

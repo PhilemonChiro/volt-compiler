@@ -43,7 +43,7 @@ static void health_run(volt_task_t *_vt)
 {
     VOLT_TASK_BEGIN(_vt);
     for (;;) {
-        log_info("health", "%s", (snprintf(_volt_strbuf[3], sizeof(_volt_strbuf[3]), "lock_toggles=%ld blinks=%ld wifi=%s heap=%ld", (long)lock_toggles, (long)blink_count, (wifi_is_connected() ? "true" : "false"), (long)system_free_heap()), _volt_strbuf[3]));
+        log_info("health", "%s", (snprintf(_volt_strbuf[3], sizeof(_volt_strbuf[3]), "lock_toggles=%ld blinks=%ld wifi=%s heap=%ld", (long)lock_toggles, (long)blink_count, (wifi_is_connected() ? "true" : "false"), (long)system_free_heap()) < 0 ? "" : _volt_strbuf[3]));
         VOLT_YIELD_LABEL(_vt, 1, 10000);
     }
     VOLT_TASK_END(_vt);

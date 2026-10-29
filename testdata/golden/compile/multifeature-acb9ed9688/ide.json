@@ -9,6 +9,15 @@
     "hint": "The chip declaration will move to volt.toml in a future version.",
     "end_line": 2,
     "end_col": 11
+   },
+   {
+    "line": 7,
+    "col": 9,
+    "message": "Storage variable `log_count` is never saved, so it resets to its default on every boot.",
+    "severity": "warning",
+    "hint": "Call `storage.save(\"log_count\", log_count)` after changing it.",
+    "end_line": 7,
+    "end_col": 18
    }
   ],
   "pins": [

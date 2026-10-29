@@ -10,6 +10,15 @@
     "end_line": 6,
     "end_col": 15,
     "code": "pin-note"
+   },
+   {
+    "line": 11,
+    "col": 9,
+    "message": "Storage variable `boot_count` is never saved, so it resets to its default on every boot.",
+    "severity": "warning",
+    "hint": "Call `storage.save(\"boot_count\", boot_count)` after changing it.",
+    "end_line": 11,
+    "end_col": 19
    }
   ],
   "pins": [

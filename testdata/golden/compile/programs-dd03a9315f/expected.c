@@ -79,7 +79,7 @@ static void cloud_report_run(void *arg)
 #line 43 "adv_iot.volt"
         atomic_fetch_add(&cloud_count, 1);
         log_info("cloud", "%s", (snprintf(_volt_strbuf[5], sizeof(_volt_strbuf[5]), "#%ld posting to API", (long)cloud_count), _volt_strbuf[5]));
-        http_post("https://api.example.com/data", "ok", NULL, NULL, 0, NULL);
+        ({ static char _volt_http_buf[1024]; http_post("https://api.example.com/data", "ok", NULL, _volt_http_buf, sizeof(_volt_http_buf), NULL) == VOLT_OK ? (const char*)_volt_http_buf : ""; });
         volt_delay_ms(60000);
     }
 }
@@ -91,7 +91,7 @@ static void stats_run(volt_task_t *_vt)
     VOLT_TASK_BEGIN(_vt);
     for (;;) {
         log_info("stats", "%s", (snprintf(_volt_strbuf[7], sizeof(_volt_strbuf[7]), "heartbeat=%ld isr=%ld telemetry=%ld cloud=%ld", (long)heartbeat_count, (long)motor_isr_count, (long)telemetry_count, (long)cloud_count), _volt_strbuf[7]));
-        log_info("stats", "%s", (snprintf(_volt_strbuf[9], sizeof(_volt_strbuf[9]), "wifi=%s heap=%ld", (wifi_is_connected() ? "true" : "false"), (long)system_free_heap()), _volt_strbuf[9]));
+        log_info("stats", "%s", (snprintf(_volt_strbuf[9], sizeof(_volt_strbuf[9]), "wifi=%s heap=%ld", (wifi_is_connected() ? "true" : "false"), (long)system_free_heap()) < 0 ? "" : _volt_strbuf[9]));
         VOLT_YIELD_LABEL(_vt, 1, 10000);
     }
     VOLT_TASK_END(_vt);

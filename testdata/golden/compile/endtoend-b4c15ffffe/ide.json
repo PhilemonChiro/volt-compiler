@@ -1,6 +1,16 @@
 {
  "compile_full": {
-  "diagnostics": [],
+  "diagnostics": [
+   {
+    "line": 2,
+    "col": 9,
+    "message": "Storage variable `boot_count` is never saved, so it resets to its default on every boot.",
+    "severity": "warning",
+    "hint": "Call `storage.save(\"boot_count\", boot_count)` after changing it.",
+    "end_line": 2,
+    "end_col": 19
+   }
+  ],
   "pins": [],
   "devices": [],
   "buses": [],

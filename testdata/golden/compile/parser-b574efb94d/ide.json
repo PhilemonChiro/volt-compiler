@@ -6,7 +6,7 @@
     "col": 9,
     "message": "Unknown name `led`.",
     "severity": "error",
-    "hint": "Did you mean `ble`?",
+    "hint": "Did you mean `len`?",
     "end_line": 4,
     "end_col": 12
    }

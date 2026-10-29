@@ -10,5 +10,17 @@
       2,
       11
     ]
+  },
+  {
+    "severity": "warning",
+    "category": "UNSAVED STORAGE",
+    "message": "Storage variable `target_temp` is never saved, so it resets to its default on every boot.",
+    "hint": "Call `storage.save(\"target_temp\", target_temp)` after changing it.",
+    "region": [
+      10,
+      9,
+      10,
+      20
+    ]
   }
 ]

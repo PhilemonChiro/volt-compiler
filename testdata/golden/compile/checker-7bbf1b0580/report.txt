@@ -1,0 +1,10 @@
+
+[yellow bold]-- UNSAVED STORAGE -- main.volt:2[/yellow bold]
+
+Storage variable `count` is never saved, so it resets to its default on every boot.
+
+ [dim]1 |[/dim] 
+ [dim]2 |[/dim] storage count: int = 0
+ [dim]  |[/dim] [yellow]        ^^^^^[/yellow]
+
+[cyan]Hint: Call `storage.save("count", count)` after changing it.[/cyan]

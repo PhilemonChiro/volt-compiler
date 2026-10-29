@@ -11,17 +11,10 @@ Move `chip esp32` to volt.toml: chip = "esp32"
 
 [red bold]-- TYPE MISMATCH -- main.volt:9[/red bold]
 
-Argument 1 of `read_at_response` expects `char *`, got `int`.
+Type `HC05` has no method `read_at_response`.
 
  [dim]8 |[/dim]     led.toggle()
  [dim]9 |[/dim]     dev.read_at_response(0, 0)
- [dim]  |[/dim] [red]                         ^[/red]
+ [dim]  |[/dim] [red]    ^^^[/red]
 
-
-[red bold]-- TYPE MISMATCH -- main.volt:9[/red bold]
-
-Argument 2 of `read_at_response` expects `uint16_t`, got `int`.
-
- [dim]8 |[/dim]     led.toggle()
- [dim]9 |[/dim]     dev.read_at_response(0, 0)
- [dim]  |[/dim] [red]                            ^[/red]
+[cyan]Hint: Available: send_at_command, send_data, set_baud_rate, set_name, set_password, send, send_line, available, read_line[/cyan]
