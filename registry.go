@@ -20,6 +20,11 @@ import (
 // $VOLT_DEVICES then ~/.volt/devices are tried. Set it before the first compile.
 var DevicesDir string
 
+// DevicesFS, when set, is the device library instead of a directory: a
+// build with no file system (the WebAssembly playground) embeds its
+// descriptors. It is read once.
+var DevicesFS fs.FS
+
 // JSON type name -> checker type; anything else is kept verbatim.
 var deviceTypeMap = map[string]string{
 	"int": "int", "float": "float", "bool": "bool", "string": "string", "void": "void",
@@ -141,6 +146,12 @@ var (
 func Registry() *DeviceRegistry {
 	registryMu.Lock()
 	defer registryMu.Unlock()
+	if DevicesFS != nil {
+		if registry == nil {
+			registry = loadRegistry(DevicesFS)
+		}
+		return registry
+	}
 	dir := devicesDir()
 	if registry != nil && dir == registryDir && time.Since(registryChecked) < time.Second {
 		return registry
@@ -148,7 +159,7 @@ func Registry() *DeviceRegistry {
 	stamp := descriptorStamp(dir)
 	registryChecked = time.Now()
 	if registry == nil || dir != registryDir || stamp != registryStamp {
-		registry, registryDir, registryStamp = loadRegistry(dir), dir, stamp
+		registry, registryDir, registryStamp = loadRegistryDir(dir), dir, stamp
 	}
 	return registry
 }
@@ -184,18 +195,24 @@ func devicesDir() string {
 	return ""
 }
 
-// loadRegistry reads every .json file under dir (lexical walk order).
-// A missing dir gives an empty registry; malformed files are skipped.
-func loadRegistry(dir string) *DeviceRegistry {
-	r := &DeviceRegistry{byName: map[string]*DeviceInfo{}}
+// loadRegistryDir reads the descriptors under dir. A missing or empty dir
+// gives an empty registry.
+func loadRegistryDir(dir string) *DeviceRegistry {
 	if dir == "" {
-		return r
+		return &DeviceRegistry{byName: map[string]*DeviceInfo{}}
 	}
-	filepath.WalkDir(dir, func(path string, d fs.DirEntry, err error) error {
+	return loadRegistry(os.DirFS(dir))
+}
+
+// loadRegistry reads every .json file in fsys (lexical walk order).
+// Malformed files are skipped.
+func loadRegistry(fsys fs.FS) *DeviceRegistry {
+	r := &DeviceRegistry{byName: map[string]*DeviceInfo{}}
+	fs.WalkDir(fsys, ".", func(path string, d fs.DirEntry, err error) error {
 		if err != nil || d.IsDir() || !strings.HasSuffix(d.Name(), ".json") {
 			return nil
 		}
-		dev, err := parseDevice(path)
+		dev, err := parseDevice(fsys, path)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Warning: skipping malformed device file %s: %v\n", path, err)
 			return nil
@@ -215,8 +232,8 @@ func loadRegistry(dir string) *DeviceRegistry {
 	return r
 }
 
-func parseDevice(path string) (*DeviceInfo, error) {
-	b, err := os.ReadFile(path)
+func parseDevice(fsys fs.FS, path string) (*DeviceInfo, error) {
+	b, err := fs.ReadFile(fsys, path)
 	if err != nil {
 		return nil, err
 	}
