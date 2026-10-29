@@ -10,6 +10,7 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+	"time"
 )
 
 // Port of device_registry.py: device descriptors loaded from
@@ -126,14 +127,48 @@ type DeviceRegistry struct {
 }
 
 var (
-	registryOnce sync.Once
-	registry     *DeviceRegistry
+	registryMu      sync.Mutex
+	registry        *DeviceRegistry
+	registryDir     string
+	registryStamp   string
+	registryChecked time.Time
 )
 
-// Registry returns the global device registry, loading it on first use.
+// Registry returns the device registry for the current devices dir. It
+// reloads when the dir changes or a descriptor is added, removed or edited
+// (checked at most once a second), so long-running processes such as
+// `volt mcp` and the IDE worker never serve a stale catalog.
 func Registry() *DeviceRegistry {
-	registryOnce.Do(func() { registry = loadRegistry(devicesDir()) })
+	registryMu.Lock()
+	defer registryMu.Unlock()
+	dir := devicesDir()
+	if registry != nil && dir == registryDir && time.Since(registryChecked) < time.Second {
+		return registry
+	}
+	stamp := descriptorStamp(dir)
+	registryChecked = time.Now()
+	if registry == nil || dir != registryDir || stamp != registryStamp {
+		registry, registryDir, registryStamp = loadRegistry(dir), dir, stamp
+	}
 	return registry
+}
+
+// descriptorStamp summarizes every .json under dir (path, size, mtime).
+func descriptorStamp(dir string) string {
+	if dir == "" {
+		return ""
+	}
+	var b strings.Builder
+	filepath.WalkDir(dir, func(path string, d fs.DirEntry, err error) error {
+		if err != nil || d.IsDir() || !strings.HasSuffix(d.Name(), ".json") {
+			return nil
+		}
+		if fi, err := d.Info(); err == nil {
+			fmt.Fprintf(&b, "%s:%d:%d;", path, fi.Size(), fi.ModTime().UnixNano())
+		}
+		return nil
+	})
+	return b.String()
 }
 
 func devicesDir() string {
@@ -327,4 +362,30 @@ func deref(s *string, def string) string {
 // Get returns the device named name, or nil.
 func (r *DeviceRegistry) Get(name string) *DeviceInfo {
 	return r.byName[name]
+}
+
+// DeviceExample returns a complete example program for a device: the one
+// shipped beside the device library (<devices>/../examples/devices/<Name>.volt),
+// else the first "examples" entry in the device's own device.json. "" if none.
+func DeviceExample(name string) string {
+	dir := devicesDir()
+	if dir == "" || name == "" {
+		return ""
+	}
+	if b, err := os.ReadFile(filepath.Join(filepath.Dir(dir), "examples", "devices", name+".volt")); err == nil {
+		return string(b)
+	}
+	b, err := os.ReadFile(filepath.Join(dir, strings.ToLower(name), "device.json"))
+	if err != nil {
+		return ""
+	}
+	var d struct {
+		Examples []struct {
+			Code string `json:"code"`
+		} `json:"examples"`
+	}
+	if json.Unmarshal(b, &d) == nil && len(d.Examples) > 0 {
+		return d.Examples[0].Code
+	}
+	return ""
 }

@@ -163,8 +163,14 @@ func (g *codegen) generate(p *Program) string {
 	g.emitSensorInstances(p)
 	g.emitFunctions(p)
 	g.emitTasks(p)
+	// Names already declared in C: a global var used as an event (`on request`)
+	// or an event shared by two machines must not get a second flag.
+	declared := map[string]bool{}
+	for _, v := range p.GlobalVars {
+		declared[v.Name] = true
+	}
 	for _, m := range p.Machines {
-		g.emitMachine(m)
+		g.emitMachine(m, declared)
 	}
 	g.emitAppMain(p)
 
@@ -182,8 +188,51 @@ func (g *codegen) generate(p *Program) string {
 		output = strings.ReplaceAll(output, "static char _volt_strbuf[16][128];\n",
 			"static char _volt_strbuf[16][128];\n\n// Skip counters (or-skip observability)\n"+strings.Join(decls, "\n")+"\n")
 	}
+	if strings.Contains(output, "_volt_str_") || strings.Contains(output, "strtol(") || strings.Contains(output, "strtof(") {
+		output = strings.Replace(output, "static char _volt_strbuf[16][128];\n",
+			"static char _volt_strbuf[16][128];\n"+stringRuntime, 1)
+	}
+	if strings.Contains(output, "_volt_mqtt_") {
+		output = strings.Replace(output, "static char _volt_strbuf[16][128];\n",
+			"static char _volt_strbuf[16][128];\n"+mqttReceiveRuntime, 1)
+	}
 	return resetLineMapping(output)
 }
+
+// stringRuntime backs the string builtins (starts_with, ends_with, to_int, to_float).
+const stringRuntime = `
+#include <stdlib.h>
+static inline bool _volt_str_starts_with(const char *s, const char *p) {
+    return strncmp(s, p, strlen(p)) == 0;
+}
+static inline bool _volt_str_ends_with(const char *s, const char *x) {
+    size_t n = strlen(s), m = strlen(x);
+    return m <= n && strcmp(s + n - m, x) == 0;
+}
+`
+
+// mqttReceiveRuntime keeps the latest message from any mqtt.on_receive topic
+// for mqtt.has_message() / mqtt.payload() / mqtt.topic().
+const mqttReceiveRuntime = `
+// MQTT receive (latest message wins)
+static char _volt_mqtt_topic[128];
+static char _volt_mqtt_payload[512];
+static char _volt_mqtt_payload_out[512];
+static volatile bool _volt_mqtt_has_message = false;
+static void _volt_mqtt_handler(const char *topic, const char *data, int data_len) {
+    if (data_len >= (int)sizeof(_volt_mqtt_payload)) data_len = sizeof(_volt_mqtt_payload) - 1;
+    if (data_len < 0) data_len = 0;
+    snprintf(_volt_mqtt_topic, sizeof(_volt_mqtt_topic), "%s", topic ? topic : "");
+    memcpy(_volt_mqtt_payload, data, data_len);
+    _volt_mqtt_payload[data_len] = '\0';
+    _volt_mqtt_has_message = true;
+}
+static const char *_volt_mqtt_take_payload(void) {
+    memcpy(_volt_mqtt_payload_out, _volt_mqtt_payload, sizeof(_volt_mqtt_payload_out));
+    _volt_mqtt_has_message = false;
+    return _volt_mqtt_payload_out;
+}
+`
 
 // resetLineMapping ends each function that carries #line directives with
 // `#line N "main.c"`, so the scaffolding after it (app_main, ISR wrappers,
@@ -692,7 +741,7 @@ func (g *codegen) emitTasks(p *Program) {
 // State machines
 // ============================================================
 
-func (g *codegen) emitMachine(m *MachineDecl) {
+func (g *codegen) emitMachine(m *MachineDecl, declared map[string]bool) {
 	name := m.Name
 	up := strings.ToUpper(name)
 	g.currentMachine = name // for BecomeStmt; Python never resets it
@@ -710,7 +759,7 @@ func (g *codegen) emitMachine(m *MachineDecl) {
 	events := map[string]bool{}
 	for _, s := range states {
 		for _, tr := range s.Transitions {
-			if v, ok := tr.Event.(*VarRef); ok {
+			if v, ok := tr.Event.(*VarRef); ok && !declared[v.Name] {
 				events[v.Name] = true
 			}
 		}
@@ -723,6 +772,7 @@ func (g *codegen) emitMachine(m *MachineDecl) {
 		}
 		sort.Strings(evs)
 		for _, e := range evs {
+			declared[e] = true
 			g.out("static _Atomic bool " + e + " = false;")
 		}
 		g.out("")
@@ -1634,6 +1684,10 @@ func (g *codegen) expr(e Node, ctx string, cv []string) string {
 		}
 		left := g.expr(e.Left, ctx, cv)
 		right := g.expr(e.Right, ctx, cv)
+		if (e.Op == "==" || e.Op == "!=") && (g.inferValueType(e.Left) == "string" || g.inferValueType(e.Right) == "string") {
+			// C would compare pointers
+			return "(strcmp(" + left + ", " + right + ") " + e.Op + " 0)"
+		}
 		return "(" + left + " " + e.Op + " " + right + ")"
 	case *UnaryExpr:
 		return "(" + e.Op + g.expr(e.Operand, ctx, cv) + ")"
@@ -1791,6 +1845,9 @@ func (g *codegen) inferValueType(e Node) string {
 		if st, ok := g.sensorMap[objName]; ok && objName != "" {
 			if t, ok := lookupMethod(st, e.Method); ok {
 				r := strings.ToLower(derefTemplate(t))
+				if methodReturns(st, e.Method) == "string" {
+					return "string"
+				}
 				if strings.Contains(r, "float") || strings.Contains(r, "lux") || strings.Contains(r, "temperature") {
 					return "float"
 				}
@@ -1800,6 +1857,9 @@ func (g *codegen) inferValueType(e Node) string {
 			return "int"
 		}
 		if tn, ok := g.builtinTypes[objName]; ok && objName != "" {
+			if methodReturns(tn, e.Method) == "string" {
+				return "string"
+			}
 			if t, ok := lookupMethod(tn, e.Method); ok {
 				if strings.Contains(strings.ToLower(derefTemplate(t)), "float") {
 					return "float"
@@ -1810,6 +1870,9 @@ func (g *codegen) inferValueType(e Node) string {
 	case *FuncCall:
 		if t, ok := g.funcReturnTypes[e.Name]; ok {
 			return t
+		}
+		if sig, ok := builtinFuncs[e.Name]; ok && sig.Ret != "void" {
+			return sig.Ret
 		}
 		return "int"
 	case *BinaryExpr:
@@ -1825,6 +1888,25 @@ func (g *codegen) inferValueType(e Node) string {
 		return g.inferValueType(e.Operand)
 	}
 	return "int"
+}
+
+// methodReturns is a built-in or registry device method's declared Volt
+// return type.
+func methodReturns(typeName, method string) string {
+	for _, m := range builtinMethodTypes[typeName] {
+		if m.Name == method {
+			return m.Ret
+		}
+	}
+	ret := ""
+	if dev := Registry().Get(typeName); dev != nil {
+		for _, m := range dev.Methods {
+			if m.Name == method {
+				ret = m.Returns
+			}
+		}
+	}
+	return ret
 }
 
 func derefTemplate(t *string) string {
@@ -1968,6 +2050,11 @@ func (g *codegen) nextStrBuf() string {
 }
 
 func strBufExpr(idx, fmtStr, args string) string {
+	if strings.Contains(fmtStr, "%s") {
+		// Using snprintf's result keeps -Wformat-truncation quiet: a string
+		// longer than the buffer is cut, by design.
+		return "(snprintf(_volt_strbuf[" + idx + "], sizeof(_volt_strbuf[" + idx + `]), "` + fmtStr + `", ` + args + ") < 0 ? \"\" : _volt_strbuf[" + idx + "])"
+	}
 	return "(snprintf(_volt_strbuf[" + idx + "], sizeof(_volt_strbuf[" + idx + `]), "` + fmtStr + `", ` + args + "), _volt_strbuf[" + idx + "])"
 }
 
@@ -2076,6 +2163,15 @@ func (g *codegen) stringConcat(e *BinaryExpr, ctx string, cv []string) string {
 			case isMC && slices.Contains(concatIntMethods, mc.Method):
 				fmts = append(fmts, "%ld")
 				args = append(args, "(long)"+c)
+			case g.inferValueType(part) == "string":
+				fmts = append(fmts, "%s")
+				args = append(args, c)
+			case g.inferValueType(part) == "float":
+				fmts = append(fmts, "%.2f")
+				args = append(args, "(double)("+c+")")
+			case g.inferValueType(part) == "bool":
+				fmts = append(fmts, "%s")
+				args = append(args, "(("+c+`) ? "true" : "false")`)
 			case isBin:
 				fmts = append(fmts, "%ld")
 				args = append(args, "(long)("+c+")")

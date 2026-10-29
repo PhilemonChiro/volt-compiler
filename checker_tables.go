@@ -221,6 +221,9 @@ var builtinMethodTypes = map[string][]methodSig{
 		{"send_int", "void", []SymParam{{"topic", "string"}, {"value", "int"}}},
 		{"on_receive", "void", []SymParam{{"topic", "string"}}},
 		{"is_connected", "bool", []SymParam{}},
+		{"has_message", "bool", []SymParam{}},
+		{"payload", "string", []SymParam{}},
+		{"topic", "string", []SymParam{}},
 	},
 	"HTTP": {
 		{"get", "string", []SymParam{{"url", "string"}}},
@@ -299,6 +302,12 @@ var builtinFuncs = map[string]methodSig{
 	"light_sleep": {"light_sleep", "void", []SymParam{{"duration", "Duration"}}},
 	"float":       {"float", "float", []SymParam{{"value", "int"}}},
 	"int":         {"int", "int", []SymParam{{"value", "float"}}},
+	"len":         {"len", "int", []SymParam{{"text", "string"}}},
+	"contains":    {"contains", "bool", []SymParam{{"text", "string"}, {"part", "string"}}},
+	"starts_with": {"starts_with", "bool", []SymParam{{"text", "string"}, {"prefix", "string"}}},
+	"ends_with":   {"ends_with", "bool", []SymParam{{"text", "string"}, {"suffix", "string"}}},
+	"to_int":      {"to_int", "int", []SymParam{{"text", "string"}}},
+	"to_float":    {"to_float", "float", []SymParam{{"text", "string"}}},
 }
 
 // binaryOpTypes: (left, op, right) -> result type.

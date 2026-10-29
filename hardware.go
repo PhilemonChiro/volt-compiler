@@ -51,6 +51,9 @@ func validateHardware(program *Program, errs *Errors, chip chipSpec) {
 	}
 	usedAddrs := map[string]map[int]*SensorDecl{}
 	for _, s := range hw.Sensors {
+		if Registry().Get(s.SensorType) == nil {
+			continue // reported by the resolver
+		}
 		validateSensor(s, usedAddrs, busKinds, errs)
 		if busKinds[s.BusName] == "i2c" {
 			validateAddressList(s, errs)
@@ -209,6 +212,21 @@ func (h *hwCheck) validatePinLegacy(pin *PinDecl, used map[int]*PinDecl) {
 		h.errs.add(Diagnostic{Region: r, Category: "HARDWARE NOTE", Message: fmt.Sprintf("GPIO %d: %s", gpio, note),
 			Severity: "warning", Code: "pin-note"})
 	}
+}
+
+// unknownDevice reports a device type with no library on this computer: a
+// typo, or a library that comes from the Grid and isn't installed yet.
+func unknownDevice(s *SensorDecl, errs *Errors) {
+	hint := fmt.Sprintf("Install it from the Grid: Volt IDE → Library → Discover → %s.", s.SensorType)
+	var names []string
+	for _, d := range Registry().Devices {
+		names = append(names, d.Name)
+	}
+	if near, ok := suggestSimilar(s.SensorType, names, 2); ok {
+		hint = fmt.Sprintf("Did you mean `%s`? If not, install %s from the Grid: Volt IDE → Library → Discover.", near, s.SensorType)
+	}
+	errs.add(Diagnostic{Region: s.TypeRegion, Category: "HARDWARE ERROR", Severity: "error", Code: "unknown-device",
+		Message: fmt.Sprintf("`%s` isn't installed on this computer.", s.SensorType), Hint: hint})
 }
 
 // validateSensor checks I2C address range and per-bus uniqueness (and, on

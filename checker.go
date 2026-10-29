@@ -31,29 +31,37 @@ type methodSig struct {
 }
 
 var (
-	methodTypesOnce sync.Once
-	methodTypes     map[string][]methodSig
+	methodTypesMu  sync.Mutex
+	methodTypes    map[string][]methodSig
+	methodTypesReg *DeviceRegistry // the registry methodTypes was built from
 )
 
 // allMethodTypes is builtinMethodTypes plus every registry device whose
-// name isn't already a builtin type.
+// name isn't already a builtin type. It is rebuilt whenever the registry
+// reloads, so long-running processes (the IDE worker, `volt mcp`) see
+// devices added or changed after they started.
 func allMethodTypes() map[string][]methodSig {
-	methodTypesOnce.Do(func() {
-		methodTypes = make(map[string][]methodSig, len(builtinMethodTypes))
-		for k, v := range builtinMethodTypes {
-			methodTypes[k] = v
+	reg := Registry()
+	methodTypesMu.Lock()
+	defer methodTypesMu.Unlock()
+	if methodTypes != nil && methodTypesReg == reg {
+		return methodTypes
+	}
+	mt := make(map[string][]methodSig, len(builtinMethodTypes))
+	for k, v := range builtinMethodTypes {
+		mt[k] = v
+	}
+	for _, dev := range reg.Devices {
+		if _, ok := mt[dev.Name]; ok {
+			continue
 		}
-		for _, dev := range Registry().Devices {
-			if _, ok := methodTypes[dev.Name]; ok {
-				continue
-			}
-			ms := []methodSig{}
-			for _, m := range dev.Methods {
-				ms = append(ms, methodSig{m.Name, m.Returns, m.Params})
-			}
-			methodTypes[dev.Name] = ms
+		ms := []methodSig{}
+		for _, m := range dev.Methods {
+			ms = append(ms, methodSig{m.Name, m.Returns, m.Params})
 		}
-	})
+		mt[dev.Name] = ms
+	}
+	methodTypes, methodTypesReg = mt, reg
 	return methodTypes
 }
 

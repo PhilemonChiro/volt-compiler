@@ -16,6 +16,9 @@ var builtins = [][2]string{
 	{"true", "bool"}, {"false", "bool"},
 	// Type conversion builtins
 	{"float", "func"}, {"int", "func"},
+	// String builtins
+	{"len", "func"}, {"contains", "func"}, {"starts_with", "func"}, {"ends_with", "func"},
+	{"to_int", "func"}, {"to_float", "func"},
 	// Servo easing constants
 	{"linear", "int"}, {"ease_in", "int"}, {"ease_out", "int"}, {"ease_in_out", "int"},
 	{"ease_in_cubic", "int"}, {"ease_out_cubic", "int"}, {"ease_in_out_cubic", "int"},
@@ -51,7 +54,12 @@ func collectDeclarations(program *Program, scope *Scope, errs *Errors) {
 			decl(&Symbol{Name: bus.Name, Kind: "bus", TypeName: bus.BusType, Region: bus.Region})
 		}
 		for _, s := range hw.Sensors {
-			decl(&Symbol{Name: s.Name, Kind: "sensor", TypeName: s.SensorType, Region: s.Region})
+			typ := s.SensorType
+			if Registry().Get(typ) == nil {
+				unknownDevice(s, errs)
+				typ = errorType // its method calls add no further errors
+			}
+			decl(&Symbol{Name: s.Name, Kind: "sensor", TypeName: typ, Region: s.Region})
 		}
 	}
 	for _, s := range program.Structs {
