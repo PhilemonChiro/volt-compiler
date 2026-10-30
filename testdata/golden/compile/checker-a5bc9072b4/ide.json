@@ -8,7 +8,25 @@
     "severity": "error",
     "hint": "Did you mean `42ms` or `42s`? Durations always carry a unit.",
     "end_line": 3,
-    "end_col": 13
+    "end_col": 13,
+    "fixes": [
+     {
+      "title": "Make it 42ms",
+      "line": 3,
+      "col": 11,
+      "end_line": 3,
+      "end_col": 13,
+      "text": "42ms"
+     },
+     {
+      "title": "Make it 42s",
+      "line": 3,
+      "col": 11,
+      "end_line": 3,
+      "end_col": 13,
+      "text": "42s"
+     }
+    ]
    }
   ],
   "pins": [],

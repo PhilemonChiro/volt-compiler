@@ -25,6 +25,7 @@ type SyntaxError struct {
 	EndCol    int // column just past the offending token
 	Msg       string
 	Hint      string // what the parser wanted there, when it knows
+	Fixes     []Fix  // one-click edits, when the mistake has an obvious repair
 }
 
 func (e *SyntaxError) Error() string {
@@ -67,12 +68,23 @@ func (p *parser) fail(t token, format string, args ...any) {
 }
 
 func (p *parser) failHint(t token, hint, format string, args ...any) {
+	p.failFix(t, nil, hint, format, args...)
+}
+
+func (p *parser) failFix(t token, fixes []Fix, hint, format string, args ...any) {
 	r := p.lx.region(t)
 	end := r.EndCol
 	if t.kind == tNL || t.kind == tEOF || end <= r.StartCol {
 		end = r.StartCol + 1
 	}
-	panic(&SyntaxError{Line: r.StartLine, Col: r.StartCol, EndCol: end, Msg: fmt.Sprintf(format, args...), Hint: hint})
+	panic(&SyntaxError{Line: r.StartLine, Col: r.StartCol, EndCol: end, Msg: fmt.Sprintf(format, args...), Hint: hint, Fixes: fixes})
+}
+
+// span is the region between two byte offsets of the source.
+func (p *parser) span(from, to int) Region {
+	l0, c0 := p.lx.pos(from)
+	l1, c1 := p.lx.pos(to)
+	return Region{l0, c0, l1, c1}
 }
 
 func (p *parser) unexpected(t token) { p.unexpectedWant(t, "") }
@@ -88,7 +100,7 @@ func (p *parser) unexpectedWant(t token, want string) {
 	}
 	if t.kind == tNL {
 		if want == "`{`" {
-			hint = "Open the block with `{` at the end of this line."
+			p.failFix(t, []Fix{p.openBlockFix(t.start)}, "Open the block with `{` at the end of this line.", "Unexpected end of line")
 		}
 		p.failHint(t, hint, "Unexpected end of line")
 	}
@@ -99,15 +111,55 @@ func (p *parser) unexpectedWant(t token, want string) {
 	}
 	// Mistakes people bring from other languages get a plain fix.
 	if t.text == ";" {
-		p.failHint(t, "End the statement with a new line instead.", "Volt doesn't use semicolons")
+		// the semicolon and any spaces before it go
+		from := len(strings.TrimRight(p.lx.src[:t.start], " \t"))
+		p.failFix(t, []Fix{{Title: "Remove the semicolon", Region: p.span(from, t.end), Text: ""}},
+			"End the statement with a new line instead.", "Volt doesn't use semicolons")
 	}
 	if unit, ok := spacedUnits[strings.ToLower(t.text)]; ok {
 		before := strings.TrimRight(p.lx.src[:t.start], " \t")
 		if n := reTrailingNumber.FindString(before); n != "" && len(before) < t.start {
-			p.failHint(t, fmt.Sprintf("Write `%s%s`, with the unit straight after the number.", n, unit), "A duration has no space before its unit")
+			fix := Fix{Title: "Write " + n + unit, Region: p.span(len(before)-len(n), t.end), Text: n + unit}
+			p.failFix(t, []Fix{fix}, fmt.Sprintf("Write `%s%s`, with the unit straight after the number.", n, unit), "A duration has no space before its unit")
 		}
 	}
 	p.failHint(t, hint, "Unexpected token %q", t.text)
+}
+
+// openBlockFix repairs a block header whose line ends (at nl) without `{`: it adds the brace, and when the
+// indented lines below have no closing `}`, it closes the block after them too.
+func (p *parser) openBlockFix(nl int) Fix {
+	src := p.lx.src
+	lineStart := strings.LastIndexByte(src[:nl], '\n') + 1
+	indent := func(l string) int { return len(l) - len(strings.TrimLeft(l, " \t")) }
+	base := indent(src[lineStart:nl])
+	end, off := nl, nl
+	for off < len(src) {
+		next := strings.IndexByte(src[off+1:], '\n')
+		lineEnd := len(src)
+		if next >= 0 {
+			lineEnd = off + 1 + next
+		}
+		line := src[off+1 : lineEnd]
+		if strings.TrimSpace(line) != "" {
+			if indent(line) <= base {
+				if strings.TrimSpace(line) == "}" {
+					end = nl // the block is already closed
+				}
+				break
+			}
+			end = lineEnd
+		}
+		off = lineEnd
+		if next < 0 {
+			break
+		}
+	}
+	text := " {"
+	if end > nl {
+		text += src[nl:end] + "\n" + src[lineStart:lineStart+base] + "}"
+	}
+	return Fix{Title: "Add `{`", Region: p.span(nl, end), Text: text}
 }
 
 // spacedUnits maps a unit word written apart from its number (`500 ms`, `2 seconds`) to Volt's spelling.

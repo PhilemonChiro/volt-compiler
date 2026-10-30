@@ -183,6 +183,7 @@ func addSyntaxError(errs *Errors, err error) {
 	var se *SyntaxError
 	if errors.As(err, &se) {
 		errs.Error(Region{se.Line, se.Col, se.Line, se.EndCol}, "SYNTAX ERROR", se.Error(), se.Hint)
+		errs.List[len(errs.List)-1].Fixes = se.Fixes
 		return
 	}
 	errs.Error(Region{1, 1, 1, 1}, "SYNTAX ERROR", strings.SplitN(err.Error(), "\n", 2)[0], "")

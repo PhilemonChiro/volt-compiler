@@ -3,6 +3,8 @@ package compiler
 import (
 	"fmt"
 	"slices"
+	"strings"
+	"unicode/utf8"
 )
 
 // Behaviour lints: compile-clean programs that silently don't do what was
@@ -244,8 +246,21 @@ func warnUnhandledConnect(p *Program, errs *Errors) {
 			}
 			if v, ok := mc.Obj.(*VarRef); ok && (v.Name == "wifi" || v.Name == "mqtt") {
 				errs.Warning(mc.Region, "UNHANDLED FAILURE",
-					fmt.Sprintf("`%s.connect` can fail, and nothing here says what happens then: the program carries on without a connection.", v.Name),
-					"Add a fallback: `or retry(5)` to try again, `or skip` to carry on, or `or restart` to reboot.")
+					fmt.Sprintf("`%s.connect` has no fallback if it fails.", v.Name),
+					"Without one the program carries on offline. Add `or retry(5)` to try again, `or skip` to carry on, or `or restart` to reboot.")
+				// the fallback goes at the end of the call's line, before any comment
+				if l := mc.Region.StartLine; l >= 1 && l <= len(errs.sourceLines) {
+					line := errs.sourceLines[l-1]
+					if i := strings.Index(line, "//"); i >= 0 {
+						line = line[:i]
+					}
+					col := utf8.RuneCountInString(strings.TrimRight(line, " \t\r\n")) + 1
+					at := Region{l, col, l, col}
+					errs.List[len(errs.List)-1].Fixes = []Fix{
+						{Title: "Retry 5 times", Region: at, Text: " or retry(5)"},
+						{Title: "Skip if it fails", Region: at, Text: " or skip"},
+					}
+				}
 			}
 		})
 	}

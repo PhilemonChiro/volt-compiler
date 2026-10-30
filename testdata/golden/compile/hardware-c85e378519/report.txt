@@ -21,10 +21,10 @@ GPIO 36: Hardware errata: interrupts on GPIO 36 may fire spuriously during WiFi/
 
 [yellow bold]-- UNHANDLED FAILURE -- main.volt:6[/yellow bold]
 
-`wifi.connect` can fail, and nothing here says what happens then: the program carries on without a connection.
+`wifi.connect` has no fallback if it fails.
 
  [dim]5 |[/dim] setup {
  [dim]6 |[/dim]     wifi.connect("net", "pass")
  [dim]  |[/dim] [yellow]    ^^^^[/yellow]
 
-[cyan]Hint: Add a fallback: `or retry(5)` to try again, `or skip` to carry on, or `or restart` to reboot.[/cyan]
+[cyan]Hint: Without one the program carries on offline. Add `or retry(5)` to try again, `or skip` to carry on, or `or restart` to reboot.[/cyan]

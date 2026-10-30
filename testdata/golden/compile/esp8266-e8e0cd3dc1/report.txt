@@ -21,10 +21,10 @@ Strapping pin: GPIO 2 must be HIGH at boot. Often connected to onboard LED.
 
 [yellow bold]-- UNHANDLED FAILURE -- wifi_compiles_on_esp8266.volt:7[/yellow bold]
 
-`wifi.connect` can fail, and nothing here says what happens then: the program carries on without a connection.
+`wifi.connect` has no fallback if it fails.
 
  [dim]6 |[/dim] setup {
  [dim]7 |[/dim]     wifi.connect("test", "pass")
  [dim]  |[/dim] [yellow]    ^^^^[/yellow]
 
-[cyan]Hint: Add a fallback: `or retry(5)` to try again, `or skip` to carry on, or `or restart` to reboot.[/cyan]
+[cyan]Hint: Without one the program carries on offline. Add `or retry(5)` to try again, `or skip` to carry on, or `or restart` to reboot.[/cyan]

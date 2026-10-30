@@ -21,10 +21,10 @@ Strapping pin: GPIO 0 must be HIGH during boot (pulled up by default). If driven
 
 [yellow bold]-- UNHANDLED FAILURE -- main.volt:29[/yellow bold]
 
-`wifi.connect` can fail, and nothing here says what happens then: the program carries on without a connection.
+`wifi.connect` has no fallback if it fails.
 
  [dim]28 |[/dim] setup {
  [dim]29 |[/dim]     wifi.connect("ground", "station")
  [dim]   |[/dim] [yellow]    ^^^^[/yellow]
 
-[cyan]Hint: Add a fallback: `or retry(5)` to try again, `or skip` to carry on, or `or restart` to reboot.[/cyan]
+[cyan]Hint: Without one the program carries on offline. Add `or retry(5)` to try again, `or skip` to carry on, or `or restart` to reboot.[/cyan]

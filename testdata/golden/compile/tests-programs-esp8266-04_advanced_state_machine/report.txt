@@ -20,10 +20,10 @@ Strapping pin: GPIO 2 must be HIGH at boot. Often connected to onboard LED.
 
 [yellow bold]-- UNHANDLED FAILURE -- 04_advanced_state_machine.volt:49[/yellow bold]
 
-`wifi.connect` can fail, and nothing here says what happens then: the program carries on without a connection.
+`wifi.connect` has no fallback if it fails.
 
  [dim]48 |[/dim] setup {
  [dim]49 |[/dim]     wifi.connect("DoorNet", "password")
  [dim]   |[/dim] [yellow]    ^^^^[/yellow]
 
-[cyan]Hint: Add a fallback: `or retry(5)` to try again, `or skip` to carry on, or `or restart` to reboot.[/cyan]
+[cyan]Hint: Without one the program carries on offline. Add `or retry(5)` to try again, `or skip` to carry on, or `or restart` to reboot.[/cyan]

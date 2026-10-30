@@ -40,21 +40,21 @@ Variable `motor_isr_count` is shared between pid_control (critical) and health_r
 
 [yellow bold]-- UNHANDLED FAILURE -- 05_complex_all_features.volt:154[/yellow bold]
 
-`wifi.connect` can fail, and nothing here says what happens then: the program carries on without a connection.
+`wifi.connect` has no fallback if it fails.
 
  [dim]153 |[/dim] setup {
  [dim]154 |[/dim]     wifi.connect("FarmNet", "password")
  [dim]    |[/dim] [yellow]    ^^^^[/yellow]
 
-[cyan]Hint: Add a fallback: `or retry(5)` to try again, `or skip` to carry on, or `or restart` to reboot.[/cyan]
+[cyan]Hint: Without one the program carries on offline. Add `or retry(5)` to try again, `or skip` to carry on, or `or restart` to reboot.[/cyan]
 
 
 [yellow bold]-- UNHANDLED FAILURE -- 05_complex_all_features.volt:155[/yellow bold]
 
-`mqtt.connect` can fail, and nothing here says what happens then: the program carries on without a connection.
+`mqtt.connect` has no fallback if it fails.
 
  [dim]154 |[/dim]     wifi.connect("FarmNet", "password")
  [dim]155 |[/dim]     mqtt.connect("mqtt://broker.local")
  [dim]    |[/dim] [yellow]    ^^^^[/yellow]
 
-[cyan]Hint: Add a fallback: `or retry(5)` to try again, `or skip` to carry on, or `or restart` to reboot.[/cyan]
+[cyan]Hint: Without one the program carries on offline. Add `or retry(5)` to try again, `or skip` to carry on, or `or restart` to reboot.[/cyan]

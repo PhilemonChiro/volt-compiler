@@ -50,20 +50,56 @@
    {
     "line": 20,
     "col": 5,
-    "message": "`wifi.connect` can fail, and nothing here says what happens then: the program carries on without a connection.",
+    "message": "`wifi.connect` has no fallback if it fails.",
     "severity": "warning",
-    "hint": "Add a fallback: `or retry(5)` to try again, `or skip` to carry on, or `or restart` to reboot.",
+    "hint": "Without one the program carries on offline. Add `or retry(5)` to try again, `or skip` to carry on, or `or restart` to reboot.",
     "end_line": 20,
-    "end_col": 9
+    "end_col": 9,
+    "fixes": [
+     {
+      "title": "Retry 5 times",
+      "line": 20,
+      "col": 32,
+      "end_line": 20,
+      "end_col": 32,
+      "text": " or retry(5)"
+     },
+     {
+      "title": "Skip if it fails",
+      "line": 20,
+      "col": 32,
+      "end_line": 20,
+      "end_col": 32,
+      "text": " or skip"
+     }
+    ]
    },
    {
     "line": 21,
     "col": 5,
-    "message": "`mqtt.connect` can fail, and nothing here says what happens then: the program carries on without a connection.",
+    "message": "`mqtt.connect` has no fallback if it fails.",
     "severity": "warning",
-    "hint": "Add a fallback: `or retry(5)` to try again, `or skip` to carry on, or `or restart` to reboot.",
+    "hint": "Without one the program carries on offline. Add `or retry(5)` to try again, `or skip` to carry on, or `or restart` to reboot.",
     "end_line": 21,
-    "end_col": 9
+    "end_col": 9,
+    "fixes": [
+     {
+      "title": "Retry 5 times",
+      "line": 21,
+      "col": 24,
+      "end_line": 21,
+      "end_col": 24,
+      "text": " or retry(5)"
+     },
+     {
+      "title": "Skip if it fails",
+      "line": 21,
+      "col": 24,
+      "end_line": 21,
+      "end_col": 24,
+      "text": " or skip"
+     }
+    ]
    }
   ],
   "pins": [

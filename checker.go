@@ -118,6 +118,7 @@ func CheckTypes(program *Program, scope *Scope, errs *Errors) {
 			}
 			for _, tt := range st.TimedTransitions {
 				expectType(tt.Duration, typeDuration, sc, errs, "`after` needs a duration (e.g., 500ms), got `%s`.", unitHint(tt.Duration))
+				addUnitFixes(tt.Duration, errs)
 				if tt.Guard != nil {
 					infer(tt.Guard, sc, errs)
 				}
@@ -491,6 +492,7 @@ func checkStmt(stmt Node, scope *Scope, errs *Errors, ret *string) {
 
 	case *EveryBlock:
 		expectType(s.Interval, typeDuration, scope, errs, "Interval must be a duration (e.g., 500ms), got `%s`.", unitHint(s.Interval))
+		addUnitFixes(s.Interval, errs)
 		// A zero interval spins the scheduler without yielding.
 		if d, ok := s.Interval.(*DurationLiteral); ok && d.Microseconds <= 0 {
 			errs.Error(d.Region, "DURATION ERROR",
@@ -565,18 +567,34 @@ func checkMutable(target Node, r Region, scope *Scope, errs *Errors) {
 	}
 }
 
-// unitHint suggests units for a bare number where a duration belongs.
-func unitHint(e Node) string {
-	var n string
+// bareNumber is the text of a number literal, or "" for anything else.
+func bareNumber(e Node) string {
 	switch v := e.(type) {
 	case *IntLiteral:
-		n = strconv.Itoa(v.Value)
+		return strconv.Itoa(v.Value)
 	case *FloatLiteral:
-		n = strconv.FormatFloat(v.Value, 'f', -1, 64)
-	default:
+		return strconv.FormatFloat(v.Value, 'f', -1, 64)
+	}
+	return ""
+}
+
+// unitHint suggests units for a bare number where a duration belongs.
+func unitHint(e Node) string {
+	n := bareNumber(e)
+	if n == "" {
 		return ""
 	}
 	return fmt.Sprintf("Did you mean `%sms` or `%ss`? Durations always carry a unit.", n, n)
+}
+
+// addUnitFixes gives the type error just reported on a bare number one-click units.
+func addUnitFixes(e Node, errs *Errors) {
+	n := bareNumber(e)
+	if n == "" || len(errs.List) == 0 || errs.List[len(errs.List)-1].Region != regionOf(e) {
+		return
+	}
+	r := regionOf(e)
+	errs.List[len(errs.List)-1].Fixes = []Fix{{Title: "Make it " + n + "ms", Region: r, Text: n + "ms"}, {Title: "Make it " + n + "s", Region: r, Text: n + "s"}}
 }
 
 func ptr[T any](v T) *T { return &v }
