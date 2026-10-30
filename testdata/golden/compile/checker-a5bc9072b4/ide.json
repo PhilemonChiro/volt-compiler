@@ -6,7 +6,7 @@
     "col": 11,
     "message": "Interval must be a duration (e.g., 500ms), got `int`.",
     "severity": "error",
-    "hint": "",
+    "hint": "Did you mean `42ms` or `42s`? Durations always carry a unit.",
     "end_line": 3,
     "end_col": 13
    }

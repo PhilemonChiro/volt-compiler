@@ -3,6 +3,7 @@ package compiler
 import (
 	"fmt"
 	"reflect"
+	"strconv"
 	"strings"
 	"sync"
 )
@@ -116,6 +117,7 @@ func CheckTypes(program *Program, scope *Scope, errs *Errors) {
 				checkStmts(tr.Action, sc, errs, nil)
 			}
 			for _, tt := range st.TimedTransitions {
+				expectType(tt.Duration, typeDuration, sc, errs, "`after` needs a duration (e.g., 500ms), got `%s`.", unitHint(tt.Duration))
 				if tt.Guard != nil {
 					infer(tt.Guard, sc, errs)
 				}
@@ -488,7 +490,7 @@ func checkStmt(stmt Node, scope *Scope, errs *Errors, ret *string) {
 		checkStmts(s.Body, sc, errs, ret)
 
 	case *EveryBlock:
-		expectType(s.Interval, typeDuration, scope, errs, "Interval must be a duration (e.g., 500ms), got `%s`.", "")
+		expectType(s.Interval, typeDuration, scope, errs, "Interval must be a duration (e.g., 500ms), got `%s`.", unitHint(s.Interval))
 		// A zero interval spins the scheduler without yielding.
 		if d, ok := s.Interval.(*DurationLiteral); ok && d.Microseconds <= 0 {
 			errs.Error(d.Region, "DURATION ERROR",
@@ -561,6 +563,20 @@ func checkMutable(target Node, r Region, scope *Scope, errs *Errors) {
 			fmt.Sprintf("Cannot assign to `%s` — it was declared with `let` (immutable).", v.Name),
 			"Use `var` instead of `let` to make it mutable.")
 	}
+}
+
+// unitHint suggests units for a bare number where a duration belongs.
+func unitHint(e Node) string {
+	var n string
+	switch v := e.(type) {
+	case *IntLiteral:
+		n = strconv.Itoa(v.Value)
+	case *FloatLiteral:
+		n = strconv.FormatFloat(v.Value, 'f', -1, 64)
+	default:
+		return ""
+	}
+	return fmt.Sprintf("Did you mean `%sms` or `%ss`? Durations always carry a unit.", n, n)
 }
 
 func ptr[T any](v T) *T { return &v }

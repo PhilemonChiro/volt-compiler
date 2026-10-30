@@ -17,3 +17,14 @@ Strapping pin: GPIO 0 must be HIGH during boot (pulled up by default). If driven
  [dim]6 |[/dim]     pin motor: PWM = 4
  [dim]7 |[/dim]     pin button: PullUpInput = 0
  [dim]  |[/dim] [yellow]        ^^^^^^[/yellow]
+
+
+[yellow bold]-- UNHANDLED FAILURE -- main.volt:29[/yellow bold]
+
+`wifi.connect` can fail, and nothing here says what happens then: the program carries on without a connection.
+
+ [dim]28 |[/dim] setup {
+ [dim]29 |[/dim]     wifi.connect("ground", "station")
+ [dim]   |[/dim] [yellow]    ^^^^[/yellow]
+
+[cyan]Hint: Add a fallback: `or retry(5)` to try again, `or skip` to carry on, or `or restart` to reboot.[/cyan]

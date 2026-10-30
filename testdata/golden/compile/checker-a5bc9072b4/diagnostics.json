@@ -3,7 +3,7 @@
     "severity": "error",
     "category": "TYPE MISMATCH",
     "message": "Interval must be a duration (e.g., 500ms), got `int`.",
-    "hint": null,
+    "hint": "Did you mean `42ms` or `42s`? Durations always carry a unit.",
     "region": [
       3,
       11,

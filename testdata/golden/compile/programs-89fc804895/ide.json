@@ -45,6 +45,24 @@
       "text": "21"
      }
     ]
+   },
+   {
+    "line": 32,
+    "col": 5,
+    "message": "`wifi.connect` can fail, and nothing here says what happens then: the program carries on without a connection.",
+    "severity": "warning",
+    "hint": "Add a fallback: `or retry(5)` to try again, `or skip` to carry on, or `or restart` to reboot.",
+    "end_line": 32,
+    "end_col": 9
+   },
+   {
+    "line": 33,
+    "col": 5,
+    "message": "`mqtt.connect` can fail, and nothing here says what happens then: the program carries on without a connection.",
+    "severity": "warning",
+    "hint": "Add a fallback: `or retry(5)` to try again, `or skip` to carry on, or `or restart` to reboot.",
+    "end_line": 33,
+    "end_col": 9
    }
   ],
   "pins": [

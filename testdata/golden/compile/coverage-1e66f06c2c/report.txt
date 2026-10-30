@@ -8,3 +8,14 @@ Move `chip esp32` to volt.toml: chip = "esp32"
  [dim]  |[/dim] [yellow]     ^^^^^[/yellow]
 
 [cyan]Hint: The chip declaration will move to volt.toml in a future version.[/cyan]
+
+
+[yellow bold]-- UNHANDLED FAILURE -- wifi_in_if.volt:7[/yellow bold]
+
+`wifi.connect` can fail, and nothing here says what happens then: the program carries on without a connection.
+
+ [dim]6 |[/dim]         if system.free_heap() > 10000 {
+ [dim]7 |[/dim]             wifi.connect("ssid", "pass")
+ [dim]  |[/dim] [yellow]            ^^^^[/yellow]
+
+[cyan]Hint: Add a fallback: `or retry(5)` to try again, `or skip` to carry on, or `or restart` to reboot.[/cyan]

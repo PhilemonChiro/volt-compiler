@@ -19,3 +19,25 @@ Storage variable `readings_count` is never saved, so it resets to its default on
  [dim]  |[/dim] [yellow]        ^^^^^^^^^^^^^^[/yellow]
 
 [cyan]Hint: Call `storage.save("readings_count", readings_count)` after changing it.[/cyan]
+
+
+[yellow bold]-- UNHANDLED FAILURE -- iot_device.volt:12[/yellow bold]
+
+`wifi.connect` can fail, and nothing here says what happens then: the program carries on without a connection.
+
+ [dim]11 |[/dim] setup {
+ [dim]12 |[/dim]     wifi.connect("MySSID", "MyPass")
+ [dim]   |[/dim] [yellow]    ^^^^[/yellow]
+
+[cyan]Hint: Add a fallback: `or retry(5)` to try again, `or skip` to carry on, or `or restart` to reboot.[/cyan]
+
+
+[yellow bold]-- UNHANDLED FAILURE -- iot_device.volt:13[/yellow bold]
+
+`mqtt.connect` can fail, and nothing here says what happens then: the program carries on without a connection.
+
+ [dim]12 |[/dim]     wifi.connect("MySSID", "MyPass")
+ [dim]13 |[/dim]     mqtt.connect("mqtt://broker.local")
+ [dim]   |[/dim] [yellow]    ^^^^[/yellow]
+
+[cyan]Hint: Add a fallback: `or retry(5)` to try again, `or skip` to carry on, or `or restart` to reboot.[/cyan]

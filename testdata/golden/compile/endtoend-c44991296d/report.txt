@@ -1,0 +1,21 @@
+
+[yellow bold]-- UNHANDLED FAILURE -- wifi_mqtt_methods.volt:3[/yellow bold]
+
+`wifi.connect` can fail, and nothing here says what happens then: the program carries on without a connection.
+
+ [dim]2 |[/dim] setup {
+ [dim]3 |[/dim]     wifi.connect("ssid", "pass")
+ [dim]  |[/dim] [yellow]    ^^^^[/yellow]
+
+[cyan]Hint: Add a fallback: `or retry(5)` to try again, `or skip` to carry on, or `or restart` to reboot.[/cyan]
+
+
+[yellow bold]-- UNHANDLED FAILURE -- wifi_mqtt_methods.volt:4[/yellow bold]
+
+`mqtt.connect` can fail, and nothing here says what happens then: the program carries on without a connection.
+
+ [dim]3 |[/dim]     wifi.connect("ssid", "pass")
+ [dim]4 |[/dim]     mqtt.connect("mqtt://broker")
+ [dim]  |[/dim] [yellow]    ^^^^[/yellow]
+
+[cyan]Hint: Add a fallback: `or retry(5)` to try again, `or skip` to carry on, or `or restart` to reboot.[/cyan]

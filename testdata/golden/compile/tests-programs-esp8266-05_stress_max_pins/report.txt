@@ -34,3 +34,25 @@ Strapping pin: GPIO 15 must be LOW during boot. If HIGH, chip boots from SD card
  [dim]10 |[/dim]     pin p14: Output = 14
  [dim]11 |[/dim]     pin p15: Output = 15
  [dim]   |[/dim] [yellow]        ^^^[/yellow]
+
+
+[yellow bold]-- UNHANDLED FAILURE -- 05_stress_max_pins.volt:106[/yellow bold]
+
+`wifi.connect` can fail, and nothing here says what happens then: the program carries on without a connection.
+
+ [dim]105 |[/dim] setup {
+ [dim]106 |[/dim]     wifi.connect("StressNet", "password")
+ [dim]    |[/dim] [yellow]    ^^^^[/yellow]
+
+[cyan]Hint: Add a fallback: `or retry(5)` to try again, `or skip` to carry on, or `or restart` to reboot.[/cyan]
+
+
+[yellow bold]-- UNHANDLED FAILURE -- 05_stress_max_pins.volt:107[/yellow bold]
+
+`mqtt.connect` can fail, and nothing here says what happens then: the program carries on without a connection.
+
+ [dim]106 |[/dim]     wifi.connect("StressNet", "password")
+ [dim]107 |[/dim]     mqtt.connect("mqtt://broker.local")
+ [dim]    |[/dim] [yellow]    ^^^^[/yellow]
+
+[cyan]Hint: Add a fallback: `or retry(5)` to try again, `or skip` to carry on, or `or restart` to reboot.[/cyan]

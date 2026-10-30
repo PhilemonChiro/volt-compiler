@@ -9,6 +9,24 @@
     "hint": "The chip declaration will move to volt.toml in a future version.",
     "end_line": 2,
     "end_col": 11
+   },
+   {
+    "line": 23,
+    "col": 5,
+    "message": "`wifi.connect` can fail, and nothing here says what happens then: the program carries on without a connection.",
+    "severity": "warning",
+    "hint": "Add a fallback: `or retry(5)` to try again, `or skip` to carry on, or `or restart` to reboot.",
+    "end_line": 23,
+    "end_col": 9
+   },
+   {
+    "line": 24,
+    "col": 5,
+    "message": "`mqtt.connect` can fail, and nothing here says what happens then: the program carries on without a connection.",
+    "severity": "warning",
+    "hint": "Add a fallback: `or retry(5)` to try again, `or skip` to carry on, or `or restart` to reboot.",
+    "end_line": 24,
+    "end_col": 9
    }
   ],
   "pins": [

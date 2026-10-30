@@ -209,6 +209,11 @@ func (h *hwCheck) validatePinLegacy(pin *PinDecl, used map[int]*PinDecl) {
 		h.pinWarning(pin, "pin-jtag", fmt.Sprintf("GPIO %d is a JTAG pin. Using it disables JTAG debugging.", gpio), "")
 	}
 	for _, note := range info.Notes {
+		// The ESP32 chips Volt targets are WROOM modules, where GPIO 16 and 17 are free; the note about
+		// WROVER's PSRAM stays in the pin's details but isn't a warning.
+		if noteCatch(note) == "PSRAM" {
+			continue
+		}
 		h.errs.add(Diagnostic{Region: r, Category: "HARDWARE NOTE", Message: fmt.Sprintf("GPIO %d: %s", gpio, note),
 			Severity: "warning", Code: "pin-note"})
 	}
@@ -389,6 +394,10 @@ func validateSPISpeed(program *Program, errs *Errors) {
 // containsMethodCall finds `obj.method()` as a statement or assigned value.
 func containsMethodCall(program *Program, obj, method string) bool {
 	match := func(e Node) bool {
+		// `wifi.connect(...) or retry(5)` uses WiFi as much as the bare call does
+		if o, ok := e.(*OrExpr); ok {
+			e = o.Expr
+		}
 		mc, ok := e.(*MethodCall)
 		if !ok {
 			return false
@@ -446,7 +455,7 @@ func collectHardwareStmts(program *Program) []Node {
 }
 
 // flattenStmts appends stmts and everything nested in if/while/for/every/
-// on/timeout blocks (not try or match).
+// on/timeout/try blocks (not match).
 func flattenStmts(stmts []Node, out []Node) []Node {
 	for _, s := range stmts {
 		out = append(out, s)
@@ -470,6 +479,9 @@ func flattenStmts(stmts []Node, out []Node) []Node {
 		case *TimeoutBlock:
 			out = flattenStmts(s.TryBody, out)
 			out = flattenStmts(s.FallbackBody, out)
+		case *TryBlock:
+			// the usual home of wifi.connect
+			out = flattenStmts(s.Body, out)
 		}
 	}
 	return out

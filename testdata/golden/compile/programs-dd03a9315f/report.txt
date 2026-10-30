@@ -18,3 +18,25 @@ Variable `motor_isr_count` is shared between motor_control (critical) and stats.
  [dim]   |[/dim] [yellow]    ^^^^^^^^^^^^^^^[/yellow]
 
 [cyan]Hint: An update spread over several statements can still interleave; keep it in one statement or use a channel.[/cyan]
+
+
+[yellow bold]-- UNHANDLED FAILURE -- adv_iot.volt:57[/yellow bold]
+
+`wifi.connect` can fail, and nothing here says what happens then: the program carries on without a connection.
+
+ [dim]56 |[/dim] setup {
+ [dim]57 |[/dim]     wifi.connect("TestNetwork", "TestPassword")
+ [dim]   |[/dim] [yellow]    ^^^^[/yellow]
+
+[cyan]Hint: Add a fallback: `or retry(5)` to try again, `or skip` to carry on, or `or restart` to reboot.[/cyan]
+
+
+[yellow bold]-- UNHANDLED FAILURE -- adv_iot.volt:58[/yellow bold]
+
+`mqtt.connect` can fail, and nothing here says what happens then: the program carries on without a connection.
+
+ [dim]57 |[/dim]     wifi.connect("TestNetwork", "TestPassword")
+ [dim]58 |[/dim]     mqtt.connect("mqtt://broker.local")
+ [dim]   |[/dim] [yellow]    ^^^^[/yellow]
+
+[cyan]Hint: Add a fallback: `or retry(5)` to try again, `or skip` to carry on, or `or restart` to reboot.[/cyan]

@@ -46,5 +46,29 @@
       35,
       15
     ]
+  },
+  {
+    "severity": "warning",
+    "category": "UNHANDLED FAILURE",
+    "message": "`wifi.connect` can fail, and nothing here says what happens then: the program carries on without a connection.",
+    "hint": "Add a fallback: `or retry(5)` to try again, `or skip` to carry on, or `or restart` to reboot.",
+    "region": [
+      158,
+      5,
+      158,
+      9
+    ]
+  },
+  {
+    "severity": "warning",
+    "category": "UNHANDLED FAILURE",
+    "message": "`mqtt.connect` can fail, and nothing here says what happens then: the program carries on without a connection.",
+    "hint": "Add a fallback: `or retry(5)` to try again, `or skip` to carry on, or `or restart` to reboot.",
+    "region": [
+      159,
+      5,
+      159,
+      9
+    ]
   }
 ]

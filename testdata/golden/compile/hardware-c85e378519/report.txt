@@ -17,3 +17,14 @@ GPIO 36: Hardware errata: interrupts on GPIO 36 may fire spuriously during WiFi/
  [dim]2 |[/dim] hardware {
  [dim]3 |[/dim]     pin sensor: Analog = 36
  [dim]  |[/dim] [yellow]        ^^^^^^[/yellow]
+
+
+[yellow bold]-- UNHANDLED FAILURE -- main.volt:6[/yellow bold]
+
+`wifi.connect` can fail, and nothing here says what happens then: the program carries on without a connection.
+
+ [dim]5 |[/dim] setup {
+ [dim]6 |[/dim]     wifi.connect("net", "pass")
+ [dim]  |[/dim] [yellow]    ^^^^[/yellow]
+
+[cyan]Hint: Add a fallback: `or retry(5)` to try again, `or skip` to carry on, or `or restart` to reboot.[/cyan]

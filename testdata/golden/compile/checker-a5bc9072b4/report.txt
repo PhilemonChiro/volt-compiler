@@ -6,3 +6,5 @@ Interval must be a duration (e.g., 500ms), got `int`.
  [dim]2 |[/dim] task t {
  [dim]3 |[/dim]     every 42 {
  [dim]  |[/dim] [red]          ^^[/red]
+
+[cyan]Hint: Did you mean `42ms` or `42s`? Durations always carry a unit.[/cyan]

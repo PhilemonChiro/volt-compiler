@@ -28,3 +28,25 @@ Storage variable `boot_count` is never saved, so it resets to its default on eve
  [dim]   |[/dim] [yellow]        ^^^^^^^^^^[/yellow]
 
 [cyan]Hint: Call `storage.save("boot_count", boot_count)` after changing it.[/cyan]
+
+
+[yellow bold]-- UNHANDLED FAILURE -- complex_iot.volt:49[/yellow bold]
+
+`wifi.connect` can fail, and nothing here says what happens then: the program carries on without a connection.
+
+ [dim]48 |[/dim] setup {
+ [dim]49 |[/dim]     wifi.connect("MyNet", "MyPass")
+ [dim]   |[/dim] [yellow]    ^^^^[/yellow]
+
+[cyan]Hint: Add a fallback: `or retry(5)` to try again, `or skip` to carry on, or `or restart` to reboot.[/cyan]
+
+
+[yellow bold]-- UNHANDLED FAILURE -- complex_iot.volt:50[/yellow bold]
+
+`mqtt.connect` can fail, and nothing here says what happens then: the program carries on without a connection.
+
+ [dim]49 |[/dim]     wifi.connect("MyNet", "MyPass")
+ [dim]50 |[/dim]     mqtt.connect("mqtt://broker.local")
+ [dim]   |[/dim] [yellow]    ^^^^[/yellow]
+
+[cyan]Hint: Add a fallback: `or retry(5)` to try again, `or skip` to carry on, or `or restart` to reboot.[/cyan]

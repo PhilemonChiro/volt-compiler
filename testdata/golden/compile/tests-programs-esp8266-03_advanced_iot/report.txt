@@ -16,3 +16,25 @@ Strapping pin: GPIO 2 must be HIGH at boot. Often connected to onboard LED.
  [dim]3 |[/dim] hardware {
  [dim]4 |[/dim]     pin led: Output = 2
  [dim]  |[/dim] [yellow]        ^^^[/yellow]
+
+
+[yellow bold]-- UNHANDLED FAILURE -- 03_advanced_iot.volt:75[/yellow bold]
+
+`wifi.connect` can fail, and nothing here says what happens then: the program carries on without a connection.
+
+ [dim]74 |[/dim] setup {
+ [dim]75 |[/dim]     wifi.connect("HomeNet", "password")
+ [dim]   |[/dim] [yellow]    ^^^^[/yellow]
+
+[cyan]Hint: Add a fallback: `or retry(5)` to try again, `or skip` to carry on, or `or restart` to reboot.[/cyan]
+
+
+[yellow bold]-- UNHANDLED FAILURE -- 03_advanced_iot.volt:76[/yellow bold]
+
+`mqtt.connect` can fail, and nothing here says what happens then: the program carries on without a connection.
+
+ [dim]75 |[/dim]     wifi.connect("HomeNet", "password")
+ [dim]76 |[/dim]     mqtt.connect("mqtt://192.168.1.100")
+ [dim]   |[/dim] [yellow]    ^^^^[/yellow]
+
+[cyan]Hint: Add a fallback: `or retry(5)` to try again, `or skip` to carry on, or `or restart` to reboot.[/cyan]

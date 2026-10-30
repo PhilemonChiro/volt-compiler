@@ -46,6 +46,24 @@
     "end_line": 4,
     "end_col": 16,
     "code": "pin-note"
+   },
+   {
+    "line": 20,
+    "col": 5,
+    "message": "`wifi.connect` can fail, and nothing here says what happens then: the program carries on without a connection.",
+    "severity": "warning",
+    "hint": "Add a fallback: `or retry(5)` to try again, `or skip` to carry on, or `or restart` to reboot.",
+    "end_line": 20,
+    "end_col": 9
+   },
+   {
+    "line": 21,
+    "col": 5,
+    "message": "`mqtt.connect` can fail, and nothing here says what happens then: the program carries on without a connection.",
+    "severity": "warning",
+    "hint": "Add a fallback: `or retry(5)` to try again, `or skip` to carry on, or `or restart` to reboot.",
+    "end_line": 21,
+    "end_col": 9
    }
   ],
   "pins": [

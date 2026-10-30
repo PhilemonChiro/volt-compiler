@@ -1,6 +1,16 @@
 {
  "compile_full": {
-  "diagnostics": [],
+  "diagnostics": [
+   {
+    "line": 21,
+    "col": 9,
+    "message": "`wifi.connect` can fail, and nothing here says what happens then: the program carries on without a connection.",
+    "severity": "warning",
+    "hint": "Add a fallback: `or retry(5)` to try again, `or skip` to carry on, or `or restart` to reboot.",
+    "end_line": 21,
+    "end_col": 13
+   }
+  ],
   "pins": [
    {
     "name": "led",

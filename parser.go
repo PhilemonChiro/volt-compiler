@@ -3,6 +3,7 @@ package compiler
 import (
 	"fmt"
 	"reflect"
+	"regexp"
 	"strconv"
 	"strings"
 )
@@ -86,6 +87,9 @@ func (p *parser) unexpectedWant(t token, want string) {
 		p.failHint(t, hint, "Unexpected end of input")
 	}
 	if t.kind == tNL {
+		if want == "`{`" {
+			hint = "Open the block with `{` at the end of this line."
+		}
 		p.failHint(t, hint, "Unexpected end of line")
 	}
 	// A word the context doesn't accept lexes as one bad character; report
@@ -93,8 +97,29 @@ func (p *parser) unexpectedWant(t token, want string) {
 	if w := reName.FindString(p.lx.src[t.start:]); t.kind == tBad && w != "" {
 		t.text, t.end = w, t.start+len(w)
 	}
+	// Mistakes people bring from other languages get a plain fix.
+	if t.text == ";" {
+		p.failHint(t, "End the statement with a new line instead.", "Volt doesn't use semicolons")
+	}
+	if unit, ok := spacedUnits[strings.ToLower(t.text)]; ok {
+		before := strings.TrimRight(p.lx.src[:t.start], " \t")
+		if n := reTrailingNumber.FindString(before); n != "" && len(before) < t.start {
+			p.failHint(t, fmt.Sprintf("Write `%s%s`, with the unit straight after the number.", n, unit), "A duration has no space before its unit")
+		}
+	}
 	p.failHint(t, hint, "Unexpected token %q", t.text)
 }
+
+// spacedUnits maps a unit word written apart from its number (`500 ms`, `2 seconds`) to Volt's spelling.
+var spacedUnits = map[string]string{
+	"us": "us", "micros": "us", "microsecond": "us", "microseconds": "us",
+	"ms": "ms", "millis": "ms", "millisecond": "ms", "milliseconds": "ms",
+	"s": "s", "sec": "s", "secs": "s", "second": "s", "seconds": "s",
+	"min": "min", "mins": "min", "minute": "min", "minutes": "min",
+	"h": "hours", "hr": "hours", "hrs": "hours", "hour": "hours", "hours": "hours",
+}
+
+var reTrailingNumber = regexp.MustCompile(`[0-9]+(\.[0-9]+)?$`)
 
 // failNear reports a non-token error (Python raises inside the
 // transformer) at the current position.

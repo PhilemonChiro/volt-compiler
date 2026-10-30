@@ -38,3 +38,25 @@ Variable `isr2_count` is shared between isr2 (critical) and stress_report. Each 
  [dim]   |[/dim] [yellow]    ^^^^^^^^^^[/yellow]
 
 [cyan]Hint: An update spread over several statements can still interleave; keep it in one statement or use a channel.[/cyan]
+
+
+[yellow bold]-- UNHANDLED FAILURE -- 06_stress_max_tasks.volt:158[/yellow bold]
+
+`wifi.connect` can fail, and nothing here says what happens then: the program carries on without a connection.
+
+ [dim]157 |[/dim] setup {
+ [dim]158 |[/dim]     wifi.connect("StressNet", "password")
+ [dim]    |[/dim] [yellow]    ^^^^[/yellow]
+
+[cyan]Hint: Add a fallback: `or retry(5)` to try again, `or skip` to carry on, or `or restart` to reboot.[/cyan]
+
+
+[yellow bold]-- UNHANDLED FAILURE -- 06_stress_max_tasks.volt:159[/yellow bold]
+
+`mqtt.connect` can fail, and nothing here says what happens then: the program carries on without a connection.
+
+ [dim]158 |[/dim]     wifi.connect("StressNet", "password")
+ [dim]159 |[/dim]     mqtt.connect("mqtt://broker.local")
+ [dim]    |[/dim] [yellow]    ^^^^[/yellow]
+
+[cyan]Hint: Add a fallback: `or retry(5)` to try again, `or skip` to carry on, or `or restart` to reboot.[/cyan]

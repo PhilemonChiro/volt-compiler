@@ -220,3 +220,33 @@ func warnUnsavedStorage(p *Program, errs *Errors) {
 		}
 	}
 }
+
+// warnUnhandledConnect flags wifi.connect and mqtt.connect called with no `or` fallback and outside a `try`:
+// if the network isn't there, the call fails silently and the program carries on offline.
+func warnUnhandledConnect(p *Program, errs *Errors) {
+	guarded := map[Node]bool{}
+	for _, body := range programBodies(p) {
+		eachStmt(body, func(s Node) {
+			if t, ok := s.(*TryBlock); ok {
+				eachStmt(t.Body, func(s Node) { guarded[s] = true })
+			}
+		})
+	}
+	for _, body := range programBodies(p) {
+		eachStmt(body, func(s Node) {
+			es, ok := s.(*ExprStmt)
+			if !ok || guarded[s] {
+				return
+			}
+			mc, ok := es.Expr.(*MethodCall)
+			if !ok || mc.Method != "connect" {
+				return
+			}
+			if v, ok := mc.Obj.(*VarRef); ok && (v.Name == "wifi" || v.Name == "mqtt") {
+				errs.Warning(mc.Region, "UNHANDLED FAILURE",
+					fmt.Sprintf("`%s.connect` can fail, and nothing here says what happens then: the program carries on without a connection.", v.Name),
+					"Add a fallback: `or retry(5)` to try again, `or skip` to carry on, or `or restart` to reboot.")
+			}
+		})
+	}
+}

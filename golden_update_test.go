@@ -88,6 +88,7 @@ func updateCompileCase(t *testing.T, dir string) {
 			return
 		}
 		warnUnsavedStorage(prog, errs)
+		warnUnhandledConnect(prog, errs)
 		prog = Transform(prog)
 		out["ast.transformed.json"] = DumpAST(prog)
 		if code, err = Generate(prog, c.File); err != nil {
