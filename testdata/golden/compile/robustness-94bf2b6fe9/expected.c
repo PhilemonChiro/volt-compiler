@@ -30,17 +30,19 @@ static traffic_ctx_t _traffic_ctx = {
     .current = TRAFFIC_GREEN,
 };
 static volt_task_t _traffic_t = {0};
+static bool _traffic_started = false;
 
 static void traffic_transition(traffic_ctx_t *ctx, traffic_state_t new_state)
 {
     // Exit current state
-    switch (ctx->current) {
+    if (_traffic_started) switch (ctx->current) {
         case TRAFFIC_GREEN:
             pin_write(2, LOW);
             break;
         default: break;
     }
     
+    _traffic_started = true;
     ctx->current = new_state;
     ctx->state_entered_at = volt_tick_ms();
     

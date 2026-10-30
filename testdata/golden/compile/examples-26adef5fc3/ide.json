@@ -2,26 +2,6 @@
  "compile_full": {
   "diagnostics": [
    {
-    "line": 3,
-    "col": 9,
-    "message": "GPIO 32: Also 32kHz crystal pin (XTAL_32K_P). If external 32kHz crystal is used, this pin is unavailable.",
-    "severity": "warning",
-    "hint": "",
-    "end_line": 3,
-    "end_col": 13,
-    "code": "pin-note"
-   },
-   {
-    "line": 4,
-    "col": 9,
-    "message": "GPIO 33: Also 32kHz crystal pin (XTAL_32K_N). If external 32kHz crystal is used, this pin is unavailable.",
-    "severity": "warning",
-    "hint": "",
-    "end_line": 4,
-    "end_col": 14,
-    "code": "pin-note"
-   },
-   {
     "line": 5,
     "col": 9,
     "message": "GPIO 36 has a hardware errata: interrupts may fire spuriously during WiFi/BT light sleep. Use a different pin for interrupt-driven input.",
@@ -56,16 +36,6 @@
       "text": "37"
      }
     ]
-   },
-   {
-    "line": 5,
-    "col": 9,
-    "message": "GPIO 36: Hardware errata: interrupts on GPIO 36 may fire spuriously during WiFi/BT light sleep.",
-    "severity": "warning",
-    "hint": "",
-    "end_line": 5,
-    "end_col": 20,
-    "code": "pin-note"
    }
   ],
   "pins": [

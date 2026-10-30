@@ -1,8 +1,0 @@
-
-[yellow bold]-- HARDWARE NOTE -- main.volt:9[/yellow bold]
-
-GPIO 26: Also DAC channel 2. When DAC is enabled, outputs ~1.6V by default.
-
- [dim]8 |[/dim]     pin led = 2
- [dim]9 |[/dim]     device dist: HCSR04(trig: 26, echo: 27)
- [dim]  |[/dim] [yellow]                              ^^[/yellow]

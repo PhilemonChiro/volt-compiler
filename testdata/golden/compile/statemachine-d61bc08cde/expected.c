@@ -30,14 +30,16 @@ static Bad_ctx_t _Bad_ctx = {
     .current = BAD_A,
 };
 static volt_task_t _Bad_t = {0};
+static bool _Bad_started = false;
 
 static void Bad_transition(Bad_ctx_t *ctx, Bad_state_t new_state)
 {
     // Exit current state
-    switch (ctx->current) {
+    if (_Bad_started) switch (ctx->current) {
         default: break;
     }
     
+    _Bad_started = true;
     ctx->current = new_state;
     ctx->state_entered_at = volt_tick_ms();
     

@@ -29,14 +29,16 @@ static Timer_ctx_t _Timer_ctx = {
     .current = TIMER_WAITING,
 };
 static volt_task_t _Timer_t = {0};
+static bool _Timer_started = false;
 
 static void Timer_transition(Timer_ctx_t *ctx, Timer_state_t new_state)
 {
     // Exit current state
-    switch (ctx->current) {
+    if (_Timer_started) switch (ctx->current) {
         default: break;
     }
     
+    _Timer_started = true;
     ctx->current = new_state;
     ctx->state_entered_at = volt_tick_ms();
     

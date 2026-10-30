@@ -42,14 +42,16 @@ static DevState_ctx_t _DevState_ctx = {
     .current = DEVSTATE_IDLE,
 };
 static volt_task_t _DevState_t = {0};
+static bool _DevState_started = false;
 
 static void DevState_transition(DevState_ctx_t *ctx, DevState_state_t new_state)
 {
     // Exit current state
-    switch (ctx->current) {
+    if (_DevState_started) switch (ctx->current) {
         default: break;
     }
     
+    _DevState_started = true;
     ctx->current = new_state;
     ctx->state_entered_at = volt_tick_ms();
     

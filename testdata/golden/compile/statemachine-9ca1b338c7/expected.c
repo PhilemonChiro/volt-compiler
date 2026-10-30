@@ -31,14 +31,16 @@ static Conn_ctx_t _Conn_ctx = {
     .attempts = 0,
 };
 static volt_task_t _Conn_t = {0};
+static bool _Conn_started = false;
 
 static void Conn_transition(Conn_ctx_t *ctx, Conn_state_t new_state)
 {
     // Exit current state
-    switch (ctx->current) {
+    if (_Conn_started) switch (ctx->current) {
         default: break;
     }
     
+    _Conn_started = true;
     ctx->current = new_state;
     ctx->state_entered_at = volt_tick_ms();
     
@@ -82,7 +84,7 @@ static void Conn_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
-#line 86 "main.c"
+#line 88 "main.c"
 
 void app_main(void)
 {

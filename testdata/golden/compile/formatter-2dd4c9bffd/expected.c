@@ -29,14 +29,16 @@ static blinker_ctx_t _blinker_ctx = {
     .current = BLINKER_OFF,
 };
 static volt_task_t _blinker_t = {0};
+static bool _blinker_started = false;
 
 static void blinker_transition(blinker_ctx_t *ctx, blinker_state_t new_state)
 {
     // Exit current state
-    switch (ctx->current) {
+    if (_blinker_started) switch (ctx->current) {
         default: break;
     }
     
+    _blinker_started = true;
     ctx->current = new_state;
     ctx->state_entered_at = volt_tick_ms();
     

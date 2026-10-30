@@ -68,14 +68,16 @@ static DoorController_ctx_t _DoorController_ctx = {
     .current = DOORCONTROLLER_LOCKED,
 };
 static volt_task_t _DoorController_t = {0};
+static bool _DoorController_started = false;
 
 static void DoorController_transition(DoorController_ctx_t *ctx, DoorController_state_t new_state)
 {
     // Exit current state
-    switch (ctx->current) {
+    if (_DoorController_started) switch (ctx->current) {
         default: break;
     }
     
+    _DoorController_started = true;
     ctx->current = new_state;
     ctx->state_entered_at = volt_tick_ms();
     
@@ -96,7 +98,7 @@ static void DoorController_transition(DoorController_ctx_t *ctx, DoorController_
         default: break;
     }
 }
-#line 100 "main.c"
+#line 102 "main.c"
 
 // State machine task: DoorController (runs as protothread)
 static void DoorController_run(volt_task_t *_vt)

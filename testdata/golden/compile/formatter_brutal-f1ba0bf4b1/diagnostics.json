@@ -1,14 +1,1 @@
-[
-  {
-    "severity": "warning",
-    "category": "HARDWARE NOTE",
-    "message": "GPIO 26: Also DAC channel 2. When DAC is enabled, outputs ~1.6V by default.",
-    "hint": null,
-    "region": [
-      9,
-      31,
-      9,
-      33
-    ]
-  }
-]
+[]

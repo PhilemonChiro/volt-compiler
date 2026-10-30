@@ -103,17 +103,19 @@ static power_manager_ctx_t _power_manager_ctx = {
     .battery_pct = 100,
 };
 static volt_task_t _power_manager_t = {0};
+static bool _power_manager_started = false;
 
 static void power_manager_transition(power_manager_ctx_t *ctx, power_manager_state_t new_state)
 {
     // Exit current state
-    switch (ctx->current) {
+    if (_power_manager_started) switch (ctx->current) {
         case POWER_MANAGER_NORMAL:
             pin_write(2, LOW);
             break;
         default: break;
     }
     
+    _power_manager_started = true;
     ctx->current = new_state;
     ctx->state_entered_at = volt_tick_ms();
     
@@ -134,7 +136,7 @@ static void power_manager_transition(power_manager_ctx_t *ctx, power_manager_sta
         default: break;
     }
 }
-#line 138 "main.c"
+#line 140 "main.c"
 
 // State machine task: power_manager (runs as protothread)
 static void power_manager_run(volt_task_t *_vt)

@@ -195,11 +195,12 @@ static door_lock_ctx_t _door_lock_ctx = {
     .auto_lock_timer = 0,
 };
 static volt_task_t _door_lock_t = {0};
+static bool _door_lock_started = false;
 
 static void door_lock_transition(door_lock_ctx_t *ctx, door_lock_state_t new_state)
 {
     // Exit current state
-    switch (ctx->current) {
+    if (_door_lock_started) switch (ctx->current) {
         case DOOR_LOCK_ALERT:
 #line 112 "main.volt"
             attempt_count = 0;
@@ -207,6 +208,7 @@ static void door_lock_transition(door_lock_ctx_t *ctx, door_lock_state_t new_sta
         default: break;
     }
     
+    _door_lock_started = true;
     ctx->current = new_state;
     ctx->state_entered_at = volt_tick_ms();
     
@@ -236,7 +238,7 @@ static void door_lock_transition(door_lock_ctx_t *ctx, door_lock_state_t new_sta
         default: break;
     }
 }
-#line 240 "main.c"
+#line 242 "main.c"
 
 // State machine task: door_lock (runs as protothread)
 static void door_lock_run(volt_task_t *_vt)
@@ -278,7 +280,7 @@ static void door_lock_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
-#line 282 "main.c"
+#line 284 "main.c"
 
 void app_main(void)
 {

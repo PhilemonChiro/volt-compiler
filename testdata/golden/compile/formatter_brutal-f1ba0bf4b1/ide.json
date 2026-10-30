@@ -1,17 +1,6 @@
 {
  "compile_full": {
-  "diagnostics": [
-   {
-    "line": 9,
-    "col": 31,
-    "message": "GPIO 26: Also DAC channel 2. When DAC is enabled, outputs ~1.6V by default.",
-    "severity": "warning",
-    "hint": "",
-    "end_line": 9,
-    "end_col": 33,
-    "code": "pin-note"
-   }
-  ],
+  "diagnostics": [],
   "pins": [
    {
     "name": "led",

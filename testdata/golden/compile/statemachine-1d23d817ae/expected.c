@@ -29,14 +29,16 @@ static Auto_ctx_t _Auto_ctx = {
     .current = AUTO_FIRST,
 };
 static volt_task_t _Auto_t = {0};
+static bool _Auto_started = false;
 
 static void Auto_transition(Auto_ctx_t *ctx, Auto_state_t new_state)
 {
     // Exit current state
-    switch (ctx->current) {
+    if (_Auto_started) switch (ctx->current) {
         default: break;
     }
     
+    _Auto_started = true;
     ctx->current = new_state;
     ctx->state_entered_at = volt_tick_ms();
     

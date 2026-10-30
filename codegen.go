@@ -816,6 +816,8 @@ func (g *codegen) emitMachine(m *MachineDecl, declared map[string]bool) {
 	g.indent--
 	g.out("};")
 	g.out("static volt_task_t _" + name + "_t = {0};")
+	// The first transition enters the initial state; there's no state to leave yet, so no exit block runs.
+	g.out("static bool _" + name + "_started = false;")
 	g.out("")
 
 	g.out("static void " + name + "_transition(" + name + "_ctx_t *ctx, " + name + "_state_t new_state)")
@@ -826,7 +828,7 @@ func (g *codegen) emitMachine(m *MachineDecl, declared map[string]bool) {
 		mvars[i] = v.Name
 	}
 	g.out("// Exit current state")
-	g.out("switch (ctx->current) {")
+	g.out("if (_" + name + "_started) switch (ctx->current) {")
 	g.indent++
 	for _, s := range states {
 		if len(s.ExitBody) > 0 {
@@ -841,6 +843,7 @@ func (g *codegen) emitMachine(m *MachineDecl, declared map[string]bool) {
 	g.indent--
 	g.out("}")
 	g.out("")
+	g.out("_" + name + "_started = true;")
 	g.out("ctx->current = new_state;")
 	g.out("ctx->state_entered_at = volt_tick_ms();")
 	g.out("")

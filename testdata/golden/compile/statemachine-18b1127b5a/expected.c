@@ -32,14 +32,16 @@ static Retry_ctx_t _Retry_ctx = {
     .count = 0,
 };
 static volt_task_t _Retry_t = {0};
+static bool _Retry_started = false;
 
 static void Retry_transition(Retry_ctx_t *ctx, Retry_state_t new_state)
 {
     // Exit current state
-    switch (ctx->current) {
+    if (_Retry_started) switch (ctx->current) {
         default: break;
     }
     
+    _Retry_started = true;
     ctx->current = new_state;
     ctx->state_entered_at = volt_tick_ms();
     

@@ -19,15 +19,6 @@ GPIO 36 has a hardware errata: interrupts may fire spuriously during WiFi/BT lig
 [cyan]Hint: GPIO 34, 35 do not have this errata.[/cyan]
 
 
-[yellow bold]-- HARDWARE NOTE -- main.volt:6[/yellow bold]
-
-GPIO 36: Hardware errata: interrupts on GPIO 36 may fire spuriously during WiFi/BT light sleep.
-
- [dim]5 |[/dim]     pin motor: PWM = 5
- [dim]6 |[/dim]     pin battery: Analog = 36
- [dim]  |[/dim] [yellow]        ^^^^^^^[/yellow]
-
-
 [yellow bold]-- STATE MACHINE WARNING -- main.volt:41[/yellow bold]
 
 State `low_power` in machine `power_manager` is unreachable from initial state `normal`.

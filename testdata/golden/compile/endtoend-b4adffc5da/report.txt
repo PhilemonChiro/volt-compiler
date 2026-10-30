@@ -17,12 +17,3 @@ GPIO 36 has a hardware errata: interrupts may fire spuriously during WiFi/BT lig
  [dim]  |[/dim] [yellow]        ^^^[/yellow]
 
 [cyan]Hint: GPIO 34, 35 do not have this errata.[/cyan]
-
-
-[yellow bold]-- HARDWARE NOTE -- pin_methods.volt:5[/yellow bold]
-
-GPIO 36: Hardware errata: interrupts on GPIO 36 may fire spuriously during WiFi/BT light sleep.
-
- [dim]4 |[/dim]     pin btn: PullUpInput = 0
- [dim]5 |[/dim]     pin bat: Analog = 36
- [dim]  |[/dim] [yellow]        ^^^[/yellow]

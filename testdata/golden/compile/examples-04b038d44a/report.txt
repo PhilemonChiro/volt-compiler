@@ -1,13 +1,4 @@
 
-[yellow bold]-- HARDWARE NOTE -- main.volt:15[/yellow bold]
-
-GPIO 25: Also DAC channel 1. When DAC is enabled, outputs ~1.6V by default.
-
- [dim]14 |[/dim] hardware {
- [dim]15 |[/dim]     pin led: PWM = GP25
- [dim]   |[/dim] [yellow]        ^^^[/yellow]
-
-
 [yellow bold]-- HARDWARE WARNING -- main.volt:16[/yellow bold]
 
 GPIO 15: GPIO 15 is a strapping pin. Outputs PWM signal during boot. LOW at boot suppresses UART boot log messages.

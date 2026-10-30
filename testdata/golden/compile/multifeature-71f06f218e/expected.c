@@ -55,11 +55,12 @@ static thermostat_ctx_t _thermostat_ctx = {
     .current = THERMOSTAT_IDLE,
 };
 static volt_task_t _thermostat_t = {0};
+static bool _thermostat_started = false;
 
 static void thermostat_transition(thermostat_ctx_t *ctx, thermostat_state_t new_state)
 {
     // Exit current state
-    switch (ctx->current) {
+    if (_thermostat_started) switch (ctx->current) {
         case THERMOSTAT_HEATING:
             pin_write(2, LOW);
             break;
@@ -69,6 +70,7 @@ static void thermostat_transition(thermostat_ctx_t *ctx, thermostat_state_t new_
         default: break;
     }
     
+    _thermostat_started = true;
     ctx->current = new_state;
     ctx->state_entered_at = volt_tick_ms();
     

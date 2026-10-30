@@ -33,17 +33,19 @@ static DeviceState_ctx_t _DeviceState_ctx = {
     .retry_count = 0,
 };
 static volt_task_t _DeviceState_t = {0};
+static bool _DeviceState_started = false;
 
 static void DeviceState_transition(DeviceState_ctx_t *ctx, DeviceState_state_t new_state)
 {
     // Exit current state
-    switch (ctx->current) {
+    if (_DeviceState_started) switch (ctx->current) {
         case DEVICESTATE_ONLINE:
             pin_write(2, LOW);
             break;
         default: break;
     }
     
+    _DeviceState_started = true;
     ctx->current = new_state;
     ctx->state_entered_at = volt_tick_ms();
     
@@ -66,7 +68,7 @@ static void DeviceState_transition(DeviceState_ctx_t *ctx, DeviceState_state_t n
         default: break;
     }
 }
-#line 70 "main.c"
+#line 72 "main.c"
 
 // State machine task: DeviceState (runs as protothread)
 static void DeviceState_run(volt_task_t *_vt)
@@ -121,7 +123,7 @@ static void DeviceState_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
-#line 125 "main.c"
+#line 127 "main.c"
 
 void app_main(void)
 {

@@ -30,14 +30,16 @@ static arm_ctx_t _arm_ctx = {
     .current = ARM_HOME,
 };
 static volt_task_t _arm_t = {0};
+static bool _arm_started = false;
 
 static void arm_transition(arm_ctx_t *ctx, arm_state_t new_state)
 {
     // Exit current state
-    switch (ctx->current) {
+    if (_arm_started) switch (ctx->current) {
         default: break;
     }
     
+    _arm_started = true;
     ctx->current = new_state;
     ctx->state_entered_at = volt_tick_ms();
     

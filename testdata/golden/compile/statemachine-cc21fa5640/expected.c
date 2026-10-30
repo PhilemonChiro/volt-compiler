@@ -30,14 +30,16 @@ static A_ctx_t _A_ctx = {
     .current = A_X,
 };
 static volt_task_t _A_t = {0};
+static bool _A_started = false;
 
 static void A_transition(A_ctx_t *ctx, A_state_t new_state)
 {
     // Exit current state
-    switch (ctx->current) {
+    if (_A_started) switch (ctx->current) {
         default: break;
     }
     
+    _A_started = true;
     ctx->current = new_state;
     ctx->state_entered_at = volt_tick_ms();
     
@@ -93,14 +95,16 @@ static B_ctx_t _B_ctx = {
     .current = B_P,
 };
 static volt_task_t _B_t = {0};
+static bool _B_started = false;
 
 static void B_transition(B_ctx_t *ctx, B_state_t new_state)
 {
     // Exit current state
-    switch (ctx->current) {
+    if (_B_started) switch (ctx->current) {
         default: break;
     }
     
+    _B_started = true;
     ctx->current = new_state;
     ctx->state_entered_at = volt_tick_ms();
     

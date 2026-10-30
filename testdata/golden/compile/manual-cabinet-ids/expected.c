@@ -301,14 +301,16 @@ static detector_ctx_t _detector_ctx = {
     .current = DETECTOR_ARMED,
 };
 static volt_task_t _detector_t = {0};
+static bool _detector_started = false;
 
 static void detector_transition(detector_ctx_t *ctx, detector_state_t new_state)
 {
     // Exit current state
-    switch (ctx->current) {
+    if (_detector_started) switch (ctx->current) {
         default: break;
     }
     
+    _detector_started = true;
     ctx->current = new_state;
     ctx->state_entered_at = volt_tick_ms();
     
@@ -348,7 +350,7 @@ static void detector_transition(detector_ctx_t *ctx, detector_state_t new_state)
         default: break;
     }
 }
-#line 352 "main.c"
+#line 354 "main.c"
 
 // State machine task: detector (runs as protothread)
 static void detector_run(volt_task_t *_vt)

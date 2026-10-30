@@ -36,16 +36,6 @@
       "text": "19"
      }
     ]
-   },
-   {
-    "line": 2,
-    "col": 9,
-    "message": "GPIO 1: Connected to USB-serial on DevKit. Using this pin breaks serial monitor/flashing.",
-    "severity": "warning",
-    "hint": "",
-    "end_line": 2,
-    "end_col": 10,
-    "code": "pin-note"
    }
   ],
   "pins": [

@@ -209,9 +209,10 @@ func (h *hwCheck) validatePinLegacy(pin *PinDecl, used map[int]*PinDecl) {
 		h.pinWarning(pin, "pin-jtag", fmt.Sprintf("GPIO %d is a JTAG pin. Using it disables JTAG debugging.", gpio), "")
 	}
 	for _, note := range info.Notes {
-		// The ESP32 chips Volt targets are WROOM modules, where GPIO 16 and 17 are free; the note about
-		// WROVER's PSRAM stays in the pin's details but isn't a warning.
-		if noteCatch(note) == "PSRAM" {
+		// Only a note that changes whether the pin can be used is a warning: a pin most boards don't break
+		// out. The rest stay in the pin's details: what else the pin can do (DAC, 32 kHz crystal), the
+		// WROVER's PSRAM (Volt targets WROOM modules), and notes already warned about (UART0, errata).
+		if noteCatch(note) != "not on DevKit" {
 			continue
 		}
 		h.errs.add(Diagnostic{Region: r, Category: "HARDWARE NOTE", Message: fmt.Sprintf("GPIO %d: %s", gpio, note),

@@ -10,17 +10,5 @@
       6,
       16
     ]
-  },
-  {
-    "severity": "warning",
-    "category": "HARDWARE NOTE",
-    "message": "GPIO 36: Hardware errata: interrupts on GPIO 36 may fire spuriously during WiFi/BT light sleep.",
-    "hint": null,
-    "region": [
-      6,
-      9,
-      6,
-      16
-    ]
   }
 ]

@@ -34,14 +34,16 @@ static m_ctx_t _m_ctx = {
     .current = M_A,
 };
 static volt_task_t _m_t = {0};
+static bool _m_started = false;
 
 static void m_transition(m_ctx_t *ctx, m_state_t new_state)
 {
     // Exit current state
-    switch (ctx->current) {
+    if (_m_started) switch (ctx->current) {
         default: break;
     }
     
+    _m_started = true;
     ctx->current = new_state;
     ctx->state_entered_at = volt_tick_ms();
     

@@ -33,14 +33,16 @@ static Door_ctx_t _Door_ctx = {
     .current = DOOR_LOCKED,
 };
 static volt_task_t _Door_t = {0};
+static bool _Door_started = false;
 
 static void Door_transition(Door_ctx_t *ctx, Door_state_t new_state)
 {
     // Exit current state
-    switch (ctx->current) {
+    if (_Door_started) switch (ctx->current) {
         default: break;
     }
     
+    _Door_started = true;
     ctx->current = new_state;
     ctx->state_entered_at = volt_tick_ms();
     

@@ -70,14 +70,16 @@ static pattern_ctx_t _pattern_ctx = {
     .cycle = 0,
 };
 static volt_task_t _pattern_t = {0};
+static bool _pattern_started = false;
 
 static void pattern_transition(pattern_ctx_t *ctx, pattern_state_t new_state)
 {
     // Exit current state
-    switch (ctx->current) {
+    if (_pattern_started) switch (ctx->current) {
         default: break;
     }
     
+    _pattern_started = true;
     ctx->current = new_state;
     ctx->state_entered_at = volt_tick_ms();
     

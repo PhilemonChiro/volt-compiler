@@ -10,17 +10,5 @@
       2,
       10
     ]
-  },
-  {
-    "severity": "warning",
-    "category": "HARDWARE NOTE",
-    "message": "GPIO 3: Connected to USB-serial on DevKit. Using this pin breaks serial monitor/flashing.",
-    "hint": null,
-    "region": [
-      2,
-      9,
-      2,
-      10
-    ]
   }
 ]

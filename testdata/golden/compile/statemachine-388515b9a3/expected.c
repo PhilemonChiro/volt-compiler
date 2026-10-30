@@ -32,14 +32,16 @@ static Counter_ctx_t _Counter_ctx = {
     .max_count = 10,
 };
 static volt_task_t _Counter_t = {0};
+static bool _Counter_started = false;
 
 static void Counter_transition(Counter_ctx_t *ctx, Counter_state_t new_state)
 {
     // Exit current state
-    switch (ctx->current) {
+    if (_Counter_started) switch (ctx->current) {
         default: break;
     }
     
+    _Counter_started = true;
     ctx->current = new_state;
     ctx->state_entered_at = volt_tick_ms();
     

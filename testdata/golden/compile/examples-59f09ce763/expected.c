@@ -58,17 +58,19 @@ static sequencer_ctx_t _sequencer_ctx = {
     .total_cycles = 0,
 };
 static volt_task_t _sequencer_t = {0};
+static bool _sequencer_started = false;
 
 static void sequencer_transition(sequencer_ctx_t *ctx, sequencer_state_t new_state)
 {
     // Exit current state
-    switch (ctx->current) {
+    if (_sequencer_started) switch (ctx->current) {
         case SEQUENCER_PHASE_A:
             pin_write(2, LOW);
             break;
         default: break;
     }
     
+    _sequencer_started = true;
     ctx->current = new_state;
     ctx->state_entered_at = volt_tick_ms();
     
@@ -103,7 +105,7 @@ static void sequencer_transition(sequencer_ctx_t *ctx, sequencer_state_t new_sta
         default: break;
     }
 }
-#line 107 "main.c"
+#line 109 "main.c"
 
 // State machine task: sequencer (runs as protothread)
 static void sequencer_run(volt_task_t *_vt)

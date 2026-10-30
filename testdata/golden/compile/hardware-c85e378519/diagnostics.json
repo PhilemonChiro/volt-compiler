@@ -13,18 +13,6 @@
   },
   {
     "severity": "warning",
-    "category": "HARDWARE NOTE",
-    "message": "GPIO 36: Hardware errata: interrupts on GPIO 36 may fire spuriously during WiFi/BT light sleep.",
-    "hint": null,
-    "region": [
-      3,
-      9,
-      3,
-      15
-    ]
-  },
-  {
-    "severity": "warning",
     "category": "UNHANDLED FAILURE",
     "message": "`wifi.connect` has no fallback if it fails.",
     "hint": "Without one the program carries on offline. Add `or retry(5)` to try again, `or skip` to carry on, or `or restart` to reboot.",

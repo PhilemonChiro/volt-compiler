@@ -41,11 +41,12 @@ static Alarm_ctx_t _Alarm_ctx = {
     .attempts = 0,
 };
 static volt_task_t _Alarm_t = {0};
+static bool _Alarm_started = false;
 
 static void Alarm_transition(Alarm_ctx_t *ctx, Alarm_state_t new_state)
 {
     // Exit current state
-    switch (ctx->current) {
+    if (_Alarm_started) switch (ctx->current) {
         case ALARM_TRIGGERED:
             pin_pwm_write(18, 0);
             break;
@@ -55,6 +56,7 @@ static void Alarm_transition(Alarm_ctx_t *ctx, Alarm_state_t new_state)
         default: break;
     }
     
+    _Alarm_started = true;
     ctx->current = new_state;
     ctx->state_entered_at = volt_tick_ms();
     

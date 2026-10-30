@@ -186,11 +186,12 @@ static StatusLED_ctx_t _StatusLED_ctx = {
     .current = STATUSLED_OFF,
 };
 static volt_task_t _StatusLED_t = {0};
+static bool _StatusLED_started = false;
 
 static void StatusLED_transition(StatusLED_ctx_t *ctx, StatusLED_state_t new_state)
 {
     // Exit current state
-    switch (ctx->current) {
+    if (_StatusLED_started) switch (ctx->current) {
         case STATUSLED_CONNECTED:
             pin_write(22, LOW);
             break;
@@ -204,6 +205,7 @@ static void StatusLED_transition(StatusLED_ctx_t *ctx, StatusLED_state_t new_sta
         default: break;
     }
     
+    _StatusLED_started = true;
     ctx->current = new_state;
     ctx->state_entered_at = volt_tick_ms();
     

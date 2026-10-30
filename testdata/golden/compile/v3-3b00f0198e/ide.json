@@ -2,16 +2,6 @@
  "compile_full": {
   "diagnostics": [
    {
-    "line": 6,
-    "col": 9,
-    "message": "GPIO 25: Also DAC channel 1. When DAC is enabled, outputs ~1.6V by default.",
-    "severity": "warning",
-    "hint": "",
-    "end_line": 6,
-    "end_col": 15,
-    "code": "pin-note"
-   },
-   {
     "line": 11,
     "col": 9,
     "message": "Storage variable `boot_count` is never saved, so it resets to its default on every boot.",

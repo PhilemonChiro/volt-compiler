@@ -29,14 +29,16 @@ static Light_ctx_t _Light_ctx = {
     .current = LIGHT_OFF,
 };
 static volt_task_t _Light_t = {0};
+static bool _Light_started = false;
 
 static void Light_transition(Light_ctx_t *ctx, Light_state_t new_state)
 {
     // Exit current state
-    switch (ctx->current) {
+    if (_Light_started) switch (ctx->current) {
         default: break;
     }
     
+    _Light_started = true;
     ctx->current = new_state;
     ctx->state_entered_at = volt_tick_ms();
     

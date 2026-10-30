@@ -29,14 +29,16 @@ static DeviceState_ctx_t _DeviceState_ctx = {
     .current = DEVICESTATE_IDLE,
 };
 static volt_task_t _DeviceState_t = {0};
+static bool _DeviceState_started = false;
 
 static void DeviceState_transition(DeviceState_ctx_t *ctx, DeviceState_state_t new_state)
 {
     // Exit current state
-    switch (ctx->current) {
+    if (_DeviceState_started) switch (ctx->current) {
         default: break;
     }
     
+    _DeviceState_started = true;
     ctx->current = new_state;
     ctx->state_entered_at = volt_tick_ms();
     

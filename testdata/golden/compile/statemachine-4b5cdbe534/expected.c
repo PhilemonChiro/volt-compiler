@@ -29,14 +29,16 @@ static Monitor_ctx_t _Monitor_ctx = {
     .current = MONITOR_RUNNING,
 };
 static volt_task_t _Monitor_t = {0};
+static bool _Monitor_started = false;
 
 static void Monitor_transition(Monitor_ctx_t *ctx, Monitor_state_t new_state)
 {
     // Exit current state
-    switch (ctx->current) {
+    if (_Monitor_started) switch (ctx->current) {
         default: break;
     }
     
+    _Monitor_started = true;
     ctx->current = new_state;
     ctx->state_entered_at = volt_tick_ms();
     

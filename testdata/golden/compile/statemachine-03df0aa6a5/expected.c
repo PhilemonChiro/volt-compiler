@@ -32,14 +32,16 @@ static Good_ctx_t _Good_ctx = {
     .n = 0,
 };
 static volt_task_t _Good_t = {0};
+static bool _Good_started = false;
 
 static void Good_transition(Good_ctx_t *ctx, Good_state_t new_state)
 {
     // Exit current state
-    switch (ctx->current) {
+    if (_Good_started) switch (ctx->current) {
         default: break;
     }
     
+    _Good_started = true;
     ctx->current = new_state;
     ctx->state_entered_at = volt_tick_ms();
     

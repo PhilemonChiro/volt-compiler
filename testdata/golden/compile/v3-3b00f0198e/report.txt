@@ -1,13 +1,4 @@
 
-[yellow bold]-- HARDWARE NOTE -- v3_combined.volt:6[/yellow bold]
-
-GPIO 25: Also DAC channel 1. When DAC is enabled, outputs ~1.6V by default.
-
- [dim]5 |[/dim]     pin led = 2
- [dim]6 |[/dim]     pin buzzer: PWM = 25
- [dim]  |[/dim] [yellow]        ^^^^^^[/yellow]
-
-
 [yellow bold]-- UNSAVED STORAGE -- v3_combined.volt:11[/yellow bold]
 
 Storage variable `boot_count` is never saved, so it resets to its default on every boot.

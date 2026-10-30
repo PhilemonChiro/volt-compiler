@@ -2,16 +2,6 @@
  "compile_full": {
   "diagnostics": [
    {
-    "line": 15,
-    "col": 9,
-    "message": "GPIO 25: Also DAC channel 1. When DAC is enabled, outputs ~1.6V by default.",
-    "severity": "warning",
-    "hint": "",
-    "end_line": 15,
-    "end_col": 12,
-    "code": "pin-note"
-   },
-   {
     "line": 16,
     "col": 9,
     "message": "GPIO 15: GPIO 15 is a strapping pin. Outputs PWM signal during boot. LOW at boot suppresses UART boot log messages.",

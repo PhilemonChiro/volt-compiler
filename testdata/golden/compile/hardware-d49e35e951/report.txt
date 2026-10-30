@@ -8,12 +8,3 @@ GPIO 36 has a hardware errata: interrupts may fire spuriously during WiFi/BT lig
  [dim]  |[/dim] [yellow]        ^^^[/yellow]
 
 [cyan]Hint: GPIO 34, 35 do not have this errata.[/cyan]
-
-
-[yellow bold]-- HARDWARE NOTE -- main.volt:2[/yellow bold]
-
-GPIO 36: Hardware errata: interrupts on GPIO 36 may fire spuriously during WiFi/BT light sleep.
-
- [dim]1 |[/dim] hardware {
- [dim]2 |[/dim]     pin btn: Input = 36
- [dim]  |[/dim] [yellow]        ^^^[/yellow]
