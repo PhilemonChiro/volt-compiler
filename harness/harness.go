@@ -23,7 +23,7 @@ To write or change a Volt program:
 2. Call device_card for every device the program uses; use only the methods, arguments and wiring it lists. list_devices finds devices by name or purpose.
 3. Write the program, then call check on it.
 4. Fix every error check reports (each has a line and usually a hint) and call check again. Repeat until check returns ok: true.
-5. Call review and compare its facts with the user's request: every pin number, threshold, interval and timing they gave, button behaviour (one action per press, debouncing), values that must survive power loss, and every state the request describes. If anything differs, fix the program and go back to step 3.
+5. Call review and compare its facts with the user's request: every pin number, threshold, interval and timing they gave, inputs that stay active (one action per press or card, not one per poll while held), alerts that must not be lost when a send fails, values that must survive power loss, and every state the request describes. If anything differs, fix the program and go back to step 3.
 
 Never present a Volt program that has not passed check. The chip is set in volt.toml, so never write a chip line.`
 
@@ -181,11 +181,16 @@ func Review(source, filename string) (*ReviewResult, error) {
 	if len(facts.Periodic) > 0 || len(facts.Events) > 0 {
 		cmp = append(cmp, "periodic and events: each interval matches the sampling rates, durations and timeouts asked for")
 	}
+	inputs := len(facts.Devices) > 0
 	for _, p := range facts.Pins {
-		if strings.Contains(p.Mode, "Input") {
-			cmp = append(cmp, "buttons and switches: one action per press, not repeated while held; debounced if asked; active level matches the wiring")
-			break
-		}
+		inputs = inputs || strings.Contains(p.Mode, "Input")
+	}
+	if inputs {
+		// Polled inputs read the same on every pass while they stay active.
+		cmp = append(cmp, "inputs that stay active (a held button, a card left on a reader, a reading past its threshold): one action when it starts, not one per poll; no flag left set to fire again later; debounced if asked; active level matches the wiring")
+	}
+	if len(facts.Devices) > 0 || len(facts.Network) > 0 {
+		cmp = append(cmp, "failures: an alert, message or command that can fail (SMS, MQTT, HTTP) stays pending and is retried until it succeeds, not dropped")
 	}
 	cmp = append(cmp, "persistence: anything the user wants kept across power loss is a storage variable with saved: true")
 	if len(facts.Machines) > 0 {
