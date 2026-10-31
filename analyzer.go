@@ -119,6 +119,8 @@ func Analyze(program *Program, scope *Scope, errs *Errors) {
 	for _, m := range program.Machines {
 		verifyStateMachine(m, errs)
 	}
+	checkStuckTransitions(program, errs)
+	checkTiming(program, errs)
 
 	// 8. Background tasks with no yield points
 	for _, t := range program.Tasks {
@@ -711,7 +713,18 @@ type costItem struct {
 }
 
 func checkCriticalWCET(t *TaskDecl, errs *Errors) {
-	cycles, breakdown := estimateWCET(t.Body)
+	var w wcet
+	cycles, breakdown := w.block(t.Body, 1), w.breakdown
+	// a top-level `every … strict` becomes a task with a made-up name, which means nothing to the reader
+	what := fmt.Sprintf("critical task `%s`", t.Name)
+	if t.Annotations == nil {
+		what = "this strict block"
+	}
+	for _, loop := range w.unbounded {
+		errs.Warning(NodeRegion(loop), "TASK WARNING",
+			fmt.Sprintf("This loop in %s has no fixed number of turns, so how long it takes can't be estimated.", what),
+			"In a strict block, loop over fixed numbers, like `for i in 0..8`, or move the loop to an ordinary block.")
+	}
 	if cycles <= isrMaxCycles {
 		return
 	}
@@ -725,10 +738,12 @@ func checkCriticalWCET(t *TaskDecl, errs *Errors) {
 		detail = " Top costs: " + strings.Join(top, ", ")
 	}
 	errs.Warning(t.Region, "TASK WARNING",
-		fmt.Sprintf("Critical task `%s` estimated at ~%d cycles (~%dus at 240MHz), may exceed ISR time budget.%s",
-			t.Name, cycles, pyFloorDiv(cycles*1000, 240000), detail),
+		fmt.Sprintf("%s estimated at ~%d cycles (~%dus at 240MHz), may exceed ISR time budget.%s",
+			upperFirst(what), cycles, pyFloorDiv(cycles*1000, 240000), detail),
 		"Keep critical tasks under ~20us. Move heavy work to a Background task.")
 }
+
+func upperFirst(s string) string { return strings.ToUpper(s[:1]) + s[1:] }
 
 func pyFloorDiv(a, b int) int {
 	q := a / b
@@ -739,32 +754,8 @@ func pyFloorDiv(a, b int) int {
 }
 
 func estimateWCET(stmts []Node) (int, []costItem) {
-	total := 0
-	var breakdown []costItem
-	for _, s := range walkStmts(stmts) {
-		switch s := s.(type) {
-		case *ExprStmt:
-			cost, name := exprCost(s.Expr)
-			total += cost
-			if cost > 10 {
-				breakdown = append(breakdown, costItem{name, cost})
-			}
-		case *VarDecl:
-			cost := 1
-			if s.Value != nil {
-				cost, _ = exprCost(s.Value)
-			}
-			total += cost + 1 // +1 for the assignment
-		case *AssignExpr:
-			cost, _ := exprCost(s.Value)
-			total += cost + 1
-		case *IfStmt, *WhileStmt, *ForStmt:
-			total += 5 // branch
-		case *ReturnStmt:
-			total += 2
-		}
-	}
-	return total, breakdown
+	var w wcet
+	return w.block(stmts, 1), w.breakdown
 }
 
 func exprCost(expr Node) (int, string) {
