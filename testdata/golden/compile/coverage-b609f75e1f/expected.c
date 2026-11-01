@@ -13,7 +13,7 @@
 static char _volt_strbuf[16][128];
 
 // Skip counters (or-skip observability)
-static uint32_t _skip_count_L0 = 0;  // or-skip counter
+static uint32_t _skip_count_L6 = 0;  // or-skip counter
 
 // Forward declarations
 static void sender_run(volt_task_t *_vt);
@@ -26,9 +26,10 @@ static void sender_run(volt_task_t *_vt)
     VOLT_TASK_BEGIN(_vt);
     for (;;) {
         if (wifi_is_connected()) {
-            if (mqtt_send("topic", "data") != VOLT_OK) { _skip_count_L0++; continue; }
+            if (mqtt_send("topic", "data") != VOLT_OK) { _skip_count_L6++; goto _every_1_next; }
             pin_toggle(2);
         }
+        _every_1_next: ;
         VOLT_YIELD_LABEL(_vt, 1, 10000);
     }
     VOLT_TASK_END(_vt);

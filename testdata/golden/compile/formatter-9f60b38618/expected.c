@@ -11,7 +11,7 @@
 static char _volt_strbuf[16][128];
 
 // Skip counters (or-skip observability)
-static uint32_t _skip_count_L0 = 0;  // or-skip counter
+static uint32_t _skip_count_L6 = 0;  // or-skip counter
 
 // Forward declarations
 static void worker_run(volt_task_t *_vt);
@@ -23,13 +23,14 @@ static void worker_run(volt_task_t *_vt)
 {
     VOLT_TASK_BEGIN(_vt);
     for (;;) {
-        if (pin_toggle(2) != VOLT_OK) { _skip_count_L0++; continue; }
+        if (pin_toggle(2) != VOLT_OK) { _skip_count_L6++; goto _every_1_next; }
         { volt_error_t _err = pin_write(2, HIGH);
             for (int _retry = 0; _err != VOLT_OK && _retry < 3; _retry++) {
                 _err = pin_write(2, HIGH);
             }
         }
         if (pin_write(2, LOW) != VOLT_OK) { system_restart(); }
+        _every_1_next: ;
         VOLT_YIELD_LABEL(_vt, 1, 1000);
     }
     VOLT_TASK_END(_vt);

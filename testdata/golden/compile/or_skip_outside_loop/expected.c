@@ -13,7 +13,11 @@
 static char _volt_strbuf[16][128];
 
 // Skip counters (or-skip observability)
-static uint32_t _skip_count_L0 = 0;  // or-skip counter
+static uint32_t _skip_count_L13 = 0;  // or-skip counter
+static uint32_t _skip_count_L15 = 0;  // or-skip counter
+static uint32_t _skip_count_L23 = 0;  // or-skip counter
+static uint32_t _skip_count_L27 = 0;  // or-skip counter
+static uint32_t _skip_count_L8 = 0;  // or-skip counter
 
 // Forward declarations
 static void _rule0_run(volt_task_t *_vt);
@@ -25,7 +29,7 @@ static volt_task_t __rule1_t = {0};
 
 static void link(void)
 {
-    if (mqtt_connect("mqtt://broker.local") != VOLT_OK) { _skip_count_L0++; }
+    if (mqtt_connect("mqtt://broker.local") != VOLT_OK) { _skip_count_L8++; }
 }
 
 // Background task: _rule0 (protothread)
@@ -35,7 +39,7 @@ static void _rule0_run(volt_task_t *_vt)
     // on (pin_read(23) == LOW)
     VOLT_WAIT_LABEL(_vt, 1, (pin_read(23) == LOW));
     link();
-    if (mqtt_connect("mqtt://broker.local") != VOLT_OK) { _skip_count_L0++; }
+    if (mqtt_connect("mqtt://broker.local") != VOLT_OK) { _skip_count_L23++; }
     VOLT_TASK_END(_vt);
 }
 
@@ -44,7 +48,8 @@ static void _rule1_run(volt_task_t *_vt)
 {
     VOLT_TASK_BEGIN(_vt);
     for (;;) {
-        if (mqtt_connect("mqtt://broker.local") != VOLT_OK) { _skip_count_L0++; continue; }
+        if (mqtt_connect("mqtt://broker.local") != VOLT_OK) { _skip_count_L27++; goto _every_1_next; }
+        _every_1_next: ;
         VOLT_YIELD_LABEL(_vt, 1, 1000);
     }
     VOLT_TASK_END(_vt);
@@ -64,11 +69,11 @@ void app_main(void)
             _err = wifi_connect("home", "secret");
         }
     }
-    if (mqtt_connect("mqtt://broker.local") != VOLT_OK) { _skip_count_L0++; }
+    if (mqtt_connect("mqtt://broker.local") != VOLT_OK) { _skip_count_L13++; }
 #line 14 "main.volt"
     {
         uint32_t _timeout_start = volt_tick_ms();
-        if (wifi_connect("home", "secret") != VOLT_OK) { _skip_count_L0++; }
+        if (wifi_connect("home", "secret") != VOLT_OK) { _skip_count_L15++; }
         if ((int32_t)(volt_tick_ms() - _timeout_start - 5000) >= 0) {
             log_info("wifi", "%s", "gave up after 5 seconds");
         }
@@ -81,5 +86,5 @@ void app_main(void)
     };
     volt_run(_tasks, 2);
 }
-#line 85 "main.c"
+#line 90 "main.c"
 

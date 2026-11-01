@@ -11,7 +11,7 @@
 static char _volt_strbuf[16][128];
 
 // Skip counters (or-skip observability)
-static uint32_t _skip_count_L0 = 0;  // or-skip counter
+static uint32_t _skip_count_L8 = 0;  // or-skip counter
 
 // Forward declarations
 static void worker_run(volt_task_t *_vt);
@@ -26,7 +26,7 @@ static void worker_run(volt_task_t *_vt)
         pin_toggle(2);
         VOLT_YIELD_LABEL(_vt, 1, 1000);
     }
-    if (sleep(500) != VOLT_OK) { _skip_count_L0++; }
+    if (sleep(500) != VOLT_OK) { _skip_count_L8++; }
     VOLT_TASK_END(_vt);
 }
 

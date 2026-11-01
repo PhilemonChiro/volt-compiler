@@ -12,7 +12,7 @@
 static char _volt_strbuf[16][128];
 
 // Skip counters (or-skip observability)
-static uint32_t _skip_count_L0 = 0;  // or-skip counter
+static uint32_t _skip_count_L5 = 0;  // or-skip counter
 
 // Forward declarations
 
@@ -26,6 +26,6 @@ void app_main(void)
     
     
     // Setup
-    if (ble_advertise("VoltDevice") != VOLT_OK) { _skip_count_L0++; }
+    if (ble_advertise("VoltDevice") != VOLT_OK) { _skip_count_L5++; }
 }
 

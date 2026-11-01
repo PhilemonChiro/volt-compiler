@@ -122,7 +122,12 @@ type codegen struct {
 	storageStrBufCount int
 	tryCounter         int
 	currentMachine     string
-	loopDepth          int // C loops around the statement being emitted; `or skip` needs one to `continue`
+	// skipTargets has one entry per C loop around the statement being emitted.
+	// `or skip` needs one: "" means `continue`; a label means goto it (every
+	// blocks, so the skipped run still waits for its interval).
+	skipTargets  []string
+	skipJumped   map[string]bool // every-block labels some `or skip` jumps to
+	everyCounter int
 }
 
 // Generate generates C source from a transformed Volt AST.
@@ -146,6 +151,7 @@ func Generate(program *Program, sourceFile string) (code string, err error) {
 		enumTypes:       map[string][]string{},
 		locals:          map[string]bool{},
 		skipCounters:    map[string]bool{},
+		skipJumped:      map[string]bool{},
 	}
 	return g.generate(program), nil
 }
@@ -1253,9 +1259,9 @@ func (g *codegen) emitAppMain(p *Program) {
 		g.out("// Super-loop")
 		g.out("while (1) {")
 		g.indent++
-		g.loopDepth++
+		g.skipTargets = append(g.skipTargets, "")
 		g.stmts(p.Loop.Body, "", nil, true)
-		g.loopDepth--
+		g.skipTargets = g.skipTargets[:len(g.skipTargets)-1]
 		g.indent--
 		g.out("}")
 	}
@@ -1482,9 +1488,13 @@ func (g *codegen) stmt(s Node, ctx string, cv []string, freertos bool) {
 				g.indent--
 				g.out("}")
 			case "skip":
-				counter := "_skip_count_L" + strconv.Itoa(s.Region.StartLine)
+				counter := "_skip_count_L" + strconv.Itoa(or.Region.StartLine)
 				g.skipCounters[counter] = true
-				if g.loopDepth > 0 {
+				if n := len(g.skipTargets); n > 0 && g.skipTargets[n-1] != "" {
+					// every: skip the rest of this run but still wait for the interval
+					g.skipJumped[g.skipTargets[n-1]] = true
+					g.out("if (" + call + " != VOLT_OK) { " + counter + "++; goto " + g.skipTargets[n-1] + "; }")
+				} else if n > 0 {
 					g.out("if (" + call + " != VOLT_OK) { " + counter + "++; continue; }")
 				} else {
 					// setup, func and on bodies aren't loops: there is no run to skip, so carry on past the call
@@ -1554,9 +1564,9 @@ func (g *codegen) stmt(s Node, ctx string, cv []string, freertos bool) {
 		g.lineDirective(s)
 		g.out("while (" + g.expr(s.Condition, ctx, cv) + ") {")
 		g.indent++
-		g.loopDepth++
+		g.skipTargets = append(g.skipTargets, "")
 		g.stmts(s.Body, ctx, cv, freertos)
-		g.loopDepth--
+		g.skipTargets = g.skipTargets[:len(g.skipTargets)-1]
 		g.indent--
 		g.out("}")
 
@@ -1578,9 +1588,9 @@ func (g *codegen) stmt(s Node, ctx string, cv []string, freertos bool) {
 			g.out("for (int32_t " + v + " = " + start + "; " + v + " < " + end + "; " + v + "++) {")
 		}
 		g.indent++
-		g.loopDepth++
+		g.skipTargets = append(g.skipTargets, "")
 		g.stmts(s.Body, ctx, cv, freertos)
-		g.loopDepth--
+		g.skipTargets = g.skipTargets[:len(g.skipTargets)-1]
 		g.indent--
 		g.out("}")
 
@@ -1592,9 +1602,11 @@ func (g *codegen) stmt(s Node, ctx string, cv []string, freertos bool) {
 		if d, ok := s.Interval.(*DurationLiteral); ok {
 			ms = msOf(d)
 		}
+		g.everyCounter++
+		next := "_every_" + strconv.Itoa(g.everyCounter) + "_next"
 		g.out("for (;;) {")
 		g.indent++
-		g.loopDepth++
+		g.skipTargets = append(g.skipTargets, next)
 		if s.Guard != nil {
 			g.out("if (" + g.expr(s.Guard, ctx, cv) + ") {")
 			g.indent++
@@ -1604,12 +1616,15 @@ func (g *codegen) stmt(s Node, ctx string, cv []string, freertos bool) {
 		} else {
 			g.stmts(s.Body, ctx, cv, freertos)
 		}
+		g.skipTargets = g.skipTargets[:len(g.skipTargets)-1]
+		if g.skipJumped[next] {
+			g.out(next + ": ;")
+		}
 		if freertos {
 			g.out("volt_delay_ms(" + strconv.Itoa(ms) + ");")
 		} else {
 			g.out(fmt.Sprintf("VOLT_YIELD_LABEL(_vt, %d, %d);", s.YieldLabel, ms))
 		}
-		g.loopDepth--
 		g.indent--
 		g.out("}")
 

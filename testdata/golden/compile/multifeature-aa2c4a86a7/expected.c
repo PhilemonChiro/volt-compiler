@@ -11,7 +11,8 @@
 static char _volt_strbuf[16][128];
 
 // Skip counters (or-skip observability)
-static uint32_t _skip_count_L0 = 0;  // or-skip counter
+static uint32_t _skip_count_L10 = 0;  // or-skip counter
+static uint32_t _skip_count_L18 = 0;  // or-skip counter
 
 // Forward declarations
 static void heartbeat_run(volt_task_t *_vt);
@@ -25,7 +26,8 @@ static void heartbeat_run(volt_task_t *_vt)
 {
     VOLT_TASK_BEGIN(_vt);
     for (;;) {
-        if (pin_toggle(2) != VOLT_OK) { _skip_count_L0++; continue; }
+        if (pin_toggle(2) != VOLT_OK) { _skip_count_L10++; goto _every_1_next; }
+        _every_1_next: ;
         VOLT_YIELD_LABEL(_vt, 1, 1000);
     }
     VOLT_TASK_END(_vt);
@@ -42,7 +44,8 @@ static void alert_run(volt_task_t *_vt)
             }
         }
         VOLT_YIELD_LABEL(_vt, 2, 200);
-        if (pin_pwm_write(5, 0) != VOLT_OK) { _skip_count_L0++; continue; }
+        if (pin_pwm_write(5, 0) != VOLT_OK) { _skip_count_L18++; goto _every_2_next; }
+        _every_2_next: ;
         VOLT_YIELD_LABEL(_vt, 1, 5000);
     }
     VOLT_TASK_END(_vt);

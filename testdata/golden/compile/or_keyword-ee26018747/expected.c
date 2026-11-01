@@ -12,7 +12,7 @@
 static char _volt_strbuf[16][128];
 
 // Skip counters (or-skip observability)
-static uint32_t _skip_count_L0 = 0;  // or-skip counter
+static uint32_t _skip_count_L4 = 0;  // or-skip counter
 
 // Forward declarations
 
@@ -23,6 +23,6 @@ void app_main(void)
     
     
     // Setup
-    if (wifi_connect("net", "pass") != VOLT_OK) { _skip_count_L0++; }
+    if (wifi_connect("net", "pass") != VOLT_OK) { _skip_count_L4++; }
 }
 
