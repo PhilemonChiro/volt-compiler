@@ -2035,6 +2035,25 @@ func (g *codegen) inferInterpType(s string) string {
 
 var interpRe = regexp.MustCompile(`\{([^}]+)\}`)
 
+// isBoolExpr: a comparison, a logical and / or, or a not.
+func isBoolExpr(n Node) bool {
+	switch e := n.(type) {
+	case *BinaryExpr:
+		switch e.Op {
+		case "==", "!=", "<", "<=", ">", ">=", "&&", "||", "and", "or":
+			return true
+		}
+	case *UnaryExpr:
+		return e.Op == "!" || e.Op == "not"
+	case *BoolLiteral:
+		return true
+	}
+	return false
+}
+
+// simpleInterp is what the text-based interpolation path handles itself.
+var simpleInterp = regexp.MustCompile(`^\s*[A-Za-z_][A-Za-z0-9_]*(\s*\.\s*[A-Za-z_][A-Za-z0-9_]*\s*\(\s*\))?\s*$`)
+
 // pySplitGroups is re.split with one capturing group.
 func pySplitGroups(re *regexp.Regexp, s string) []string {
 	var parts []string
@@ -2074,8 +2093,18 @@ func (g *codegen) interpolatedString(text, ctx string, cv []string) string {
 			continue
 		}
 		es := strings.TrimSpace(part)
-		c := g.resolveInterpExpr(es, ctx, cv)
-		switch g.inferInterpType(es) {
+		c, typ := g.resolveInterpExpr(es, ctx, cv), g.inferInterpType(es)
+		// Anything beyond `name` or `obj.method()` (int(x), a + b, f(x)…) is
+		// parsed and emitted like any other expression.
+		if !simpleInterp.MatchString(es) {
+			if n, err := ParseExpr(es); err == nil {
+				c, typ = g.expr(n, ctx, cv), g.inferValueType(n)
+				if isBoolExpr(n) {
+					typ = "bool" // printed as true / false
+				}
+			}
+		}
+		switch typ {
 		case "float":
 			fmts = append(fmts, "%.2f")
 			args = append(args, "(double)("+c+")")

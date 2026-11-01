@@ -54,6 +54,12 @@ func validateHardware(program *Program, errs *Errors, chip chipSpec) {
 		if Registry().Get(s.SensorType) == nil {
 			continue // reported by the resolver
 		}
+		for _, c := range ProjectConflicts {
+			if c == s.SensorType {
+				errs.Warning(s.TypeRegion, "HARDWARE WARNING", fmt.Sprintf("This uses the shared %s library, not the one in this project's devices/ folder.", c),
+					"A project can't replace a shared library. To add methods this project needs, give the project library its own name and c_prefix (e.g. "+strings.ToLower(c)+"_app).")
+			}
+		}
 		validateSensor(s, usedAddrs, busKinds, errs)
 		if busKinds[s.BusName] == "i2c" {
 			validateAddressList(s, errs)
@@ -230,6 +236,11 @@ func unknownDevice(s *SensorDecl, errs *Errors) {
 	}
 	if near, ok := suggestSimilar(s.SensorType, names, 2); ok {
 		hint = fmt.Sprintf("Did you mean `%s`? If not, install %s from the Grid: Volt IDE → Library → Discover.", near, s.SensorType)
+	}
+	for _, c := range ProjectConflicts {
+		if c == s.SensorType {
+			hint = fmt.Sprintf("This project's devices/ folder has a %s library, but it uses the name or C prefix of a shared library, which a project can't replace. Rename it (name and c_prefix).", c)
+		}
 	}
 	errs.add(Diagnostic{Region: s.TypeRegion, Category: "HARDWARE ERROR", Severity: "error", Code: "unknown-device",
 		Message: fmt.Sprintf("`%s` isn't installed on this computer.", s.SensorType), Hint: hint})

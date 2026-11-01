@@ -19,6 +19,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"path/filepath"
 	"runtime/debug"
 
 	"github.com/PhilemonChiro/volt-compiler"
@@ -31,6 +32,7 @@ type request struct {
 	Op           string          `json:"op"`
 	Source       *string         `json:"source"`
 	Filename     string          `json:"filename"`
+	Project      *string         `json:"project"` // project folder: its devices/ adds project libraries
 	Chip         string          `json:"chip"`
 	Expanded     []string        `json:"expanded"`
 	EmitProgress bool            `json:"emit_progress"`
@@ -107,6 +109,13 @@ func handle(line string, send func(any)) (resp any) {
 var errNoSource = errors.New("missing field: source")
 
 func run(req request, send func(any)) (any, error) {
+	// Each request says which project it's for (absent = keep the last one).
+	if req.Project != nil {
+		compiler.ProjectDevicesDir = ""
+		if *req.Project != "" {
+			compiler.ProjectDevicesDir = filepath.Join(*req.Project, "devices")
+		}
+	}
 	if req.Op == "pin_table" {
 		return compiler.PinTable(req.Chip), nil
 	}

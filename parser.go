@@ -52,6 +52,25 @@ func Parse(src string) (prog *Program, err error) {
 	return p.program(), nil
 }
 
+// ParseExpr parses a single expression: the inside of a "{…}" in a string.
+func ParseExpr(src string) (n Node, err error) {
+	p := &parser{lx: newLexer(src)}
+	defer func() {
+		if r := recover(); r != nil {
+			se, ok := r.(*SyntaxError)
+			if !ok {
+				panic(r)
+			}
+			n, err = nil, se
+		}
+	}()
+	n = p.expr()
+	if t := p.peek(ctxOp); t.kind != tEOF {
+		return nil, &SyntaxError{Msg: "unexpected text after the expression"}
+	}
+	return n, nil
+}
+
 // --- Token plumbing ---
 
 func (p *parser) peek(ctx lexCtx) token { return p.lx.lex(p.off, ctx) }

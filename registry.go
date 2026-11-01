@@ -20,6 +20,13 @@ import (
 // $VOLT_DEVICES then ~/.volt/devices are tried. Set it before the first compile.
 var DevicesDir string
 
+// ProjectDevicesDir is the open project's own device libraries
+// (<project>/devices): methods one project needs, kept out of the shared
+// library. They are added on top of DevicesDir and can never replace a
+// shared library — a project library with a shared name or C prefix is
+// skipped (see ProjectConflicts).
+var ProjectDevicesDir string
+
 // DevicesFS, when set, is the device library instead of a directory: a
 // build with no file system (the WebAssembly playground) embeds its
 // descriptors. It is read once.
@@ -48,6 +55,7 @@ type DeviceInfo struct {
 	Description    string
 	CPrefix        string
 	CSource        string
+	Project        bool   // from the project's own devices folder
 	InitArgs       string // placeholders: {pin}, {addr}, {bus_id}, {uart_id}, pin roles, params
 	// Pins are the device's own GPIO connections (not bus signals), in
 	// declaration order: `HCSR04(trig: 26, echo: 27)`.
@@ -137,6 +145,9 @@ var (
 	registryDir     string
 	registryStamp   string
 	registryChecked time.Time
+	// ProjectConflicts names the project libraries skipped because a shared
+	// library already uses their name or C prefix (filled by Registry()).
+	ProjectConflicts []string
 )
 
 // Registry returns the device registry for the current devices dir. It
@@ -153,15 +164,46 @@ func Registry() *DeviceRegistry {
 		return registry
 	}
 	dir := devicesDir()
-	if registry != nil && dir == registryDir && time.Since(registryChecked) < time.Second {
+	key := dir + "\x00" + ProjectDevicesDir
+	if registry != nil && key == registryDir && time.Since(registryChecked) < time.Second {
 		return registry
 	}
-	stamp := descriptorStamp(dir)
+	stamp := descriptorStamp(dir) + "|" + descriptorStamp(ProjectDevicesDir)
 	registryChecked = time.Now()
-	if registry == nil || dir != registryDir || stamp != registryStamp {
-		registry, registryDir, registryStamp = loadRegistryDir(dir), dir, stamp
+	if registry == nil || key != registryDir || stamp != registryStamp {
+		r := loadRegistryDir(dir)
+		ProjectConflicts = addProject(r, ProjectDevicesDir)
+		registry, registryDir, registryStamp = r, key, stamp
 	}
 	return registry
+}
+
+// addProject adds the project's own libraries to r. One whose name or C
+// prefix a shared library already uses is skipped and reported: a project
+// may add libraries, never change a shared one.
+func addProject(r *DeviceRegistry, dir string) []string {
+	if dir == "" {
+		return nil
+	}
+	if st, err := os.Stat(dir); err != nil || !st.IsDir() {
+		return nil
+	}
+	prefixes := map[string]bool{}
+	for _, d := range r.Devices {
+		prefixes[strings.ToLower(d.CPrefix)] = true
+	}
+	var skipped []string
+	for _, d := range loadRegistryDir(dir).Devices {
+		if r.byName[d.Name] != nil || prefixes[strings.ToLower(d.CPrefix)] {
+			skipped = append(skipped, d.Name)
+			continue
+		}
+		d.Project = true
+		r.Devices = append(r.Devices, d)
+		r.byName[d.Name] = d
+		prefixes[strings.ToLower(d.CPrefix)] = true
+	}
+	return skipped
 }
 
 // descriptorStamp summarizes every .json under dir (path, size, mtime).

@@ -610,6 +610,40 @@ func normalizeType(t string) string {
 	return t
 }
 
+// checkInterpolations checks each "{expr}" in a string like any other
+// expression: names exist, methods exist, types fit. Errors point at the
+// expression's columns when the string sits on one line.
+func checkInterpolations(e *StringLiteral, scope *Scope, errs *Errors) {
+	if errs == nil || !strings.Contains(e.Value, "{") {
+		return
+	}
+	for _, m := range interpRe.FindAllStringSubmatchIndex(e.Value, -1) {
+		text := e.Value[m[2]:m[3]]
+		at := e.Region
+		if at.StartLine == at.EndLine && at.StartCol > 0 {
+			// +1 for the opening quote; the value has no escapes before most braces.
+			at.StartCol, at.EndCol = at.StartCol+1+m[0], at.StartCol+1+m[1]
+		}
+		n, err := ParseExpr(text)
+		if err != nil {
+			errs.Error(at, "SYNTAX ERROR", fmt.Sprintf("Can't read `{%s}` in the text.", strings.TrimSpace(text)),
+				"Inside { } put a name, a method call or an expression, like {count}, {temp.read()} or {int(level)}.")
+			continue
+		}
+		sub := &Errors{}
+		resolveExpr(n, scope, sub) // unknown names, with "did you mean"
+		if !sub.HasErrors() {
+			infer(n, scope, sub)
+		}
+		for _, d := range sub.List {
+			d.Region = at
+			d.Message = fmt.Sprintf("In `{%s}`: %s", strings.TrimSpace(text), d.Message)
+			d.Fixes = nil
+			errs.add(d)
+		}
+	}
+}
+
 // infer returns the type of expr, or errorType.
 func infer(expr Node, scope *Scope, errs *Errors) string {
 	switch e := expr.(type) {
@@ -620,6 +654,7 @@ func infer(expr Node, scope *Scope, errs *Errors) string {
 	case *BoolLiteral:
 		return typeBool
 	case *StringLiteral:
+		checkInterpolations(e, scope, errs)
 		return typeString
 	case *DurationLiteral:
 		return typeDuration
