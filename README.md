@@ -67,5 +67,5 @@ go test ./... -run Update -update
 
 ## License
 
-[GNU AGPL v3](LICENSE). A commercial licence is available: contact pchiro29@gmail.com.
+[GNU AGPL v3](LICENSE). A commercial licence is available: contact licensing@voltembedded.com.
 Contributions are made under the [Contributor License Agreement](CLA.md); see [CONTRIBUTING.md](CONTRIBUTING.md).
