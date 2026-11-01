@@ -1,0 +1,295 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": null,
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [2, 12, 2, 15],
+  "pins": [],
+  "buses": [
+   {
+    "_": "BusDecl",
+    "region": [2, 12, 2, 15],
+    "bus_type": "i2c",
+    "name": "i2c",
+    "params": {
+     "sda": {
+      "_": "IntLiteral",
+      "region": [2, 12, 2, 15],
+      "value": 21
+     },
+     "scl": {
+      "_": "IntLiteral",
+      "region": [2, 12, 2, 15],
+      "value": 22
+     }
+    }
+   }
+  ],
+  "sensors": [
+   {
+    "_": "SensorDecl",
+    "region": [2, 12, 2, 15],
+    "name": "env",
+    "sensor_type": "BME280",
+    "bus_name": "i2c",
+    "address": 118,
+    "pin_params": {}
+   }
+  ]
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [12, 7, 12, 10],
+   "name": "_rule0",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [12, 7, 12, 10],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [12, 7, 12, 10],
+      "microseconds": 10000000,
+      "original": "10s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "VarDecl",
+       "region": [13, 9, 13, 10],
+       "name": "t",
+       "type_name": "float",
+       "value": {
+        "_": "OrExpr",
+        "region": [13, 20, 13, 23],
+        "expr": {
+         "_": "MethodCall",
+         "region": [13, 20, 13, 23],
+         "obj": {
+          "_": "VarRef",
+          "region": [13, 20, 13, 23],
+          "name": "env"
+         },
+         "method": "temperature",
+         "args": []
+        },
+        "fallback": null,
+        "kind": "skip"
+       },
+       "mutable": false,
+       "shared": false,
+       "needs_lifting": false
+      },
+      {
+       "_": "VarDecl",
+       "region": [14, 9, 14, 10],
+       "name": "h",
+       "type_name": "float",
+       "value": {
+        "_": "OrExpr",
+        "region": [14, 20, 14, 23],
+        "expr": {
+         "_": "MethodCall",
+         "region": [14, 20, 14, 23],
+         "obj": {
+          "_": "VarRef",
+          "region": [14, 20, 14, 23],
+          "name": "env"
+         },
+         "method": "humidity",
+         "args": []
+        },
+        "fallback": {
+         "_": "FloatLiteral",
+         "region": [14, 38, 14, 42],
+         "value": 50.0
+        },
+        "kind": "default"
+       },
+       "mutable": false,
+       "shared": false,
+       "needs_lifting": false
+      },
+      {
+       "_": "VarDecl",
+       "region": [15, 9, 15, 13],
+       "name": "body",
+       "type_name": "string",
+       "value": {
+        "_": "OrExpr",
+        "region": [15, 24, 15, 28],
+        "expr": {
+         "_": "MethodCall",
+         "region": [15, 24, 15, 28],
+         "obj": {
+          "_": "VarRef",
+          "region": [15, 24, 15, 28],
+          "name": "http"
+         },
+         "method": "get",
+         "args": [
+          {
+           "_": "StringLiteral",
+           "region": [15, 33, 15, 57],
+           "value": "http://example.com/cfg"
+          }
+         ]
+        },
+        "fallback": {
+         "_": "IntLiteral",
+         "region": [15, 68, 15, 69],
+         "value": 3
+        },
+        "kind": "retry"
+       },
+       "mutable": false,
+       "shared": false,
+       "needs_lifting": false
+      },
+      {
+       "_": "AssignExpr",
+       "region": [16, 5, 16, 9],
+       "target": {
+        "_": "VarRef",
+        "region": [16, 5, 16, 9],
+        "name": "last"
+       },
+       "value": {
+        "_": "OrExpr",
+        "region": [16, 12, 16, 15],
+        "expr": {
+         "_": "MethodCall",
+         "region": [16, 12, 16, 15],
+         "obj": {
+          "_": "VarRef",
+          "region": [16, 12, 16, 15],
+          "name": "env"
+         },
+         "method": "temperature",
+         "args": []
+        },
+        "fallback": null,
+        "kind": "skip"
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [17, 5, 17, 8],
+        "name": "log",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [17, 9, 17, 14],
+          "value": "env"
+         },
+         {
+          "_": "StringLiteral",
+          "region": [17, 16, 17, 39],
+          "value": "{t} {h} {body} {last}"
+         }
+        ]
+       }
+      }
+     ],
+     "yield_label": 1
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [
+  {
+   "_": "VarDecl",
+   "region": [5, 5, 5, 9],
+   "name": "last",
+   "type_name": "float",
+   "value": {
+    "_": "FloatLiteral",
+    "region": [5, 19, 5, 22],
+    "value": 0.0
+   },
+   "mutable": true,
+   "shared": false,
+   "needs_lifting": false
+  }
+ ],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "VarDecl",
+    "region": [8, 9, 8, 10],
+    "name": "p",
+    "type_name": "float",
+    "value": {
+     "_": "OrExpr",
+     "region": [8, 20, 8, 23],
+     "expr": {
+      "_": "MethodCall",
+      "region": [8, 20, 8, 23],
+      "obj": {
+       "_": "VarRef",
+       "region": [8, 20, 8, 23],
+       "name": "env"
+      },
+      "method": "pressure",
+      "args": []
+     },
+     "fallback": null,
+     "kind": "restart"
+    },
+    "mutable": false,
+    "shared": false,
+    "needs_lifting": false
+   },
+   {
+    "_": "AssignExpr",
+    "region": [9, 5, 9, 9],
+    "target": {
+     "_": "VarRef",
+     "region": [9, 5, 9, 9],
+     "name": "last"
+    },
+    "value": {
+     "_": "OrExpr",
+     "region": [9, 12, 9, 15],
+     "expr": {
+      "_": "MethodCall",
+      "region": [9, 12, 9, 15],
+      "obj": {
+       "_": "VarRef",
+       "region": [9, 12, 9, 15],
+       "name": "env"
+      },
+      "method": "temperature",
+      "args": []
+     },
+     "fallback": {
+      "_": "FloatLiteral",
+      "region": [9, 33, 9, 37],
+      "value": 20.0
+     },
+     "kind": "default"
+    }
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

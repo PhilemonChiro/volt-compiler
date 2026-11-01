@@ -12,6 +12,9 @@
 
 static char _volt_strbuf[16][128];
 
+// Skip counters (or-skip observability)
+static uint32_t _skip_count_L9 = 0;  // or-skip counter
+
 // Forward declarations
 static void monitor_run(volt_task_t *_vt);
 
@@ -26,13 +29,16 @@ static void monitor_run(volt_task_t *_vt)
     VOLT_TASK_BEGIN(_vt);
     for (;;) {
 #line 9 "or_skip_sensor.volt"
-        float temp = bme280_temperature(&_bme);
-        // or skip — iteration skipped on failure
+        float temp;
+        volt_clear_error();
+        temp = bme280_temperature(&_bme);
+        if (volt_last_error() != VOLT_OK) { _skip_count_L9++; goto _every_1_next; }
+        _every_1_next: ;
         VOLT_YIELD_LABEL(_vt, 1, 10000);
     }
     VOLT_TASK_END(_vt);
 }
-#line 36 "main.c"
+#line 42 "main.c"
 
 void app_main(void)
 {

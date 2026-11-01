@@ -20,8 +20,10 @@ void app_main(void)
     
     // Setup
 #line 4 "or_default_float.volt"
-    float x = 3.14f;
-    // or 0.0f — fallback on failure
+    float x;
+    volt_clear_error();
+    x = 3.14f;
+    if (volt_last_error() != VOLT_OK) { x = 0.0f; }
 }
-#line 27 "main.c"
+#line 29 "main.c"
 

@@ -14,6 +14,9 @@
 #include "volt/sensor.h"
 
 static char _volt_strbuf[16][128];
+
+// Skip counters (or-skip observability)
+static uint32_t _skip_count_L24 = 0;  // or-skip counter
 static char _volt_storage_strbuf[8][128];
 
 typedef enum {
@@ -81,8 +84,10 @@ static void _rule0_run(volt_task_t *_vt)
         if (wifi_is_connected()) {
             volt_wdt_feed();
 #line 24 "v3_combined.volt"
-            float temp = bme280_temperature(&_bme);
-            // or skip — iteration skipped on failure
+            float temp;
+            volt_clear_error();
+            temp = bme280_temperature(&_bme);
+            if (volt_last_error() != VOLT_OK) { _skip_count_L24++; goto _every_1_next; }
             { volt_error_t _err = mqtt_send_float("temp", temp);
                 for (int _retry = 0; _err != VOLT_OK && _retry < 3; _retry++) {
                     _err = mqtt_send_float("temp", temp);
@@ -94,11 +99,12 @@ static void _rule0_run(volt_task_t *_vt)
                 pin_tone_warning(25);
             }
         }
+        _every_1_next: ;
         VOLT_YIELD_LABEL(_vt, 1, 10000);
     }
     VOLT_TASK_END(_vt);
 }
-#line 102 "main.c"
+#line 108 "main.c"
 
 // Background task: _rule1 (protothread)
 static void _rule1_run(volt_task_t *_vt)
@@ -115,7 +121,7 @@ static void _rule1_run(volt_task_t *_vt)
     }
     VOLT_TASK_END(_vt);
 }
-#line 119 "main.c"
+#line 125 "main.c"
 
 // Background task: _rule2 (protothread)
 static void _rule2_run(volt_task_t *_vt)
@@ -169,5 +175,5 @@ void app_main(void)
     };
     volt_run(_tasks, 3);
 }
-#line 173 "main.c"
+#line 179 "main.c"
 

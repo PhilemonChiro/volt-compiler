@@ -20,8 +20,10 @@ void app_main(void)
     
     // Setup
 #line 4 "or_default_int.volt"
-    int32_t x = 42;
-    // or 0 — fallback on failure
+    int32_t x;
+    volt_clear_error();
+    x = 42;
+    if (volt_last_error() != VOLT_OK) { x = 0; }
 }
-#line 27 "main.c"
+#line 29 "main.c"
 

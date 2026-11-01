@@ -1,0 +1,4 @@
+{
+  "file": "main.volt",
+  "origin": "or on value-returning calls (let/assign): skip, default, retry, restart read the last-error slot"
+}

@@ -1291,6 +1291,50 @@ func (g *codegen) stmts(stmts []Node, ctx string, cv []string, freertos bool) {
 
 // isErrorReturningCallStmt: an expression statement that is a call (other
 // than sleep) may return volt_error_t and is error-checked inside try.
+// skipAction is what a failed `or skip` call does: count the skip, then leave
+// the run. In an every block that means jumping to its wait (not `continue`,
+// which would busy-retry); in other loops, `continue`; outside any loop
+// (setup, func, on) there is no run to skip, so it carries on.
+func (g *codegen) skipAction(or *OrExpr) string {
+	counter := "_skip_count_L" + strconv.Itoa(or.Region.StartLine)
+	g.skipCounters[counter] = true
+	n := len(g.skipTargets)
+	switch {
+	case n > 0 && g.skipTargets[n-1] != "":
+		g.skipJumped[g.skipTargets[n-1]] = true
+		return counter + "++; goto " + g.skipTargets[n-1] + ";"
+	case n > 0:
+		return counter + "++; continue;"
+	}
+	return counter + "++;"
+}
+
+// emitOrAssign emits `target = call or <fallback>` for a call that returns a
+// value. Such calls can't return volt_error_t, so failure is read from the
+// task's last-error slot, which bus helpers and drivers set (volt/error.h).
+func (g *codegen) emitOrAssign(target string, or *OrExpr, ctx string, cv []string) {
+	call := g.expr(or.Expr, ctx, cv)
+	g.out("volt_clear_error();")
+	g.out(target + " = " + call + ";")
+	failed := "volt_last_error() != VOLT_OK"
+	switch or.Kind {
+	case "skip":
+		g.out("if (" + failed + ") { " + g.skipAction(or) + " }")
+	case "restart":
+		g.out("if (" + failed + ") { system_restart(); }")
+	case "retry":
+		count := g.expr(or.Fallback, ctx, cv)
+		g.out("for (int _retry = 0; " + failed + " && _retry < " + count + "; _retry++) {")
+		g.indent++
+		g.out("volt_clear_error();")
+		g.out(target + " = " + call + ";")
+		g.indent--
+		g.out("}")
+	default:
+		g.out("if (" + failed + ") { " + target + " = " + g.expr(or.Fallback, ctx, cv) + "; }")
+	}
+}
+
 func isErrorReturningCallStmt(s Node) bool {
 	es, ok := s.(*ExprStmt)
 	if !ok {
@@ -1412,20 +1456,13 @@ func (g *codegen) stmt(s Node, ctx string, cv []string, freertos bool) {
 		}
 		lifted := ctx != "" && slices.Contains(cv, s.Name)
 		if or, ok := s.Value.(*OrExpr); ok {
-			call := g.expr(or.Expr, ctx, cv)
+			target := cName(s.Name)
 			if lifted {
-				g.out(ctx + cName(s.Name) + " = " + call + ";")
+				target = ctx + target
 			} else {
-				g.out(ct + " " + cName(s.Name) + " = " + call + ";")
+				g.out(ct + " " + target + ";")
 			}
-			switch or.Kind {
-			case "skip":
-				g.out("// or skip — iteration skipped on failure")
-			case "default":
-				g.out("// or " + g.expr(or.Fallback, ctx, cv) + " — fallback on failure")
-			case "retry":
-				g.out("// or retry(" + g.expr(or.Fallback, ctx, cv) + ")")
-			}
+			g.emitOrAssign(target, or, ctx, cv)
 		} else {
 			val := g.expr(s.Value, ctx, cv)
 			if lifted {
@@ -1438,7 +1475,11 @@ func (g *codegen) stmt(s Node, ctx string, cv []string, freertos bool) {
 	case *AssignExpr:
 		g.lineDirective(s)
 		target := g.expr(s.Target, ctx, cv)
-		g.out(target + " = " + g.expr(s.Value, ctx, cv) + ";")
+		if or, ok := s.Value.(*OrExpr); ok {
+			g.emitOrAssign(target, or, ctx, cv)
+		} else {
+			g.out(target + " = " + g.expr(s.Value, ctx, cv) + ";")
+		}
 
 	case *CompoundAssign:
 		g.lineDirective(s)
@@ -1488,18 +1529,7 @@ func (g *codegen) stmt(s Node, ctx string, cv []string, freertos bool) {
 				g.indent--
 				g.out("}")
 			case "skip":
-				counter := "_skip_count_L" + strconv.Itoa(or.Region.StartLine)
-				g.skipCounters[counter] = true
-				if n := len(g.skipTargets); n > 0 && g.skipTargets[n-1] != "" {
-					// every: skip the rest of this run but still wait for the interval
-					g.skipJumped[g.skipTargets[n-1]] = true
-					g.out("if (" + call + " != VOLT_OK) { " + counter + "++; goto " + g.skipTargets[n-1] + "; }")
-				} else if n > 0 {
-					g.out("if (" + call + " != VOLT_OK) { " + counter + "++; continue; }")
-				} else {
-					// setup, func and on bodies aren't loops: there is no run to skip, so carry on past the call
-					g.out("if (" + call + " != VOLT_OK) { " + counter + "++; }")
-				}
+				g.out("if (" + call + " != VOLT_OK) { " + g.skipAction(or) + " }")
 			case "restart":
 				g.out("if (" + call + " != VOLT_OK) { system_restart(); }")
 			default:

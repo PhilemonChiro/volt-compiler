@@ -10,6 +10,9 @@
 
 static char _volt_strbuf[16][128];
 
+// Skip counters (or-skip observability)
+static uint32_t _skip_count_L6 = 0;  // or-skip counter
+
 // Forward declarations
 static void reader_run(volt_task_t *_vt);
 
@@ -21,13 +24,16 @@ static void reader_run(volt_task_t *_vt)
     VOLT_TASK_BEGIN(_vt);
     for (;;) {
 #line 6 "var_or_skip.volt"
-        int32_t val = pin_read(4);
-        // or skip — iteration skipped on failure
+        int32_t val;
+        volt_clear_error();
+        val = pin_read(4);
+        if (volt_last_error() != VOLT_OK) { _skip_count_L6++; goto _every_1_next; }
+        _every_1_next: ;
         VOLT_YIELD_LABEL(_vt, 1, 2000);
     }
     VOLT_TASK_END(_vt);
 }
-#line 31 "main.c"
+#line 37 "main.c"
 
 void app_main(void)
 {

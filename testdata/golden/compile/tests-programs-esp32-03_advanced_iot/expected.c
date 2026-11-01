@@ -79,7 +79,7 @@ static void cloud_report_run(void *arg)
 #line 43 "03_advanced_iot.volt"
         atomic_fetch_add(&cloud_count, 1);
         log_info("cloud", "%s", (snprintf(_volt_strbuf[5], sizeof(_volt_strbuf[5]), "#%ld posting to API", (long)cloud_count), _volt_strbuf[5]));
-        ({ static char _volt_http_buf[1024]; http_post("https://api.example.com/data", "ok", NULL, _volt_http_buf, sizeof(_volt_http_buf), NULL) == VOLT_OK ? (const char*)_volt_http_buf : ""; });
+        ({ static char _volt_http_buf[1024]; volt_note_error(http_post("https://api.example.com/data", "ok", NULL, _volt_http_buf, sizeof(_volt_http_buf), NULL)) == VOLT_OK ? (const char*)_volt_http_buf : ""; });
         volt_delay_ms(60000);
     }
 }

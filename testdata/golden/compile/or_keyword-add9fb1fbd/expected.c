@@ -14,6 +14,10 @@
 #include "volt/sensor.h"
 
 static char _volt_strbuf[16][128];
+
+// Skip counters (or-skip observability)
+static uint32_t _skip_count_L16 = 0;  // or-skip counter
+static uint32_t _skip_count_L17 = 0;  // or-skip counter
 static char _volt_storage_strbuf[8][128];
 
 // Forward declarations
@@ -35,11 +39,15 @@ static void monitor_run(volt_task_t *_vt)
     VOLT_TASK_BEGIN(_vt);
     for (;;) {
 #line 16 "v3_weather.volt"
-        float temp = bme280_temperature(&_bme);
-        // or skip — iteration skipped on failure
+        float temp;
+        volt_clear_error();
+        temp = bme280_temperature(&_bme);
+        if (volt_last_error() != VOLT_OK) { _skip_count_L16++; goto _every_1_next; }
 #line 17 "v3_weather.volt"
-        float hum = bme280_humidity(&_bme);
-        // or skip — iteration skipped on failure
+        float hum;
+        volt_clear_error();
+        hum = bme280_humidity(&_bme);
+        if (volt_last_error() != VOLT_OK) { _skip_count_L17++; goto _every_1_next; }
         { volt_error_t _err = mqtt_send_float("weather/temp", temp);
             for (int _retry = 0; _err != VOLT_OK && _retry < 3; _retry++) {
                 _err = mqtt_send_float("weather/temp", temp);
@@ -50,11 +58,12 @@ static void monitor_run(volt_task_t *_vt)
                 _err = mqtt_send_float("weather/hum", hum);
             }
         }
+        _every_1_next: ;
         VOLT_YIELD_LABEL(_vt, 1, 10000);
     }
     VOLT_TASK_END(_vt);
 }
-#line 58 "main.c"
+#line 67 "main.c"
 
 // Background task: heartbeat (protothread)
 static void heartbeat_run(volt_task_t *_vt)
@@ -104,5 +113,5 @@ void app_main(void)
     };
     volt_run(_tasks, 2);
 }
-#line 108 "main.c"
+#line 117 "main.c"
 
