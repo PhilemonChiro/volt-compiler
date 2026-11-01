@@ -26,6 +26,6 @@ void app_main(void)
     
     
     // Setup
-    if (ble_advertise("VoltDevice") != VOLT_OK) { _skip_count_L0++; continue; }
+    if (ble_advertise("VoltDevice") != VOLT_OK) { _skip_count_L0++; }
 }
 

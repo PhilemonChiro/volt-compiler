@@ -1,0 +1,372 @@
+{
+ "compile_full": {
+  "diagnostics": [
+   {
+    "line": 1,
+    "col": 6,
+    "message": "Move `chip esp32` to volt.toml: chip = \"esp32\"",
+    "severity": "warning",
+    "hint": "The chip declaration will move to volt.toml in a future version.",
+    "end_line": 1,
+    "end_col": 11
+   }
+  ],
+  "pins": [
+   {
+    "name": "button",
+    "mode": "PullUpInput",
+    "gpio": 23
+   }
+  ],
+  "devices": [],
+  "buses": [],
+  "tasks": [
+   {
+    "name": "_rule0",
+    "tier": "background",
+    "line": 21
+   },
+   {
+    "name": "_rule1",
+    "tier": "background",
+    "line": 26
+   }
+  ],
+  "machines": [],
+  "channels": [],
+  "enums": [],
+  "chip": "esp32"
+ },
+ "progress": [
+  [
+   "include",
+   5
+  ],
+  [
+   "parse",
+   30
+  ],
+  [
+   "resolve",
+   45
+  ],
+  [
+   "check",
+   60
+  ],
+  [
+   "hardware",
+   70
+  ],
+  [
+   "analyze",
+   80
+  ],
+  [
+   "transform",
+   88
+  ],
+  [
+   "codegen",
+   100
+  ]
+ ],
+ "format_code": "chip esp32\n\nhardware {\n    pin button: PullUpInput = 23\n}\n\nsetup {\n    wifi.connect(\"home\", \"secret\") or retry(5)\n    mqtt.connect(\"mqtt://broker.local\") or skip\n    timeout 5s {\n        wifi.connect(\"home\", \"secret\") or skip\n    } else {\n        log(\"wifi\", \"gave up after 5 seconds\")\n    }\n}\n\nfunc link() {\n    mqtt.connect(\"mqtt://broker.local\") or skip\n}\n\non button.is_pressed() {\n    link()\n    mqtt.connect(\"mqtt://broker.local\") or skip\n}\n\nevery 1s { mqtt.connect(\"mqtt://broker.local\") or skip }\n",
+ "find_symbols": [
+  {
+   "name": "button",
+   "kind": "pin",
+   "def_line": 4,
+   "def_col": 9,
+   "refs": [
+    {
+     "line": 21,
+     "col": 4
+    }
+   ]
+  },
+  {
+   "name": "link",
+   "kind": "func",
+   "def_line": 7,
+   "def_col": 6,
+   "refs": [
+    {
+     "line": 22,
+     "col": 5
+    }
+   ]
+  },
+  {
+   "name": "_rule0",
+   "kind": "task",
+   "def_line": 21,
+   "def_col": 4,
+   "refs": []
+  },
+  {
+   "name": "_rule1",
+   "kind": "task",
+   "def_line": 26,
+   "def_col": 7,
+   "refs": []
+  }
+ ],
+ "state_diagram": {
+  "machines": []
+ },
+ "system_graph": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_wifi{{\"wifi\"}}\n    s_mqtt{{\"mqtt\"}}\n    s_log{{\"log\"}}\n    u__rule0[\"_rule0\"]\n    p_button([\"button\"])\n    f_link(\"link()\")\n    u_link(\"link()\")\n    u__rule1((\"↻ 1s\"))\n    u_setup -->|connect| s_wifi\n    u_setup -->|connect| s_mqtt\n    u_setup -->|log| s_log\n    p_button -.->|is_pressed| u__rule0\n    u__rule0 -->|call| f_link\n    u__rule0 -->|connect| s_mqtt\n    u__rule1 -->|connect| s_mqtt\n    u_link -->|connect| s_mqtt\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_wifi service;\n    class s_mqtt service;\n    class s_log service;\n    class u__rule0 task;\n    class p_button pin;\n    class f_link func;\n    class u__rule1 timer;\n    class u_link func;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u__rule0",
+    "name": "_rule0",
+    "line": 21
+   },
+   {
+    "id": "u__rule1",
+    "name": "↻ 1s",
+    "line": 26
+   },
+   {
+    "id": "u_link",
+    "name": "link()",
+    "line": 7
+   }
+  ],
+  "loops": [
+   "u__rule1"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_wifi"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_mqtt"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_log"
+   },
+   {
+    "drive": "task",
+    "src": "p_button",
+    "dst": "u__rule0"
+   },
+   {
+    "drive": "task",
+    "src": "u__rule0",
+    "dst": "f_link"
+   },
+   {
+    "drive": "task",
+    "src": "u__rule0",
+    "dst": "s_mqtt"
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule1",
+    "dst": "s_mqtt",
+    "rate_ms": 1000
+   },
+   {
+    "drive": "func",
+    "src": "u_link",
+    "dst": "s_mqtt"
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_wifi": {
+    "kind": "service",
+    "label": "wifi",
+    "line": null,
+    "detail": "connect"
+   },
+   "s_mqtt": {
+    "kind": "service",
+    "label": "mqtt",
+    "line": null,
+    "detail": "connect"
+   },
+   "s_log": {
+    "kind": "service",
+    "label": "log",
+    "line": null,
+    "detail": "log"
+   },
+   "u__rule0": {
+    "kind": "task",
+    "label": "_rule0",
+    "line": 21,
+    "detail": "task"
+   },
+   "p_button": {
+    "kind": "pin",
+    "label": "button",
+    "line": 4,
+    "detail": "PullUpInput · GPIO 23"
+   },
+   "f_link": {
+    "kind": "func",
+    "label": "link()",
+    "line": 7,
+    "detail": "function"
+   },
+   "u__rule1": {
+    "kind": "timer",
+    "label": "↻ 1s",
+    "line": 26,
+    "detail": "every 1s"
+   },
+   "u_link": {
+    "kind": "func",
+    "label": "link()",
+    "line": 7,
+    "detail": "function"
+   }
+  }
+ },
+ "system_graph_expanded": {
+  "mermaid": "flowchart LR\n    u_setup[\"setup\"]\n    s_wifi{{\"wifi\"}}\n    s_mqtt{{\"mqtt\"}}\n    s_log{{\"log\"}}\n    u__rule0[\"_rule0\"]\n    p_button([\"button\"])\n    f_link(\"link()\")\n    u_link(\"link()\")\n    u__rule1((\"↻ 1s\"))\n    u_setup -->|connect| s_wifi\n    u_setup -->|connect| s_mqtt\n    u_setup -->|log| s_log\n    p_button -.->|is_pressed| u__rule0\n    u__rule0 -->|call| f_link\n    u__rule0 -->|connect| s_mqtt\n    u__rule1 -->|connect| s_mqtt\n    u_link -->|connect| s_mqtt\n    classDef task fill:#1f3a4d,stroke:#2B7CB3,color:#e8e8e8;\n    classDef timer fill:#33291a,stroke:#d0a83a,color:#f5e9cf;\n    classDef machine fill:#2d1f3d,stroke:#7a3ac0,color:#e8e8e8;\n    classDef func fill:#26333a,stroke:#5a8fa0,color:#e8e8e8;\n    classDef channel fill:#3a2d1f,stroke:#c08a3a,color:#e8e8e8;\n    classDef var fill:#2a2d33,stroke:#8a8f98,color:#e8e8e8;\n    classDef pin fill:#1f3d2a,stroke:#3aa06a,color:#e8e8e8;\n    classDef service fill:#33262f,stroke:#a03a6a,color:#e8e8e8;\n    classDef shared fill:#3d2a1f,stroke:#d08a3a,stroke-width:2.5px,color:#f0e0c0;\n    class u_setup task;\n    class s_wifi service;\n    class s_mqtt service;\n    class s_log service;\n    class u__rule0 task;\n    class p_button pin;\n    class f_link func;\n    class u__rule1 timer;\n    class u_link func;",
+  "units": [
+   {
+    "id": "u_setup",
+    "name": "setup",
+    "line": 0
+   },
+   {
+    "id": "u__rule0",
+    "name": "_rule0",
+    "line": 21
+   },
+   {
+    "id": "u__rule1",
+    "name": "↻ 1s",
+    "line": 26
+   },
+   {
+    "id": "u_link",
+    "name": "link()",
+    "line": 7
+   }
+  ],
+  "loops": [
+   "u__rule1"
+  ],
+  "edges": [
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_wifi"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_mqtt"
+   },
+   {
+    "drive": "setup",
+    "src": "u_setup",
+    "dst": "s_log"
+   },
+   {
+    "drive": "task",
+    "src": "p_button",
+    "dst": "u__rule0"
+   },
+   {
+    "drive": "task",
+    "src": "u__rule0",
+    "dst": "f_link"
+   },
+   {
+    "drive": "task",
+    "src": "u__rule0",
+    "dst": "s_mqtt"
+   },
+   {
+    "drive": "timer",
+    "src": "u__rule1",
+    "dst": "s_mqtt",
+    "rate_ms": 1000
+   },
+   {
+    "drive": "func",
+    "src": "u_link",
+    "dst": "s_mqtt"
+   }
+  ],
+  "nodes": {
+   "u_setup": {
+    "kind": "task",
+    "label": "setup",
+    "line": 0,
+    "detail": "setup block"
+   },
+   "s_wifi": {
+    "kind": "service",
+    "label": "wifi",
+    "line": null,
+    "detail": "connect"
+   },
+   "s_mqtt": {
+    "kind": "service",
+    "label": "mqtt",
+    "line": null,
+    "detail": "connect"
+   },
+   "s_log": {
+    "kind": "service",
+    "label": "log",
+    "line": null,
+    "detail": "log"
+   },
+   "u__rule0": {
+    "kind": "task",
+    "label": "_rule0",
+    "line": 21,
+    "detail": "task"
+   },
+   "p_button": {
+    "kind": "pin",
+    "label": "button",
+    "line": 4,
+    "detail": "PullUpInput · GPIO 23"
+   },
+   "f_link": {
+    "kind": "func",
+    "label": "link()",
+    "line": 7,
+    "detail": "function"
+   },
+   "u__rule1": {
+    "kind": "timer",
+    "label": "↻ 1s",
+    "line": 26,
+    "detail": "every 1s"
+   },
+   "u_link": {
+    "kind": "func",
+    "label": "link()",
+    "line": 7,
+    "detail": "function"
+   }
+  }
+ }
+}

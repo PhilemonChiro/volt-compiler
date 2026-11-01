@@ -1,0 +1,331 @@
+{
+ "_": "Program",
+ "region": [0, 0, 0, 0],
+ "chip": {
+  "_": "ChipDecl",
+  "region": [1, 6, 1, 11],
+  "target": "esp32"
+ },
+ "hardware": {
+  "_": "HardwareBlock",
+  "region": [4, 9, 4, 15],
+  "pins": [
+   {
+    "_": "PinDecl",
+    "region": [4, 9, 4, 15],
+    "name": "button",
+    "mode": "PullUpInput",
+    "gpio": 23
+   }
+  ],
+  "buses": [],
+  "sensors": []
+ },
+ "power": null,
+ "structs": [],
+ "enums": [],
+ "functions": [
+  {
+   "_": "FuncDecl",
+   "region": [7, 6, 7, 10],
+   "name": "link",
+   "params": [],
+   "return_type": null,
+   "body": [
+    {
+     "_": "ExprStmt",
+     "region": [0, 0, 0, 0],
+     "expr": {
+      "_": "OrExpr",
+      "region": [8, 5, 8, 9],
+      "expr": {
+       "_": "MethodCall",
+       "region": [8, 5, 8, 9],
+       "obj": {
+        "_": "VarRef",
+        "region": [8, 5, 8, 9],
+        "name": "mqtt"
+       },
+       "method": "connect",
+       "args": [
+        {
+         "_": "StringLiteral",
+         "region": [8, 18, 8, 39],
+         "value": "mqtt://broker.local"
+        }
+       ]
+      },
+      "fallback": null,
+      "kind": "skip"
+     }
+    }
+   ],
+   "contains_yield": false
+  }
+ ],
+ "tasks": [
+  {
+   "_": "TaskDecl",
+   "region": [21, 4, 21, 10],
+   "name": "_rule0",
+   "body": [
+    {
+     "_": "OnBlock",
+     "region": [21, 4, 21, 10],
+     "event": {
+      "_": "MethodCall",
+      "region": [21, 4, 21, 10],
+      "obj": {
+       "_": "VarRef",
+       "region": [21, 4, 21, 10],
+       "name": "button"
+      },
+      "method": "is_pressed",
+      "args": []
+     },
+     "debounce": null,
+     "throttle": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "FuncCall",
+        "region": [22, 5, 22, 9],
+        "name": "link",
+        "args": []
+       }
+      },
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "OrExpr",
+        "region": [23, 5, 23, 9],
+        "expr": {
+         "_": "MethodCall",
+         "region": [23, 5, 23, 9],
+         "obj": {
+          "_": "VarRef",
+          "region": [23, 5, 23, 9],
+          "name": "mqtt"
+         },
+         "method": "connect",
+         "args": [
+          {
+           "_": "StringLiteral",
+           "region": [23, 18, 23, 39],
+           "value": "mqtt://broker.local"
+          }
+         ]
+        },
+        "fallback": null,
+        "kind": "skip"
+       }
+      }
+     ],
+     "yield_label": 1,
+     "debounce_label": 0
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false
+  },
+  {
+   "_": "TaskDecl",
+   "region": [26, 7, 26, 9],
+   "name": "_rule1",
+   "body": [
+    {
+     "_": "EveryBlock",
+     "region": [26, 7, 26, 9],
+     "interval": {
+      "_": "DurationLiteral",
+      "region": [26, 7, 26, 9],
+      "microseconds": 1000000,
+      "original": "1s"
+     },
+     "strict": false,
+     "guard": null,
+     "body": [
+      {
+       "_": "ExprStmt",
+       "region": [0, 0, 0, 0],
+       "expr": {
+        "_": "OrExpr",
+        "region": [27, 5, 27, 9],
+        "expr": {
+         "_": "MethodCall",
+         "region": [27, 5, 27, 9],
+         "obj": {
+          "_": "VarRef",
+          "region": [27, 5, 27, 9],
+          "name": "mqtt"
+         },
+         "method": "connect",
+         "args": [
+          {
+           "_": "StringLiteral",
+           "region": [27, 18, 27, 39],
+           "value": "mqtt://broker.local"
+          }
+         ]
+        },
+        "fallback": null,
+        "kind": "skip"
+       }
+      }
+     ],
+     "yield_label": 1
+    }
+   ],
+   "tier": "background",
+   "crossing_vars": [],
+   "has_strict": false
+  }
+ ],
+ "machines": [],
+ "storage_vars": [],
+ "global_vars": [],
+ "channels": [],
+ "setup": {
+  "_": "SetupBlock",
+  "region": [0, 0, 0, 0],
+  "body": [
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "OrExpr",
+     "region": [12, 5, 12, 9],
+     "expr": {
+      "_": "MethodCall",
+      "region": [12, 5, 12, 9],
+      "obj": {
+       "_": "VarRef",
+       "region": [12, 5, 12, 9],
+       "name": "wifi"
+      },
+      "method": "connect",
+      "args": [
+       {
+        "_": "StringLiteral",
+        "region": [12, 18, 12, 24],
+        "value": "home"
+       },
+       {
+        "_": "StringLiteral",
+        "region": [12, 26, 12, 34],
+        "value": "secret"
+       }
+      ]
+     },
+     "fallback": {
+      "_": "IntLiteral",
+      "region": [12, 45, 12, 46],
+      "value": 5
+     },
+     "kind": "retry"
+    }
+   },
+   {
+    "_": "ExprStmt",
+    "region": [0, 0, 0, 0],
+    "expr": {
+     "_": "OrExpr",
+     "region": [13, 5, 13, 9],
+     "expr": {
+      "_": "MethodCall",
+      "region": [13, 5, 13, 9],
+      "obj": {
+       "_": "VarRef",
+       "region": [13, 5, 13, 9],
+       "name": "mqtt"
+      },
+      "method": "connect",
+      "args": [
+       {
+        "_": "StringLiteral",
+        "region": [13, 18, 13, 39],
+        "value": "mqtt://broker.local"
+       }
+      ]
+     },
+     "fallback": null,
+     "kind": "skip"
+    }
+   },
+   {
+    "_": "TimeoutBlock",
+    "region": [14, 13, 14, 15],
+    "duration": {
+     "_": "DurationLiteral",
+     "region": [14, 13, 14, 15],
+     "microseconds": 5000000,
+     "original": "5s"
+    },
+    "try_body": [
+     {
+      "_": "ExprStmt",
+      "region": [0, 0, 0, 0],
+      "expr": {
+       "_": "OrExpr",
+       "region": [15, 9, 15, 13],
+       "expr": {
+        "_": "MethodCall",
+        "region": [15, 9, 15, 13],
+        "obj": {
+         "_": "VarRef",
+         "region": [15, 9, 15, 13],
+         "name": "wifi"
+        },
+        "method": "connect",
+        "args": [
+         {
+          "_": "StringLiteral",
+          "region": [15, 22, 15, 28],
+          "value": "home"
+         },
+         {
+          "_": "StringLiteral",
+          "region": [15, 30, 15, 38],
+          "value": "secret"
+         }
+        ]
+       },
+       "fallback": null,
+       "kind": "skip"
+      }
+     }
+    ],
+    "fallback_body": [
+     {
+      "_": "ExprStmt",
+      "region": [0, 0, 0, 0],
+      "expr": {
+       "_": "FuncCall",
+       "region": [17, 9, 17, 12],
+       "name": "log",
+       "args": [
+        {
+         "_": "StringLiteral",
+         "region": [17, 13, 17, 19],
+         "value": "wifi"
+        },
+        {
+         "_": "StringLiteral",
+         "region": [17, 21, 17, 46],
+         "value": "gave up after 5 seconds"
+        }
+       ]
+      }
+     }
+    ]
+   }
+  ]
+ },
+ "loop": null,
+ "raw_blocks": [],
+ "includes": []
+}

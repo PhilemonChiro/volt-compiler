@@ -23,6 +23,6 @@ void app_main(void)
     
     
     // Setup
-    if (wifi_connect("net", "pass") != VOLT_OK) { _skip_count_L0++; continue; }
+    if (wifi_connect("net", "pass") != VOLT_OK) { _skip_count_L0++; }
 }
 

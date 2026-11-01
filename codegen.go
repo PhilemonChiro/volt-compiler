@@ -122,6 +122,7 @@ type codegen struct {
 	storageStrBufCount int
 	tryCounter         int
 	currentMachine     string
+	loopDepth          int // C loops around the statement being emitted; `or skip` needs one to `continue`
 }
 
 // Generate generates C source from a transformed Volt AST.
@@ -1252,7 +1253,9 @@ func (g *codegen) emitAppMain(p *Program) {
 		g.out("// Super-loop")
 		g.out("while (1) {")
 		g.indent++
+		g.loopDepth++
 		g.stmts(p.Loop.Body, "", nil, true)
+		g.loopDepth--
 		g.indent--
 		g.out("}")
 	}
@@ -1481,7 +1484,12 @@ func (g *codegen) stmt(s Node, ctx string, cv []string, freertos bool) {
 			case "skip":
 				counter := "_skip_count_L" + strconv.Itoa(s.Region.StartLine)
 				g.skipCounters[counter] = true
-				g.out("if (" + call + " != VOLT_OK) { " + counter + "++; continue; }")
+				if g.loopDepth > 0 {
+					g.out("if (" + call + " != VOLT_OK) { " + counter + "++; continue; }")
+				} else {
+					// setup, func and on bodies aren't loops: there is no run to skip, so carry on past the call
+					g.out("if (" + call + " != VOLT_OK) { " + counter + "++; }")
+				}
 			case "restart":
 				g.out("if (" + call + " != VOLT_OK) { system_restart(); }")
 			default:
@@ -1546,7 +1554,9 @@ func (g *codegen) stmt(s Node, ctx string, cv []string, freertos bool) {
 		g.lineDirective(s)
 		g.out("while (" + g.expr(s.Condition, ctx, cv) + ") {")
 		g.indent++
+		g.loopDepth++
 		g.stmts(s.Body, ctx, cv, freertos)
+		g.loopDepth--
 		g.indent--
 		g.out("}")
 
@@ -1568,7 +1578,9 @@ func (g *codegen) stmt(s Node, ctx string, cv []string, freertos bool) {
 			g.out("for (int32_t " + v + " = " + start + "; " + v + " < " + end + "; " + v + "++) {")
 		}
 		g.indent++
+		g.loopDepth++
 		g.stmts(s.Body, ctx, cv, freertos)
+		g.loopDepth--
 		g.indent--
 		g.out("}")
 
@@ -1582,6 +1594,7 @@ func (g *codegen) stmt(s Node, ctx string, cv []string, freertos bool) {
 		}
 		g.out("for (;;) {")
 		g.indent++
+		g.loopDepth++
 		if s.Guard != nil {
 			g.out("if (" + g.expr(s.Guard, ctx, cv) + ") {")
 			g.indent++
@@ -1596,6 +1609,7 @@ func (g *codegen) stmt(s Node, ctx string, cv []string, freertos bool) {
 		} else {
 			g.out(fmt.Sprintf("VOLT_YIELD_LABEL(_vt, %d, %d);", s.YieldLabel, ms))
 		}
+		g.loopDepth--
 		g.indent--
 		g.out("}")
 

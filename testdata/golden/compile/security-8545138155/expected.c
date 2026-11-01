@@ -26,7 +26,7 @@ static void worker_run(volt_task_t *_vt)
         pin_toggle(2);
         VOLT_YIELD_LABEL(_vt, 1, 1000);
     }
-    if (sleep(500) != VOLT_OK) { _skip_count_L0++; continue; }
+    if (sleep(500) != VOLT_OK) { _skip_count_L0++; }
     VOLT_TASK_END(_vt);
 }
 
