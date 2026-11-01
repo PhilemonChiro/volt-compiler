@@ -1,6 +1,6 @@
 # volt-compiler
 
-The compiler for [Volt](https://github.com/PhilemonChiro/volt), a typed language for microcontroller
+The compiler for Volt, the language of [Volt Embedded](https://voltembedded.com): a typed language for microcontroller
 firmware. It turns `.volt` programs into C for the Volt runtime, and checks the hardware while it does:
 pin conflicts, input-only and flash pins, ADC2 use while WiFi is on, and blocking calls in interrupt context.
 
