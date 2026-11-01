@@ -60,7 +60,7 @@
    100
   ]
  ],
- "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n}\n\nfunc helper(n: int) -> int {\n    return n + 1\n}\n\nsetup {\n    var x: int = helper(5)\n}\n",
+ "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n}\n\nsetup {\n    var x: int = helper(5)\n}\n\nfunc helper(n: int) -> int {\n    return n + 1\n}\n",
  "find_symbols": [
   {
    "name": "led",

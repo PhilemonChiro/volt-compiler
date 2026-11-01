@@ -69,7 +69,7 @@
    100
   ]
  ],
- "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n}\n\nenum DoorState { locked, unlocked, ajar }\n\nsetup {\n    var state: DoorState = DoorState.locked\n    if state == DoorState.unlocked {\n        led.on()\n    }\n}\n",
+ "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n}\n\nsetup {\n    var state: DoorState = DoorState.locked\n    if state == DoorState.unlocked {\n        led.on()\n    }\n}\n\nenum DoorState { locked, unlocked, ajar }\n",
  "find_symbols": [
   {
    "name": "led",

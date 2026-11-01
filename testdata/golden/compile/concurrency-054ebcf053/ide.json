@@ -85,7 +85,7 @@
    100
   ]
  ],
- "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n    pin motor: PWM = 4\n}\n\nvar mixed_val = 0\n\nvar private_a = 10\n\nvar private_b = 20\n\ntask isr_task {\n    every 1ms strict {\n        motor.set_pwm(mixed_val)\n        private_a = private_a + 1\n    }\n}\n\ntask bg_task {\n    every 500ms {\n        mixed_val = mixed_val + 1\n        private_b = private_b + 1\n        led.toggle()\n    }\n}\n\nsetup {\n    run(isr_task, bg_task)\n}\n",
+ "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n    pin motor: PWM = 4\n}\n\nsetup {\n    run(isr_task, bg_task)\n}\n\nvar mixed_val = 0\n\nvar private_a = 10\n\nvar private_b = 20\n\ntask isr_task {\n    every 1ms strict {\n        motor.set_pwm(mixed_val)\n        private_a = private_a + 1\n    }\n}\n\ntask bg_task {\n    every 500ms {\n        mixed_val = mixed_val + 1\n        private_b = private_b + 1\n        led.toggle()\n    }\n}\n",
  "find_symbols": [
   {
    "name": "led",

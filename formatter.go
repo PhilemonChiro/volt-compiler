@@ -24,12 +24,12 @@ type fmtFallback struct{}
 // Format formats Volt source code. Sources with comments use the basic
 // formatter (the grammar drops comments), as do sources that fail to parse.
 func Format(source string) (out string, err error) {
-	if hasComments(source) {
-		return basicFormat(source), nil
-	}
 	prog, perr := Parse(source)
 	if perr != nil {
 		return basicFormat(source), nil
+	}
+	if hasComments(source) {
+		return setupAfterHardware(basicFormat(source)), nil
 	}
 	defer func() {
 		if r := recover(); r != nil {
@@ -85,6 +85,11 @@ func emitProgram(p *Program) string {
 	if p.Hardware != nil {
 		parts = append(parts, emitHardware(p.Hardware))
 	}
+	// setup reads first: what runs at boot sits right under the hardware.
+	// (A program without a hardware block keeps it last.)
+	if p.Setup != nil && p.Hardware != nil {
+		parts = append(parts, emitBlockConstruct("setup", p.Setup.Body))
+	}
 	for _, e := range p.Enums {
 		parts = append(parts, emitEnum(e))
 	}
@@ -136,7 +141,7 @@ func emitProgram(p *Program) string {
 	for _, m := range p.Machines {
 		parts = append(parts, emitMachine(m))
 	}
-	if p.Setup != nil {
+	if p.Setup != nil && p.Hardware == nil {
 		parts = append(parts, emitBlockConstruct("setup", p.Setup.Body))
 	}
 	if p.Loop != nil {
@@ -654,6 +659,67 @@ func emitBodyMaybeInline(body []Node, depth int) string {
 		lines[i] = emitStmt(s, depth+1)
 	}
 	return strings.Join(lines, "\n")
+}
+
+// setupAfterHardware moves the top-level setup block, with the comment lines
+// right above it, to just after the hardware block, in basicFormat output
+// (top-level blocks start at column 0 and close with a column-0 "}"). Order
+// doesn't change meaning: top-level names resolve wherever they are declared.
+func setupAfterHardware(src string) string {
+	lines := strings.Split(src, "\n")
+	isOpen := func(l, kw string) bool {
+		if !strings.HasPrefix(l, kw) {
+			return false
+		}
+		rest := strings.TrimLeft(l[len(kw):], " \t")
+		return strings.HasPrefix(rest, "{")
+	}
+	// blockEnd is the line that closes the block opened on line i.
+	blockEnd := func(i int) int {
+		if strings.HasSuffix(strings.TrimRight(lines[i], " \t"), "}") && strings.Count(lines[i], "{") == strings.Count(lines[i], "}") {
+			return i
+		}
+		for j := i + 1; j < len(lines); j++ {
+			if strings.HasPrefix(lines[j], "}") {
+				return j
+			}
+		}
+		return -1
+	}
+	hw, setup := -1, -1
+	for i, l := range lines {
+		if hw < 0 && isOpen(l, "hardware") {
+			hw = i
+		}
+		if setup < 0 && isOpen(l, "setup") {
+			setup = i
+		}
+	}
+	if hw < 0 || setup < 0 {
+		return src
+	}
+	hwEnd, setupEnd := blockEnd(hw), blockEnd(setup)
+	if hwEnd < 0 || setupEnd < 0 || setup < hwEnd {
+		return src
+	}
+	start := setup
+	for start > 0 && strings.HasPrefix(lines[start-1], "//") {
+		start--
+	}
+	between := strings.TrimSpace(strings.Join(lines[hwEnd+1:start], "\n"))
+	if between == "" {
+		return src // already right after the hardware block
+	}
+	block := append([]string{}, lines[start:setupEnd+1]...)
+	rest := append(append([]string{}, lines[:start]...), lines[setupEnd+1:]...)
+	out := append(append(append([]string{}, rest[:hwEnd+1]...), "", ""), block...)
+	out = append(append(out, ""), rest[hwEnd+1:]...)
+	// One blank line between top-level parts, as before the move.
+	joined := strings.Join(out, "\n")
+	for strings.Contains(joined, "\n\n\n") {
+		joined = strings.ReplaceAll(joined, "\n\n\n", "\n\n")
+	}
+	return joined
 }
 
 // basicFormat re-indents by braces, keeping all text (incl. comments).

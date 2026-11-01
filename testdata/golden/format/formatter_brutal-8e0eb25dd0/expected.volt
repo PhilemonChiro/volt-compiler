@@ -17,6 +17,12 @@ hardware {
     pin status: Output = GP0
 }
 
+setup {
+    log("boot", "Smart LED Controller")
+    log("boot", "modes: 0=breathe 1=blink 2=heartbeat 3=off")
+    log("boot", "press button on GP15 to cycle")
+}
+
 /* Mode tracking — auto-detected as shared across tasks */
 var current_mode: int = 0
 var mode_count: int = 4
@@ -126,8 +132,3 @@ task health {
 }
 
 /* ---- Startup ---- */
-setup {
-    log("boot", "Smart LED Controller")
-    log("boot", "modes: 0=breathe 1=blink 2=heartbeat 3=off")
-    log("boot", "press button on GP15 to cycle")
-}

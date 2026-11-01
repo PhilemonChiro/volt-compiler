@@ -116,7 +116,7 @@
    100
   ]
  ],
- "format_code": "chip esp32\n\nhardware {\n    pin red: Output = 2\n    pin yellow: Output = 4\n    pin green: Output = 5\n}\n\nenum Light { off, red, yellow, green }\n\nfunc all_off() {\n    red.off()\n    yellow.off()\n    green.off()\n}\n\nsetup {\n    var current: Light = Light.red\n    all_off()\n    match(current) {\n        .red -> red.on()\n        .yellow -> yellow.on()\n        .green -> green.on()\n        _ -> all_off()\n    }\n}\n",
+ "format_code": "chip esp32\n\nhardware {\n    pin red: Output = 2\n    pin yellow: Output = 4\n    pin green: Output = 5\n}\n\nsetup {\n    var current: Light = Light.red\n    all_off()\n    match(current) {\n        .red -> red.on()\n        .yellow -> yellow.on()\n        .green -> green.on()\n        _ -> all_off()\n    }\n}\n\nenum Light { off, red, yellow, green }\n\nfunc all_off() {\n    red.off()\n    yellow.off()\n    green.off()\n}\n",
  "find_symbols": [
   {
    "name": "red",

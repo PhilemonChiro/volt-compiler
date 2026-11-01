@@ -66,7 +66,7 @@
    100
   ]
  ],
- "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n}\n\ntask blink {\n    every 500ms { led.toggle() }\n}\n\nsetup {\n    var x: int = 0\n    x = x + 1\n    log(\"app\", \"done\")\n}\n",
+ "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n}\n\nsetup {\n    var x: int = 0\n    x = x + 1\n    log(\"app\", \"done\")\n}\n\ntask blink {\n    every 500ms { led.toggle() }\n}\n",
  "find_symbols": [
   {
    "name": "led",

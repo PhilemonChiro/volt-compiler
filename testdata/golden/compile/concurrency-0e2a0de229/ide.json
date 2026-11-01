@@ -66,7 +66,7 @@
    100
   ]
  ],
- "format_code": "chip esp32\n\nhardware {\n    pin motor: PWM = 4\n}\n\nvar pwm_setpoint = 0\n\ntask pid_loop {\n    every 1ms strict { motor.set_pwm(pwm_setpoint) }\n}\n\nsetup {\n    run(pid_loop)\n}\n",
+ "format_code": "chip esp32\n\nhardware {\n    pin motor: PWM = 4\n}\n\nsetup {\n    run(pid_loop)\n}\n\nvar pwm_setpoint = 0\n\ntask pid_loop {\n    every 1ms strict { motor.set_pwm(pwm_setpoint) }\n}\n",
  "find_symbols": [
   {
    "name": "motor",

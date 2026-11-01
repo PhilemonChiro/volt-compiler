@@ -76,7 +76,7 @@
    100
   ]
  ],
- "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n    pin motor: PWM = 4\n}\n\nvar read_only_cfg = 100\n\ntask critical_reader {\n    every 1ms strict { motor.set_pwm(read_only_cfg) }\n}\n\ntask background_reader {\n    every 500ms { led.toggle() }\n}\n\nsetup {\n    run(critical_reader, background_reader)\n}\n",
+ "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n    pin motor: PWM = 4\n}\n\nsetup {\n    run(critical_reader, background_reader)\n}\n\nvar read_only_cfg = 100\n\ntask critical_reader {\n    every 1ms strict { motor.set_pwm(read_only_cfg) }\n}\n\ntask background_reader {\n    every 500ms { led.toggle() }\n}\n",
  "find_symbols": [
   {
    "name": "led",

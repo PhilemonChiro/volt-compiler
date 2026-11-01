@@ -62,7 +62,7 @@
    100
   ]
  ],
- "format_code": "hardware {\n    device bme: BME280 on s at 0x76\n    i2c s(sda: 21, scl: 22)\n}\n\nevery 10s when wifi.is_connected() {\n    var temp: float = bme.temperature() or skip\n    mqtt.send_float(\"temp\", temp) or retry(3)\n}\n\nsetup {\n    wifi.connect(\"net\", \"pass\") or retry(10)\n}\n",
+ "format_code": "hardware {\n    device bme: BME280 on s at 0x76\n    i2c s(sda: 21, scl: 22)\n}\n\nsetup {\n    wifi.connect(\"net\", \"pass\") or retry(10)\n}\n\nevery 10s when wifi.is_connected() {\n    var temp: float = bme.temperature() or skip\n    mqtt.send_float(\"temp\", temp) or retry(3)\n}\n",
  "find_symbols": [
   {
    "name": "bme",

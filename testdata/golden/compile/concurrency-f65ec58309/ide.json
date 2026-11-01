@@ -66,7 +66,7 @@
    100
   ]
  ],
- "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n}\n\nvar sole_var = 42\n\ntask solo {\n    every 1second {\n        sole_var = sole_var + 1\n        led.toggle()\n    }\n}\n\nsetup {\n    run(solo)\n}\n",
+ "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n}\n\nsetup {\n    run(solo)\n}\n\nvar sole_var = 42\n\ntask solo {\n    every 1second {\n        sole_var = sole_var + 1\n        led.toggle()\n    }\n}\n",
  "find_symbols": [
   {
    "name": "led",

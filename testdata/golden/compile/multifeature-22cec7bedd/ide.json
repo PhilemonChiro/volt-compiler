@@ -141,7 +141,7 @@
    100
   ]
  ],
- "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n    device bme: BME280 on i2c0 at 0x76\n    i2c i2c0(sda: 21, scl: 22)\n}\n\nstorage readings_count: int = 0\n\ntask telemetry {\n    every 30s {\n        var temp: float = bme.temperature()\n        var hum: float = bme.humidity()\n        mqtt.send(\"home/temp\", \"temp={temp}\")\n        mqtt.send(\"home/hum\", \"hum={hum}\")\n        readings_count = readings_count + 1\n        storage.save(\"count\", readings_count)\n        led.toggle()\n    }\n}\n\nsetup {\n    wifi.connect(\"MySSID\", \"MyPass\")\n    mqtt.connect(\"mqtt://broker.local\")\n}\n",
+ "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n    device bme: BME280 on i2c0 at 0x76\n    i2c i2c0(sda: 21, scl: 22)\n}\n\nsetup {\n    wifi.connect(\"MySSID\", \"MyPass\")\n    mqtt.connect(\"mqtt://broker.local\")\n}\n\nstorage readings_count: int = 0\n\ntask telemetry {\n    every 30s {\n        var temp: float = bme.temperature()\n        var hum: float = bme.humidity()\n        mqtt.send(\"home/temp\", \"temp={temp}\")\n        mqtt.send(\"home/hum\", \"hum={hum}\")\n        readings_count = readings_count + 1\n        storage.save(\"count\", readings_count)\n        led.toggle()\n    }\n}\n",
  "find_symbols": [
   {
    "name": "led",

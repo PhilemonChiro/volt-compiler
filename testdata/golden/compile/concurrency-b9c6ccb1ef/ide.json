@@ -85,7 +85,7 @@
    100
   ]
  ],
- "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n    pin motor: PWM = 4\n}\n\nvar shared_counter = 0\n\ntask fast_control {\n    every 1ms strict { motor.set_pwm(shared_counter) }\n}\n\ntask slow_monitor {\n    every 500ms {\n        shared_counter = shared_counter + 1\n        led.toggle()\n    }\n}\n\nsetup {\n    run(fast_control, slow_monitor)\n}\n",
+ "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n    pin motor: PWM = 4\n}\n\nsetup {\n    run(fast_control, slow_monitor)\n}\n\nvar shared_counter = 0\n\ntask fast_control {\n    every 1ms strict { motor.set_pwm(shared_counter) }\n}\n\ntask slow_monitor {\n    every 500ms {\n        shared_counter = shared_counter + 1\n        led.toggle()\n    }\n}\n",
  "find_symbols": [
   {
    "name": "led",

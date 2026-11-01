@@ -105,7 +105,7 @@
    100
   ]
  ],
- "format_code": "chip rp2040\n\nhardware {\n    pin led: Output = 25\n}\n\nstorage boot_count: int = 0\n\nsetup {\n    boot_count = boot_count + 1\n    storage.save(\"boots\", boot_count)\n}\n",
+ "format_code": "chip rp2040\n\nhardware {\n    pin led: Output = 25\n}\n\nsetup {\n    boot_count = boot_count + 1\n    storage.save(\"boots\", boot_count)\n}\n\nstorage boot_count: int = 0\n",
  "find_symbols": [
   {
    "name": "led",

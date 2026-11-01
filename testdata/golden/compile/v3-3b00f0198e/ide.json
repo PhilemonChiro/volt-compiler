@@ -108,7 +108,7 @@
    100
   ]
  ],
- "format_code": "hardware {\n    pin led = 2\n    pin buzzer: PWM = 25\n    device bme: BME280 on s at 0x76\n    i2c s(sda: 21, scl: 22)\n}\n\nenum AlertLevel { normal, warning, critical }\n\nchannel alerts: int[8]\n\nstorage boot_count: int = 0\n\nevery 10s when wifi.is_connected() {\n    system.watchdog_feed()\n    var temp: float = bme.temperature() or skip\n    mqtt.send_float(\"temp\", temp) or retry(3)\n    if temp > 35 {\n        alerts.send(1)\n        buzzer.beep_warning()\n    }\n}\n\nevery 100ms {\n    if alerts.has_data() {\n        var code: int = alerts.receive()\n        led.on()\n    }\n}\n\nevery 1s { led.toggle() }\n\nsetup {\n    boot_count += 1\n    system.watchdog_enable(15000)\n    wifi.connect(\"net\", \"pass\") or retry(10)\n    mqtt.connect(\"mqtt://broker\") or retry(5)\n    buzzer.beep_startup()\n}\n",
+ "format_code": "hardware {\n    pin led = 2\n    pin buzzer: PWM = 25\n    device bme: BME280 on s at 0x76\n    i2c s(sda: 21, scl: 22)\n}\n\nsetup {\n    boot_count += 1\n    system.watchdog_enable(15000)\n    wifi.connect(\"net\", \"pass\") or retry(10)\n    mqtt.connect(\"mqtt://broker\") or retry(5)\n    buzzer.beep_startup()\n}\n\nenum AlertLevel { normal, warning, critical }\n\nchannel alerts: int[8]\n\nstorage boot_count: int = 0\n\nevery 10s when wifi.is_connected() {\n    system.watchdog_feed()\n    var temp: float = bme.temperature() or skip\n    mqtt.send_float(\"temp\", temp) or retry(3)\n    if temp > 35 {\n        alerts.send(1)\n        buzzer.beep_warning()\n    }\n}\n\nevery 100ms {\n    if alerts.has_data() {\n        var code: int = alerts.receive()\n        led.on()\n    }\n}\n\nevery 1s { led.toggle() }\n",
  "find_symbols": [
   {
    "name": "led",

@@ -98,7 +98,7 @@
    100
   ]
  ],
- "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n    pin battery: Analog = 36\n}\n\nfunc add(a: int, b: int) -> int {\n    return a + b\n}\n\ntask blink {\n    every 500ms { led.toggle() }\n}\n\nsetup {\n    let x = 42\n    let y = add(x, 1)\n    wifi.connect(\"net\", \"pass\")\n    run(blink)\n}\n",
+ "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n    pin battery: Analog = 36\n}\n\nsetup {\n    let x = 42\n    let y = add(x, 1)\n    wifi.connect(\"net\", \"pass\")\n    run(blink)\n}\n\nfunc add(a: int, b: int) -> int {\n    return a + b\n}\n\ntask blink {\n    every 500ms { led.toggle() }\n}\n",
  "find_symbols": [
   {
    "name": "led",

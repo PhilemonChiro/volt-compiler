@@ -5,6 +5,13 @@ hardware {
     pin temperature: Analog = 36
 }
 
+setup {
+    boot_count += 1
+    wifi.connect("WeatherNet", "password123") or retry(10)
+    mqtt.connect("mqtt://192.168.1.100") or retry(5)
+    log("boot", "Weather Station v3 — boot #{boot_count}")
+}
+
 channel readings: int[16]
 
 storage boot_count: int = 0
@@ -55,10 +62,3 @@ every 30s {
 }
 
 every 1s { led.toggle() }
-
-setup {
-    boot_count += 1
-    wifi.connect("WeatherNet", "password123") or retry(10)
-    mqtt.connect("mqtt://192.168.1.100") or retry(5)
-    log("boot", "Weather Station v3 — boot #{boot_count}")
-}

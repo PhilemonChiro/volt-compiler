@@ -99,7 +99,7 @@
    100
   ]
  ],
- "format_code": "hardware {\n    pin led: Output = 2\n    pin motor: PWM = 4\n}\n\ntask blink {\n    every 500ms { led.toggle() }\n}\n\ntask motor_pid {\n    every 1ms strict { motor.set_pwm(0) }\n}\n\ntask net_handler {\n    every 5seconds { wifi.connect(\"net\", \"pass\") }\n}\n\nsetup {\n    run(blink, motor_pid, net_handler)\n}\n",
+ "format_code": "hardware {\n    pin led: Output = 2\n    pin motor: PWM = 4\n}\n\nsetup {\n    run(blink, motor_pid, net_handler)\n}\n\ntask blink {\n    every 500ms { led.toggle() }\n}\n\ntask motor_pid {\n    every 1ms strict { motor.set_pwm(0) }\n}\n\ntask net_handler {\n    every 5seconds { wifi.connect(\"net\", \"pass\") }\n}\n",
  "find_symbols": [
   {
    "name": "led",

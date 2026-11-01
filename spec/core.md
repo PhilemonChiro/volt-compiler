@@ -29,6 +29,10 @@ hardware {
     pin led: Output = 2
 }
 
+setup {
+    log("boot", "ready")
+}
+
 var count: int = 0
 
 func double(x: int) -> int {
@@ -39,15 +43,11 @@ every 500ms {
     led.toggle()
     count = double(count) + 1
 }
-
-setup {
-    log("boot", "ready")
-}
 ```
 
 Top-level items: `include`, `hardware`, `enum`, `struct`, `storage`,
 `channel`, global `let`/`var`, `func`, `every` (periodic block), `task`,
-`machine`, and `setup` (runs once at boot). The formatter puts `setup` last.
+`machine`, and `setup` (runs once at boot). Write `setup` right after `hardware`; the formatter puts it there.
 
 ## Hardware
 
@@ -174,10 +174,6 @@ hardware {
     pin led: Output = 2
 }
 
-enum Mode { idle, running, fault }
-
-var mode: Mode = Mode.idle
-
 setup {
     var n: int = 0
     while n < 3 { n += 1 }
@@ -196,6 +192,10 @@ setup {
         _ -> led.toggle()
     }
 }
+
+enum Mode { idle, running, fault }
+
+var mode: Mode = Mode.idle
 ```
 
 `a..b` excludes `b`, in `for` loops and in `match` ranges. `match` arms are `.variant`, an int, an int
@@ -313,16 +313,16 @@ hardware {
     device env: BME280
 }
 
+setup {
+    wifi.connect("ssid", "password") or retry(5)
+    mqtt.connect("mqtt://broker.local") or retry(3)
+}
+
 every 10s {
     try {
         let t: float = env.temperature()
         mqtt.send_float("home/temp", t)
     } or skip
-}
-
-setup {
-    wifi.connect("ssid", "password") or retry(5)
-    mqtt.connect("mqtt://broker.local") or retry(3)
 }
 ```
 

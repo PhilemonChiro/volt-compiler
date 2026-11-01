@@ -92,7 +92,7 @@
    100
   ]
  ],
- "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n    device bme: BME280 on sensors at 0x76\n    i2c sensors(sda: 21, scl: 22)\n}\n\nstorage boot_count: int = 0\n\ntask monitor {\n    every 10s {\n        var temp: float = bme.temperature() or skip\n        var hum: float = bme.humidity() or skip\n        mqtt.send_float(\"weather/temp\", temp) or retry(3)\n        mqtt.send_float(\"weather/hum\", hum) or retry(3)\n    }\n}\n\ntask heartbeat {\n    every 1s { led.toggle() }\n}\n\nsetup {\n    boot_count += 1\n    wifi.connect(\"WeatherNet\", \"pass\") or retry(10)\n    mqtt.connect(\"mqtt://192.168.1.100\") or retry(5)\n}\n",
+ "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n    device bme: BME280 on sensors at 0x76\n    i2c sensors(sda: 21, scl: 22)\n}\n\nsetup {\n    boot_count += 1\n    wifi.connect(\"WeatherNet\", \"pass\") or retry(10)\n    mqtt.connect(\"mqtt://192.168.1.100\") or retry(5)\n}\n\nstorage boot_count: int = 0\n\ntask monitor {\n    every 10s {\n        var temp: float = bme.temperature() or skip\n        var hum: float = bme.humidity() or skip\n        mqtt.send_float(\"weather/temp\", temp) or retry(3)\n        mqtt.send_float(\"weather/hum\", hum) or retry(3)\n    }\n}\n\ntask heartbeat {\n    every 1s { led.toggle() }\n}\n",
  "find_symbols": [
   {
    "name": "led",

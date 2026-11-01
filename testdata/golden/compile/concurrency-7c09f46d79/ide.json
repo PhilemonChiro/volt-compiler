@@ -121,7 +121,7 @@
    100
   ]
  ],
- "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n    pin button: PullUpInput = 0\n}\n\nvar counter = 0\n\ntask task_a {\n    every 200ms {\n        counter = counter + 1\n        led.toggle()\n    }\n}\n\ntask task_b {\n    every 300ms { counter = counter + 2 }\n}\n\nsetup {\n    run(task_a, task_b)\n}\n",
+ "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n    pin button: PullUpInput = 0\n}\n\nsetup {\n    run(task_a, task_b)\n}\n\nvar counter = 0\n\ntask task_a {\n    every 200ms {\n        counter = counter + 1\n        led.toggle()\n    }\n}\n\ntask task_b {\n    every 300ms { counter = counter + 2 }\n}\n",
  "find_symbols": [
   {
    "name": "led",

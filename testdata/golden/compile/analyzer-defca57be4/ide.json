@@ -149,7 +149,7 @@
    100
   ]
  ],
- "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n    pin motor: PWM = 4\n    pin button: PullUpInput = 0\n}\n\ntask blink {\n    every 500ms { led.toggle() }\n}\n\ntask motor_control {\n    every 1ms strict { motor.set_pwm(0) }\n}\n\ntask telemetry {\n    every 1second { mqtt.send_int(\"drone/status\", 1) }\n}\n\nsetup {\n    wifi.connect(\"ground\", \"station\")\n    run(blink, motor_control, telemetry)\n}\n",
+ "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n    pin motor: PWM = 4\n    pin button: PullUpInput = 0\n}\n\nsetup {\n    wifi.connect(\"ground\", \"station\")\n    run(blink, motor_control, telemetry)\n}\n\ntask blink {\n    every 500ms { led.toggle() }\n}\n\ntask motor_control {\n    every 1ms strict { motor.set_pwm(0) }\n}\n\ntask telemetry {\n    every 1second { mqtt.send_int(\"drone/status\", 1) }\n}\n",
  "find_symbols": [
   {
    "name": "led",

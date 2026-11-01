@@ -20,6 +20,14 @@ hardware {
     pin buzzer: PWM = 18
 }
 
+setup {
+    // wifi.connect("HomeNet", "password") or retry(10)
+    // mqtt.connect("mqtt://192.168.1.100") or retry(5)
+    log("boot", "Smart Door Lock v3")
+    log("boot", "press button 3x within 2s to unlock")
+    buzzer.beep_startup()
+}
+
 storage total_unlocks: int = 0
 storage failed_attempts: int = 0
 
@@ -30,13 +38,6 @@ var unlock_request: int = 0
 channel lock_commands: int[4]
 
 /* Startup */
-setup {
-    // wifi.connect("HomeNet", "password") or retry(10)
-    // mqtt.connect("mqtt://192.168.1.100") or retry(5)
-    log("boot", "Smart Door Lock v3")
-    log("boot", "press button 3x within 2s to unlock")
-    buzzer.beep_startup()
-}
 
 /* Keypad: detect 3-press unlock code */
 task keypad {

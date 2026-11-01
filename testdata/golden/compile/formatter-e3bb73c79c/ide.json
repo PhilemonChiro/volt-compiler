@@ -68,7 +68,7 @@
    100
   ]
  ],
- "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n}\n\nenum Mode { idle, running }\n\nsetup {\n    var m: Mode = Mode.idle\n    match(m) {\n        .idle -> led.off()\n        .running -> led.on()\n        _ -> led.toggle()\n    }\n}\n",
+ "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n}\n\nsetup {\n    var m: Mode = Mode.idle\n    match(m) {\n        .idle -> led.off()\n        .running -> led.on()\n        _ -> led.toggle()\n    }\n}\n\nenum Mode { idle, running }\n",
  "find_symbols": [
   {
    "name": "led",

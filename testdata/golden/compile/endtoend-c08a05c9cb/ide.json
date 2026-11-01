@@ -135,7 +135,7 @@
    100
   ]
  ],
- "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n    pin motor: PWM = 4\n}\n\ntask blink {\n    every 500ms { led.toggle() }\n}\n\ntask motor_pid {\n    every 1ms strict { motor.set_pwm(0) }\n}\n\ntask telemetry {\n    every 5seconds { mqtt.send_int(\"status\", 1) }\n}\n\nsetup {\n    wifi.connect(\"net\", \"pass\")\n    mqtt.connect(\"mqtt://broker\")\n    run(blink, motor_pid, telemetry)\n}\n",
+ "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 2\n    pin motor: PWM = 4\n}\n\nsetup {\n    wifi.connect(\"net\", \"pass\")\n    mqtt.connect(\"mqtt://broker\")\n    run(blink, motor_pid, telemetry)\n}\n\ntask blink {\n    every 500ms { led.toggle() }\n}\n\ntask motor_pid {\n    every 1ms strict { motor.set_pwm(0) }\n}\n\ntask telemetry {\n    every 5seconds { mqtt.send_int(\"status\", 1) }\n}\n",
  "find_symbols": [
   {
    "name": "led",

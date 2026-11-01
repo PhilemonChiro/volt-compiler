@@ -176,7 +176,7 @@
    100
   ]
  ],
- "format_code": "chip esp8266\n\nhardware {\n    pin led: Output = 2\n    pin relay: Output = 4\n    pin button: PullUpInput = 5\n}\n\ntask blink {\n    every 500ms { led.toggle() }\n}\n\ntask check_button {\n    every 50ms {\n        if button.read() == 0 {\n            relay.on()\n        } else {\n            relay.off()\n        }\n    }\n}\n\ntask report {\n    every 30s { mqtt.send_int(\"device/status\", 1) }\n}\n\nsetup {\n    wifi.connect(\"TestNet\", \"password\")\n    mqtt.connect(\"mqtt://broker.local\")\n}\n",
+ "format_code": "chip esp8266\n\nhardware {\n    pin led: Output = 2\n    pin relay: Output = 4\n    pin button: PullUpInput = 5\n}\n\nsetup {\n    wifi.connect(\"TestNet\", \"password\")\n    mqtt.connect(\"mqtt://broker.local\")\n}\n\ntask blink {\n    every 500ms { led.toggle() }\n}\n\ntask check_button {\n    every 50ms {\n        if button.read() == 0 {\n            relay.on()\n        } else {\n            relay.off()\n        }\n    }\n}\n\ntask report {\n    every 30s { mqtt.send_int(\"device/status\", 1) }\n}\n",
  "find_symbols": [
   {
    "name": "led",

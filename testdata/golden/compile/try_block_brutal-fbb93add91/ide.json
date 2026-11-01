@@ -75,7 +75,7 @@
    100
   ]
  ],
- "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 4\n}\n\nvar counter: int = 0\n\nevery 1s { led.toggle() }\n\nsetup {\n    try {\n        counter += 1\n        wifi.connect(\"a\", \"b\")\n    } or retry 3 times else skip\n}\n",
+ "format_code": "chip esp32\n\nhardware {\n    pin led: Output = 4\n}\n\nsetup {\n    try {\n        counter += 1\n        wifi.connect(\"a\", \"b\")\n    } or retry 3 times else skip\n}\n\nvar counter: int = 0\n\nevery 1s { led.toggle() }\n",
  "find_symbols": [
   {
    "name": "led",

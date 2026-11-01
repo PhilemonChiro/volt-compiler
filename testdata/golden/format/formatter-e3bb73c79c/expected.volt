@@ -4,8 +4,6 @@ hardware {
     pin led: Output = 2
 }
 
-enum Mode { idle, running }
-
 setup {
     var m: Mode = Mode.idle
     match(m) {
@@ -14,3 +12,5 @@ setup {
         _ -> led.toggle()
     }
 }
+
+enum Mode { idle, running }
